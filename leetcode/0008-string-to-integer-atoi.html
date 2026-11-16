@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LeetCode 8. String to Integer (atoi) - C++, Java, Python solutions</title>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="lc.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧩</text></svg>">
+</head>
+<body>
+
+<header class="hero">
+  <div class="breadcrumb"><a href="../index.html">🏠 Roadmap Home</a> / <a href="index.html">LeetCode</a> / 8. String to Integer (atoi)</div>
+  <h1>🧩 8. String to Integer (atoi)</h1>
+  <p class="subtitle">Turn the number at the start of a messy string into a 32-bit integer, following a few simple rules. Full solutions in <strong>C++, Java and Python</strong>, from brute force to the most optimized approach, with step-by-step dry runs. <strong>Last reviewed: 16 November 2026.</strong></p>
+  <div class="badge-row"><span class="diff Medium">Medium</span><span class="badge intermediate">String</span></div>
+  <p><a class="lc-button" href="https://leetcode.com/problems/string-to-integer-atoi/" target="_blank" rel="noopener">Open on LeetCode ↗</a></p>
+</header>
+<div class="layout">
+  <nav class="toc"><h3>On this page (10 sections)</h3><ol><li><a href="#statement">Problem Statement</a></li><li><a href="#examples">Examples and Constraints</a></li><li><a href="#think">How to Think About It (in Easy Words)</a></li><li><a href="#approach-1">Approach 1: Brute Force: Cut the Number Out, Then Convert</a></li><li><a href="#approach-2">Approach 2: A State Machine (Finite Automaton)</a></li><li><a href="#approach-3">Approach 3: One Pass with a Check Before Each Digit (Most Optimized)</a></li><li><a href="#compare">Comparing the Approaches</a></li><li><a href="#tests">Test Report (Run for Real)</a></li><li><a href="#mistakes">Common Mistakes</a></li><li><a href="#related">Related Problems to Try Next</a></li></ol></nav>
+  <main>
+<section class="block" id="statement"><h2><span class="num">1</span> Problem Statement</h2><div class="callout tip"><strong>Wording note:</strong> LeetCode's own problem text is their copyright, so this page re-states the problem <em>in my own words</em> with the same task, the same examples and the same constraints (as I know them). For LeetCode's exact wording, open the official problem: <a href="https://leetcode.com/problems/string-to-integer-atoi/">LeetCode 8. String to Integer (atoi)</a> (the site blocks automated link checks, so this link was not verified by a script).</div><p><a class="lc-button" href="https://leetcode.com/problems/string-to-integer-atoi/" target="_blank" rel="noopener">Open on LeetCode ↗</a></p><div class="statement"><p><span class="diff Medium">Medium</span> &nbsp; Topics: String</p><p>Write a function <code>myAtoi(s)</code> that converts a string to a <strong>32-bit signed integer</strong>, like the C function <code>atoi</code>. Follow these steps in order:</p>
+<ol><li><strong>Whitespace:</strong> ignore any leading spaces (only the space character <code>' '</code>).</li>
+<li><strong>Sign:</strong> if the next character is <code>'-'</code> or <code>'+'</code>, read it. A minus means the result is negative; a plus or no sign means positive.</li>
+<li><strong>Digits:</strong> read the digits that follow, and <strong>stop</strong> at the first character that is not a digit (or at the end of the string). Ignore leading zeros. If no digits were read, the result is <code>0</code>.</li>
+<li><strong>Range:</strong> if the number is below <code>-2<sup>31</sup></code>, return <code>-2<sup>31</sup></code>; if it is above <code>2<sup>31</sup> - 1</code>, return <code>2<sup>31</sup> - 1</code>.</li></ol>
+<p>Return the integer.</p></div></section><section class="block" id="examples"><h2><span class="num">2</span> Examples and Constraints</h2><div class="example"><div class="label">Example 1</div><p><strong>Input:</strong> <code>s = &quot;42&quot;</code><br><strong>Output:</strong> <code>42</code><br><strong>Explanation:</strong> No spaces, no sign, digits 4 and 2: the result is 42.</p></div><div class="example"><div class="label">Example 2</div><p><strong>Input:</strong> <code>s = &quot; -042&quot;</code><br><strong>Output:</strong> <code>-42</code><br><strong>Explanation:</strong> Skip the leading space, read the minus sign, read the digits 042 (leading zero ignored): -42.</p></div><div class="example"><div class="label">Example 3</div><p><strong>Input:</strong> <code>s = &quot;1337c0d3&quot;</code><br><strong>Output:</strong> <code>1337</code><br><strong>Explanation:</strong> Read digits until the first non-digit &#x27;c&#x27;: 1337.</p></div><div class="example"><div class="label">Example 4</div><p><strong>Input:</strong> <code>s = &quot;0-1&quot;</code><br><strong>Output:</strong> <code>0</code><br><strong>Explanation:</strong> Read the digit 0, then stop at &#x27;-&#x27; (a sign is only allowed before the digits): 0.</p></div><div class="example"><div class="label">Example 5</div><p><strong>Input:</strong> <code>s = &quot;words and 987&quot;</code><br><strong>Output:</strong> <code>0</code><br><strong>Explanation:</strong> The first character is a letter, so no digits can be read: 0.</p></div><h3>Constraints</h3><ul><li><code>0 &lt;= s.length &lt;= 200</code></li><li><code>s consists of English letters (lower-case and upper-case), digits (0-9), ' ', '+', '-', and '.'.</code></li></ul></section><section class="block" id="think"><h2><span class="num">3</span> How to Think About It (in Easy Words)</h2><div class="callout life">Think of a <strong>strict ticket officer</strong>. He first ignores people waiting in the queue (spaces). Then he accepts at most one badge (a sign). Then he takes your digits one by one, and the moment you say anything that is not a digit he stops and does not listen any more. If the total is too big for his 32-bit counter he just writes the biggest (or smallest) value the counter can show.</div><p>Below you will find <strong>3 approaches</strong>, from the simplest (brute force) to the best. Each one has the idea in plain words, its speed and memory cost, the code in <strong>C++, Java and Python</strong> (click the tabs; your choice is remembered), and a <strong>step-by-step dry run</strong> on a small input.</p></section><section class="block" id="approach-1"><h2><span class="num">4</span> Approach 1: Brute Force: Cut the Number Out, Then Convert</h2><p class="meta"><span class="level">Brute force</span></p><p><strong>Idea:</strong> First find where the number text starts and ends (skip spaces, read an optional sign, collect the digit characters). Then convert that digit text to a number in one go and clamp it to the 32-bit range.</p><div class="callout life">Like cutting the price out of a newspaper advertisement with scissors first, and only then adding it up.</div><table class=""><tr><th>Time</th><th>Space</th><th>Good side</th><th>Weak side</th></tr><tr><td>O(n)</td><td>O(n)</td><td>Easy to split into small, clear steps.</td><td>Builds an extra string; the conversion needs a wider number, and a very long digit text needs special care (here: more than 10 digits is always out of range).</td></tr></table><h3>Code</h3><div class="code-box"><div class="lang-tabs"><button data-lang="cpp">C++</button><button data-lang="java">Java</button><button data-lang="py">Python</button><button class="copy">Copy</button></div><pre class="lang-code" data-lang="cpp"><code>class Solution {
+public:
+    int myAtoi(string s) {
+        int n = s.size(), i = 0;
+        while (i &lt; n &amp;&amp; s[i] == &#x27; &#x27;) i++;                      // step 1: skip leading spaces
+        int sign = 1;
+        if (i &lt; n &amp;&amp; (s[i] == &#x27;+&#x27; || s[i] == &#x27;-&#x27;)) {           // step 2: optional sign
+            if (s[i] == &#x27;-&#x27;) sign = -1;
+            i++;
+        }
+        int start = i;
+        while (i &lt; n &amp;&amp; s[i] &gt;= &#x27;0&#x27; &amp;&amp; s[i] &lt;= &#x27;9&#x27;) i++;       // step 3: the digits are s[start .. i-1]
+        string digits = s.substr(start, i - start);            // cut the number text out
+        size_t firstNonZero = digits.find_first_not_of(&#x27;0&#x27;);   // ignore leading zeros
+        if (firstNonZero == string::npos) return 0;            // no digits at all, or only zeros
+        digits = digits.substr(firstNonZero);
+        if (digits.size() &gt; 10) return sign == 1 ? INT_MAX : INT_MIN;   // 11 or more digits is always out of range
+        long long value = sign * stoll(digits);                // at most 10 digits: fits in 64 bits
+        if (value &gt; INT_MAX) return INT_MAX;                   // step 4: clamp to the 32-bit range
+        if (value &lt; INT_MIN) return INT_MIN;
+        return (int)value;
+    }
+};</code></pre><pre class="lang-code" data-lang="java"><code>class Solution {
+    public int myAtoi(String s) {
+        int n = s.length(), i = 0;
+        while (i &lt; n &amp;&amp; s.charAt(i) == &#x27; &#x27;) i++;               // step 1: skip leading spaces
+        int sign = 1;
+        if (i &lt; n &amp;&amp; (s.charAt(i) == &#x27;+&#x27; || s.charAt(i) == &#x27;-&#x27;)) {   // step 2: optional sign
+            if (s.charAt(i) == &#x27;-&#x27;) sign = -1;
+            i++;
+        }
+        int start = i;
+        while (i &lt; n &amp;&amp; s.charAt(i) &gt;= &#x27;0&#x27; &amp;&amp; s.charAt(i) &lt;= &#x27;9&#x27;) i++;   // step 3: the digits are s[start .. i-1]
+        String digits = s.substring(start, i);                 // cut the number text out
+        int z = 0;
+        while (z &lt; digits.length() &amp;&amp; digits.charAt(z) == &#x27;0&#x27;) z++;      // ignore leading zeros
+        digits = digits.substring(z);
+        if (digits.isEmpty()) return 0;                        // no digits at all, or only zeros
+        if (digits.length() &gt; 10) return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;   // 11 or more digits is always out of range
+        long value = sign * Long.parseLong(digits);            // at most 10 digits: fits in 64 bits
+        if (value &gt; Integer.MAX_VALUE) return Integer.MAX_VALUE;   // step 4: clamp to the 32-bit range
+        if (value &lt; Integer.MIN_VALUE) return Integer.MIN_VALUE;
+        return (int) value;
+    }
+}</code></pre><pre class="lang-code" data-lang="py"><code>class Solution:
+    def myAtoi(self, s: str) -&gt; int:
+        n, i = len(s), 0
+        while i &lt; n and s[i] == &quot; &quot;:
+            i += 1                                      # step 1: skip leading spaces
+        sign = 1
+        if i &lt; n and s[i] in &quot;+-&quot;:                      # step 2: optional sign
+            if s[i] == &quot;-&quot;:
+                sign = -1
+            i += 1
+        start = i
+        while i &lt; n and &quot;0&quot; &lt;= s[i] &lt;= &quot;9&quot;:
+            i += 1                                      # step 3: the digits are s[start:i]
+        digits = s[start:i]                             # cut the number text out
+        if digits == &quot;&quot;:
+            return 0                                    # no digits at all
+        value = sign * int(digits)                      # Python reads any length and ignores leading zeros
+        return max(-2**31, min(2**31 - 1, value))       # step 4: clamp to the 32-bit range</code></pre></div><details class="deepdive" open><summary>Step-by-step dry run (computed by running the algorithm)</summary><p><strong>Sample:</strong> <code>s = &quot; -042abc&quot;</code></p><div style="overflow-x:auto"><table class="trace-table"><tr><th>step</th><th>what we do</th><th>what we find</th><th>position</th></tr><tr><td>1</td><td>skip leading spaces</td><td>1 space(s)</td><td>i = 1</td></tr><tr><td>2</td><td>read the sign</td><td>&#x27;-&#x27; found</td><td>i = 2</td></tr><tr><td>3</td><td>cut out the digit characters</td><td>&quot;042&quot;</td><td>i = 5</td></tr><tr><td>4</td><td>ignore leading zeros</td><td>&quot;42&quot;</td><td></td></tr><tr><td>5</td><td>convert the digits and apply the sign</td><td>-42</td><td></td></tr><tr><td>6</td><td>clamp to -2147483648 .. 2147483647</td><td>-42</td><td></td></tr></table></div><p><strong>Result:</strong> <code>-42</code></p><p><strong>Sample:</strong> <code>s = &quot;-91283472332&quot;</code></p><div style="overflow-x:auto"><table class="trace-table"><tr><th>step</th><th>what we do</th><th>what we find</th><th>position</th></tr><tr><td>1</td><td>skip leading spaces</td><td>0 space(s)</td><td>i = 0</td></tr><tr><td>2</td><td>read the sign</td><td>&#x27;-&#x27; found</td><td>i = 1</td></tr><tr><td>3</td><td>cut out the digit characters</td><td>&quot;91283472332&quot;</td><td>i = 12</td></tr><tr><td>4</td><td>ignore leading zeros</td><td>&quot;91283472332&quot;</td><td></td></tr><tr><td>5</td><td>more than 10 digits: always out of range</td><td>return the limit</td><td></td></tr><tr><td>6</td><td>clamp to -2147483648 .. 2147483647</td><td>-2147483648</td><td></td></tr></table></div><p><strong>Result:</strong> <code>-2147483648</code></p></details></section><section class="block" id="approach-2"><h2><span class="num">5</span> Approach 2: A State Machine (Finite Automaton)</h2><p class="meta"><span class="level">Optimized (clean design)</span></p><p><strong>Idea:</strong> Describe the rules as a tiny machine with four states: <em>start</em>, <em>signed</em>, <em>in number</em>, <em>end</em>. For every character, look up the next state in a table (rows = current state, columns = kind of character: space, sign, digit, other). Do the work that belongs to the new state: remember the sign, add a digit, or stop.</p><div class="callout life">Like a turnstile with a few positions: each key press (character) moves it to the next position, and some positions lock it for good.</div><table class=""><tr><th>Time</th><th>Space</th><th>Good side</th><th>Weak side</th></tr><tr><td>O(n)</td><td>O(1)</td><td>The rules live in one small table, so changing a rule means changing one number. Great for bigger parsers.</td><td>More code than needed for this small problem.</td></tr></table><h3>Code</h3><div class="code-box"><div class="lang-tabs"><button data-lang="cpp">C++</button><button data-lang="java">Java</button><button data-lang="py">Python</button><button class="copy">Copy</button></div><pre class="lang-code" data-lang="cpp"><code>class Solution {
+    // rows = current state, columns = kind of the next character
+    //                    space  sign  digit  other
+    int table[4][4] = {{0,     1,    2,     3},     // state 0 = start
+                       {3,     3,    2,     3},     // state 1 = signed (a + or - was read)
+                       {3,     3,    2,     3},     // state 2 = in number (digits are being read)
+                       {3,     3,    3,     3}};    // state 3 = end (stop reading)
+    int kind(char c) {
+        if (c == &#x27; &#x27;) return 0;
+        if (c == &#x27;+&#x27; || c == &#x27;-&#x27;) return 1;
+        if (c &gt;= &#x27;0&#x27; &amp;&amp; c &lt;= &#x27;9&#x27;) return 2;
+        return 3;
+    }
+public:
+    int myAtoi(string s) {
+        int state = 0, sign = 1;
+        long long value = 0;
+        for (char c : s) {
+            state = table[state][kind(c)];                     // look up the next state
+            if (state == 1) {
+                sign = (c == &#x27;-&#x27;) ? -1 : 1;                    // we just read the sign
+            } else if (state == 2) {
+                value = value * 10 + (c - &#x27;0&#x27;);                // add one more digit
+                if (value &gt; (long long)INT_MAX + 1) value = (long long)INT_MAX + 1;   // never let it grow beyond the limit
+            } else if (state == 3) {
+                break;                                         // end state: stop reading
+            }
+        }
+        value *= sign;
+        if (value &gt; INT_MAX) return INT_MAX;                   // clamp to the 32-bit range
+        if (value &lt; INT_MIN) return INT_MIN;
+        return (int)value;
+    }
+};</code></pre><pre class="lang-code" data-lang="java"><code>class Solution {
+    // rows = current state, columns = kind of the next character
+    //                                          space  sign  digit  other
+    private static final int[][] TABLE = {{0,    1,    2,     3},     // state 0 = start
+                                          {3,    3,    2,     3},     // state 1 = signed (a + or - was read)
+                                          {3,    3,    2,     3},     // state 2 = in number (digits are being read)
+                                          {3,    3,    3,     3}};    // state 3 = end (stop reading)
+
+    private int kind(char c) {
+        if (c == &#x27; &#x27;) return 0;
+        if (c == &#x27;+&#x27; || c == &#x27;-&#x27;) return 1;
+        if (c &gt;= &#x27;0&#x27; &amp;&amp; c &lt;= &#x27;9&#x27;) return 2;
+        return 3;
+    }
+
+    public int myAtoi(String s) {
+        int state = 0, sign = 1;
+        long value = 0;
+        for (int i = 0; i &lt; s.length(); i++) {
+            char c = s.charAt(i);
+            state = TABLE[state][kind(c)];                     // look up the next state
+            if (state == 1) {
+                sign = (c == &#x27;-&#x27;) ? -1 : 1;                    // we just read the sign
+            } else if (state == 2) {
+                value = value * 10 + (c - &#x27;0&#x27;);                // add one more digit
+                if (value &gt; (long) Integer.MAX_VALUE + 1) value = (long) Integer.MAX_VALUE + 1;   // never let it grow beyond the limit
+            } else if (state == 3) {
+                break;                                         // end state: stop reading
+            }
+        }
+        value *= sign;
+        if (value &gt; Integer.MAX_VALUE) return Integer.MAX_VALUE;   // clamp to the 32-bit range
+        if (value &lt; Integer.MIN_VALUE) return Integer.MIN_VALUE;
+        return (int) value;
+    }
+}</code></pre><pre class="lang-code" data-lang="py"><code>class Solution:
+    # rows = current state, columns = kind of the next character
+    #            space  sign  digit  other
+    TABLE = [[0,     1,    2,     3],     # state 0 = start
+             [3,     3,    2,     3],     # state 1 = signed (a + or - was read)
+             [3,     3,    2,     3],     # state 2 = in number (digits are being read)
+             [3,     3,    3,     3]]     # state 3 = end (stop reading)
+
+    def kind(self, c: str) -&gt; int:
+        if c == &quot; &quot;:
+            return 0
+        if c in &quot;+-&quot;:
+            return 1
+        if &quot;0&quot; &lt;= c &lt;= &quot;9&quot;:
+            return 2
+        return 3
+
+    def myAtoi(self, s: str) -&gt; int:
+        state, sign, value = 0, 1, 0
+        for c in s:
+            state = self.TABLE[state][self.kind(c)]     # look up the next state
+            if state == 1:
+                sign = -1 if c == &quot;-&quot; else 1            # we just read the sign
+            elif state == 2:
+                value = value * 10 + (ord(c) - ord(&quot;0&quot;))     # add one more digit
+                value = min(value, 2**31)               # never let it grow beyond the limit
+            elif state == 3:
+                break                                   # end state: stop reading
+        value *= sign
+        return max(-2**31, min(2**31 - 1, value))       # clamp to the 32-bit range</code></pre></div><details class="deepdive" open><summary>Step-by-step dry run (computed by running the algorithm)</summary><p><strong>Sample:</strong> <code>s = &quot; -042abc&quot;</code></p><div style="overflow-x:auto"><table class="trace-table"><tr><th>character</th><th>kind</th><th>state change</th><th>action</th><th>value</th></tr><tr><td>&#x27; &#x27;</td><td>space</td><td>start -&gt; start</td><td>nothing to do</td><td>0</td></tr><tr><td>&#x27;-&#x27;</td><td>sign</td><td>start -&gt; signed</td><td>sign = -1</td><td>0</td></tr><tr><td>&#x27;0&#x27;</td><td>digit</td><td>signed -&gt; in number</td><td>value = value * 10 + 0 = 0</td><td>0</td></tr><tr><td>&#x27;4&#x27;</td><td>digit</td><td>in number -&gt; in number</td><td>value = value * 10 + 4 = 4</td><td>4</td></tr><tr><td>&#x27;2&#x27;</td><td>digit</td><td>in number -&gt; in number</td><td>value = value * 10 + 2 = 42</td><td>42</td></tr><tr><td>&#x27;a&#x27;</td><td>other</td><td>in number -&gt; end</td><td>end state: stop reading</td><td>42</td></tr></table></div><p><strong>Result:</strong> <code>-42</code> Finally value * sign = -42, clamped to the 32-bit range.</p><p><strong>Sample:</strong> <code>s = &quot;+-12&quot;</code></p><div style="overflow-x:auto"><table class="trace-table"><tr><th>character</th><th>kind</th><th>state change</th><th>action</th><th>value</th></tr><tr><td>&#x27;+&#x27;</td><td>sign</td><td>start -&gt; signed</td><td>sign = 1</td><td>0</td></tr><tr><td>&#x27;-&#x27;</td><td>sign</td><td>signed -&gt; end</td><td>end state: stop reading</td><td>0</td></tr></table></div><p><strong>Result:</strong> <code>0</code> Finally value * sign = 0, clamped to the 32-bit range.</p></details></section><section class="block" id="approach-3"><h2><span class="num">6</span> Approach 3: One Pass with a Check Before Each Digit (Most Optimized)</h2><p class="meta"><span class="level">Most optimized</span></p><p><strong>Idea:</strong> Walk once over the string with an index: skip spaces, read the sign, then add digits to a 32-bit result. <strong>Before</strong> adding a digit, check whether <code>result * 10 + digit</code> would pass 2147483647. If yes, return the maximum (or the minimum for a negative number) immediately.</p><div class="callout life">A cashier who counts coins one by one and shouts 'full!' the moment the next coin would not fit in the till.</div><table class=""><tr><th>Time</th><th>Space</th><th>Good side</th><th>Weak side</th></tr><tr><td>O(n)</td><td>O(1)</td><td>Uses only 32-bit numbers, one pass, no extra strings: the same memory as the simplest loop.</td><td>The overflow check (the 7 at the end) is the part people forget.</td></tr></table><h3>Code</h3><div class="code-box"><div class="lang-tabs"><button data-lang="cpp">C++</button><button data-lang="java">Java</button><button data-lang="py">Python</button><button class="copy">Copy</button></div><pre class="lang-code" data-lang="cpp"><code>class Solution {
+public:
+    int myAtoi(string s) {
+        int n = s.size(), i = 0;
+        while (i &lt; n &amp;&amp; s[i] == &#x27; &#x27;) i++;                      // skip leading spaces
+        int sign = 1;
+        if (i &lt; n &amp;&amp; (s[i] == &#x27;+&#x27; || s[i] == &#x27;-&#x27;)) {           // optional sign
+            sign = (s[i] == &#x27;-&#x27;) ? -1 : 1;
+            i++;
+        }
+        int result = 0;                                        // only 32-bit numbers are used
+        while (i &lt; n &amp;&amp; s[i] &gt;= &#x27;0&#x27; &amp;&amp; s[i] &lt;= &#x27;9&#x27;) {          // read digits until something else shows up
+            int digit = s[i] - &#x27;0&#x27;;
+            // would result * 10 + digit go above 2147483647 ?
+            if (result &gt; INT_MAX / 10 || (result == INT_MAX / 10 &amp;&amp; digit &gt; 7))
+                return sign == 1 ? INT_MAX : INT_MIN;          // yes: return the limit right away
+            result = result * 10 + digit;
+            i++;
+        }
+        return sign * result;
+    }
+};</code></pre><pre class="lang-code" data-lang="java"><code>class Solution {
+    public int myAtoi(String s) {
+        int n = s.length(), i = 0;
+        while (i &lt; n &amp;&amp; s.charAt(i) == &#x27; &#x27;) i++;               // skip leading spaces
+        int sign = 1;
+        if (i &lt; n &amp;&amp; (s.charAt(i) == &#x27;+&#x27; || s.charAt(i) == &#x27;-&#x27;)) {   // optional sign
+            sign = (s.charAt(i) == &#x27;-&#x27;) ? -1 : 1;
+            i++;
+        }
+        int result = 0;                                        // only 32-bit numbers are used
+        while (i &lt; n &amp;&amp; s.charAt(i) &gt;= &#x27;0&#x27; &amp;&amp; s.charAt(i) &lt;= &#x27;9&#x27;) {   // read digits until something else shows up
+            int digit = s.charAt(i) - &#x27;0&#x27;;
+            // would result * 10 + digit go above 2147483647 ?
+            if (result &gt; Integer.MAX_VALUE / 10 || (result == Integer.MAX_VALUE / 10 &amp;&amp; digit &gt; 7))
+                return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;   // yes: return the limit right away
+            result = result * 10 + digit;
+            i++;
+        }
+        return sign * result;
+    }
+}</code></pre><pre class="lang-code" data-lang="py"><code>class Solution:
+    def myAtoi(self, s: str) -&gt; int:
+        INT_MAX, INT_MIN = 2**31 - 1, -2**31
+        n, i = len(s), 0
+        while i &lt; n and s[i] == &quot; &quot;:
+            i += 1                                      # skip leading spaces
+        sign = 1
+        if i &lt; n and s[i] in &quot;+-&quot;:                      # optional sign
+            sign = -1 if s[i] == &quot;-&quot; else 1
+            i += 1
+        result = 0
+        while i &lt; n and &quot;0&quot; &lt;= s[i] &lt;= &quot;9&quot;:             # read digits until something else shows up
+            digit = ord(s[i]) - ord(&quot;0&quot;)
+            # would result * 10 + digit go above 2147483647 ?  (Python would not overflow, but we imitate 32 bits)
+            if result &gt; INT_MAX // 10 or (result == INT_MAX // 10 and digit &gt; 7):
+                return INT_MAX if sign == 1 else INT_MIN    # yes: return the limit right away
+            result = result * 10 + digit
+            i += 1
+        return sign * result</code></pre></div><details class="deepdive" open><summary>Step-by-step dry run (computed by running the algorithm)</summary><p><strong>Sample:</strong> <code>s = &quot; -042abc&quot;</code></p><div style="overflow-x:auto"><table class="trace-table"><tr><th>i</th><th>character</th><th>what happens</th><th>result so far</th></tr><tr><td>0</td><td>&#x27; &#x27;</td><td>leading space: skip it</td><td>-</td></tr><tr><td>1</td><td>&#x27;-&#x27;</td><td>sign read: negative</td><td>-</td></tr><tr><td>2</td><td>&#x27;0&#x27;</td><td>digit 0: 0 * 10 + 0</td><td>0</td></tr><tr><td>3</td><td>&#x27;4&#x27;</td><td>digit 4: 0 * 10 + 4</td><td>4</td></tr><tr><td>4</td><td>&#x27;2&#x27;</td><td>digit 2: 4 * 10 + 2</td><td>42</td></tr><tr><td>5</td><td>&#x27;a&#x27;</td><td>not a digit: stop</td><td>42</td></tr></table></div><p><strong>Result:</strong> <code>-42</code></p><p><strong>Sample:</strong> <code>s = &quot;2147483648&quot;</code></p><div style="overflow-x:auto"><table class="trace-table"><tr><th>i</th><th>character</th><th>what happens</th><th>result so far</th></tr><tr><td>0</td><td>&#x27;2&#x27;</td><td>digit 2: 0 * 10 + 2</td><td>2</td></tr><tr><td>1</td><td>&#x27;1&#x27;</td><td>digit 1: 2 * 10 + 1</td><td>21</td></tr><tr><td>2</td><td>&#x27;4&#x27;</td><td>digit 4: 21 * 10 + 4</td><td>214</td></tr><tr><td>3</td><td>&#x27;7&#x27;</td><td>digit 7: 214 * 10 + 7</td><td>2147</td></tr><tr><td>4</td><td>&#x27;4&#x27;</td><td>digit 4: 2147 * 10 + 4</td><td>21474</td></tr><tr><td>5</td><td>&#x27;8&#x27;</td><td>digit 8: 21474 * 10 + 8</td><td>214748</td></tr><tr><td>6</td><td>&#x27;3&#x27;</td><td>digit 3: 214748 * 10 + 3</td><td>2147483</td></tr><tr><td>7</td><td>&#x27;6&#x27;</td><td>digit 6: 2147483 * 10 + 6</td><td>21474836</td></tr><tr><td>8</td><td>&#x27;4&#x27;</td><td>digit 4: 21474836 * 10 + 4</td><td>214748364</td></tr><tr><td>9</td><td>&#x27;8&#x27;</td><td>digit 8: 214748364 * 10 + 8 would pass 2147483647, so return the limit now</td><td>214748364</td></tr></table></div><p><strong>Result:</strong> <code>2147483647</code></p></details></section><section class="block" id="compare"><h2><span class="num">7</span> Comparing the Approaches</h2><table class=""><tr><th>Approach</th><th>Level</th><th>Time</th><th>Extra space</th></tr><tr><td>1. Brute Force: Cut the Number Out, Then Convert</td><td>Brute force</td><td>O(n)</td><td>O(n)</td></tr><tr><td>2. A State Machine (Finite Automaton)</td><td>Optimized (clean design)</td><td>O(n)</td><td>O(1)</td></tr><tr><td>3. One Pass with a Check Before Each Digit (Most Optimized)</td><td>Most optimized</td><td>O(n)</td><td>O(1)</td></tr></table><p><strong>Which one should I write in an interview?</strong> Start by saying the brute force out loud (it proves you understand the problem), then explain the improvement and write the <em>most optimized</em> one that you can explain clearly: One Pass with a Check Before Each Digit (Most Optimized).</p></section><section class="block" id="tests"><h2><span class="num">8</span> Test Report (Run for Real)</h2><div class="callout warn"><strong>Not submitted to LeetCode.</strong> I cannot log in to or submit to LeetCode from here, so I cannot honestly say 'Accepted'. What I <em>can</em> say is below: every approach in every language was compiled and run on the same <strong>500 correctness tests</strong>, and the results are real. To see the green 'Accepted' yourself, paste a solution into the LeetCode editor.</div><ul><li>The tests contain LeetCode's own examples, hand-made edge cases (empty or tiny inputs, repeats, maximum values) and many random inputs checked against an independent reference answer, plus inputs of the largest size allowed by the constraints.</li><li>Tools used for this problem (16 November 2026): C++17 with g++ (Rev11, Built by MSYS2 project) 15.2.0, -std=c++17 -O2 -Wall -Wextra (<code>-static</code>, no warnings); Java: javac 25.0.1, -Xlint:all (no warnings); Python 3.14.2.</li><li><strong>The tests can fail:</strong> to be sure the tests are not empty promises, I deliberately broke the last-digit limit of approach 3 (&lt;code&gt;digit &amp;gt; 7&lt;/code&gt; became &lt;code&gt;digit &amp;gt; 8&lt;/code&gt;) and the tests noticed: 1 of 500 tests failed (499 passed); the correct code passes all 500.</li><li>The code shown above is the <em>same text</em> that was tested: the test program is built from it automatically.</li></ul><table class=""><tr><th>Approach</th><th>C++ (tests passed)</th><th>Java (tests passed)</th><th>Python (tests passed)</th></tr><tr><td>1. Brute Force: Cut the Number Out, Then Convert</td><td><span class="pass">500/500</span><br><span class="skip">largest input n = 200: 0.0 ms total, 4/4 ok</span></td><td><span class="pass">500/500</span><br><span class="skip">largest input n = 200: 0.0 ms total, 4/4 ok</span></td><td><span class="pass">500/500</span><br><span class="skip">largest input n = 200: 0.1 ms total, 4/4 ok</span></td></tr><tr><td>2. A State Machine (Finite Automaton)</td><td><span class="pass">500/500</span><br><span class="skip">largest input n = 200: 0.0 ms total, 4/4 ok</span></td><td><span class="pass">500/500</span><br><span class="skip">largest input n = 200: 0.0 ms total, 4/4 ok</span></td><td><span class="pass">500/500</span><br><span class="skip">largest input n = 200: 0.1 ms total, 4/4 ok</span></td></tr><tr><td>3. One Pass with a Check Before Each Digit (Most Optimized)</td><td><span class="pass">500/500</span><br><span class="skip">largest input n = 200: 0.0 ms total, 4/4 ok</span></td><td><span class="pass">500/500</span><br><span class="skip">largest input n = 200: 0.0 ms total, 4/4 ok</span></td><td><span class="pass">500/500</span><br><span class="skip">largest input n = 200: 0.0 ms total, 4/4 ok</span></td></tr></table><p>Times are from one laptop, one run each: use them to compare approaches, not to predict LeetCode's runtime numbers.</p></section><section class="block" id="mistakes"><h2><span class="num">9</span> Common Mistakes</h2><ul><li>Skipping <em>any</em> whitespace (tabs, new lines): this problem only skips the space character.</li><li>Accepting a sign after digits or a second sign (<code>"+-12"</code> and <code>"0-1"</code> are 0).</li><li>Forgetting that <code>"-2147483649"</code> must give <code>-2147483648</code>: the clamp must work on the negative side too.</li><li>Checking the digit count instead of the value: <code>"000000000000000000012"</code> has many characters but is only 12.</li><li>Building the number in a 32-bit <code>int</code> without the pre-check: the multiplication already overflows before you compare.</li><li>Using a built-in <code>isdigit</code> that accepts non-ASCII digits (some languages do): compare with <code>'0'</code> and <code>'9'</code> instead.</li></ul></section><section class="block" id="related"><h2><span class="num">10</span> Related Problems to Try Next</h2><ul><li>LeetCode 7: Reverse Integer</li><li>LeetCode 65: Valid Number</li><li>LeetCode 227: Basic Calculator II</li><li>LeetCode 12: Integer to Roman</li></ul></section>
+  </main>
+</div>
+<div class="page-nav"><a href="0007-reverse-integer.html">⬅ 7. Reverse Integer</a><a href="index.html">LeetCode list</a><a href="0009-palindrome-number.html">9. Palindrome Number ➜</a></div>
+<script src="lc.js"></script>
+</body>
+</html>
