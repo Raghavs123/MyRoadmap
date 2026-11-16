@@ -1,0 +1,1831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Agents & Agentic AI — The Complete A-Z Guide</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤖</text></svg>">
+</head>
+<body>
+
+<header class="hero">
+  <div class="breadcrumb"><a href="index.html">🏠 Roadmap Home</a> / AI Agents</div>
+  <h1>🤖 AI Agents, Agentic AI, Frameworks & Workflow Automation</h1>
+  <p class="subtitle">
+    The complete A-to-Z guide: everything about AI agents and agentic systems in one place — the
+    agent loop, planning & memory, multi-agent architectures, protocols like MCP & A2A, every major
+    framework (LangChain/LangGraph, CrewAI, Microsoft Agent Framework, OpenAI Agents SDK, Claude Agent SDK
+    and more), no-code workflow automation tools, production engineering, and from-scratch code — in plain
+    words, with daily-life examples. Built so you never have to leave this page to understand agents.
+    <strong>Last reviewed: 29 October 2026</strong> (this field moves fast — dated notes mark what may change).
+  </p>
+  <div class="badge-row">
+    <span class="badge beginner">Beginner friendly</span>
+    <span class="badge intermediate">Intermediate concepts</span>
+    <span class="badge advanced">Advanced / Research-level</span>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- ============ SIDEBAR TOC ============ -->
+  <nav class="toc">
+    <h3>On this page (54 sections)</h3>
+    <ol>
+      <li class="toc-part">Part A — Foundations</li>
+      <li><a href="#what-is-agent">What is an AI Agent?</a></li>
+      <li><a href="#why-agents">Why do we even need agents?</a></li>
+      <li><a href="#prereq-agents">Prerequisite crash course</a></li>
+      <li><a href="#agents-vs-others">Agents vs Chatbots vs RAG vs RPA</a></li>
+      <li><a href="#history-agents">History & timeline of agents</a></li>
+
+      <li class="toc-part">Part B — Core Concepts & Anatomy</li>
+      <li><a href="#anatomy">The Big Picture — anatomy of an agent</a></li>
+      <li><a href="#agent-loop">The agent loop (perceive, plan, act, observe)</a></li>
+      <li><a href="#tools-agents">Tools & function calling for agents</a></li>
+      <li><a href="#memory-agents">Memory in agents</a></li>
+      <li><a href="#planning-strategies">Planning & reasoning strategies</a></li>
+
+      <li class="toc-part">Part C — Single-Agent Design Patterns</li>
+      <li><a href="#react-pattern">ReAct pattern deep dive</a></li>
+      <li><a href="#plan-execute">Plan-and-Execute pattern</a></li>
+      <li><a href="#reflection">Reflection / self-critique pattern</a></li>
+      <li><a href="#tool-use-design">Tool use design</a></li>
+      <li><a href="#rag-agents">Retrieval-augmented agents</a></li>
+
+      <li class="toc-part">Part D — Multi-Agent Systems (Agentic AI)</li>
+      <li><a href="#agentic-ai">What is Agentic AI / multi-agent systems?</a></li>
+      <li><a href="#multi-agent-arch">Multi-agent architectures</a></li>
+      <li><a href="#agent-communication">Agent communication & coordination</a></li>
+      <li><a href="#mcp-a2a">MCP & A2A protocols</a></li>
+      <li><a href="#debate-consensus">Debate, voting & consensus patterns</a></li>
+
+      <li class="toc-part">Part E — The Math & Theory</li>
+      <li><a href="#agent-math">The math/theory behind agent decisions</a></li>
+
+      <li class="toc-part">Part F — Frameworks & Tooling</li>
+      <li><a href="#langchain-langgraph">LangChain & LangGraph</a></li>
+      <li><a href="#crewai">CrewAI</a></li>
+      <li><a href="#autogen">Microsoft Agent Framework (ex-AutoGen)</a></li>
+      <li><a href="#openai-agents-sdk">OpenAI Agents SDK & Responses API</a></li>
+      <li><a href="#claude-agent-sdk">Claude Agent SDK & Managed Agents</a></li>
+      <li><a href="#semantic-kernel">Semantic Kernel</a></li>
+      <li><a href="#llamaindex-agents">LlamaIndex agents</a></li>
+      <li><a href="#framework-compare">Framework comparison table</a></li>
+
+      <li class="toc-part">Part G — Workflow Automation</li>
+      <li><a href="#workflow-automation">What is AI workflow automation?</a></li>
+      <li><a href="#nocode-tools">No-code/low-code tools (n8n, Zapier, Make)</a></li>
+      <li><a href="#agents-vs-workflows">Agents vs workflow automation vs RPA</a></li>
+      <li><a href="#hybrid-patterns">Hybrid patterns</a></li>
+
+      <li class="toc-part">Part H — Production Engineering</li>
+      <li><a href="#observability-agents">Observability & tracing for agents</a></li>
+      <li><a href="#eval-agents">Evaluating agents</a></li>
+      <li><a href="#safety-agents">Safety & guardrails for agents</a></li>
+      <li><a href="#cost-latency-agents">Cost & latency management</a></li>
+      <li><a href="#deployment-agents">Deployment patterns</a></li>
+
+      <li class="toc-part">Part I — Hands-On (6 code levels)</li>
+      <li><a href="#loop-code">Level 0: Tiny agent loop from scratch</a></li>
+      <li><a href="#tooluse-code">Level 1: Add tool use from scratch</a></li>
+      <li><a href="#react-code">Level 2: ReAct agent via a real LLM API</a></li>
+      <li><a href="#langgraph-code">Level 3: Minimal LangGraph graph</a></li>
+      <li><a href="#crewai-code">Level 4: Minimal CrewAI crew</a></li>
+      <li><a href="#mcp-code">Level 5: Minimal MCP server + client</a></li>
+
+      <li class="toc-part">Part J — Ecosystem & Comparisons</li>
+      <li><a href="#framework-decision">Agent framework decision guide</a></li>
+      <li><a href="#workflow-tool-compare">Workflow automation tool comparison</a></li>
+      <li><a href="#protocol-compare">Protocol comparison (function calling vs MCP vs A2A)</a></li>
+      <li><a href="#case-studies">Notable real-world agent systems</a></li>
+
+      <li class="toc-part">Part K — Reference</li>
+      <li><a href="#glossary-agents">Mini glossary (40+ terms)</a></li>
+      <li><a href="#faq-agents">FAQ</a></li>
+      <li><a href="#interview-agents">Interview questions</a></li>
+      <li><a href="#pitfalls-agents">Pitfalls & production checklist</a></li>
+      <li><a href="#quiz-agents">Quick quiz 🎯</a></li>
+      <li><a href="#resources-agents">Learn more (links)</a></li>
+    </ol>
+  </nav>
+
+  <!-- ============ MAIN CONTENT ============ -->
+  <main>
+
+    <div class="part-divider"><h2>Part A — Foundations</h2></div>
+
+    <!-- 1 -->
+    <section class="block" id="what-is-agent">
+      <h2><span class="num">1</span> What is an AI Agent? (The 10-second answer)</h2>
+      <p>
+        Imagine asking a very capable assistant "book me the cheapest flight to Mumbai next
+        Friday." A plain chatbot would just reply with words — maybe tips on how to search for
+        flights yourself. An <strong>AI agent</strong>, instead, actually goes and does it: it
+        searches flight sites, compares prices, picks one, maybe asks you to confirm, and then
+        completes the booking — taking multiple steps and using real tools, on its own, to reach a
+        goal.
+      </p>
+      <div class="callout def">
+        An <strong>AI agent</strong> is an LLM-powered system that can perceive its situation
+        (read a goal, some data, tool results), decide what to do next, take an action (usually by
+        calling a tool/function), observe the result, and repeat — looping on its own until the
+        goal is done, instead of just answering once.
+      </div>
+      <div class="callout life">
+        Think of the difference between a GPS app that just shows you the route (information) and
+        an actual self-driving car that steers, brakes, and reacts to traffic to actually get you
+        there (action). A chatbot is the GPS. An agent is the self-driving car.
+      </div>
+      <p>
+        We'll build this up from an LLM (covered fully in <a href="llm.html">LLMs — Large
+        Language Models</a>) by adding: the ability to call tools, a way to remember things across
+        steps, and a loop that keeps going until the job is finished.
+      </p>
+    </section>
+
+    <!-- 2 -->
+    <section class="block" id="why-agents">
+      <h2><span class="num">2</span> Why Do We Even Need Agents?</h2>
+      <p>
+        A plain LLM call is like asking a brilliant person a question through a letter — they
+        write back one thoughtful reply, but can't go check anything, can't act on your behalf,
+        and can't come back to you with "actually, that didn't work, let me try something else."
+      </p>
+      <div class="grid">
+        <div class="card">
+          <h4>🔄 Multi-step tasks need loops</h4>
+          <p>"Plan my trip" isn't one question — it's search, compare, book, confirm. A single LLM reply can't do all of that; an agent loop can.</p>
+        </div>
+        <div class="card">
+          <h4>🛠️ Real-world actions need tools</h4>
+          <p>LLMs only generate text. To actually search the web, query a database, or send an email, something needs to translate the model's intent into a real action — that's what tools give an agent.</p>
+        </div>
+        <div class="card">
+          <h4>🧠 Hard problems need adaptation</h4>
+          <p>If the first approach fails (a search returns nothing useful, an API errors out), an agent can notice that and try a different approach — a single LLM call just gives you one fixed answer.</p>
+        </div>
+        <div class="card">
+          <h4>🤝 Big problems need teamwork</h4>
+          <p>Some tasks are naturally split into specialist roles (researcher, writer, reviewer) — multiple cooperating agents (Agentic AI, Part D) can divide and conquer better than one generalist.</p>
+        </div>
+      </div>
+      <p>
+        In short: agents exist because real goals are messy, multi-step, and require actually
+        touching the outside world — not just producing one block of text.
+      </p>
+    </section>
+
+    <!-- 3 -->
+    <section class="block" id="prereq-agents">
+      <h2><span class="num">3</span> Prerequisite Crash Course</h2>
+      <p>
+        This page builds directly on two earlier guides. A 60-second recap if you haven't read
+        them yet (reading them first is strongly recommended):
+      </p>
+      <table>
+        <tr><th>Concept</th><th>One-line recap</th><th>Full guide</th></tr>
+        <tr><td>LLM (the "brain")</td><td>A neural network trained to predict the next word/token — the reasoning engine inside every agent.</td><td><a href="llm.html">LLMs guide</a></td></tr>
+        <tr><td>Function/Tool calling</td><td>An LLM can output a structured request like "call search(query=...)" instead of plain text; your code executes it and feeds the result back.</td><td><a href="llm.html#function-calling">LLM §22</a></td></tr>
+        <tr><td>Prompting</td><td>How you phrase instructions to the model (system prompt, few-shot examples) shapes its behavior.</td><td><a href="llm.html#prompting">LLM §21</a></td></tr>
+        <tr><td>RAG (retrieval)</td><td>Fetching relevant documents and feeding them to the LLM so answers are grounded in real data.</td><td><a href="rag.html">RAG guide</a></td></tr>
+      </table>
+      <div class="callout tip">
+        If "tool calling" is new to you, pause and read <a href="llm.html#function-calling">LLM §22</a>
+        first — literally every agent framework in this guide is built on that one mechanism.
+      </div>
+    </section>
+
+    <!-- 4 -->
+    <section class="block" id="agents-vs-others">
+      <h2><span class="num">4</span> Agents vs Chatbots vs RAG vs Traditional Automation (RPA)</h2>
+      <p>
+        These four get confused constantly. Here's the clean breakdown:
+      </p>
+      <table>
+        <tr><th>System</th><th>How it decides what to do</th><th>Can it take multiple steps on its own?</th><th>Example</th></tr>
+        <tr><td>Chatbot</td><td>Generates one reply per message</td><td>No — one request, one response</td><td>A customer-support FAQ bot</td></tr>
+        <tr><td>RAG system</td><td>Retrieves relevant docs, then answers using them</td><td>Usually no (unless combined with an agent loop — see §15)</td><td>"Ask your company wiki" assistant</td></tr>
+        <tr><td>Traditional Automation / RPA</td><td>Follows a FIXED, pre-programmed sequence of steps (if-this-then-that)</td><td>Yes, but the sequence is hard-coded in advance — no real-time reasoning</td><td>"Every Monday, export this report and email it"</td></tr>
+        <tr><td>AI Agent</td><td>The LLM itself decides, step by step, what to do next based on the current situation</td><td>Yes — dynamically, adapting if something fails or changes</td><td>"Research this topic, write a report, and email it to me" (figuring out the steps itself)</td></tr>
+      </table>
+      <div class="callout warn">
+        The key difference from RPA: a classic automation script can only do exactly what a human
+        programmed in advance. An agent can handle situations nobody explicitly coded for, because
+        the LLM reasons about what to do in the moment.
+      </div>
+    </section>
+
+    <!-- 5 -->
+    <section class="block" id="history-agents">
+      <h2><span class="num">5</span> A Short History & Timeline</h2>
+      <table>
+        <tr><th>Era</th><th>What happened</th></tr>
+        <tr><td>1960s-1990s</td><td>Rule-based "expert systems" and scripted bots — fixed if-then logic, no learning or adaptation.</td></tr>
+        <tr><td>2000s-2010s</td><td>Robotic Process Automation (RPA) tools (UiPath, Automation Anywhere) automate repetitive desktop/business tasks — still fully scripted, no reasoning.</td></tr>
+        <tr><td>2022</td><td>The <a href="https://arxiv.org/abs/2210.03629" target="_blank" rel="noopener">ReAct paper</a> shows LLMs can interleave reasoning ("thoughts") with actions (tool calls) in one loop — the blueprint nearly every agent uses today.</td></tr>
+        <tr><td>Early 2023</td><td><a href="https://github.com/Significant-Gravitas/AutoGPT" target="_blank" rel="noopener">AutoGPT</a> and similar projects go viral, showing LLMs that set their own sub-goals and loop autonomously — exciting but rough and unreliable at the time.</td></tr>
+        <tr><td>2023</td><td>LangChain's agent abstractions, and function/tool calling becomes a native, reliable feature of major LLM APIs — agents become much easier to build correctly.</td></tr>
+        <tr><td>2023-2024</td><td>Multi-agent frameworks mature: CrewAI, Microsoft AutoGen, LangGraph — "Agentic AI" (multiple cooperating agents) becomes a distinct, popular pattern.</td></tr>
+        <tr><td>2024-2025</td><td>Standardized protocols emerge: Anthropic's <a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener">Model Context Protocol (MCP)</a> (Nov 2024) standardizes how agents connect to tools/data; Google's Agent2Agent (A2A) protocol (Apr 2025) targets agent-to-agent interoperability.</td></tr>
+        <tr><td>Oct 2025</td><td><a href="https://www.langchain.com/blog/langchain-langgraph-1dot0" target="_blank" rel="noopener">LangChain 1.0 and LangGraph 1.0</a> ship together (stable APIs, <code>create_agent</code>, middleware). Microsoft also previews the Agent Framework that will merge AutoGen and Semantic Kernel.</td></tr>
+        <tr><td>Dec 2025</td><td>Anthropic donates MCP to the new <strong>Agentic AI Foundation (AAIF)</strong>, a Linux Foundation fund co-founded by Anthropic, Block and OpenAI; goose and AGENTS.md join as founding projects (<a href="https://blog.modelcontextprotocol.io/posts/2025-12-09-mcp-joins-agentic-ai-foundation/" target="_blank" rel="noopener">announcement</a>).</td></tr>
+        <tr><td>2026 (Jan–Apr)</td><td>A2A reaches version 1.0 (under the Linux Foundation); <strong>Microsoft Agent Framework 1.0</strong> becomes generally available on 3 April, with AutoGen and Semantic Kernel pointing users to it; no-code tools (n8n 2.0, Zapier Agents, Make AI Agents) turn into full AI-agent platforms.</td></tr>
+        <tr><td>2026 (Jul–Aug)</td><td>MCP's "stateless" spec (2026-07-28) lands; OpenAI's <strong>Assistants API is shut down on 26 August</strong> in favor of the Responses API; A2A joins the AAIF.</td></tr>
+        <tr><td>Oct 2026</td><td>The AAIF grows to ten projects, adding <strong>Agent Skills</strong> (donated by Anthropic), Open Responses (OpenAI), OpenEnv and OpenSandbox. Coding agents (Claude Code, GitHub Copilot's agent mode, OpenAI's Codex, Devin-style engineers) and hosted agent platforms such as Anthropic's Managed Agents (beta) are everyday tools.</td></tr>
+      </table>
+    </section>
+
+    <div class="part-divider"><h2>Part B — Core Concepts & Anatomy</h2></div>
+
+    <!-- 6 -->
+    <section class="block" id="anatomy">
+      <h2><span class="num">6</span> The Big Picture — Anatomy of an Agent</h2>
+      <p>
+        Strip away the fancy branding of every agent framework, and they're all built from the
+        same four pieces:
+      </p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrAg" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+          </defs>
+          <rect class="box-final" x="270" y="120" width="160" height="80" rx="8"/><text x="350" y="150" text-anchor="middle">🧠 LLM</text><text x="350" y="170" text-anchor="middle">("the brain")</text><text x="350" y="188" text-anchor="middle">decides what's next</text>
+          <rect class="box-hl" x="20" y="20" width="160" height="70" rx="8"/><text x="100" y="50" text-anchor="middle">🛠️ Tools</text><text x="100" y="68" text-anchor="middle">search, code, APIs</text>
+          <rect class="box-hl" x="520" y="20" width="160" height="70" rx="8"/><text x="600" y="50" text-anchor="middle">🧾 Memory</text><text x="600" y="68" text-anchor="middle">short + long term</text>
+          <rect class="box-hl" x="20" y="230" width="160" height="70" rx="8"/><text x="100" y="260" text-anchor="middle">🎯 Goal</text><text x="100" y="278" text-anchor="middle">the user's request</text>
+          <rect class="box-hl" x="520" y="230" width="160" height="70" rx="8"/><text x="600" y="260" text-anchor="middle">🗺️ Planner</text><text x="600" y="278" text-anchor="middle">breaks goal into steps</text>
+          <line class="edge" x1="180" y1="55" x2="268" y2="135" marker-end="url(#arrAg)"/>
+          <line class="edge" x1="520" y1="55" x2="432" y2="135" marker-end="url(#arrAg)"/>
+          <line class="edge" x1="180" y1="265" x2="268" y2="185" marker-end="url(#arrAg)"/>
+          <line class="edge" x1="520" y1="265" x2="432" y2="185" marker-end="url(#arrAg)"/>
+        </svg>
+        <div class="diagram-caption">Fig 1 — An agent is just an LLM wired up to tools, memory, a goal, and a planner — looping until the goal is reached.</div>
+      </div>
+      <div class="callout life">
+        It's like a new employee (the LLM) who's handed a task (goal), given access to the office
+        tools (search engine, calculator, email), a notebook to jot things down (memory), and told
+        to figure out the steps themselves (planning) — checking in on progress as they go.
+      </div>
+      <ul>
+        <li><strong>LLM (the brain)</strong> — reads the current situation and decides the single next action.</li>
+        <li><strong>Tools</strong> — the agent's hands: functions it can call to search, compute, read files, hit APIs.</li>
+        <li><strong>Memory</strong> — what the agent remembers, both within one task and across multiple sessions (Section 9).</li>
+        <li><strong>Planner / Loop</strong> — the logic that keeps calling the LLM repeatedly, feeding back results, until the goal is done (Section 7).</li>
+      </ul>
+    </section>
+
+    <!-- 7 -->
+    <section class="block" id="agent-loop">
+      <h2><span class="num">7</span> The Agent Loop — Perceive, Plan, Act, Observe</h2>
+      <p>
+        Every agent, no matter the framework, runs the same underlying loop. This exact
+        "reason-then-act" pattern was formalized in the influential
+        <a href="https://arxiv.org/abs/2210.03629" target="_blank" rel="noopener">ReAct paper (2022)</a>
+        — short for "Reasoning + Acting."
+      </p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrLoop" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+            <marker id="arrLoop2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent-3)"/></marker>
+          </defs>
+          <rect class="box" x="20" y="30" width="140" height="60" rx="8"/><text x="90" y="55" text-anchor="middle">1. Perceive</text><text x="90" y="75" text-anchor="middle">read goal + state</text>
+          <rect class="box-hl" x="210" y="30" width="140" height="60" rx="8"/><text x="280" y="55" text-anchor="middle">2. Plan / Think</text><text x="280" y="75" text-anchor="middle">decide next step</text>
+          <rect class="box-hl" x="400" y="30" width="140" height="60" rx="8"/><text x="470" y="55" text-anchor="middle">3. Act</text><text x="470" y="75" text-anchor="middle">call a tool</text>
+          <rect class="box-final" x="400" y="140" width="140" height="60" rx="8"/><text x="470" y="165" text-anchor="middle">4. Observe</text><text x="470" y="185" text-anchor="middle">read tool result</text>
+          <line class="edge" x1="160" y1="60" x2="208" y2="60" marker-end="url(#arrLoop)"/>
+          <line class="edge" x1="350" y1="60" x2="398" y2="60" marker-end="url(#arrLoop)"/>
+          <line class="edge" x1="470" y1="90" x2="470" y2="138" marker-end="url(#arrLoop)"/>
+          <path class="loop" d="M400,170 Q140,170 90,92" marker-end="url(#arrLoop2)"/>
+          <text x="190" y="205" class="edge-label">repeat until goal is done</text>
+        </svg>
+        <div class="diagram-caption">Fig 2 — The agent loop: perceive, plan, act, observe, repeat — until a stop condition (goal reached, max steps, or failure) is hit.</div>
+      </div>
+      <ol>
+        <li><strong>Perceive</strong> — the LLM reads the current goal, conversation history, and any results from previous steps.</li>
+        <li><strong>Plan / Think</strong> — it reasons about what to do next (often writing out its reasoning as text — the "Thought:" in ReAct).</li>
+        <li><strong>Act</strong> — it calls a tool/function (the "Action:" in ReAct) — e.g., search the web, run code, query a database.</li>
+        <li><strong>Observe</strong> — the tool's real result ("Observation:") is fed back into the next round of the loop.</li>
+      </ol>
+      <div class="callout warn">
+        Without a stop condition, this loop can run forever (or until it burns through your budget).
+        Real agents always cap the maximum number of steps and define clear "I'm done" conditions
+        — see Section 36 for safety practices around this.
+      </div>
+    </section>
+
+    <!-- 8 -->
+    <section class="block" id="tools-agents">
+      <h2><span class="num">8</span> Tools & Function Calling for Agents</h2>
+      <p>
+        Tools are what separate an agent from a chatbot that just talks. The underlying mechanism
+        is exactly the function/tool calling covered in
+        <a href="llm.html#function-calling">LLM §22</a>: you describe available functions (name,
+        description, parameters) to the model, and it can request one be called instead of
+        replying in plain text.
+      </p>
+      <div class="callout life">
+        Giving an LLM a tool is like giving someone a phone with specific apps installed — a
+        calculator app, a maps app, an email app. The person (LLM) still decides WHEN to use which
+        app and WHAT to type into it; the app itself just does the one job reliably.
+      </div>
+      <p>
+        A step beyond this is models that can learn to use tools even without being explicitly
+        shown examples for every tool — explored in the
+        <a href="https://arxiv.org/abs/2302.04761" target="_blank" rel="noopener">Toolformer paper</a>,
+        which trains a model to decide for itself when calling an API would help.
+      </p>
+      <h3>8.1 — Common categories of agent tools</h3>
+      <table>
+        <tr><th>Category</th><th>Examples</th></tr>
+        <tr><td>Information retrieval</td><td>Web search, document/vector-store search (RAG, see Section 15), database queries</td></tr>
+        <tr><td>Computation</td><td>Calculator, code interpreter/sandbox, data analysis scripts</td></tr>
+        <tr><td>Communication</td><td>Send email, post a Slack message, create a calendar event</td></tr>
+        <tr><td>File/system operations</td><td>Read/write files, run shell commands, interact with git</td></tr>
+        <tr><td>External APIs</td><td>Weather, flight booking, payment processing, CRM updates</td></tr>
+      </table>
+      <div class="callout tip">
+        Good tool design matters as much as good prompting: clear names, precise descriptions, and
+        tightly-scoped parameters make it far more likely the model picks the right tool with the
+        right arguments. See Section 14 for a deeper dive on tool-use design.
+      </div>
+    </section>
+
+    <!-- 9 -->
+    <section class="block" id="memory-agents">
+      <h2><span class="num">9</span> Memory in Agents</h2>
+      <p>
+        LLMs themselves are stateless — they only know what's in the current context window
+        (<a href="llm.html#context-window">LLM §19</a>). "Memory" in an agent is really just
+        engineering around that limitation: deciding what information to carry forward, and how.
+      </p>
+      <table>
+        <tr><th>Memory type</th><th>What it holds</th><th>How it's implemented</th></tr>
+        <tr><td>Short-term / working memory</td><td>The current task's conversation and tool results</td><td>Just the LLM's context window — the running list of messages in this session</td></tr>
+        <tr><td>Long-term memory</td><td>Facts, preferences, or past interactions that should persist across sessions</td><td>An external store (often a vector database, as in <a href="rag.html#vectordb-deep">RAG — Vector Databases</a>) that's searched and relevant bits are injected back into context</td></tr>
+        <tr><td>Episodic memory</td><td>A record of specific past episodes/tasks ("last time I tried X, it failed because Y")</td><td>Logged transcripts or summaries, retrieved when a similar situation comes up again</td></tr>
+        <tr><td>Procedural memory</td><td>Learned skills/routines (not facts) — "how to do X"</td><td>Often baked into the system prompt, fine-tuning, or reusable sub-routines/tools</td></tr>
+      </table>
+      <div class="callout life">
+        Short-term memory is like what you're actively holding in your head during one conversation.
+        Long-term memory is like a notebook you wrote in last month that you flip back to when it
+        becomes relevant again — you don't re-read the whole notebook every time, just the
+        relevant page.
+      </div>
+      <div class="callout warn">
+        Context windows are limited and expensive (<a href="llm.html#context-window">LLM §19</a>) —
+        naively dumping all history into every prompt doesn't scale. Real systems summarize,
+        retrieve selectively, or expire old memory rather than keeping everything forever.
+      </div>
+    </section>
+
+    <!-- 10 -->
+    <section class="block" id="planning-strategies">
+      <h2><span class="num">10</span> Planning & Reasoning Strategies</h2>
+      <p>
+        How does an agent decide the right sequence of steps? A few well-known strategies, each
+        with trade-offs:
+      </p>
+      <table>
+        <tr><th>Strategy</th><th>Idea</th><th>Best for</th></tr>
+        <tr><td>Chain-of-Thought</td><td>Just think step by step in a straight line before acting (<a href="llm.html#prompting">LLM §21</a>)</td><td>Simple, mostly-linear tasks</td></tr>
+        <tr><td>ReAct</td><td>Interleave short reasoning with real actions, one step at a time (Section 11)</td><td>Tasks needing real-world info mid-reasoning</td></tr>
+        <tr><td>Plan-and-Execute</td><td>Write out the FULL multi-step plan up front, then execute each step (Section 12)</td><td>Complex tasks where the overall structure is knowable in advance</td></tr>
+        <tr><td>Tree of Thoughts</td><td>Explore MULTIPLE possible reasoning paths like branches of a tree, and backtrack from dead ends — see <a href="https://arxiv.org/abs/2305.10601" target="_blank" rel="noopener">Tree of Thoughts paper</a></td><td>Puzzles/search problems with many possible approaches</td></tr>
+        <tr><td>Reflexion</td><td>After failing, generate a self-critique in plain language and try again informed by it — see <a href="https://arxiv.org/abs/2303.11366" target="_blank" rel="noopener">Reflexion paper</a></td><td>Tasks where trial-and-error with self-correction helps (coding, games)</td></tr>
+      </table>
+      <div class="callout tip">
+        None of these are mutually exclusive — production agents often combine them (e.g., Plan
+        first, then ReAct through each planned step, with Reflexion kicking in only on failure).
+      </div>
+    </section>
+
+    <div class="part-divider"><h2>Part C — Single-Agent Design Patterns</h2></div>
+
+    <!-- 11 -->
+    <section class="block" id="react-pattern">
+      <h2><span class="num">11</span> ReAct Pattern Deep Dive</h2>
+      <p>
+        ReAct (from the <a href="https://arxiv.org/abs/2210.03629" target="_blank" rel="noopener">2022 paper</a>)
+        is the most widely used single-agent pattern because it's simple and surprisingly robust:
+        at each step, the model writes a short "Thought" (reasoning about the situation), then an
+        "Action" (a tool call), then receives an "Observation" (the tool's real result) — and uses
+        that observation to decide the next Thought.
+      </p>
+      <div class="callout tip">
+        A typical ReAct transcript looks like:<br>
+        <code>Thought: I need today's weather for Mumbai.<br>
+        Action: get_weather(city="Mumbai")<br>
+        Observation: 31°C, humid, light rain expected.<br>
+        Thought: It'll rain, so I should recommend an umbrella.<br>
+        Final Answer: It's 31°C and rainy in Mumbai — bring an umbrella!</code>
+      </div>
+      <p>
+        Writing the "Thought" out loud (rather than silently deciding) noticeably improves
+        reliability — the same reason Chain-of-Thought prompting helps (<a href="llm.html#prompting">LLM §21</a>):
+        putting reasoning into generated tokens gives the model more "working space" to get it right.
+      </p>
+      <div class="callout life">
+        It's how a careful cook works: "This sauce tastes bland (thought) → let me add salt
+        (action) → taste it again (observation) → hm, still needs acid (thought) → add lemon
+        (action) → taste again (observation) → perfect, done." Each step is informed by checking
+        reality, not just planning blindly from the start.
+      </div>
+    </section>
+
+    <!-- 12 -->
+    <section class="block" id="plan-execute">
+      <h2><span class="num">12</span> Plan-and-Execute Pattern</h2>
+      <p>
+        Instead of deciding one step at a time (like ReAct), Plan-and-Execute first asks the LLM
+        to write out the ENTIRE multi-step plan up front, and then executes each step — often with
+        a separate, lighter-weight call per step, only replanning if something goes wrong.
+      </p>
+      <table>
+        <tr><th></th><th>ReAct</th><th>Plan-and-Execute</th></tr>
+        <tr><td>When is the plan decided?</td><td>One step at a time, adaptively</td><td>All upfront, then followed</td></tr>
+        <tr><td>Cost pattern</td><td>One (often large) LLM call per step</td><td>One big planning call, then smaller execution calls</td></tr>
+        <tr><td>Good for</td><td>Unpredictable tasks needing real-time adaptation</td><td>Tasks whose overall shape is predictable in advance</td></tr>
+        <tr><td>Risk</td><td>Can wander/loop without a clear end in sight</td><td>Plan can become stale if early steps reveal new information</td></tr>
+      </table>
+      <div class="callout life">
+        ReAct is like hiking a trail you've never seen, deciding your next move at each fork as you
+        reach it. Plan-and-Execute is like studying the whole trail map first, writing down your
+        route, and then walking it — only pulling the map back out if you hit something unexpected.
+      </div>
+    </section>
+
+    <!-- 13 -->
+    <section class="block" id="reflection">
+      <h2><span class="num">13</span> Reflection / Self-Critique Pattern</h2>
+      <p>
+        After an attempt fails (or produces a mediocre result), a Reflection-style agent generates
+        a short, honest self-critique in plain language — "what went wrong and why" — and feeds
+        that critique back in before trying again. This is the core idea behind the
+        <a href="https://arxiv.org/abs/2303.11366" target="_blank" rel="noopener">Reflexion paper</a>.
+      </p>
+      <div class="callout life">
+        It's the difference between retrying a failed exam question by guessing randomly again,
+        versus first asking "why did I get that wrong?", writing down the actual mistake, and THEN
+        trying again informed by that insight.
+      </div>
+      <p>
+        This pattern is especially effective for coding agents: write code → run tests → if tests
+        fail, read the error message, reflect on the likely cause, and rewrite the code informed by
+        that specific failure — rather than blindly regenerating from scratch.
+      </p>
+    </section>
+
+    <!-- 14 -->
+    <section class="block" id="tool-use-design">
+      <h2><span class="num">14</span> Tool Use Design</h2>
+      <p>
+        Most agent failures trace back to poor tool design, not a weak model. A few practical rules:
+      </p>
+      <div class="grid">
+        <div class="card">
+          <h4>📝 Clear names & descriptions</h4>
+          <p>"search_flights(origin, destination, date)" with a precise description beats a vague "do_travel_stuff(input)" — the model picks the right tool based on exactly this text.</p>
+        </div>
+        <div class="card">
+          <h4>🧩 Narrow, single-purpose tools</h4>
+          <p>One tool that does one thing well is easier for the model to use correctly than one giant tool that does five different things based on a flag.</p>
+        </div>
+        <div class="card">
+          <h4>🛟 Helpful error messages</h4>
+          <p>When a tool fails, return a clear, actionable error ("city not found — did you mean 'Mumbai'?") rather than a raw stack trace — the model has to read and react to this just like a human would.</p>
+        </div>
+        <div class="card">
+          <h4>🔁 Idempotent retries where possible</h4>
+          <p>If a tool call might be retried after a timeout, design it so calling it twice doesn't cause double side-effects (e.g., don't double-charge a payment).</p>
+        </div>
+      </div>
+      <div class="callout warn">
+        Never let a tool's raw, untrusted output be treated as instructions the agent should blindly
+        obey — that's exactly how prompt injection through tool results happens. See Section 36.
+      </div>
+    </section>
+
+    <!-- 15 -->
+    <section class="block" id="rag-agents">
+      <h2><span class="num">15</span> Retrieval-Augmented Agents</h2>
+      <p>
+        RAG (covered fully in the <a href="rag.html">RAG guide</a>) and agents are complementary,
+        not competing, ideas. A retrieval step can itself just be ONE tool inside an agent's
+        toolbox — the agent decides WHEN it needs to search, not just always retrieving blindly
+        before every answer.
+      </p>
+      <p>
+        The RAG guide's own <a href="rag.html#agentic-rag">Agentic RAG section</a> covers this
+        exact overlap in detail: letting an LLM decide whether to retrieve, re-formulate the query,
+        retrieve again if the first results were poor, and only answer once it's confident — that
+        IS an agent, just one whose main tool happens to be a retriever.
+      </p>
+      <div class="callout tip">
+        Rule of thumb: if your system only ever does one fixed retrieve-then-answer pass, call it
+        RAG. If it can decide to search again, try a different query, or skip retrieval entirely
+        when unnecessary, you've built an agent.
+      </div>
+    </section>
+
+    <div class="part-divider"><h2>Part D — Multi-Agent Systems (Agentic AI)</h2></div>
+
+    <!-- 16 -->
+    <section class="block" id="agentic-ai">
+      <h2><span class="num">16</span> What is Agentic AI / Multi-Agent Systems?</h2>
+      <p>
+        "Agentic AI" describes systems built from MULTIPLE cooperating agents, each often playing
+        a specialized role, working together toward a shared goal — rather than one single
+        generalist agent trying to do everything itself.
+      </p>
+      <div class="callout def">
+        A <strong>multi-agent system</strong> splits a complex goal across several specialized
+        agents (e.g., a Researcher, a Writer, a Reviewer), each with its own instructions, tools,
+        and sometimes its own underlying model — coordinated by a shared process or a dedicated
+        "orchestrator" agent.
+      </div>
+      <div class="callout life">
+        It's the difference between one person trying to write an entire newspaper alone (one
+        generalist agent) versus a real newsroom: a reporter researches, a writer drafts, an editor
+        reviews and sends it back for revisions if needed, and a publisher ships the final piece —
+        each specialist focused on what they do best.
+      </div>
+      <p>
+        Why split work across agents instead of one bigger, smarter single agent? A few real
+        reasons: specialized, shorter, more focused instructions per agent tend to perform more
+        reliably than one giant do-everything prompt; different agents can genuinely run different
+        underlying models (a cheap model for simple sub-tasks, an expensive one only for hard
+        reasoning); and natural checks-and-balances emerge when one agent reviews another's work.
+      </p>
+    </section>
+
+    <!-- 17 -->
+    <section class="block" id="multi-agent-arch">
+      <h2><span class="num">17</span> Multi-Agent Architectures</h2>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrMA" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+          </defs>
+          <text x="140" y="20" text-anchor="middle" class="phase-label">Supervisor / Hierarchical</text>
+          <rect class="box-final" x="60" y="40" width="160" height="50" rx="8"/><text x="140" y="70" text-anchor="middle">Supervisor Agent</text>
+          <rect class="box" x="20" y="130" width="90" height="50" rx="8"/><text x="65" y="160" text-anchor="middle">Agent A</text>
+          <rect class="box" x="130" y="130" width="90" height="50" rx="8"/><text x="175" y="160" text-anchor="middle">Agent B</text>
+          <rect class="box" x="240" y="130" width="90" height="50" rx="8"/><text x="285" y="160" text-anchor="middle">Agent C</text>
+          <line class="edge" x1="130" y1="90" x2="70" y2="128" marker-end="url(#arrMA)"/>
+          <line class="edge" x1="150" y1="90" x2="175" y2="128" marker-end="url(#arrMA)"/>
+          <line class="edge" x1="170" y1="90" x2="280" y2="128" marker-end="url(#arrMA)"/>
+
+          <text x="560" y="20" text-anchor="middle" class="phase-label">Swarm / Decentralized</text>
+          <rect class="box" x="480" y="60" width="90" height="50" rx="8"/><text x="525" y="90" text-anchor="middle">Agent X</text>
+          <rect class="box" x="600" y="60" width="90" height="50" rx="8"/><text x="645" y="90" text-anchor="middle">Agent Y</text>
+          <rect class="box" x="540" y="160" width="90" height="50" rx="8"/><text x="585" y="190" text-anchor="middle">Agent Z</text>
+          <line class="edge" x1="570" y1="85" x2="598" y2="85" marker-end="url(#arrMA)"/>
+          <line class="edge" x1="640" y1="110" x2="600" y2="158" marker-end="url(#arrMA)"/>
+          <line class="edge" x1="540" y1="158" x2="520" y2="112" marker-end="url(#arrMA)"/>
+        </svg>
+        <div class="diagram-caption">Fig 3 — Supervisor/hierarchical (one orchestrator delegates to sub-agents) vs swarm/decentralized (agents talk directly to each other, no single boss).</div>
+      </div>
+      <table>
+        <tr><th>Architecture</th><th>How it works</th><th>Trade-off</th></tr>
+        <tr><td>Supervisor / Orchestrator</td><td>One "manager" agent delegates sub-tasks to specialist agents and assembles their results</td><td>Easy to reason about and debug, but the supervisor can become a bottleneck</td></tr>
+        <tr><td>Hierarchical</td><td>Supervisors of supervisors — teams of teams, each layer delegating further down</td><td>Scales to very complex tasks, but adds coordination overhead and latency</td></tr>
+        <tr><td>Swarm / Decentralized</td><td>Agents communicate directly with each other, no single fixed controller</td><td>Flexible and resilient to one agent failing, but harder to predict/debug overall behavior</td></tr>
+      </table>
+    </section>
+
+    <!-- 18 -->
+    <section class="block" id="agent-communication">
+      <h2><span class="num">18</span> Agent Communication & Coordination</h2>
+      <p>
+        However agents are arranged, they need a way to actually share information. Common patterns:
+      </p>
+      <table>
+        <tr><th>Pattern</th><th>How it works</th></tr>
+        <tr><td>Shared state / blackboard</td><td>All agents read and write to one common data structure (a "blackboard") — like a shared whiteboard everyone can see and update</td></tr>
+        <tr><td>Direct message passing</td><td>Agents send messages directly to specific other agents, like an email chain between specific people</td></tr>
+        <tr><td>Sequential handoff</td><td>Output of Agent A becomes the direct input to Agent B, in a fixed pipeline order</td></tr>
+        <tr><td>Graph-based routing</td><td>A graph structure (as in LangGraph, Section 22) defines which agent/step runs next, with conditional branches based on results</td></tr>
+      </table>
+      <div class="callout tip">
+        Shared state is simplest to build and debug (you can always inspect the one shared object),
+        which is why many frameworks default to it before reaching for more complex direct
+        messaging between agents.
+      </div>
+    </section>
+
+    <!-- 19 -->
+    <section class="block" id="mcp-a2a">
+      <h2><span class="num">19</span> Model Context Protocol (MCP) &amp; Agent2Agent (A2A)</h2>
+      <p>
+        As agents and tools multiplied, the industry needed standard ways to plug them together —
+        instead of every framework inventing its own incompatible format.
+      </p>
+      <div class="callout def">
+        The <strong><a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener">Model Context Protocol (MCP)</a></strong>,
+        introduced by Anthropic in November 2024, standardizes how an LLM application connects to external tools and
+        data sources — think of it as a universal adapter: any MCP-compatible tool/data server can
+        plug into any MCP-compatible agent/app, without custom integration code for each pairing.
+        Since December 2025 it has been run as a neutral, open project inside the Linux Foundation's
+        <strong>Agentic AI Foundation</strong>, and its latest spec (2026-07-28) is "stateless" — see the
+        <a href="mcp.html">MCP guide</a>.
+      </div>
+      <div class="callout life">
+        Before a standard like MCP, connecting an agent to a new tool was like every phone charger
+        having a different plug shape — you needed a custom adapter for every single combination.
+        MCP is like USB-C: one standard connector that just works across many devices.
+      </div>
+      <p>
+        Separately, <strong>Agent2Agent (A2A)</strong> is an open protocol (created at Google in April 2025, then donated to the
+        Linux Foundation) aimed at letting independently-built agents from different vendors discover each other's
+        capabilities and collaborate directly — complementary to MCP, which focuses on
+        agent-to-tool connections rather than agent-to-agent ones. It has reached <strong>version 1.0</strong> and, in August 2026,
+        joined the same Agentic AI Foundation as MCP
+        (<a href="https://a2a-protocol.org/latest/" target="_blank" rel="noopener">a2a-protocol.org</a>).
+      </p>
+      <table>
+        <tr><th></th><th>MCP</th><th>A2A</th></tr>
+        <tr><td>Connects</td><td>An agent/app to tools and data sources</td><td>One agent to another independent agent</td></tr>
+        <tr><td>Analogy</td><td>USB-C — plugging a device into a peripheral</td><td>Two people from different companies agreeing on a shared meeting format</td></tr>
+        <tr><td>Core pieces</td><td>Tools, resources, prompts (servers); host + clients</td><td><strong>Agent Card</strong> (a JSON "business card": who I am, what I can do, how to reach me), <strong>Task</strong> (a unit of work with a life-cycle: submitted → working → completed / failed / canceled, plus input-required and auth-required), <strong>Message</strong>, <strong>Part</strong>, <strong>Artifact</strong> (the output)</td></tr>
+        <tr><td>How it travels</td><td>stdio or Streamable HTTP</td><td>JSON-RPC, gRPC, or plain HTTP+JSON; updates by polling, streaming, or webhook push</td></tr>
+        <tr><td>Latest version (Oct 2026)</td><td>2026-07-28 spec</td><td>1.0 (per the A2A spec site)</td></tr>
+      </table>
+      <div class="callout tip">
+        Want everything about MCP — architecture, transports, login, security, the newest stateless spec, and
+        hands-on code? See the dedicated <a href="mcp.html">MCP (Model Context Protocol) guide</a>.
+      </div>
+      <h3>Two more open standards you'll see next to them</h3>
+      <ul>
+        <li><strong>Agent Skills</strong> — folders of instructions, scripts and resources an agent loads only when relevant (a "recipe binder" for agents). Anthropic launched Skills in October 2025, published them as an open standard in December 2025, and donated the standard to the Agentic AI Foundation on 22 October 2026; Anthropic reports 70+ platforms support it. MCP gives agents <em>connections</em>; Skills give them <em>know-how</em>.</li>
+        <li><strong>AGENTS.md</strong> — a simple project file, donated by OpenAI, that tells coding agents how a codebase works ("a README for robots"). It was one of the Foundation's three founding projects, along with MCP and Block's <em>goose</em> agent.</li>
+      </ul>
+    </section>
+
+    <!-- 20 -->
+    <section class="block" id="debate-consensus">
+      <h2><span class="num">20</span> Debate, Voting & Consensus Patterns</h2>
+      <p>
+        Sometimes the goal isn't delegation but quality improvement — having multiple agents
+        independently attempt or critique the same problem, then combining their outputs.
+      </p>
+      <div class="grid">
+        <div class="card">
+          <h4>🗳️ Majority voting</h4>
+          <p>Run the same task through several agents (or the same agent multiple times), and take the most common answer — reduces the impact of any one random mistake.</p>
+        </div>
+        <div class="card">
+          <h4>⚖️ Debate</h4>
+          <p>Two agents argue opposing positions, pointing out flaws in each other's reasoning, often converging on a better-supported final answer than either alone.</p>
+        </div>
+        <div class="card">
+          <h4>🧑‍⚖️ Judge/critic agent</h4>
+          <p>A separate agent (sometimes a stronger model) scores or picks the best output among several candidate agent outputs.</p>
+        </div>
+      </div>
+      <div class="callout warn">
+        These patterns multiply cost — running the same task 3-5 times is 3-5x the tokens. Reserve
+        them for genuinely high-stakes or hard tasks, not routine ones (see Section 37 on cost
+        management).
+      </div>
+    </section>
+
+    <div class="part-divider"><h2>Part E — The Math & Theory</h2></div>
+
+    <!-- 21 -->
+    <section class="block" id="agent-math">
+      <h2><span class="num">21</span> The Math/Theory Behind Agent Decision-Making</h2>
+      <p>
+        Agents don't need new math on top of LLMs — every individual decision an agent makes is
+        still just an LLM predicting the next token (softmax over a vocabulary, exactly as in
+        <a href="llm.html#the-math">LLM §17</a>). What agents add is a THEORETICAL FRAMING for
+        decision-making borrowed from classical AI: the Markov Decision Process (MDP).
+      </p>
+      <div class="callout def">
+        A <strong>Markov Decision Process</strong> formalizes sequential decision-making as:
+        a <strong>state</strong> (the current situation), a set of possible <strong>actions</strong>,
+        a <strong>transition</strong> (what state you end up in after an action), and a
+        <strong>reward</strong> (how good that outcome was). An agent's "policy" is simply its rule
+        for picking an action given a state — for an LLM agent, the policy IS the LLM itself.
+      </div>
+      <div class="callout life">
+        Think of a board game: your state is the board right now, your actions are the legal moves,
+        and the reward is whether that move helps you win. An LLM agent treats "what's the
+        situation + what tools are available" as the state, and uses next-token prediction to pick
+        the best "move" (tool call) — the same underlying idea, just with language instead of game
+        pieces.
+      </div>
+      <p>
+        Unlike classical reinforcement learning (which explicitly optimizes a reward function
+        through trial-and-error training), most LLM agents today don't retrain on their own
+        experience in real time — they rely on the LLM's existing reasoning ability, shaped only by
+        the prompt and any tool results, to pick good actions in the moment. (RLHF, covered in
+        <a href="llm.html#rlhf">LLM §15</a>, is where reward-based training DOES happen — but
+        during the model's training, not live during an agent's run.)
+      </p>
+    </section>
+
+    <div class="part-divider"><h2>Part F — Frameworks & Tooling</h2></div>
+
+    <!-- 22 -->
+    <section class="block" id="langchain-langgraph">
+      <h2><span class="num">22</span> LangChain &amp; LangGraph</h2>
+      <p>
+        <a href="https://github.com/langchain-ai/langchain" target="_blank" rel="noopener">LangChain</a>
+        was one of the earliest and most widely adopted frameworks for building LLM applications —
+        offering reusable building blocks for prompts, tools, memory, and chaining calls together.
+      </p>
+      <p>
+        <a href="https://github.com/langchain-ai/langgraph" target="_blank" rel="noopener">LangGraph</a>
+        (from the same team) is purpose-built for agents: it models an agent's logic as an explicit
+        <strong>graph</strong> of nodes (steps) and edges (transitions, including conditional
+        branches and loops) — making complex, stateful, possibly cyclical agent behavior much
+        easier to reason about and debug than a plain linear chain.
+      </p>
+      <div class="callout life">
+        A plain chain is like a recipe you follow top to bottom once. A graph (LangGraph) is like a
+        flowchart with decision diamonds and loop-backs — "if the test fails, go back to step 2" —
+        which is exactly what real agent logic needs.
+      </div>
+      <h3>What's new (as of Oct 2026): version 1.0 for both</h3>
+      <p>
+        On 22 October 2025 the team released <strong>LangChain 1.0 and LangGraph 1.0</strong> together, promising no breaking
+        changes until 2.0 (<a href="https://www.langchain.com/blog/langchain-langgraph-1dot0" target="_blank" rel="noopener">official announcement</a>).
+        Both are still on the 1.x line today. What changed:
+      </p>
+      <table>
+        <tr><th>New in 1.0</th><th>In plain words</th></tr>
+        <tr><td><code>create_agent</code></td><td>One ready-made "agent loop" (call the model → run tools → repeat until done). It replaces the old <code>create_react_agent</code> helper, which is deprecated.</td></tr>
+        <tr><td>Middleware</td><td>Little "checkpoints" you can plug into each step of the loop — built-ins cover asking a human to approve a tool call, summarizing a long history, and hiding personal data (PII).</td></tr>
+        <tr><td>Standard content blocks</td><td>One consistent shape for model output (text, reasoning traces, citations, tool calls) across different model providers.</td></tr>
+        <tr><td>LangChain runs on LangGraph</td><td>LangChain's agents now use LangGraph's engine underneath, so you can start simple with LangChain and drop down to LangGraph when you need more control.</td></tr>
+        <tr><td>Slimmer package</td><td>Old features moved to <code>langchain-classic</code>; Python 3.10+ is required.</td></tr>
+      </table>
+      <div class="callout tip">
+        Rule of thumb from the team: <strong>LangChain</strong> to ship a standard agent fast; <strong>LangGraph</strong> for long-running,
+        high-oversight, mix-of-fixed-and-flexible workflows with durable state (it saves progress at every step, so a run can pause and resume).
+      </div>
+    </section>
+
+    <!-- 23 -->
+    <section class="block" id="crewai">
+      <h2><span class="num">23</span> CrewAI</h2>
+      <p>
+        <a href="https://github.com/crewAIInc/crewAI" target="_blank" rel="noopener">CrewAI</a> is
+        a framework built specifically around the "newsroom" multi-agent metaphor from Section 16:
+        you define a <strong>Crew</strong> of <strong>Agents</strong>, each with a role, a goal,
+        and a backstory (which shapes its behavior via the system prompt), assign them
+        <strong>Tasks</strong>, and CrewAI handles passing work between them (sequentially or
+        hierarchically with a manager agent).
+      </p>
+      <div class="callout tip">
+        CrewAI's role/goal/backstory structure is a deliberately human-readable way to design
+        multi-agent teams — it reads almost like a job description, which makes the resulting agent
+        behavior easier to predict than a raw, unstructured prompt.
+      </div>
+      <h3>What's new (as of Oct 2026)</h3>
+      <ul>
+        <li><strong>Crews vs Flows.</strong> A <em>Crew</em> is a team that decides how to cooperate; a <em>Flow</em> is a controlled, event-driven pipeline where you decide the order and call Crews (or single steps) inside it. Real products usually mix both.</li>
+        <li><strong>Active 1.x releases.</strong> The project ships frequent releases (the 1.15 series in late October 2026 per its <a href="https://pypi.org/project/crewai/" target="_blank" rel="noopener">PyPI page</a>). Recent ones added pluggable backends for memory, knowledge and RAG, checkpoints you can fork and edit, and a <code>crewai eval</code> command (see the <a href="https://docs.crewai.com/en/changelog" target="_blank" rel="noopener">changelog</a>).</li>
+        <li><strong>Open core + paid enterprise.</strong> The open-source framework is free; the company also sells enterprise tooling for security, observability and administration.</li>
+      </ul>
+    </section>
+
+    <!-- 24 -->
+    <section class="block" id="autogen">
+      <h2><span class="num">24</span> Microsoft Agent Framework (the successor to AutoGen)</h2>
+      <p>
+        <a href="https://github.com/microsoft/autogen" target="_blank" rel="noopener">AutoGen</a>
+        (from Microsoft Research) centered on <strong>conversable agents</strong> — agents that
+        "talk" to each other in structured conversations, including a built-in
+        <strong>UserProxyAgent</strong> that can represent a human (or execute code on their
+        behalf) inside the conversation. It was particularly strong for code-generation and
+        code-execution workflows where agents iterate by running code and reading the results.
+      </p>
+      <div class="callout life">
+        AutoGen conversations read like a group chat transcript between specialized AI coworkers
+        (and optionally you) — each message building on the last, rather than a rigid pipeline.
+      </div>
+      <div class="callout warn">
+        <strong>Important update:</strong> Microsoft merged AutoGen and Semantic Kernel (Section 27) into one new project,
+        the <a href="https://github.com/microsoft/agent-framework" target="_blank" rel="noopener">Microsoft Agent Framework</a> (MAF).
+        <strong>MAF 1.0 became generally available on 3 April 2026</strong> for .NET and Python
+        (<a href="https://visualstudiomagazine.com/articles/2026/04/06/microsoft-ships-production-ready-agent-framework-1-0-for-net-and-python.aspx" target="_blank" rel="noopener">report</a>).
+        Microsoft publishes migration guides from both older projects, and press coverage describes AutoGen and Semantic Kernel as being in
+        maintenance mode (fixes only, no new features). If you start something new, start with MAF; read AutoGen material for the <em>ideas</em>.
+      </div>
+      <h3>What MAF gives you (from its own README)</h3>
+      <table>
+        <tr><th>Feature</th><th>Plain meaning</th></tr>
+        <tr><td>Graph-based workflows</td><td>Sequential, concurrent, handoff and group-collaboration patterns — AutoGen's "agents talking" ideas, but as an explicit map you can see and test.</td></tr>
+        <tr><td>Checkpointing, streaming, human-in-the-loop, time-travel</td><td>Save progress, show partial answers, pause for approval, and replay an earlier step.</td></tr>
+        <tr><td>Middleware + OpenTelemetry</td><td>Plug-in hooks for every request, plus built-in tracing (<a href="#observability-agents">Section 34</a>).</td></tr>
+        <tr><td>Many model providers</td><td>Microsoft Foundry, Azure OpenAI, OpenAI, and more.</td></tr>
+        <tr><td>Declarative YAML agents, Agent Skills, DevUI</td><td>Describe an agent in a file, reuse packaged skills, and test in a small web UI.</td></tr>
+        <tr><td>Languages</td><td>.NET and Python (a Go version lives in a separate repo). MIT license.</td></tr>
+      </table>
+    </section>
+
+    <!-- 25 -->
+    <section class="block" id="openai-agents-sdk">
+      <h2><span class="num">25</span> OpenAI Agents SDK &amp; the Responses API</h2>
+      <p>
+        OpenAI provides official, lightweight tooling for building agents directly against its own
+        models — the <a href="https://platform.openai.com/docs/" target="_blank" rel="noopener">OpenAI
+        API docs</a> cover the <strong>Agents SDK</strong> (handoffs between agents, guardrails, built-in tool
+        support, tracing) and the <strong>Responses API</strong> it runs on.
+      </p>
+      <div class="callout warn">
+        <strong>The old Assistants API is gone.</strong> OpenAI's
+        <a href="https://developers.openai.com/api/docs/deprecations" target="_blank" rel="noopener">deprecations page</a> lists it as shut down on
+        <strong>26 August 2026</strong>; the replacement is the Responses API plus the Conversations API. Chat Completions is still supported (no shutdown has been announced).
+        The same page also schedules the visual <em>Agent Builder</em> and reusable prompts to be retired on 30 November 2026 — so check that page before building on any OpenAI product.
+      </div>
+      <h3>What's new (as of Oct 2026)</h3>
+      <ul>
+        <li><strong>Current models:</strong> OpenAI's flagship family is now <strong>GPT-6</strong> (Astra, 6.1 Sol, 6.1 Terra, Luna — see <a href="llm.html#open-vs-closed">the LLM guide's model snapshot</a>), all with ~1M-token context.</li>
+        <li><strong>The Agents SDK grew from "a loop with handoffs" into a fuller toolkit</strong> (per 2026 developer write-ups): sandboxed workspaces where an agent can safely run commands and files, memory that can be handed off between agents, guardrails that cover tools and MCP servers, and support for MCP. Both Python and TypeScript versions exist.</li>
+        <li><strong>Open Responses</strong> — an OpenAI project donated to the Agentic AI Foundation in October 2026 (see Section 19), aiming at an open standard around the Responses-style interface.</li>
+      </ul>
+      <div class="callout tip">
+        First-party SDKs like this tend to have the tightest integration with that specific
+        provider's latest features (e.g., native tool types) — a reasonable default if you're
+        already committed to one model provider and don't need cross-provider portability.
+        But watch the calendar: vendor APIs get retired (the Assistants API lasted barely two years), while open standards like MCP outlive any one product.
+      </div>
+    </section>
+
+    <!-- 26 -->
+    <section class="block" id="claude-agent-sdk">
+      <h2><span class="num">26</span> Claude Agent SDK &amp; Managed Agents</h2>
+      <p>
+        Anthropic provides the <a href="https://code.claude.com/docs/en/agent-sdk/overview" target="_blank" rel="noopener">Claude
+        Agent SDK</a> — "Claude Code as a library" for Python and TypeScript. It gives you the same built-in tools, agent loop and context
+        management that power Claude Code: file access, running commands, web search, <strong>hooks</strong> (your code at key moments),
+        <strong>subagents</strong>, <strong>MCP</strong> servers, permission/approval gates, sessions you can resume or fork, and Skills/commands/memory
+        loaded from your project. (It was renamed from the "Claude Code SDK"; a migration guide exists.)
+      </p>
+      <div class="callout tip">
+        Because it's the same engine behind Claude Code, it's especially well-suited to
+        coding-agent and dev-tooling use cases — but it's general-purpose enough for non-coding
+        agents too.
+      </div>
+      <h3>Four ways to build with Claude (from Anthropic's own docs)</h3>
+      <table>
+        <tr><th>You want to…</th><th>Use</th><th>Who runs the loop?</th></tr>
+        <tr><td>Call the model and write the tool loop yourself</td><td>Client SDK + Messages API (optionally the beta <em>tool runner</em> helper)</td><td>You (or the helper), on your own servers</td></tr>
+        <tr><td>Embed Claude Code's agent in your own app</td><td><strong>Agent SDK</strong></td><td>The SDK (it runs the Claude Code binary), on your own servers</td></tr>
+        <tr><td>Use an agent interactively in a terminal</td><td>Claude Code CLI</td><td>The CLI, on your machine</td></tr>
+        <tr><td>Have Anthropic host the agent, sandbox included</td><td><a href="https://platform.claude.com/docs/en/managed-agents/overview" target="_blank" rel="noopener"><strong>Managed Agents</strong></a> (beta)</td><td>Anthropic — in a managed cloud sandbox or a self-hosted sandbox you control</td></tr>
+      </table>
+      <p>
+        <strong>Managed Agents</strong> is built from four ideas: an <em>agent</em> (model, system prompt, tools, MCP servers, skills — created once and reused by ID),
+        an <em>environment</em> (where it runs), a <em>session</em> (one running task), and <em>events</em> (the messages flowing both ways, streamed back to you).
+        It's meant for long-running or scheduled work (minutes to hours, with cron-style scheduled deployments) and is still in beta.
+      </p>
+    </section>
+
+    <!-- 27 -->
+    <section class="block" id="semantic-kernel">
+      <h2><span class="num">27</span> Semantic Kernel</h2>
+      <p>
+        <a href="https://github.com/microsoft/semantic-kernel" target="_blank" rel="noopener">Semantic
+        Kernel</a> is Microsoft's open-source SDK for integrating LLMs into existing applications,
+        with first-class support for C#, Python, and Java — making it a common choice for
+        enterprises with established .NET/Java codebases that want to add agent capabilities
+        without a full rewrite in Python.
+      </p>
+      <div class="callout warn">
+        <strong>Status today:</strong> Semantic Kernel's enterprise features (state management, type safety, filters, telemetry, connectors) became the foundation of the
+        <a href="#autogen">Microsoft Agent Framework</a> (Section 24), which Microsoft calls the direct successor. Existing Semantic Kernel apps keep working and there are migration guides;
+        new projects should look at MAF first.
+      </div>
+    </section>
+
+    <!-- 28 -->
+    <section class="block" id="llamaindex-agents">
+      <h2><span class="num">28</span> LlamaIndex Agents</h2>
+      <p>
+        <a href="https://github.com/run-llama/llama_index" target="_blank" rel="noopener">LlamaIndex</a>
+        started as a data-indexing/RAG-focused library (connecting LLMs to your documents and
+        databases — see the <a href="rag.html">RAG guide</a>) and has expanded to include its own
+        agent abstractions, which lean naturally toward data-and-retrieval-heavy agent workflows
+        (e.g., agents that need to query multiple structured and unstructured data sources).
+      </p>
+      <h3>What's new (as of Oct 2026)</h3>
+      <ul>
+        <li><strong>Workflows:</strong> an event-driven way to write multi-step agent logic (steps that react to events), announced as <a href="https://www.llamaindex.ai/blog/announcing-workflows-1-0-a-lightweight-framework-for-agentic-systems" target="_blank" rel="noopener">Workflows 1.0</a>.</li>
+        <li><strong>AgentWorkflow:</strong> a higher-level system for multi-agent setups, built on top of Workflows (introduced in January 2025).</li>
+        <li><strong>Document-focused tools:</strong> the company's current emphasis is on turning messy documents (PDFs, tables, scans) into clean data for agents — products such as LlamaParse — see the <a href="https://www.llamaindex.ai/blog" target="_blank" rel="noopener">LlamaIndex blog</a> for the latest.</li>
+      </ul>
+    </section>
+
+    <!-- 29 -->
+    <section class="block" id="framework-compare">
+      <h2><span class="num">29</span> Framework Comparison Table</h2>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrFw" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+          </defs>
+          <text x="145" y="18" text-anchor="middle" class="phase-label">THEN (2023–2025)</text>
+          <text x="575" y="18" text-anchor="middle" class="phase-label">TODAY (Oct 2026)</text>
+
+          <rect class="box" x="20" y="30" width="250" height="50" rx="8"/><text x="145" y="52" text-anchor="middle">LangChain (chains)</text><text x="145" y="69" text-anchor="middle" class="edge-label">+ LangGraph (graphs)</text>
+          <line class="edge" x1="272" y1="55" x2="448" y2="55" marker-end="url(#arrFw)"/><text x="360" y="48" text-anchor="middle" class="edge-label">1.0 · Oct 2025</text>
+          <rect class="box-final" x="450" y="30" width="250" height="50" rx="8"/><text x="575" y="52" text-anchor="middle">LangChain 1.0 + LangGraph 1.0</text><text x="575" y="69" text-anchor="middle" class="edge-label">create_agent on LangGraph's engine</text>
+
+          <rect class="box" x="20" y="100" width="250" height="50" rx="8"/><text x="145" y="122" text-anchor="middle">AutoGen + Semantic Kernel</text><text x="145" y="139" text-anchor="middle" class="edge-label">two Microsoft projects</text>
+          <line class="edge" x1="272" y1="125" x2="448" y2="125" marker-end="url(#arrFw)"/><text x="360" y="118" text-anchor="middle" class="edge-label">merged · GA Apr 2026</text>
+          <rect class="box-final" x="450" y="100" width="250" height="50" rx="8"/><text x="575" y="122" text-anchor="middle">Microsoft Agent Framework 1.0</text><text x="575" y="139" text-anchor="middle" class="edge-label">.NET + Python (old ones: fixes only)</text>
+
+          <rect class="box" x="20" y="170" width="250" height="50" rx="8"/><text x="145" y="192" text-anchor="middle">OpenAI Assistants API</text><text x="145" y="209" text-anchor="middle" class="edge-label">threads, runs, file search</text>
+          <line class="edge" x1="272" y1="195" x2="448" y2="195" marker-end="url(#arrFw)"/><text x="360" y="188" text-anchor="middle" class="edge-label">shut down 26 Aug 2026</text>
+          <rect class="box-final" x="450" y="170" width="250" height="50" rx="8"/><text x="575" y="192" text-anchor="middle">Responses API + Agents SDK</text><text x="575" y="209" text-anchor="middle" class="edge-label">+ Conversations API</text>
+
+          <rect class="box" x="20" y="240" width="250" height="50" rx="8"/><text x="145" y="262" text-anchor="middle">Claude Code SDK</text><text x="145" y="279" text-anchor="middle" class="edge-label">coding-agent toolkit</text>
+          <line class="edge" x1="272" y1="265" x2="448" y2="265" marker-end="url(#arrFw)"/><text x="360" y="258" text-anchor="middle" class="edge-label">renamed &amp; widened</text>
+          <rect class="box-final" x="450" y="240" width="250" height="50" rx="8"/><text x="575" y="262" text-anchor="middle">Claude Agent SDK</text><text x="575" y="279" text-anchor="middle" class="edge-label">+ Managed Agents (hosted, beta)</text>
+        </svg>
+        <div class="diagram-caption">Fig 4 — The framework map moved quickly: mergers, renames and one shutdown in about two years. Names change; the patterns in Parts B–D don't.</div>
+      </div>
+      <table>
+        <tr><th>Framework</th><th>Best known for</th><th>Good fit when...</th></tr>
+        <tr><td>LangChain 1.0 / LangGraph 1.0</td><td><code>create_agent</code> + middleware for quick agents; graph-based durable state for complex ones; huge integration ecosystem</td><td>You want a fast start <em>and</em> room to drop down to fine-grained control</td></tr>
+        <tr><td>CrewAI</td><td>Role-based multi-agent "crews" plus event-driven "flows"</td><td>You're modeling a team of specialist agents and want a readable, structured setup</td></tr>
+        <tr><td>Microsoft Agent Framework (ex-AutoGen + Semantic Kernel)</td><td>Graph workflows, checkpointing, middleware, OpenTelemetry; .NET + Python</td><td>You're in the Microsoft/.NET/Azure world, or want a supported successor to AutoGen/Semantic Kernel</td></tr>
+        <tr><td>OpenAI Agents SDK</td><td>Native OpenAI integration (handoffs, guardrails, tracing, sandboxes) on the Responses API</td><td>You're building primarily on OpenAI models</td></tr>
+        <tr><td>Claude Agent SDK</td><td>Long-running, file/code-capable agents (same engine as Claude Code); hooks, subagents, MCP</td><td>You're building coding/dev-tooling agents or want Anthropic-native tooling</td></tr>
+        <tr><td>Claude Managed Agents (beta)</td><td>Anthropic-hosted agent harness, sandbox and sessions</td><td>You don't want to run the loop or sandbox yourself, especially for long or scheduled jobs</td></tr>
+        <tr><td>LlamaIndex Agents</td><td>Workflows + document-parsing/RAG-heavy agent flows</td><td>Your agent's main job is querying/reasoning over your own data sources</td></tr>
+      </table>
+      <h3>Other frameworks you'll meet in 2026</h3>
+      <p>These show up constantly in comparison articles; each is open-source (check their repos for current versions):</p>
+      <ul>
+        <li><a href="https://github.com/google/adk-python" target="_blank" rel="noopener"><strong>Google Agent Development Kit (ADK)</strong></a> — Google's toolkit for building agents (Python, TypeScript, Java, Go), tuned for Gemini and Google Cloud and friendly to A2A.</li>
+        <li><a href="https://github.com/strands-agents/sdk-python" target="_blank" rel="noopener"><strong>Strands Agents</strong></a> — AWS's lightweight, "let the model drive the loop" SDK, with a natural path to AWS deployment.</li>
+        <li><a href="https://ai.pydantic.dev/" target="_blank" rel="noopener"><strong>Pydantic AI</strong></a> — type-safe Python agents where outputs are validated against schemas.</li>
+        <li><a href="https://github.com/huggingface/smolagents" target="_blank" rel="noopener"><strong>smolagents</strong></a> — Hugging Face's tiny library where the agent <em>writes Python code</em> as its action (run it in a sandbox!).</li>
+      </ul>
+      <div class="callout tip">
+        None of these are mutually exclusive in a real stack — it's common to use LlamaIndex or a
+        vector DB for retrieval, LangGraph, CrewAI or MAF for orchestration, and MCP (Section 19) to plug
+        in standardized tools, all in the same system. Because MCP and A2A are open standards, <em>you don't have to marry one framework</em>.
+      </div>
+    </section>
+
+    <div class="part-divider"><h2>Part G — Workflow Automation</h2></div>
+
+    <!-- 30 -->
+    <section class="block" id="workflow-automation">
+      <h2><span class="num">30</span> What is AI Workflow Automation?</h2>
+      <p>
+        AI workflow automation tools let you build multi-step automated processes (trigger →
+        step → step → step) using a visual, drag-and-drop interface instead of writing code —
+        and increasingly, let you drop an "AI step" (an LLM call, or even a full agent) into any
+        point of that pipeline.
+      </p>
+      <div class="callout life">
+        It's like building with a flowchart made of LEGO blocks: "when a new email arrives" → "ask
+        an AI to summarize it" → "if it's urgent, send a Slack message" → "otherwise add it to a
+        spreadsheet." Each block is pre-built; you just connect them.
+      </div>
+      <p>
+        This sits right next to agent frameworks (Part F) on the spectrum — workflow automation
+        tools are generally more visual, more accessible to non-programmers, and better suited to
+        well-defined, mostly-fixed pipelines, while code-first agent frameworks give more control
+        for complex, dynamic reasoning.
+      </p>
+    </section>
+
+    <!-- 31 -->
+    <section class="block" id="nocode-tools">
+      <h2><span class="num">31</span> No-Code / Low-Code Tools</h2>
+      <p>
+        These tools let you connect apps with "if this happens, do that" flows using drag-and-drop boxes. In 2026 all three added
+        real <strong>AI-agent</strong> features, so the line between "automation tool" and "agent platform" is getting blurry.
+      </p>
+      <table>
+        <tr><th>Tool</th><th>What it's known for</th><th>What's new (as of Oct 2026, per vendor and 2026 comparison write-ups)</th></tr>
+        <tr><td><a href="https://n8n.io/" target="_blank" rel="noopener">n8n</a></td><td>Self-hostable ("fair-code") workflow automation with a large library of integrations and native AI/LLM nodes</td><td><strong>n8n 2.0 (Jan 2026):</strong> an AI Agent node, LangChain-based AI building blocks, agent memory, vector-database support for RAG, and local models through Ollama. It can also act as an MCP client/server so agents can use its integrations.</td></tr>
+        <tr><td><a href="https://zapier.com/" target="_blank" rel="noopener">Zapier (AI features)</a></td><td>The most widely adopted no-code automation platform, with thousands of app integrations</td><td><strong>Zapier Agents</strong> left beta in Jan 2026 (agents that plan their own steps toward a goal). Zapier also offers an <strong>MCP server</strong> so outside AI apps can trigger its actions. In October 2026 it reportedly folded agents into an AI step inside the Zap editor and changed how they're billed.</td></tr>
+        <tr><td><a href="https://www.make.com/" target="_blank" rel="noopener">Make (formerly Integromat)</a></td><td>Highly visual scenario-builder with fine-grained control over data flow between steps</td><td><strong>Maia</strong>, an assistant that builds scenarios from a plain-language description, and <strong>Make AI Agents</strong> for autonomous tasks (still described as beta in some 2026 write-ups).</td></tr>
+      </table>
+      <div class="callout tip">
+        n8n's self-hostable nature makes it popular with engineering teams that want
+        full control and data privacy; Zapier and Make are typically faster to start with for
+        non-technical teams thanks to their polish and huge integration catalogs.
+      </div>
+      <div class="callout warn">
+        Two practical cautions: (1) these products change plans, prices and names several times a year — always check the vendor's site before committing;
+        (2) if you <em>self-host</em>, you are the one who must install security updates (a batch of n8n security advisories was reported in October 2026).
+      </div>
+    </section>
+
+    <!-- 32 -->
+    <section class="block" id="agents-vs-workflows">
+      <h2><span class="num">32</span> Agents vs Workflow Automation vs Classic RPA — Revisited</h2>
+      <p>
+        Section 4 compared agents to RPA in general; here's specifically where no-code AI workflow
+        tools sit on that same spectrum:
+      </p>
+      <table>
+        <tr><th></th><th>Classic RPA</th><th>AI Workflow Automation (n8n/Zapier/Make)</th><th>AI Agent (LangGraph/CrewAI/etc.)</th></tr>
+        <tr><td>Steps defined by</td><td>A human, fully fixed in advance</td><td>A human, but individual steps can call an LLM for flexible sub-decisions</td><td>The LLM itself, dynamically at run-time</td></tr>
+        <tr><td>Handles unexpected situations?</td><td>No — breaks or needs a human</td><td>Partially — the AI step can adapt its own output, but the overall flow is still fixed</td><td>Yes — can change its entire approach mid-task</td></tr>
+        <tr><td>Who builds it</td><td>Automation/RPA developers</td><td>Anyone — visual, no-code</td><td>Developers (code-first)</td></tr>
+      </table>
+    </section>
+
+    <!-- 33 -->
+    <section class="block" id="hybrid-patterns">
+      <h2><span class="num">33</span> Hybrid Patterns: Agents Inside Workflow Automation Tools</h2>
+      <p>
+        In practice, the cleanest production systems often combine both: a workflow automation
+        tool handles the reliable, predictable "plumbing" (triggers, data routing, retries,
+        approvals, logging), while a genuine agent is invoked as just ONE step inside that workflow
+        for the parts that truly need dynamic reasoning.
+      </p>
+      <div class="callout life">
+        Think of it like a factory assembly line (the fixed workflow) where one station is staffed
+        by a skilled problem-solver (the agent) who handles the part of the job that can't be fully
+        scripted — while the conveyor belt around them still runs on fixed, predictable rules.
+      </div>
+    </section>
+
+    <div class="part-divider"><h2>Part H — Production Engineering</h2></div>
+
+    <!-- 34 -->
+    <section class="block" id="observability-agents">
+      <h2><span class="num">34</span> Observability & Tracing for Agents</h2>
+      <p>
+        Agents are harder to debug than single LLM calls because one user request can trigger
+        dozens of nested LLM calls, tool calls, and sub-agent handoffs. Good observability captures
+        the FULL trace: every Thought, every tool call with its arguments and result, every
+        sub-agent handoff, in order.
+      </p>
+      <div class="grid">
+        <div class="card">
+          <h4>🔍 LangSmith</h4>
+          <p>Tracing/evaluation platform from the LangChain team, with deep native integration for LangChain/LangGraph agents.</p>
+        </div>
+        <div class="card">
+          <h4>🔭 Arize Phoenix</h4>
+          <p>Open-source LLM/agent observability platform, framework-agnostic, with built-in evaluation templates.</p>
+        </div>
+        <div class="card">
+          <h4>📡 OpenTelemetry (GenAI semantic conventions)</h4>
+          <p>An emerging standard for representing LLM/agent spans in the widely used OpenTelemetry format — lets agent traces plug into existing observability stacks (Grafana, Datadog, etc.).</p>
+        </div>
+      </div>
+      <div class="callout warn">
+        Without full tracing, a failed multi-step agent run is nearly impossible to debug after the
+        fact — you'll be guessing which of a dozen internal steps actually went wrong.
+      </div>
+    </section>
+
+    <!-- 35 -->
+    <section class="block" id="eval-agents">
+      <h2><span class="num">35</span> Evaluating Agents</h2>
+      <p>
+        Evaluating an agent is harder than evaluating a single LLM response, because what matters
+        is the whole TRAJECTORY (the sequence of steps taken), not just the final answer — two
+        agents can reach the same correct answer, but one did it efficiently and the other
+        wasted 20 wrong tool calls first.
+      </p>
+      <table>
+        <tr><th>What to measure</th><th>Why it matters</th></tr>
+        <tr><td>Task success rate</td><td>Did it actually accomplish the goal? (The most important metric, but binary — doesn't show HOW well.)</td></tr>
+        <tr><td>Trajectory quality</td><td>Were the chosen tools/steps sensible and efficient, or wasteful/looping?</td></tr>
+        <tr><td>Number of steps / cost</td><td>Two agents that both succeed aren't equal if one costs 10x more tokens to get there.</td></tr>
+        <tr><td>Robustness to tool failure</td><td>Does it recover gracefully if a tool call fails or returns unexpected data?</td></tr>
+      </table>
+      <p>
+        Classic public benchmarks for agent capability: <a href="https://arxiv.org/abs/2308.03688" target="_blank" rel="noopener">AgentBench</a>
+        (diverse multi-environment agent tasks), <a href="https://arxiv.org/abs/2311.12983" target="_blank" rel="noopener">GAIA</a>
+        (general assistant tasks requiring real reasoning + tool use), <a href="https://arxiv.org/abs/2310.06770" target="_blank" rel="noopener">SWE-bench</a>
+        (real GitHub issues an agent must actually fix), and <a href="https://arxiv.org/abs/2307.13854" target="_blank" rel="noopener">WebArena</a>
+        (realistic web-browsing tasks).
+      </p>
+      <h3>Benchmarks age fast — where things stand in 2026</h3>
+      <p>
+        A benchmark is like a school exam: once everyone has seen the questions (or the top models score ~100%), it stops telling you who is best.
+        That has happened to several famous ones. The notes below are as reported in 2026 roundups and papers — numbers differ by source and by
+        "scaffold" (the harness around the model), so check each official leaderboard before quoting a score.
+      </p>
+      <table>
+        <tr><th>Benchmark</th><th>What it tests</th><th>Status in 2026 (as reported)</th></tr>
+        <tr><td>SWE-bench (Verified)</td><td>Fix real GitHub issues</td><td>Widely described as saturated/contaminated; OpenAI published a piece in Feb 2026 arguing it no longer measures frontier coding. Harder successors such as <strong>SWE-bench Pro</strong> are used instead.</td></tr>
+        <tr><td>Terminal-Bench 2.0</td><td>Command-line tasks in sandboxed computers</td><td>Now a common companion to SWE-bench Pro for judging coding agents.</td></tr>
+        <tr><td>OSWorld-Verified</td><td>Using a real desktop (clicking, typing) to finish tasks</td><td>Agents were reported to pass the human baseline (~72%) for the first time in spring 2026.</td></tr>
+        <tr><td>τ²-bench / τ³-bench</td><td>Customer-service style tool use while obeying policies</td><td>Some domains reported near-saturated; τ³ adds knowledge and voice settings.</td></tr>
+        <tr><td>GAIA</td><td>General assistant questions needing browsing + tools</td><td>Big gap between a bare model and the same model inside a good agent scaffold.</td></tr>
+        <tr><td>METR "time horizon"</td><td>How long a task (in human working time) an agent can complete</td><td>A way to track progress that doesn't saturate as quickly.</td></tr>
+      </table>
+      <div class="callout warn">
+        Two lessons from 2026: <strong>scaffolds can swing the same model's score by tens of points</strong>, and
+        <strong>public tests leak into training data</strong>. So treat leaderboard numbers as hints, and build a small private test set from your own real tasks (the habit from
+        <a href="llm.html#eval-metrics">the LLM guide's evaluation section</a>).
+      </div>
+    </section>
+
+    <!-- 36 -->
+    <section class="block" id="safety-agents">
+      <h2><span class="num">36</span> Safety & Guardrails for Agents</h2>
+      <p>
+        Agents are riskier than chatbots precisely because they can take real actions — a bad
+        output isn't just an embarrassing sentence, it can be a wrong email sent, a bad trade
+        executed, or a file deleted.
+      </p>
+      <div class="grid">
+        <div class="card">
+          <h4>🔒 Least-privilege tool access</h4>
+          <p>Only grant the specific permissions an agent genuinely needs for its task — never give blanket admin access "just in case."</p>
+        </div>
+        <div class="card">
+          <h4>🧑‍⚖️ Human-in-the-loop approval gates</h4>
+          <p>Require explicit human confirmation before any high-risk or irreversible action (sending money, deleting data, publishing publicly).</p>
+        </div>
+        <div class="card">
+          <h4>🧱 Sandboxing</h4>
+          <p>Run any agent-executed code in an isolated sandbox/container, not directly on production infrastructure.</p>
+        </div>
+        <div class="card">
+          <h4>🪝 Treat tool output as untrusted data</h4>
+          <p>A web page or document an agent reads can contain hidden text trying to hijack it ("ignore previous instructions...") — this is prompt injection via tool results, and it's the #1 agent-specific security risk.</p>
+        </div>
+      </div>
+      <div class="callout warn">
+        The OWASP LLM Top 10 (<a href="llm.html#safety">LLM §33</a>) applies directly to agents too
+        — but agents add an extra dimension of risk because the "output" isn't just text anymore,
+        it's real actions.
+      </div>
+    </section>
+
+    <!-- 37 -->
+    <section class="block" id="cost-latency-agents">
+      <h2><span class="num">37</span> Cost & Latency Management for Multi-Step Agents</h2>
+      <p>
+        A single agent task can trigger many LLM calls — cost and latency compound fast.
+      </p>
+      <ul>
+        <li><strong>Cap max steps</strong> — a hard ceiling prevents a confused agent from looping expensively forever.</li>
+        <li><strong>Model routing per step</strong> — use a cheap/fast model for simple sub-steps (tool selection, formatting) and reserve an expensive model only for genuinely hard reasoning steps.</li>
+        <li><strong>Parallelize independent sub-tasks</strong> — if two sub-agents don't depend on each other's output, run them concurrently rather than sequentially.</li>
+        <li><strong>Cache repeated tool calls</strong> — if the same search/query is likely to repeat, cache results rather than re-calling the tool (and re-paying for the LLM call that follows it).</li>
+      </ul>
+    </section>
+
+    <!-- 38 -->
+    <section class="block" id="deployment-agents">
+      <h2><span class="num">38</span> Deployment Patterns</h2>
+      <table>
+        <tr><th>Pattern</th><th>How it works</th><th>Good for</th></tr>
+        <tr><td>Stateless function/endpoint</td><td>Each agent invocation runs to completion within one request (e.g., a serverless function call)</td><td>Short-running agents that finish in seconds</td></tr>
+        <tr><td>Long-running worker + checkpointing</td><td>The agent's state is persisted (checkpointed) after each step, so a long task can pause/resume across minutes or hours, surviving restarts</td><td>Long multi-step tasks, tasks awaiting human approval mid-way</td></tr>
+        <tr><td>Event-driven / queue-based</td><td>Each agent step is triggered by a message queue event, allowing independent scaling and retries per step</td><td>High-volume systems needing resilience and horizontal scaling</td></tr>
+      </table>
+      <div class="callout tip">
+        If an agent might need to pause for a human approval gate (Section 36) that could take
+        hours, you need the checkpointing pattern — a plain stateless function can't "wait" that
+        long.
+      </div>
+    </section>
+
+    <div class="part-divider"><h2>Part I — Hands-On (6 Progressive Code Levels)</h2></div>
+
+    <!-- 39 -->
+    <section class="block" id="loop-code">
+      <h2><span class="num">39</span> Level 0 — Tiny Agent Loop From Scratch (Pure Python)</h2>
+      <p>
+        No framework, no tools yet — just the bare perceive-plan-act-observe loop (Section 7) with
+        a fake/hardcoded "brain" so you can see the loop mechanics clearly before an LLM enters
+        the picture.
+      </p>
+      <details class="deepdive" open>
+        <summary>Show me the bare agent loop (code)</summary>
+<pre><code>def fake_brain(goal, history):
+    """Pretend 'LLM' that decides the next action based on simple rules."""
+    if not history:
+        return {"thought": "I should check the weather first.", "action": "check_weather"}
+    last_obs = history[-1]["observation"]
+    if "rain" in last_obs and "reminded" not in str(history):
+        return {"thought": "It's going to rain, remind the user.", "action": "remind_umbrella"}
+    return {"thought": "Goal is done.", "action": "finish"}
+
+def check_weather():
+    return "31C, humid, light rain expected"
+
+def remind_umbrella():
+    return "Reminder sent: bring an umbrella!"
+
+def run_agent(goal, max_steps=5):
+    history = []
+    for step in range(max_steps):
+        decision = fake_brain(goal, history)
+        print(f"Thought: {decision['thought']}")
+        if decision["action"] == "finish":
+            print("Done.")
+            break
+        if decision["action"] == "check_weather":
+            obs = check_weather()
+        elif decision["action"] == "remind_umbrella":
+            obs = remind_umbrella()
+        print(f"Action: {decision['action']} -> Observation: {obs}")
+        history.append({"action": decision["action"], "observation": obs})
+
+run_agent("Tell me if I need an umbrella today")</code></pre>
+        <p>
+          This is the loop from Section 7 with the "brain" replaced by plain if/else rules. Every
+          real agent framework replaces <code>fake_brain</code> with an actual LLM call — the loop
+          shape around it stays conceptually identical.
+        </p>
+      </details>
+    </section>
+
+    <!-- 40 -->
+    <section class="block" id="tooluse-code">
+      <h2><span class="num">40</span> Level 1 — Add Tool Use From Scratch</h2>
+      <p>
+        Now let's make tools a real, named registry the "brain" can pick from by name — the core
+        mechanic behind every tool-calling system (Section 8).
+      </p>
+      <details class="deepdive">
+        <summary>Show me manual tool dispatch (code)</summary>
+<pre><code>def get_weather(city):
+    return f"{city}: 31C, light rain expected"
+
+def send_reminder(message):
+    return f"Reminder sent: {message}"
+
+TOOLS = {
+    "get_weather": get_weather,
+    "send_reminder": send_reminder,
+}
+
+def dispatch(tool_name, **kwargs):
+    if tool_name not in TOOLS:
+        return f"Error: unknown tool '{tool_name}'"
+    try:
+        return TOOLS[tool_name](**kwargs)
+    except Exception as e:
+        return f"Error running {tool_name}: {e}"
+
+# The 'brain' decides which tool + arguments to use
+result = dispatch("get_weather", city="Mumbai")
+print(result)
+result2 = dispatch("send_reminder", message="Bring an umbrella today!")
+print(result2)
+print(dispatch("delete_everything"))   # unknown tool -> handled gracefully</code></pre>
+        <p>
+          A real agent's "brain" (the LLM) outputs something like
+          <code>{"tool": "get_weather", "args": {"city": "Mumbai"}}</code>, and this exact
+          dispatch-by-name pattern is what turns that structured request into a real function call
+          — with a graceful error path (Section 14) instead of a crash.
+        </p>
+      </details>
+    </section>
+
+    <!-- 41 -->
+    <section class="block" id="react-code">
+      <h2><span class="num">41</span> Level 2 — ReAct Agent via a Real LLM API</h2>
+      <p>
+        Now let's wire this up to an actual model using the Anthropic API's native tool-use
+        feature (the real-world version of <a href="llm.html#function-calling">LLM §22</a>'s
+        function calling), building a genuine ReAct loop (Section 11).
+      </p>
+      <details class="deepdive">
+        <summary>Show me a real ReAct tool-calling loop (code)</summary>
+<pre><code>import anthropic
+
+client = anthropic.Anthropic()
+
+def get_weather(city):
+    return f"{city}: 31C, light rain expected"
+
+tools = [{
+    "name": "get_weather",
+    "description": "Get the current weather for a city",
+    "input_schema": {
+        "type": "object",
+        "properties": {"city": {"type": "string"}},
+        "required": ["city"],
+    },
+}]
+
+messages = [{"role": "user", "content": "Should I bring an umbrella in Mumbai today?"}]
+
+while True:
+    response = client.messages.create(
+        model="claude-sonnet-5-5",
+        max_tokens=4096,            # generous: built-in thinking and the answer share this budget
+        tools=tools,
+        messages=messages,
+    )
+    messages.append({"role": "assistant", "content": response.content})
+
+    if response.stop_reason != "tool_use":
+        final_text = next(b.text for b in response.content if b.type == "text")
+        print("Final answer:", final_text)
+        break
+
+    # The model may request several tools in one turn: answer every tool_use block,
+    # and send all the results back together in a single user message.
+    results = []
+    for block in response.content:
+        if block.type == "tool_use":
+            results.append({
+                "type": "tool_result",
+                "tool_use_id": block.id,
+                "content": get_weather(**block.input),
+            })
+    messages.append({"role": "user", "content": results})</code></pre>
+        <p>
+          This is a genuine agent loop: the model decides to call <code>get_weather</code>, we
+          execute it for real and feed the result back as a <code>tool_result</code> message, and
+          the model continues reasoning (Thought → Action → Observation → next Thought) until it
+          has enough information to give a final text answer.
+        </p>
+      </details>
+    </section>
+
+    <!-- 42 -->
+    <section class="block" id="langgraph-code">
+      <h2><span class="num">42</span> Level 3 — Minimal LangGraph Graph</h2>
+      <p>
+        LangGraph (Section 22) models the same loop as an explicit graph with named nodes and
+        conditional edges:
+      </p>
+      <details class="deepdive">
+        <summary>Show me a minimal LangGraph agent (code)</summary>
+<pre><code>from langgraph.graph import StateGraph, END
+from typing import TypedDict
+
+class AgentState(TypedDict):
+    question: str
+    answer: str
+
+def think_node(state: AgentState) -> AgentState:
+    # In reality: call an LLM here to reason/decide
+    state["answer"] = f"Thinking about: {state['question']}"
+    return state
+
+def should_continue(state: AgentState) -> str:
+    return "end" if state["answer"] else "think"
+
+graph = StateGraph(AgentState)
+graph.add_node("think", think_node)
+graph.set_entry_point("think")
+graph.add_conditional_edges("think", should_continue, {"end": END, "think": "think"})
+
+app = graph.compile()
+result = app.invoke({"question": "What's the capital of France?", "answer": ""})
+print(result["answer"])</code></pre>
+        <p>
+          The <code>StateGraph</code> is exactly the graph from Section 22's analogy: nodes are
+          steps, <code>add_conditional_edges</code> defines the decision-diamond logic (loop back
+          vs. finish), and <code>AgentState</code> is the shared data passed between every node —
+          the "blackboard" from Section 18.
+        </p>
+      </details>
+    </section>
+
+    <!-- 43 -->
+    <section class="block" id="crewai-code">
+      <h2><span class="num">43</span> Level 4 — Minimal CrewAI Crew</h2>
+      <p>
+        A tiny two-agent "newsroom" (Section 16) using CrewAI's role/goal/backstory structure:
+      </p>
+      <details class="deepdive">
+        <summary>Show me a minimal CrewAI crew (code)</summary>
+<pre><code>from crewai import Agent, Task, Crew
+
+researcher = Agent(
+    role="Researcher",
+    goal="Find accurate, up-to-date facts about the given topic",
+    backstory="A meticulous analyst who double-checks every claim.",
+)
+
+writer = Agent(
+    role="Writer",
+    goal="Turn research notes into a clear, friendly paragraph",
+    backstory="A writer who explains things simply, like to a curious friend.",
+)
+
+research_task = Task(
+    description="Research: {topic}",
+    expected_output="3-5 bullet points of key facts",
+    agent=researcher,
+)
+writing_task = Task(
+    description="Write a short paragraph using the research notes",
+    expected_output="One friendly paragraph",
+    agent=writer,
+    context=[research_task],
+)
+
+crew = Crew(agents=[researcher, writer], tasks=[research_task, writing_task])
+result = crew.kickoff(inputs={"topic": "why the sky is blue"})
+print(result)</code></pre>
+        <p>
+          The <code>context=[research_task]</code> line is the sequential handoff pattern from
+          Section 18 — the writer's task automatically receives the researcher's output as input,
+          exactly like passing a note from one specialist to the next.
+        </p>
+      </details>
+    </section>
+
+    <!-- 44 -->
+    <section class="block" id="mcp-code">
+      <h2><span class="num">44</span> Level 5 — Minimal MCP Server + Client</h2>
+      <p>
+        A tiny Model Context Protocol (Section 19) server exposing one tool, and a client that
+        connects to it — showing the standardized plug the whole ecosystem is converging on:
+      </p>
+      <details class="deepdive">
+        <summary>Show me a minimal MCP server (code)</summary>
+<pre><code>from mcp.server.fastmcp import FastMCP
+
+mcp = FastMCP("weather-server")
+
+@mcp.tool()
+def get_weather(city: str) -> str:
+    """Get the current weather for a city."""
+    return f"{city}: 31C, light rain expected"
+
+if __name__ == "__main__":
+    mcp.run()</code></pre>
+        <p>
+          Any MCP-compatible client (Claude Desktop, a Claude Agent SDK app, an IDE plugin) can now
+          connect to this one small server and automatically discover and call
+          <code>get_weather</code> — without either side needing to know anything custom about the
+          other, exactly the "USB-C for agents" idea from Section 19.
+        </p>
+      </details>
+      <div class="callout tip">
+        Version note: this snippet uses the older <code>FastMCP</code> import from SDK 1.x. The current
+        Python SDK (2.x) names the class <code>MCPServer</code> (<code>from mcp.server import MCPServer</code>) — the
+        decorators are the same. The full, tested walkthrough (server, client, HTTP, Claude connector) is in the
+        <a href="mcp.html#sdk-server-code">dedicated MCP guide</a>.
+      </div>
+    </section>
+
+    <div class="part-divider"><h2>Part J — Ecosystem & Comparisons</h2></div>
+
+    <!-- 45 -->
+    <section class="block" id="framework-decision">
+      <h2><span class="num">45</span> Agent Framework Decision Guide</h2>
+      <p>
+        Section 29 compared frameworks feature-by-feature; here's a quick decision path for
+        picking one:
+      </p>
+      <ul>
+        <li>Want a quick standard agent now, with room to grow? → <strong>LangChain 1.0</strong> (<code>create_agent</code>); need tight control over complex, long-running, branching logic? → <strong>LangGraph</strong></li>
+        <li>Modeling a team of specialist roles (researcher/writer/reviewer), or mixing teams with controlled pipelines? → <strong>CrewAI</strong> (Crews + Flows)</li>
+        <li>Used AutoGen or Semantic Kernel before, or live in the .NET/Azure world? → <strong>Microsoft Agent Framework</strong> (their successor)</li>
+        <li>All-in on one model provider and want the tightest native integration? → <strong>OpenAI Agents SDK</strong> or <strong>Claude Agent SDK</strong></li>
+        <li>Don't want to run the loop and sandbox yourself? → a hosted harness such as <strong>Claude Managed Agents</strong> (beta)</li>
+        <li>On Google Cloud / Gemini? → <strong>Google ADK</strong>. On AWS / Bedrock? → <strong>Strands Agents</strong>. Want strictly validated outputs? → <strong>Pydantic AI</strong></li>
+        <li>Core workload is querying/reasoning over your own documents and data? → <strong>LlamaIndex Agents</strong></li>
+      </ul>
+      <div class="callout tip">
+        When unsure, start with the framework that matches your team's EXISTING stack and language
+        — the conceptual patterns (Parts B-D) transfer across all of them, so switching later is
+        more about learning a new API than relearning the ideas. Keep your tools behind MCP and your own thin code, and a framework swap (even a forced one,
+        like AutoGen → MAF or the Assistants API shutdown) stays small.
+      </div>
+    </section>
+
+    <!-- 46 -->
+    <section class="block" id="workflow-tool-compare">
+      <h2><span class="num">46</span> Workflow Automation Tool Comparison</h2>
+      <table>
+        <tr><th>Tool</th><th>Hosting</th><th>AI-agent features (2026)</th><th>Best fit</th></tr>
+        <tr><td>n8n</td><td>Self-hosted or cloud</td><td>AI Agent node, memory, vector stores, local models, MCP</td><td>Engineering teams wanting full control, data privacy, and custom code steps</td></tr>
+        <tr><td>Zapier</td><td>Cloud only</td><td>Zapier Agents (GA Jan 2026), MCP server, AI steps</td><td>Non-technical teams wanting the fastest setup and broadest app catalog</td></tr>
+        <tr><td>Make</td><td>Cloud only</td><td>Maia builder assistant, Make AI Agents</td><td>Teams wanting fine-grained visual control over complex data transformations</td></tr>
+      </table>
+    </section>
+
+    <!-- 47 -->
+    <section class="block" id="protocol-compare">
+      <h2><span class="num">47</span> Protocol &amp; Standards Comparison</h2>
+      <table>
+        <tr><th>Standard</th><th>Connects</th><th>Analogy</th></tr>
+        <tr><td>Function/Tool Calling (<a href="llm.html#function-calling">LLM §22</a>)</td><td>One LLM to one specific, custom-described function in your own code</td><td>Writing custom instructions for one specific helper, every single time</td></tr>
+        <tr><td>MCP (Section 19)</td><td>Any agent/app to any MCP-compatible tool/data server</td><td>USB-C — one standard plug across many devices</td></tr>
+        <tr><td>A2A v1.0 (Section 19)</td><td>One independent agent to another independent agent</td><td>Two companies agreeing on a shared meeting/communication format</td></tr>
+        <tr><td>Agent Skills</td><td>An agent to packaged instructions and scripts it loads when relevant</td><td>A recipe binder</td></tr>
+        <tr><td>AGENTS.md</td><td>A coding agent to a project's own how-to notes</td><td>A README written for robots</td></tr>
+      </table>
+      <div class="callout tip">
+        These layer on top of each other rather than compete: an agent uses plain function
+        calling internally, may expose/consume some of those functions via MCP for interoperability
+        with other tools, loads Skills for know-how, reads AGENTS.md for project rules, and may use A2A to hand off entire sub-tasks to a completely separate
+        agent system. MCP, A2A, Agent Skills and AGENTS.md all now live under the same neutral home, the Linux Foundation's
+        Agentic AI Foundation (<a href="mcp.html#governance-future">details in the MCP guide</a>).
+      </div>
+    </section>
+
+    <!-- 48 -->
+    <section class="block" id="case-studies">
+      <h2><span class="num">48</span> Notable Real-World Agent Systems</h2>
+      <table>
+        <tr><th>System</th><th>Why it's notable</th></tr>
+        <tr><td><a href="https://github.com/Significant-Gravitas/AutoGPT" target="_blank" rel="noopener">AutoGPT</a></td><td>An early (2023) viral demonstration of a fully autonomous, self-directed agent loop — rough around the edges, but it's what put "autonomous agents" on the mainstream map.</td></tr>
+        <tr><td>Coding agents (Claude Code, GitHub Copilot's agent mode, OpenAI's Codex, and others)</td><td>Agents that read a codebase, write and run code, interpret test results, and iterate — arguably the most mature, widely-used category of agent in production today. Several are now also available as libraries (e.g., the Claude Agent SDK) so you can build your own.</td></tr>
+        <tr><td>Autonomous software engineer products (e.g., Devin-style systems)</td><td>Positioned to handle entire engineering tickets semi-independently (plan, code, test, open a PR) — an active and fast-evolving category.</td></tr>
+        <tr><td>Computer-use agents</td><td>Agents that operate a real desktop or browser by looking at the screen. 2026 reports say the best systems now match or beat the human baseline on the OSWorld-Verified test (Section 35).</td></tr>
+        <tr><td>Hosted agent platforms (e.g., Claude Managed Agents, Microsoft Foundry hosted agents)</td><td>The cloud provider runs the agent loop and a safe sandbox, so teams can run long or scheduled jobs without building that plumbing themselves.</td></tr>
+      </table>
+      <div class="callout life">
+        Notice the common thread: the most successful real-world agents so far are narrowly
+        scoped to one domain (coding) with clear, checkable success criteria (tests pass, code
+        compiles) — a useful lesson when designing your own agent's scope.
+      </div>
+    </section>
+
+    <div class="part-divider"><h2>Part K — Reference</h2></div>
+
+    <!-- 49 -->
+    <section class="block" id="glossary-agents">
+      <h2><span class="num">49</span> Mini Glossary</h2>
+      <dl class="glossary">
+        <dt>AI Agent</dt><dd>An LLM-powered system that perceives, plans, acts via tools, and observes results in a loop to reach a goal.</dd>
+        <dt>Agentic AI</dt><dd>Systems built from multiple cooperating agents working together toward a shared goal.</dd>
+        <dt>Agent Loop</dt><dd>The perceive → plan → act → observe cycle an agent repeats until done.</dd>
+        <dt><a href="https://arxiv.org/abs/2210.03629" target="_blank" rel="noopener">ReAct</a></dt><dd>A pattern interleaving reasoning ("Thought") with tool calls ("Action") and real results ("Observation").</dd>
+        <dt>Plan-and-Execute</dt><dd>A pattern that writes a full multi-step plan up front, then executes each step.</dd>
+        <dt><a href="https://arxiv.org/abs/2303.11366" target="_blank" rel="noopener">Reflexion</a></dt><dd>A pattern where an agent self-critiques a failed attempt in plain language before retrying.</dd>
+        <dt><a href="https://arxiv.org/abs/2305.10601" target="_blank" rel="noopener">Tree of Thoughts</a></dt><dd>A reasoning strategy that explores multiple branching reasoning paths and can backtrack.</dd>
+        <dt>Tool / Function Calling</dt><dd>The mechanism letting an LLM request a structured function call instead of plain text (see <a href="llm.html#function-calling">LLM §22</a>).</dd>
+        <dt><a href="https://arxiv.org/abs/2302.04761" target="_blank" rel="noopener">Toolformer</a></dt><dd>Research showing a model can learn, on its own, when calling a tool/API would help.</dd>
+        <dt>Short-term Memory</dt><dd>Information held only within the current context window/session.</dd>
+        <dt>Long-term Memory</dt><dd>Information persisted across sessions, often in a vector database, retrieved when relevant.</dd>
+        <dt>Episodic Memory</dt><dd>A record of specific past task attempts an agent can recall and learn from.</dd>
+        <dt>Multi-Agent System</dt><dd>Multiple specialized agents collaborating, instead of one generalist agent doing everything.</dd>
+        <dt>Supervisor / Orchestrator Pattern</dt><dd>A manager agent delegates sub-tasks to specialist agents and assembles their results.</dd>
+        <dt>Swarm / Decentralized Pattern</dt><dd>Agents communicate directly with each other with no single fixed controller.</dd>
+        <dt>Blackboard Pattern</dt><dd>A shared data structure all agents read from and write to for coordination.</dd>
+        <dt><a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener">Model Context Protocol (MCP)</a></dt><dd>A standard protocol for connecting an agent/app to external tools and data sources.</dd>
+        <dt>Agent2Agent (A2A)</dt><dd>An open protocol (version 1.0; created at Google, now under the Linux Foundation's Agentic AI Foundation) for letting independently-built agents discover and collaborate with each other.</dd>
+        <dt>Markov Decision Process (MDP)</dt><dd>A formal model of sequential decision-making via states, actions, transitions, and rewards.</dd>
+        <dt><a href="https://github.com/langchain-ai/langgraph" target="_blank" rel="noopener">LangGraph</a></dt><dd>A framework modeling agent logic as an explicit graph of nodes and conditional edges.</dd>
+        <dt><a href="https://github.com/crewAIInc/crewAI" target="_blank" rel="noopener">CrewAI</a></dt><dd>A multi-agent framework built around role/goal/backstory "crews" of specialist agents.</dd>
+        <dt><a href="https://github.com/microsoft/autogen" target="_blank" rel="noopener">AutoGen</a></dt><dd>A Microsoft framework centered on conversable agents that chat with each other and a human. Now succeeded by the Microsoft Agent Framework (GA April 2026); AutoGen is in maintenance mode.</dd>
+        <dt>OpenAI Agents SDK</dt><dd>OpenAI's first-party SDK for building agents with handoffs, built-in tools, and tracing.</dd>
+        <dt>Claude Agent SDK</dt><dd>Anthropic's SDK for building custom agents, the same engine that powers Claude Code.</dd>
+        <dt><a href="https://github.com/microsoft/semantic-kernel" target="_blank" rel="noopener">Semantic Kernel</a></dt><dd>Microsoft's open-source SDK for integrating LLMs into C#/Java/Python applications. Its enterprise features now underpin the Microsoft Agent Framework.</dd>
+        <dt><a href="https://github.com/run-llama/llama_index" target="_blank" rel="noopener">LlamaIndex</a></dt><dd>A data-indexing/RAG library that also offers agent abstractions for data-heavy workflows.</dd>
+        <dt>AI Workflow Automation</dt><dd>Visual, no-code tools for building multi-step automated pipelines, increasingly with AI steps.</dd>
+        <dt><a href="https://n8n.io/" target="_blank" rel="noopener">n8n</a></dt><dd>An open-source, self-hostable workflow automation tool with native AI/LLM nodes.</dd>
+        <dt>RPA (Robotic Process Automation)</dt><dd>Classic, fully pre-scripted automation of repetitive tasks with no real-time reasoning.</dd>
+        <dt>Trajectory</dt><dd>The full sequence of steps/tool calls an agent took to reach its final answer.</dd>
+        <dt><a href="https://arxiv.org/abs/2308.03688" target="_blank" rel="noopener">AgentBench</a></dt><dd>A benchmark evaluating agent capability across diverse multi-environment tasks.</dd>
+        <dt><a href="https://arxiv.org/abs/2311.12983" target="_blank" rel="noopener">GAIA</a></dt><dd>A benchmark of general assistant tasks requiring real reasoning and tool use.</dd>
+        <dt><a href="https://arxiv.org/abs/2310.06770" target="_blank" rel="noopener">SWE-bench</a></dt><dd>A benchmark where an agent must actually fix real GitHub issues.</dd>
+        <dt><a href="https://arxiv.org/abs/2307.13854" target="_blank" rel="noopener">WebArena</a></dt><dd>A benchmark of realistic web-browsing tasks for agents.</dd>
+        <dt>Human-in-the-loop</dt><dd>Requiring explicit human approval before an agent takes a high-risk or irreversible action.</dd>
+        <dt>Sandboxing</dt><dd>Running agent-executed code in an isolated environment, not directly on production systems.</dd>
+        <dt>Prompt Injection via Tool Results</dt><dd>Hidden instructions embedded in content an agent reads (a webpage, a document) attempting to hijack its behavior.</dd>
+        <dt>Checkpointing</dt><dd>Persisting an agent's state after each step so a long-running task can pause and resume.</dd>
+        <dt>Debate Pattern</dt><dd>Two agents argue opposing positions to surface a better-supported final answer.</dd>
+        <dt>Judge/Critic Agent</dt><dd>A separate agent that scores or selects the best among several candidate outputs.</dd>
+        <dt>Model Routing</dt><dd>Sending different sub-tasks to different models based on difficulty/cost trade-offs.</dd>
+        <dt>Hierarchical Multi-Agent System</dt><dd>Supervisors of supervisors — teams of teams delegating further down multiple layers.</dd>
+        <dt><a href="https://github.com/microsoft/agent-framework" target="_blank" rel="noopener">Microsoft Agent Framework (MAF)</a></dt><dd>Microsoft's production agent framework (.NET + Python, 1.0 GA April 2026) that merges AutoGen and Semantic Kernel.</dd>
+        <dt>create_agent</dt><dd>LangChain 1.0's ready-made agent loop (model → tools → repeat), running on LangGraph's engine; replaces <code>create_react_agent</code>.</dd>
+        <dt>Middleware (agents)</dt><dd>Plug-in hooks around each step of an agent loop (approve a tool call, summarize history, redact personal data).</dd>
+        <dt>Responses API</dt><dd>OpenAI's current API for agent-style apps; replaced the Assistants API, which was shut down 26 Aug 2026.</dd>
+        <dt><a href="https://platform.claude.com/docs/en/managed-agents/overview" target="_blank" rel="noopener">Managed Agents</a></dt><dd>Anthropic's hosted agent harness (beta): an agent, an environment (sandbox), sessions and streamed events, run on Anthropic's infrastructure or a self-hosted sandbox.</dd>
+        <dt>Agent Skills</dt><dd>An open standard for folders of instructions/scripts an agent loads when relevant; donated to the Agentic AI Foundation in Oct 2026.</dd>
+        <dt>AGENTS.md</dt><dd>A project file that gives coding agents repo-specific instructions; an Agentic AI Foundation founding project.</dd>
+        <dt>Agentic AI Foundation (AAIF)</dt><dd>A Linux Foundation fund (founded Dec 2025) that hosts MCP, A2A, Agent Skills, AGENTS.md, goose and other agent standards — ten projects by Oct 2026.</dd>
+        <dt>Agent Card (A2A)</dt><dd>A JSON "business card" an A2A agent publishes: identity, skills, endpoint and auth needs.</dd>
+        <dt>Scaffold / harness</dt><dd>The code around a model (loop, tools, memory, sandbox) — it can change an agent's benchmark score as much as the model itself.</dd>
+      </dl>
+    </section>
+
+    <!-- 50 -->
+    <section class="block" id="faq-agents">
+      <h2><span class="num">50</span> FAQ</h2>
+      <details class="quiz-item"><summary>Q: Is an "agent" just a chatbot with extra steps?</summary><p class="answer">Not quite — the key difference is a chatbot replies once per message, while an agent loops: it can take an action, see the real result, and decide what to do next on its own, potentially many times, before giving a final answer.</p></details>
+      <details class="quiz-item"><summary>Q: Do I need a framework (LangGraph, CrewAI, etc.) to build an agent?</summary><p class="answer">No — Section 39-41 show you can build a working agent loop in plain Python with a direct API call. Frameworks become valuable once you need more complex state management, many integrations, or multi-agent orchestration out of the box.</p></details>
+      <details class="quiz-item"><summary>Q: What's the real difference between Agentic AI and a single agent?</summary><p class="answer">A single agent is one LLM looping through its own decisions. Agentic AI (multi-agent systems) means multiple specialized agents, each with their own role/instructions, collaborating — like one employee vs. an entire team.</p></details>
+      <details class="quiz-item"><summary>Q: Are MCP and A2A the same thing?</summary><p class="answer">No. MCP standardizes how an agent connects to TOOLS and DATA sources. A2A targets how independent AGENTS discover and collaborate with EACH OTHER. They solve different, complementary problems.</p></details>
+      <details class="quiz-item"><summary>Q: Can I just use Zapier/n8n instead of learning agent frameworks?</summary><p class="answer">For well-defined, mostly-fixed pipelines (if this happens, do that), yes — no-code workflow automation is often faster to build and easier to maintain. Code-first agent frameworks are worth the extra effort when the task genuinely needs dynamic, in-the-moment reasoning.</p></details>
+      <details class="quiz-item"><summary>Q: Why do agents fail so often compared to a single good LLM answer?</summary><p class="answer">Errors compound across steps — if each of 5 steps is 90% reliable, the whole chain succeeds only about 59% of the time (0.9^5). This is why good tool design (Section 14), evaluation (Section 35), and safety gates (Section 36) matter so much more for agents than for single-shot LLM calls.</p></details>
+    </section>
+
+    <!-- 51 -->
+    <section class="block" id="interview-agents">
+      <h2><span class="num">51</span> Interview Questions (With Answers) — The Complete Set</h2>
+      <p>
+        Organized by category and roughly ordered easy → hard: conceptual warm-up first, then
+        patterns, then multi-agent design, then frameworks/protocols, then production/system
+        design, then coding, then debugging scenarios, then latest trends.
+      </p>
+
+      <h3>51.1 — Fundamentals & Conceptual</h3>
+      <details class="quiz-item"><summary>Q: What is an AI agent, in one or two sentences?</summary><p class="answer">An AI agent is an LLM-powered system that can perceive a goal and situation, decide on an action (usually calling a tool), observe the real result, and repeat this loop — taking multiple autonomous steps to accomplish a task, rather than just replying once.</p></details>
+      <details class="quiz-item"><summary>Q: How is an agent different from a plain chatbot?</summary><p class="answer">A chatbot produces one reply per user message and stops. An agent loops: it can take a real action, see what actually happened, and decide the next step itself — potentially many times — before producing a final answer.</p></details>
+      <details class="quiz-item"><summary>Q: How is an agent different from traditional RPA (Robotic Process Automation)?</summary><p class="answer">RPA follows a fixed, pre-programmed sequence of steps that a human designed in advance and can't adapt beyond that script. An agent's LLM decides, in real time, what to do next based on the current situation — it can handle cases nobody explicitly coded for.</p></details>
+      <details class="quiz-item"><summary>Q: What four components make up a typical agent?</summary><p class="answer">An LLM (the brain that decides), tools (the hands that take real actions), memory (what it remembers within and across sessions), and a planner/loop (the logic that keeps the cycle running until the goal is met).</p></details>
+      <details class="quiz-item"><summary>Q: Why do agents sometimes fail even when the underlying LLM is very capable?</summary><p class="answer">Multi-step tasks compound errors — if each step is independently 90% reliable, a 5-step task only succeeds about 59% of the time. Poor tool design, insufficient error handling, and lack of a stopping condition also commonly cause failures independent of the model's raw capability.</p></details>
+      <details class="quiz-item"><summary>Q: What does "Agentic AI" mean, and how is it different from "an AI agent"?</summary><p class="answer">"An AI agent" typically refers to one autonomous LLM-driven loop. "Agentic AI" usually refers to systems built from MULTIPLE cooperating agents, each often with a specialized role, working together toward a shared goal.</p></details>
+
+      <h3>51.2 — Architecture & Patterns</h3>
+      <details class="quiz-item"><summary>Q: Explain the ReAct pattern and why writing out "Thoughts" helps.</summary><p class="answer">ReAct interleaves reasoning ("Thought"), tool calls ("Action"), and real results ("Observation") in a loop. Writing reasoning out as generated text gives the model more "working space" to reason correctly before committing to an action — similar to why chain-of-thought prompting improves accuracy.</p></details>
+      <details class="quiz-item"><summary>Q: Compare ReAct and Plan-and-Execute.</summary><p class="answer">ReAct decides one step at a time, adapting as it goes — good for unpredictable tasks but can wander. Plan-and-Execute writes the full plan upfront then executes it — more efficient for predictable task shapes, but can become stale if early steps reveal new information requiring a replan.</p></details>
+      <details class="quiz-item"><summary>Q: What is the Reflexion pattern and when is it most useful?</summary><p class="answer">After a failed attempt, the agent generates a plain-language self-critique of what went wrong, then retries informed by that critique. It's especially effective for coding agents: write code, run tests, read the failure, reflect on the likely cause, and rewrite informed by that specific failure.</p></details>
+      <details class="quiz-item"><summary>Q: What's the difference between short-term, long-term, and episodic memory in an agent?</summary><p class="answer">Short-term memory is just the current context window/session. Long-term memory persists facts/preferences across sessions, typically via a vector database retrieved when relevant. Episodic memory specifically records past task attempts ("last time X failed because Y") so similar future situations can be informed by them.</p></details>
+      <details class="quiz-item"><summary>Q: Why can't you just always dump an agent's entire history into every prompt?</summary><p class="answer">Context windows are limited and cost scales with tokens used (see the LLM guide's context-window section) — naively keeping everything doesn't scale as a task grows long. Real systems selectively retrieve, summarize, or expire old information instead.</p></details>
+      <details class="quiz-item"><summary>Q: What is Tree of Thoughts and how does it differ from simple chain-of-thought?</summary><p class="answer">Chain-of-thought reasons in one straight line. Tree of Thoughts explores MULTIPLE possible reasoning branches simultaneously, evaluates them, and can backtrack away from dead ends — useful for puzzle-like problems with many possible approaches rather than one obvious path.</p></details>
+
+      <h3>51.3 — Multi-Agent Systems</h3>
+      <details class="quiz-item"><summary>Q: Why split work across multiple agents instead of using one bigger, smarter agent?</summary><p class="answer">Shorter, specialized instructions per agent tend to be more reliable than one giant do-everything prompt; different agents can genuinely use different models matched to task difficulty/cost; and having one agent review another's work creates natural checks-and-balances.</p></details>
+      <details class="quiz-item"><summary>Q: Compare the supervisor/orchestrator and swarm/decentralized multi-agent architectures.</summary><p class="answer">Supervisor/orchestrator has one manager agent delegate to specialists and assemble results — easy to reason about but the supervisor can bottleneck. Swarm/decentralized has agents communicate directly with no fixed controller — more flexible and resilient to one agent failing, but harder to predict and debug overall.</p></details>
+      <details class="quiz-item"><summary>Q: What is the "blackboard" coordination pattern?</summary><p class="answer">All agents read from and write to one shared data structure (the "blackboard"), rather than sending direct messages to specific other agents — simplest to build and debug since you can always inspect the one shared object.</p></details>
+      <details class="quiz-item"><summary>Q: When would you use a debate pattern between agents?</summary><p class="answer">When a problem benefits from having two agents argue opposing positions and point out flaws in each other's reasoning, often converging on a better-supported answer than either alone — worthwhile for high-stakes decisions despite the extra cost of running multiple passes.</p></details>
+      <details class="quiz-item"><summary>Q: How does a hierarchical multi-agent system differ from a simple one-level supervisor pattern?</summary><p class="answer">A hierarchical system has supervisors of supervisors — teams of teams, with delegation happening across multiple layers — scaling to much more complex tasks than a single supervisor managing a flat set of specialist agents, at the cost of additional coordination overhead and latency.</p></details>
+
+      <h3>51.4 — Frameworks & Protocols</h3>
+      <details class="quiz-item"><summary>Q: What problem does LangGraph solve that a simple linear LangChain chain doesn't?</summary><p class="answer">A linear chain can only go step 1 → step 2 → step 3 in one fixed direction. LangGraph models agent logic as an explicit graph with conditional branches and loops (e.g., "if the test fails, go back to step 2"), which is what real, adaptive agent behavior actually requires.</p></details>
+      <details class="quiz-item"><summary>Q: What makes CrewAI's design philosophy distinct from other frameworks?</summary><p class="answer">CrewAI structures agents around role, goal, and backstory — a deliberately human-readable "job description" format for defining a team of specialist agents, which tends to make the resulting multi-agent behavior easier to predict and reason about than a raw unstructured prompt.</p></details>
+      <details class="quiz-item"><summary>Q: What is the Model Context Protocol (MCP) and what problem does it solve?</summary><p class="answer">MCP standardizes how an agent/application connects to external tools and data sources, so any MCP-compatible tool/server can plug into any MCP-compatible agent without writing custom integration code for every single pairing — much like USB-C standardizing device connections.</p></details>
+      <details class="quiz-item"><summary>Q: How does A2A differ from MCP?</summary><p class="answer">MCP connects an agent/app to TOOLS and DATA sources. A2A targets how independently-built AGENTS from different vendors discover each other's capabilities and collaborate directly — a different, complementary layer of the stack.</p></details>
+      <details class="quiz-item"><summary>Q: When would you choose the Microsoft Agent Framework (AutoGen's successor) over CrewAI?</summary><p class="answer">Microsoft Agent Framework (MAF 1.0, GA April 2026, .NET and Python) combines AutoGen's multi-agent patterns with Semantic Kernel's enterprise features as explicit graph workflows with checkpointing, human-in-the-loop, middleware and OpenTelemetry — a good fit for Microsoft/.NET/Azure shops and anyone who used AutoGen or Semantic Kernel. CrewAI is strongest when the workflow maps cleanly onto fixed specialist roles ("crews") with a clear sequential or hierarchical task structure, and when you want to combine those crews with controlled event-driven "flows". Note that AutoGen itself is in maintenance mode, so new projects shouldn't start there.</p></details>
+
+      <h3>51.5 — System Design & Production</h3>
+      <details class="quiz-item"><summary>Q: How would you design an agent system that needs to safely send real emails on a user's behalf?</summary><p class="answer">Use least-privilege tool access (only email-sending permission, nothing broader), require a human-in-the-loop approval gate before any email actually sends, sandbox any code execution involved, and log the full trace of every decision for auditability.</p></details>
+      <details class="quiz-item"><summary>Q: How would you evaluate whether an agent is actually good, not just "usually gets the right final answer"?</summary><p class="answer">Measure the full trajectory, not just success rate: were the chosen tools/steps efficient or wasteful, how many steps/tokens did it cost to succeed, and does it recover gracefully from tool failures — two agents can reach the same correct answer via very different quality paths.</p></details>
+      <details class="quiz-item"><summary>Q: What's the single biggest security risk specific to agents (beyond standard LLM risks)?</summary><p class="answer">Prompt injection via tool results — hidden instructions embedded in content the agent reads (a webpage, a document, an API response) that attempt to hijack its behavior. This is agent-specific because the agent treats tool output as data to reason about, which attackers can exploit if that output isn't treated as untrusted.</p></details>
+      <details class="quiz-item"><summary>Q: How would you control runaway cost in a multi-step agent system?</summary><p class="answer">Cap the maximum number of steps per task, route simpler sub-steps to cheaper/faster models and reserve expensive models for genuinely hard reasoning, parallelize independent sub-tasks instead of running them sequentially, and cache repeated tool calls.</p></details>
+      <details class="quiz-item"><summary>Q: Your agent needs to pause for hours awaiting a human approval. What deployment pattern do you need?</summary><p class="answer">A long-running worker with checkpointing — the agent's state is persisted after each step so the task can pause and resume later, potentially across restarts. A stateless serverless function can't "wait" that long.</p></details>
+
+      <h3>51.6 — Coding / Hands-On</h3>
+      <details class="quiz-item"><summary>Q: Write the skeleton of a basic agent loop with a maximum step limit.</summary><p class="answer">Loop up to max_steps times: call the "brain" (LLM) with the current goal and history, check if it wants to finish or call a tool, execute the tool if so, append the result to history, and break early once the brain signals it's done — exactly the structure in Section 39's from-scratch loop.</p></details>
+      <details class="quiz-item"><summary>Q: How would you implement safe tool dispatch given a tool name and arguments from the model?</summary><p class="answer">Look up the tool name in a registry/dictionary of allowed functions, return a clear error if it's not found (never silently execute arbitrary code), call it inside a try/except so a runtime error becomes a readable error message fed back to the model rather than a crash.</p></details>
+      <details class="quiz-item"><summary>Q: How does a real tool-use loop against an LLM API differ from the hand-rolled fake_brain example?</summary><p class="answer">Instead of if/else rules, you send the model a list of tool schemas and the conversation history; the model itself decides, via its stop_reason, whether to call a tool or give a final answer — you execute whichever tool it requests and append the real result as a new message before calling the model again.</p></details>
+      <details class="quiz-item"><summary>Q: In LangGraph, what's the role of a conditional edge?</summary><p class="answer">It inspects the current state after a node runs and decides which node to transition to next — e.g., loop back to a "think" node if more work is needed, or route to END if the task is complete — implementing the decision-diamond logic of real agent control flow.</p></details>
+      <details class="quiz-item"><summary>Q: How would you test an agent's behavior given that LLM outputs are non-deterministic?</summary><p class="answer">Test the surrounding code (tool dispatch, error handling, state management) with mocked LLM responses for fast, deterministic unit tests, and separately run a small golden evaluation set against the real model/tools in CI, scoring trajectory quality and success rate rather than exact-matching output text.</p></details>
+
+      <h3>51.7 — Debugging & Scenario-Based</h3>
+      <details class="quiz-item"><summary>Q: Your agent gets stuck calling the same tool repeatedly without making progress. What's likely wrong and how do you fix it?</summary><p class="answer">Likely causes: the tool's error message isn't informative enough for the model to understand what went wrong, or the stopping/progress criteria in the prompt are unclear. Fix by improving tool error messages, adding a hard max-step limit as a safety net, and logging the full trace to diagnose the specific repeated failure.</p></details>
+      <details class="quiz-item"><summary>Q: A multi-agent system produces inconsistent results across runs. How do you debug it?</summary><p class="answer">Add full tracing across every agent's inputs/outputs and every handoff, check whether the orchestration logic (who talks to whom, in what order) is itself non-deterministic, and verify each sub-agent's prompt is specific enough that two runs with similar inputs produce similarly-shaped outputs.</p></details>
+      <details class="quiz-item"><summary>Q: Your agent successfully completed a task but it took 40 tool calls when it should have taken 5. What do you investigate?</summary><p class="answer">Check the trajectory trace for unnecessary repeated searches, unclear tool descriptions causing the model to guess/retry, missing information in the system prompt that would let it plan more directly, and whether a Plan-and-Execute approach would suit this task better than open-ended ReAct.</p></details>
+      <details class="quiz-item"><summary>Q: A user manipulates your customer-support agent into revealing internal system prompts or taking unauthorized actions by pasting crafted text. What happened and how do you prevent it?</summary><p class="answer">This is prompt injection — the agent treated untrusted user/tool content as instructions to obey. Prevention: never let retrieved or user-supplied content override system-level instructions, add input/output filtering, and require human approval gates for any sensitive action regardless of what the conversation claims.</p></details>
+      <details class="quiz-item"><summary>Q: Your agent occasionally calls a tool with malformed arguments that crash your backend. How do you harden this?</summary><p class="answer">Add strict schema validation on tool inputs before execution, return a clear validation error back to the model (so it can self-correct) instead of crashing, and never trust that the model's structured output perfectly matches your expected schema just because you asked it to.</p></details>
+
+      <h3>51.8 — Advanced, Research & Latest Trends</h3>
+      <details class="quiz-item"><summary>Q: How do reasoning models (test-time compute) change the design of agents?</summary><p class="answer">Reasoning models already spend extra inference-time compute deliberating before answering, which can reduce (but not eliminate) the need for explicit external patterns like ReAct or Reflexion for certain hard reasoning sub-steps — though tool use and multi-step real-world interaction still require an actual agent loop around the model.</p></details>
+      <details class="quiz-item"><summary>Q: What's the significance of standardized protocols like MCP and A2A for the agent ecosystem's future?</summary><p class="answer">They shift the ecosystem from every framework/vendor building incompatible, bespoke integrations toward a shared, interoperable layer — similar to how standardized ports and APIs enabled the broader software/hardware ecosystem to combine components from different vendors freely.</p></details>
+      <details class="quiz-item"><summary>Q: Why have coding agents become one of the most successful real-world agent categories so far?</summary><p class="answer">Coding tasks have unusually clear, checkable success criteria (tests pass, code compiles, the build succeeds) that let an agent verify its own progress objectively — a narrower, well-defined domain with built-in feedback loops, unlike many open-ended real-world tasks.</p></details>
+      <details class="quiz-item"><summary>Q: What risks come with giving an agent increasingly broad, autonomous authority (e.g., an "autonomous software engineer" that opens its own PRs)?</summary><p class="answer">Larger blast radius if something goes wrong (bad code merged, unauthorized actions taken), harder-to-audit decision chains across many autonomous steps, and a growing need for robust evaluation, sandboxing, and human review checkpoints that scale with the agent's level of autonomy.</p></details>
+      <details class="quiz-item"><summary>Q: How do agentic AI and traditional workflow automation tools (n8n, Zapier) look likely to converge?</summary><p class="answer">Workflow tools are increasingly embedding genuine agent steps (dynamic LLM-driven decisions) inside otherwise-fixed pipelines, while agent frameworks are adding more visual/structured orchestration — the likely trend is less a hard line between the two and more a spectrum of how much dynamic reasoning sits inside an otherwise reliable, observable pipeline.</p></details>
+    </section>
+
+    <!-- 52 -->
+    <section class="block" id="pitfalls-agents">
+      <h2><span class="num">52</span> Common Problems & Production Checklist</h2>
+      <p>
+        Agents fail in their own distinctive ways compared to plain LLM calls — mostly because
+        mistakes can compound across many steps, and because tools give the model a way to
+        actually affect the real world.
+      </p>
+      <div class="grid">
+        <div class="card">
+          <h4>🔁 Infinite / repetitive loops</h4>
+          <p>An agent calls the same tool over and over without progress. Always set a hard max-step limit as a safety net, and make tool error messages specific enough to guide a correction.</p>
+        </div>
+        <div class="card">
+          <h4>📉 Compounding error rates</h4>
+          <p>Five steps at 90% reliability each only succeed ~59% of the time end-to-end. Keep critical chains short, add verification steps, and consider a reviewer/critic agent for high-stakes tasks.</p>
+        </div>
+        <div class="card">
+          <h4>💉 Prompt injection via tool results</h4>
+          <p>Content an agent reads (web pages, documents, API responses) can contain hidden instructions. Never let retrieved/tool content override system-level instructions; treat all tool output as untrusted data.</p>
+        </div>
+        <div class="card">
+          <h4>🗝️ Over-privileged tools</h4>
+          <p>Giving an agent broad access "just in case" turns a small mistake into a big one. Apply least-privilege: narrow, specific tools, with human approval gates on anything destructive or irreversible.</p>
+        </div>
+        <div class="card">
+          <h4>💸 Runaway cost & latency</h4>
+          <p>Unbounded loops with no step cap can burn enormous token budgets. Cap max steps, route easy sub-steps to cheaper models, parallelize independent work, and cache repeated calls.</p>
+        </div>
+        <div class="card">
+          <h4>🕵️ No observability</h4>
+          <p>Without tracing every step, decision, and tool call, debugging a misbehaving multi-agent system is nearly impossible. Instrument from day one — don't bolt it on after something breaks in production.</p>
+        </div>
+        <div class="card">
+          <h4>🧩 Vague tool descriptions</h4>
+          <p>If a tool's name/description/schema is ambiguous, the model guesses wrong or retries blindly. Write tool docs as carefully as you'd write documentation for a human teammate.</p>
+        </div>
+        <div class="card">
+          <h4>📏 Wrong pattern for the task</h4>
+          <p>Using open-ended ReAct for a predictable, well-understood task wastes steps; using rigid Plan-and-Execute for a genuinely unpredictable task causes brittle failures. Match the pattern to how predictable the task actually is.</p>
+        </div>
+      </div>
+      <div class="callout tip">
+        <strong>Pre-launch checklist:</strong>
+        <ul>
+          <li>☐ Hard maximum step/iteration limit enforced in code, not just in the prompt</li>
+          <li>☐ Every tool follows least-privilege — no tool can do more than its specific job requires</li>
+          <li>☐ Irreversible or high-stakes actions require explicit human approval before executing</li>
+          <li>☐ All tool outputs are treated as untrusted data, never as instructions to follow</li>
+          <li>☐ Full tracing/observability in place (inputs, outputs, tool calls, timing, cost per step)</li>
+          <li>☐ Evaluation covers trajectory quality and cost, not just final-answer correctness</li>
+          <li>☐ Sandboxed execution for any agent-written or agent-run code</li>
+          <li>☐ Clear fallback/escalation path when the agent gets stuck or exceeds its limits</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 53 -->
+    <section class="block" id="quiz-agents">
+      <h2><span class="num">53</span> Quick Quiz 🎯</h2>
+      <p>Test yourself — click each question to reveal the answer.</p>
+      <details class="quiz-item"><summary>Q1: What's the key difference between a chatbot and an agent?</summary><p class="answer">An agent loops — it can take real actions via tools, observe the actual result, and decide its next step, potentially many times — while a chatbot just replies once per message.</p></details>
+      <details class="quiz-item"><summary>Q2: Name the four components of a typical agent.</summary><p class="answer">LLM (brain), tools (hands), memory, and a planning/loop mechanism.</p></details>
+      <details class="quiz-item"><summary>Q3: What does the "Act" and "Observe" part of ReAct's loop correspond to?</summary><p class="answer">Act = calling a tool/taking an action. Observe = reading back the real result of that action before deciding the next step.</p></details>
+      <details class="quiz-item"><summary>Q4: If a 5-step agent task has each step at 90% reliability, roughly what's the end-to-end success rate?</summary><p class="answer">About 59% (0.9⁵ ≈ 0.59) — a vivid illustration of why compounding errors matter in multi-step agents.</p></details>
+      <details class="quiz-item"><summary>Q5: What does MCP standardize?</summary><p class="answer">How an agent/application connects to external tools and data sources — a common protocol so any compatible tool can plug into any compatible agent.</p></details>
+      <details class="quiz-item"><summary>Q6: Supervisor/orchestrator vs swarm/decentralized — which is easier to reason about, and which is more resilient to one agent failing?</summary><p class="answer">Supervisor/orchestrator is easier to reason about (one manager delegates and assembles results). Swarm/decentralized is more resilient since there's no single bottleneck/controller.</p></details>
+      <details class="quiz-item"><summary>Q7: What's the single biggest agent-specific security risk to guard against?</summary><p class="answer">Prompt injection via tool results — hidden instructions embedded in content the agent reads, attempting to hijack its behavior.</p></details>
+    </section>
+
+    <!-- 54 -->
+    <section class="block" id="resources-agents">
+      <h2><span class="num">54</span> Learn More — Resources</h2>
+      <p>Verified, stable links worth bookmarking — organized by type.</p>
+
+      <h3>Research Papers</h3>
+      <ul class="resources">
+        <li><span class="tag paper">Paper</span> <a href="https://arxiv.org/abs/2210.03629" target="_blank" rel="noopener">ReAct: Synergizing Reasoning and Acting in Language Models (2022)</a></li>
+        <li><span class="tag paper">Paper</span> <a href="https://arxiv.org/abs/2302.04761" target="_blank" rel="noopener">Toolformer: Language Models Can Teach Themselves to Use Tools (2023)</a></li>
+        <li><span class="tag paper">Paper</span> <a href="https://arxiv.org/abs/2305.10601" target="_blank" rel="noopener">Tree of Thoughts: Deliberate Problem Solving with LLMs (2023)</a></li>
+        <li><span class="tag paper">Paper</span> <a href="https://arxiv.org/abs/2303.11366" target="_blank" rel="noopener">Reflexion: Language Agents with Verbal Reinforcement Learning (2023)</a></li>
+        <li><span class="tag paper">Paper</span> <a href="https://arxiv.org/abs/2308.03688" target="_blank" rel="noopener">AgentBench: Evaluating LLMs as Agents (2023)</a></li>
+        <li><span class="tag paper">Paper</span> <a href="https://arxiv.org/abs/2311.12983" target="_blank" rel="noopener">GAIA: A Benchmark for General AI Assistants (2023)</a></li>
+        <li><span class="tag paper">Paper</span> <a href="https://arxiv.org/abs/2310.06770" target="_blank" rel="noopener">SWE-bench: Can LLMs Resolve Real-World GitHub Issues? (2023)</a></li>
+        <li><span class="tag paper">Paper</span> <a href="https://arxiv.org/abs/2307.13854" target="_blank" rel="noopener">WebArena: A Realistic Web Environment for Building Autonomous Agents (2023)</a></li>
+      </ul>
+
+      <h3>Background Reading</h3>
+      <ul class="resources">
+        <li><span class="tag article">Wiki</span> <a href="https://en.wikipedia.org/wiki/Intelligent_agent" target="_blank" rel="noopener">Intelligent Agent — Wikipedia</a></li>
+        <li><span class="tag article">Wiki</span> <a href="https://en.wikipedia.org/wiki/Multi-agent_system" target="_blank" rel="noopener">Multi-Agent System — Wikipedia</a></li>
+        <li><span class="tag article">Wiki</span> <a href="https://en.wikipedia.org/wiki/Markov_decision_process" target="_blank" rel="noopener">Markov Decision Process — Wikipedia</a></li>
+        <li><span class="tag article">Wiki</span> <a href="https://en.wikipedia.org/wiki/Robotic_process_automation" target="_blank" rel="noopener">Robotic Process Automation — Wikipedia</a></li>
+      </ul>
+
+      <h3>Official Docs & Tools</h3>
+      <ul class="resources">
+        <li><span class="tag docs">Docs</span> <a href="https://python.langchain.com/" target="_blank" rel="noopener">LangChain Documentation</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://langchain-ai.github.io/langgraph/" target="_blank" rel="noopener">LangGraph Documentation</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://github.com/crewAIInc/crewAI" target="_blank" rel="noopener">CrewAI — GitHub</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://github.com/microsoft/autogen" target="_blank" rel="noopener">AutoGen — GitHub</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://platform.openai.com/docs/guides/agents" target="_blank" rel="noopener">OpenAI Agents SDK / Platform Docs</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://code.claude.com/docs/en/agent-sdk/overview" target="_blank" rel="noopener">Claude Agent SDK Documentation</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://platform.claude.com/docs/en/managed-agents/overview" target="_blank" rel="noopener">Claude Managed Agents (beta)</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://github.com/microsoft/agent-framework" target="_blank" rel="noopener">Microsoft Agent Framework — GitHub</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://www.langchain.com/blog/langchain-langgraph-1dot0" target="_blank" rel="noopener">LangChain 1.0 &amp; LangGraph 1.0 announcement</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://a2a-protocol.org/latest/" target="_blank" rel="noopener">A2A (Agent2Agent) protocol</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://developers.openai.com/api/docs/deprecations" target="_blank" rel="noopener">OpenAI deprecations (Assistants API shutdown, etc.)</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://blog.modelcontextprotocol.io/posts/2025-12-09-mcp-joins-agentic-ai-foundation/" target="_blank" rel="noopener">MCP joins the Agentic AI Foundation</a> · <a href="https://agents.md/" target="_blank" rel="noopener">AGENTS.md</a> · <a href="https://agentskills.io/" target="_blank" rel="noopener">Agent Skills</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://github.com/google/adk-python" target="_blank" rel="noopener">Google ADK</a> · <a href="https://github.com/strands-agents/sdk-python" target="_blank" rel="noopener">Strands Agents</a> · <a href="https://ai.pydantic.dev/" target="_blank" rel="noopener">Pydantic AI</a> · <a href="https://github.com/huggingface/smolagents" target="_blank" rel="noopener">smolagents</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://github.com/microsoft/semantic-kernel" target="_blank" rel="noopener">Semantic Kernel — GitHub</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://github.com/run-llama/llama_index" target="_blank" rel="noopener">LlamaIndex — GitHub</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener">Model Context Protocol — Official Site</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://github.com/Significant-Gravitas/AutoGPT" target="_blank" rel="noopener">AutoGPT — GitHub</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://n8n.io/" target="_blank" rel="noopener">n8n — Official Site</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://zapier.com/" target="_blank" rel="noopener">Zapier — Official Site</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://www.make.com/" target="_blank" rel="noopener">Make.com — Official Site</a></li>
+      </ul>
+
+      <h3>Video Explainers</h3>
+      <ul class="resources">
+        <li><span class="tag video">Video</span> <a href="https://www.youtube.com/results?search_query=AI+agents+explained" target="_blank" rel="noopener">Search: "AI agents explained"</a></li>
+        <li><span class="tag video">Video</span> <a href="https://www.youtube.com/results?search_query=ReAct+pattern+LLM+agents+explained" target="_blank" rel="noopener">Search: "ReAct pattern LLM agents explained"</a></li>
+        <li><span class="tag video">Video</span> <a href="https://www.youtube.com/results?search_query=multi-agent+systems+AI+explained" target="_blank" rel="noopener">Search: "multi-agent systems AI explained"</a></li>
+        <li><span class="tag video">Video</span> <a href="https://www.youtube.com/results?search_query=LangGraph+tutorial" target="_blank" rel="noopener">Search: "LangGraph tutorial"</a></li>
+        <li><span class="tag video">Video</span> <a href="https://www.youtube.com/results?search_query=CrewAI+tutorial" target="_blank" rel="noopener">Search: "CrewAI tutorial"</a></li>
+        <li><span class="tag video">Video</span> <a href="https://www.youtube.com/results?search_query=Model+Context+Protocol+MCP+explained" target="_blank" rel="noopener">Search: "Model Context Protocol (MCP) explained"</a></li>
+      </ul>
+
+      <p>Previous guides in this roadmap: <a href="llm.html">LLMs (Large Language Models)</a> and <a href="rag.html">RAG (Retrieval-Augmented Generation)</a>.</p>
+    </section>
+
+  </main>
+</div>
+
+<div class="page-nav">
+  <a href="index.html">⬅ Back to Roadmap Home</a>
+  <a href="mcp.html">Next up: MCP (Model Context Protocol) ➜</a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,2248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLMs (Large Language Models) — The Complete A-Z Guide</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔤</text></svg>">
+</head>
+<body>
+
+<header class="hero">
+  <div class="breadcrumb"><a href="index.html">🏠 Roadmap Home</a> / LLMs</div>
+  <h1>🔤 LLMs — Large Language Models</h1>
+  <p class="subtitle">
+    The complete A-to-Z guide: every concept, from "what even is that" to production-grade
+    training, fine-tuning, reasoning, and serving of giant language models — in plain words, with
+    daily-life examples, math, code, and comparison tables. Built so you never have to leave this
+    page to understand LLMs. <strong>Last reviewed: 29 October 2026</strong> (model names and prices change fast — dated notes mark what to re-check).
+  </p>
+  <div class="badge-row">
+    <span class="badge beginner">Beginner friendly</span>
+    <span class="badge intermediate">Intermediate concepts</span>
+    <span class="badge advanced">Advanced / Research-level</span>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- ============ SIDEBAR TOC ============ -->
+  <nav class="toc">
+    <h3>On this page (51 sections)</h3>
+    <ol>
+      <li class="toc-part">Part A — Foundations</li>
+      <li><a href="#what-is-llm">What is an LLM?</a></li>
+      <li><a href="#why-llm">Why do we even need LLMs?</a></li>
+      <li><a href="#prereq">Prerequisite crash course</a></li>
+      <li><a href="#llm-vs-nlp">LLMs vs Traditional NLP vs Rule-Based Systems</a></li>
+      <li><a href="#history">History & timeline of LLMs</a></li>
+
+      <li class="toc-part">Part B — Language, Tokens & Architecture</li>
+      <li><a href="#big-picture">The Big Picture (3 steps)</a></li>
+      <li><a href="#tokenization">Tokenization deep dive</a></li>
+      <li><a href="#embeddings-pos">Embeddings & positional encoding</a></li>
+      <li><a href="#transformer-arch">The Transformer architecture deep dive</a></li>
+      <li><a href="#attention">Self-attention & multi-head attention</a></li>
+
+      <li class="toc-part">Part C — Training</li>
+      <li><a href="#pretraining">Pretraining — learning from raw text</a></li>
+      <li><a href="#datasets">Datasets & data curation</a></li>
+      <li><a href="#scaling-laws">Scaling laws</a></li>
+      <li><a href="#sft">Instruction tuning / SFT</a></li>
+      <li><a href="#rlhf">RLHF, reward models & DPO</a></li>
+      <li><a href="#peft">Parameter-efficient fine-tuning (LoRA, QLoRA)</a></li>
+
+      <li class="toc-part">Part D — The Math</li>
+      <li><a href="#the-math">The math behind LLMs</a></li>
+
+      <li class="toc-part">Part E — Inference & Using LLMs</li>
+      <li><a href="#decoding">Decoding strategies</a></li>
+      <li><a href="#context-window">Context window & long-context handling</a></li>
+      <li><a href="#kv-cache">KV cache & inference optimization</a></li>
+      <li><a href="#prompting">Prompting techniques</a></li>
+      <li><a href="#function-calling">Structured output & function/tool calling</a></li>
+
+      <li class="toc-part">Part F — Advanced Architectures & Latest Trends</li>
+      <li><a href="#moe">Mixture of Experts (MoE)</a></li>
+      <li><a href="#multimodal-llm">Multimodal LLMs</a></li>
+      <li><a href="#reasoning-models">Reasoning models & test-time compute</a></li>
+      <li><a href="#small-llms">Small language models & distillation</a></li>
+      <li><a href="#open-vs-closed">Open-source vs closed-source landscape</a></li>
+      <li><a href="#llm-agents">LLMs as the engine for agents</a></li>
+
+      <li class="toc-part">Part G — Production Engineering</li>
+      <li><a href="#quantization">Quantization</a></li>
+      <li><a href="#serving">Serving & inference infrastructure</a></li>
+      <li><a href="#cost-latency">Cost, latency & caching</a></li>
+      <li><a href="#observability-llm">Observability & monitoring</a></li>
+      <li><a href="#safety">Safety, security & guardrails</a></li>
+
+      <li class="toc-part">Part H — Evaluation</li>
+      <li><a href="#eval-metrics">Evaluation metrics & benchmarks</a></li>
+      <li><a href="#human-eval-llm">Human eval, red-teaming & A/B testing</a></li>
+
+      <li class="toc-part">Part I — Hands-On (6 code levels)</li>
+      <li><a href="#bigram-code">Level 0: Bigram model from scratch</a></li>
+      <li><a href="#attention-code">Level 1: Self-attention from scratch (numpy)</a></li>
+      <li><a href="#minigpt-code">Level 2: Mini-GPT (PyTorch)</a></li>
+      <li><a href="#lora-code">Level 3: LoRA fine-tuning (HuggingFace + PEFT)</a></li>
+      <li><a href="#prompting-code">Level 4: Prompting & few-shot via API</a></li>
+      <li><a href="#toolcall-code">Level 5: Minimal tool-calling loop</a></li>
+
+      <li class="toc-part">Part J — Ecosystem</li>
+      <li><a href="#model-compare">LLM model comparison</a></li>
+      <li><a href="#training-framework-compare">Training/fine-tuning framework comparison</a></li>
+      <li><a href="#inference-framework-compare">Inference framework comparison</a></li>
+      <li><a href="#managed-platforms-llm">Managed LLM platforms</a></li>
+
+      <li class="toc-part">Part K — Reference</li>
+      <li><a href="#glossary">Mini glossary (40+ terms)</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#interview">Interview questions</a></li>
+      <li><a href="#pitfalls">Pitfalls & production checklist</a></li>
+      <li><a href="#quiz">Quick quiz 🎯</a></li>
+      <li><a href="#resources">Learn more (links)</a></li>
+    </ol>
+  </nav>
+
+  <!-- ============ MAIN CONTENT ============ -->
+  <main>
+
+    <div class="part-divider"><h2>Part A — Foundations</h2></div>
+
+    <!-- 1 -->
+    <section class="block" id="what-is-llm">
+      <h2><span class="num">1</span> What is an LLM? (The 10-second answer)</h2>
+      <p>
+        Imagine a kid who read almost every book, website, and conversation transcript ever
+        written — not to memorize them word-for-word, but to notice <em>patterns</em> in how
+        words follow other words. After reading enough, that kid becomes shockingly good at
+        guessing what word comes next in any sentence you start.
+      </p>
+      <p>
+        That's basically what a <strong>Large Language Model</strong> is: a giant computer
+        program trained on huge amounts of text, whose entire job — at its core — is to predict
+        <strong>the next word</strong> (technically, the next "token") given everything that came
+        before it. Do that prediction well enough, over and over, one word at a time, and you can
+        write essays, answer questions, write code, and hold a conversation.
+      </p>
+      <div class="callout def">
+        A <strong>Large Language Model (LLM)</strong> is a neural network — usually built from the
+        <strong>Transformer</strong> architecture — trained on massive amounts of text to predict
+        the next token in a sequence. Scale it up (more data, more parameters, more compute) and
+        this simple prediction skill turns into something that looks a lot like reasoning,
+        writing, translating, and coding.
+      </div>
+      <div class="callout life">
+        It's like one of those phone-keyboard "next word" suggestions — except instead of knowing
+        3 likely next words from your own texting history, an LLM has effectively read a
+        significant chunk of the internet and can suggest (and keep suggesting, one word after
+        another) an entire coherent essay.
+      </div>
+      <p>
+        In one line: <code>LLM = A huge neural network that predicts the next word, really really well, at huge scale</code>.
+        "Large" refers to both the size of the model (sometimes hundreds of billions of
+        <a href="#glossary">parameters</a>) and the size of the data it was trained on (trillions
+        of words).
+      </p>
+    </section>
+
+    <!-- 2 -->
+    <section class="block" id="why-llm">
+      <h2><span class="num">2</span> Why Do We Even Need LLMs?</h2>
+      <p>
+        Before LLMs, computers were terrible at language unless you spelled out exact rules for
+        them. A spellchecker could tell you "recieve" is misspelled because someone coded a rule
+        for that specific word. But ask an older system to "summarize this email in a friendly
+        tone" and it had no idea where to even start — there's no simple rule for "friendly tone."
+      </p>
+      <div class="callout life">
+        Old-school language software was like a cookbook with 10,000 exact recipes — great if your
+        request matches one exactly, useless the moment you ask for something slightly different.
+        An LLM is more like a chef who actually learned how cooking <em>works</em> — give them a
+        weird combination of ingredients and an unusual request, and they can still improvise
+        something sensible.
+      </div>
+      <p>Language is everywhere, and it's messy — the same idea can be phrased a hundred different ways:</p>
+      <ul>
+        <li><strong>Ambiguity</strong> — "I saw her duck" could mean a bird or a dodging motion. Humans use context effortlessly; rigid rule-based systems struggle badly.</li>
+        <li><strong>Infinite variety</strong> — there is no finite list of "all possible sentences" you could hard-code rules for.</li>
+        <li><strong>World knowledge mixed with language</strong> — understanding "the trophy didn't fit in the suitcase because it was too big" requires knowing what physically fits inside what, not just grammar.</li>
+      </ul>
+      <p>
+        LLMs sidestep all of this by <em>learning</em> the patterns of language (and a surprising
+        amount of world knowledge baked into that language) directly from enormous amounts of real
+        text, instead of being told explicit rules by a programmer.
+      </p>
+      <div class="callout tip">
+        This is also exactly why LLMs can be <em>wrong</em> confidently — they learned statistical
+        patterns of what sounds right, not a verified database of facts. We'll come back to this
+        limitation repeatedly throughout this guide (hallucination, grounding, and why
+        <a href="rag.html">RAG</a> exists at all).
+      </div>
+    </section>
+
+    <!-- 3 -->
+    <section class="block" id="prereq">
+      <h2><span class="num">3</span> Prerequisite Crash Course (2-Minute Version)</h2>
+      <p>You don't need a PhD to follow this guide, but a few basic ideas make everything click faster:</p>
+      <h3>3.1 — What's a vector / embedding?</h3>
+      <p>
+        A <strong>vector</strong> is just a list of numbers, like <code>[0.2, -1.4, 0.9]</code>.
+        An <strong>embedding</strong> is a vector that represents the <em>meaning</em> of
+        something — a word, a sentence, an image. Words with similar meaning end up with similar
+        (nearby) vectors. "King" and "Queen" sit close together; "King" and "Banana" sit far apart.
+      </p>
+      <h3>3.2 — What's a neural network, really?</h3>
+      <p>
+        At its simplest: a neural network is a big pile of numbers (called <strong>weights</strong>
+        or <strong>parameters</strong>) arranged in layers, where each layer takes some numbers in,
+        does simple math (multiply, add, squash through a non-linear function), and passes numbers
+        to the next layer. Training means slowly adjusting all those weights so the final output
+        gets closer and closer to what we want.
+      </p>
+      <div class="callout life">
+        Think of a neural network like a HUGE panel of adjustable dials on a mixing board. At
+        first the dials are set randomly, so the output is noise. Training is the (automated)
+        process of nudging every single dial, tiny bit by tiny bit, millions of times, until the
+        output sounds right.
+      </div>
+      <h3>3.3 — What's "training" vs "inference"?</h3>
+      <table>
+        <tr><th>Phase</th><th>What happens</th></tr>
+        <tr><td><strong>Training</strong></td><td>The model reads huge amounts of data and adjusts its internal weights to get better at predicting the next token. Happens once (or occasionally), costs a LOT of compute, can take weeks on thousands of GPUs.</td></tr>
+        <tr><td><strong>Inference</strong></td><td>The already-trained model is used to actually generate text for a real user (e.g., answering your ChatGPT question). Weights are frozen — no more learning happens here. Must be fast and cheap since it runs constantly.</td></tr>
+      </table>
+      <div class="callout tip">
+        Keep this distinction in mind throughout the whole guide — Parts C (Training) and E
+        (Inference) are solving completely different engineering problems, even though they use
+        the same underlying model.
+      </div>
+    </section>
+
+    <!-- 4 -->
+    <section class="block" id="llm-vs-nlp">
+      <h2><span class="num">4</span> LLMs vs Traditional NLP vs Rule-Based Systems</h2>
+      <table>
+        <tr><th>Approach</th><th>How it works</th><th>Strength</th><th>Weakness</th></tr>
+        <tr><td><strong>Rule-Based Systems</strong></td><td>Hand-written if/else rules, regex patterns, keyword matching.</td><td>Predictable, explainable, cheap to run.</td><td>Breaks on anything not explicitly anticipated; doesn't scale to open-ended language.</td></tr>
+        <tr><td><strong>Classical/Statistical NLP</strong></td><td>Small statistical models (n-grams, HMMs, SVMs) over hand-engineered features, often task-specific (one model per task).</td><td>Fast, interpretable, works with less data.</td><td>Needs feature engineering per task; limited understanding of context and nuance.</td></tr>
+        <tr><td><strong>Earlier Neural NLP (RNN/LSTM)</strong></td><td>Neural networks that process text one word at a time in sequence, carrying a "memory" of previous words forward.</td><td>Learns features automatically; better context handling than classical methods.</td><td>Struggles with long-range dependencies; sequential processing makes training slow (can't parallelize across the sequence).</td></tr>
+        <tr><td><strong>LLMs (Transformer-based)</strong></td><td>One giant pretrained model that learns general language patterns from massive data, then can be adapted (prompted or fine-tuned) to almost any task.</td><td>General-purpose, strong context handling via attention (Section 10), emergent reasoning at scale, highly parallelizable training.</td><td>Extremely expensive to train, can hallucinate, needs huge compute/data, less interpretable ("black box").</td></tr>
+      </table>
+      <div class="callout life">
+        It's the difference between (1) a vending machine with fixed buttons (rule-based), (2) a
+        human cashier trained for ONE specific store's checkout process (classical NLP), (3) an
+        experienced cashier who's worked many different stores and adapts quickly (RNN/LSTM), and
+        (4) someone who has broadly studied commerce, psychology, and logistics and can walk into
+        almost any business and figure out how to help (LLM) — more general, more powerful, but
+        also more expensive to "produce" and occasionally overconfident.
+      </div>
+    </section>
+
+    <!-- 5 -->
+    <section class="block" id="history">
+      <h2><span class="num">5</span> A Short History & Timeline</h2>
+      <table>
+        <tr><th>Era</th><th>What happened</th></tr>
+        <tr><td>1950s-1990s</td><td>Rule-based machine translation and early statistical n-gram language models (predicting the next word from counts of word sequences seen before).</td></tr>
+        <tr><td>1997</td><td><a href="https://en.wikipedia.org/wiki/Long_short-term_memory" target="_blank" rel="noopener">LSTM</a> (Long Short-Term Memory) networks introduced — a type of RNN that could "remember" information over longer sequences, becoming the dominant approach for a decade.</td></tr>
+        <tr><td>2013</td><td><a href="https://en.wikipedia.org/wiki/Word2vec" target="_blank" rel="noopener">Word2Vec</a> popularizes word embeddings — representing words as dense vectors capturing meaning, a key stepping stone.</td></tr>
+        <tr><td>2017</td><td><strong>"Attention Is All You Need"</strong> introduces the <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">Transformer</a> architecture — ditches recurrence entirely in favor of the attention mechanism (Section 10), enabling massive parallelization. This is the single biggest turning point in this whole history.</td></tr>
+        <tr><td>2018</td><td><a href="https://arxiv.org/abs/1810.04805" target="_blank" rel="noopener">BERT</a> (bidirectional encoder) and GPT-1 (decoder-only, generative) both launch, showing pretraining-then-finetuning works extremely well.</td></tr>
+        <tr><td>2019-2020</td><td>GPT-2, then <a href="https://arxiv.org/abs/2005.14165" target="_blank" rel="noopener">GPT-3</a> (175B parameters) demonstrate that simply scaling up model and data size unlocks dramatic new "emergent" capabilities, including impressive few-shot learning.</td></tr>
+        <tr><td>2022</td><td><a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener">InstructGPT</a>/ChatGPT popularize instruction-tuning + RLHF (Sections 14-15), making LLMs dramatically easier and safer to actually talk to as an assistant, not just a text-completer.</td></tr>
+        <tr><td>2023</td><td>Open-weight models (Llama, Mistral) proliferate; GPT-4 and other frontier multimodal models arrive; parameter-efficient fine-tuning (LoRA, Section 16) makes customizing LLMs accessible without huge compute budgets.</td></tr>
+        <tr><td>2024</td><td>Mixture-of-Experts architectures (Section 23) scale capability without proportionally scaling inference cost; "reasoning models" that use extended test-time "thinking" (Section 25) emerge; context windows grow to hundreds of thousands and then a million tokens.</td></tr>
+        <tr><td>2025</td><td>Reasoning becomes a standard dial on frontier models, tool use gets reliable enough that LLMs become the engine of everyday <strong>agents</strong> (Section 28), and open standards such as the <a href="mcp.html">Model Context Protocol</a> are donated to a neutral Linux Foundation fund (Dec 2025).</td></tr>
+        <tr><td>2026</td><td>The big labs ship new generations: <strong>Claude 5.x</strong> (Fable, Opus, Sonnet, Haiku), <strong>GPT-6</strong> (Astra, Sol, Terra, Luna) and <strong>Gemini 4 Argon</strong> — all with roughly 1-million-token context windows and built-in reasoning controls. Open-weight models (DeepSeek V4, Qwen 3.x, Mistral) keep closing the gap. Older API generations are retired (see Section 45). Details and prices: <a href="#open-vs-closed">Section 27 snapshot</a>.</td></tr>
+      </table>
+      <div class="callout tip">
+        Notice the pattern: almost every major leap came from either (1) a new architecture
+        (Transformer) or (2) simply scaling up existing ideas (more data + more parameters +
+        more compute). Both threads continue to matter today.
+      </div>
+    </section>
+
+    <div class="part-divider"><h2>Part B — Language, Tokens & Architecture</h2></div>
+
+    <!-- 6 -->
+    <section class="block" id="big-picture">
+      <h2><span class="num">6</span> The Big Picture — How an LLM Works in 3 Steps</h2>
+      <p>
+        Strip away all the jargon, and every LLM — from a tiny 100-million-parameter model to a
+        giant frontier model — does the exact same three-step loop over and over:
+      </p>
+      <div class="callout life">
+        It's exactly how a word-by-word storyteller improvises at a campfire: (1) they
+        <strong>break</strong> what's been said so far into digestible pieces, (2) they
+        <strong>think</strong> about what word makes the most sense next given the whole story so
+        far, and (3) they <strong>say that one word</strong>, then repeat the whole process for the
+        next word — forever, until they decide to stop talking.
+      </div>
+
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 760 220" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrB" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+            <marker id="arrB2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent-3)"/></marker>
+          </defs>
+          <rect class="box" x="20" y="30" width="160" height="60" rx="8"/><text x="100" y="55" text-anchor="middle">Input text</text><text x="100" y="75" text-anchor="middle">"The sky is"</text>
+          <rect class="box-hl" x="240" y="30" width="160" height="60" rx="8"/><text x="320" y="55" text-anchor="middle">1. Tokenize</text><text x="320" y="75" text-anchor="middle">[token ids]</text>
+          <rect class="box-hl" x="460" y="30" width="160" height="60" rx="8"/><text x="540" y="55" text-anchor="middle">2. Predict</text><text x="540" y="75" text-anchor="middle">next-token probs</text>
+          <rect class="box-final" x="460" y="140" width="160" height="60" rx="8"/><text x="540" y="165" text-anchor="middle">3. Pick & append</text><text x="540" y="185" text-anchor="middle">"blue" (highest prob)</text>
+          <line class="edge" x1="180" y1="60" x2="238" y2="60" marker-end="url(#arrB)"/>
+          <line class="edge" x1="400" y1="60" x2="458" y2="60" marker-end="url(#arrB)"/>
+          <line class="edge" x1="540" y1="90" x2="540" y2="138" marker-end="url(#arrB)"/>
+          <path class="loop" d="M460,170 Q200,170 100,92" marker-end="url(#arrB2)"/>
+          <text x="260" y="200" class="edge-label">repeat with new, longer input</text>
+        </svg>
+        <div class="diagram-caption">Fig 1 — Tokenize → predict the next token's probability → pick one and loop, feeding the new (longer) sequence back in.</div>
+      </div>
+
+      <ol>
+        <li><strong>Tokenize</strong> — chop the input text into small pieces called tokens (Section 7) and convert each into a number.</li>
+        <li><strong>Predict</strong> — run those numbers through the (massive) neural network, which outputs a probability for <em>every possible next token</em> in its vocabulary (e.g., "blue" gets 72%, "cloudy" gets 15%, "purple" gets 0.01%...).</li>
+        <li><strong>Pick & repeat</strong> — choose one token based on those probabilities (Section 18 covers exactly how), add it to the sequence, and feed the whole thing back in to predict the NEXT token. Keep looping until a stop condition is met.</li>
+      </ol>
+      <div class="callout tip">
+        This is why LLMs sometimes feel like they're "typing live" when you use them — that's
+        literally what's happening. Each visible word (or chunk of a word) is one full pass through
+        this entire loop.
+      </div>
+    </section>
+
+    <!-- 7 -->
+    <section class="block" id="tokenization">
+      <h2><span class="num">7</span> Tokenization Deep Dive</h2>
+      <p>
+        Computers don't understand letters or words directly — everything has to become numbers.
+        <strong>Tokenization</strong> is the process of splitting text into small chunks (tokens)
+        and mapping each chunk to a unique integer ID using a fixed <strong>vocabulary</strong>.
+      </p>
+      <div class="callout life">
+        Imagine a translator who only has a phrasebook of 50,000 common syllables/words/pieces
+        memorized with a number next to each. Before translating anything, they first have to chop
+        your sentence into pieces that actually exist in their phrasebook.
+      </div>
+      <h3>7.1 — Why not just use whole words?</h3>
+      <p>
+        A whole-word vocabulary would need an entry for every word in every language, including
+        typos, made-up words, and names — essentially infinite, and brand-new/rare words would
+        always be unrepresentable ("out of vocabulary"). A whole-character vocabulary avoids that
+        problem but makes sequences extremely long (and long sequences are expensive — Section 10).
+      </p>
+      <h3>7.2 — Subword tokenization: the middle ground</h3>
+      <table>
+        <tr><th>Method</th><th>How it works</th><th>Used by</th></tr>
+        <tr><td><a href="https://arxiv.org/abs/1508.07909" target="_blank" rel="noopener">BPE (Byte-Pair Encoding)</a></td><td>Starts with individual characters/bytes, then repeatedly merges the most frequently co-occurring pair into a new token, building up common words/subwords as single tokens over many merge steps.</td><td>GPT family (via <a href="https://github.com/openai/tiktoken" target="_blank" rel="noopener">tiktoken</a>)</td></tr>
+        <tr><td>WordPiece</td><td>Similar merge-based idea to BPE, but picks merges that maximize the likelihood of the training data rather than pure frequency.</td><td>BERT</td></tr>
+        <tr><td><a href="https://github.com/google/sentencepiece" target="_blank" rel="noopener">SentencePiece</a></td><td>Treats the input as a raw stream (including spaces) rather than pre-split words, so it works well even for languages without clear word boundaries (like Japanese/Chinese).</td><td>Llama, T5, many multilingual models</td></tr>
+      </table>
+      <p>
+        Common words ("the", "is") usually become a single token. Rare or made-up words get split
+        into multiple subword pieces, e.g. <code>"tokenization"</code> might become
+        <code>["token", "ization"]</code> — this is exactly why word/character counts and token
+        counts never match up.
+      </p>
+      <div class="callout warn">
+        Vocabulary size is a trade-off: too small, and every sentence becomes a long sequence of
+        tiny pieces (slow, expensive). Too large, and the embedding table (Section 8) becomes huge
+        and many tokens are rarely seen during training. Most modern LLMs land somewhere between
+        30,000 and 250,000 tokens in their vocabulary.
+      </div>
+
+      <details class="deepdive">
+        <summary>Show me a simple "from scratch" BPE tokenizer (code)</summary>
+<pre><code>from collections import Counter
+
+def get_pair_counts(tokens):
+    pairs = Counter()
+    for word_tokens in tokens:
+        for i in range(len(word_tokens) - 1):
+            pairs[(word_tokens[i], word_tokens[i + 1])] += 1
+    return pairs
+
+def merge_pair(tokens, pair):
+    merged = "".join(pair)
+    new_tokens = []
+    for word_tokens in tokens:
+        new_word, i = [], 0
+        while i < len(word_tokens):
+            if i < len(word_tokens) - 1 and (word_tokens[i], word_tokens[i + 1]) == pair:
+                new_word.append(merged)
+                i += 2
+            else:
+                new_word.append(word_tokens[i])
+                i += 1
+        new_tokens.append(new_word)
+    return new_tokens
+
+def train_bpe(words, num_merges=10):
+    tokens = [list(w) + ["</w>"] for w in words]   # start: every char is its own token
+    merges = []
+    for _ in range(num_merges):
+        pairs = get_pair_counts(tokens)
+        if not pairs:
+            break
+        best_pair = max(pairs, key=pairs.get)       # most frequent adjacent pair
+        tokens = merge_pair(tokens, best_pair)
+        merges.append(best_pair)
+    return tokens, merges
+
+words = ["low", "lower", "lowest", "newer", "newest"]
+final_tokens, merges = train_bpe(words, num_merges=8)
+print(final_tokens)
+print("Merges learned, in order:", merges)</code></pre>
+        <p>
+          This is the literal core idea behind BPE: repeatedly find the most frequent adjacent
+          pair of symbols and merge it into one new symbol. Real tokenizers (tiktoken,
+          SentencePiece) run this over billions of words and add efficient implementations, but the
+          algorithm is exactly this simple at heart.
+        </p>
+      </details>
+    </section>
+
+    <!-- 8 -->
+    <section class="block" id="embeddings-pos">
+      <h2><span class="num">8</span> Embeddings & Positional Encoding</h2>
+      <h3>8.1 — Token embeddings</h3>
+      <p>
+        Once text is tokenized into integer IDs, each ID is looked up in an
+        <strong>embedding table</strong> — a big matrix where row <em>i</em> is a learned vector
+        representing token <em>i</em>'s "meaning." This table starts random and is learned during
+        training, just like every other weight in the network.
+      </p>
+      <div class="callout life">
+        It's like a giant library where every possible word/subword has its own shelf location
+        (a point in space). Words that mean similar things end up shelved near each other,
+        purely because the model learned that placement is useful for predicting text well.
+      </div>
+      <h3>8.2 — Why we also need positional encoding</h3>
+      <p>
+        Here's the catch: the core attention mechanism (Section 10) looks at ALL tokens at once,
+        with no inherent sense of order — "the cat sat on the mat" and "the mat sat on the cat"
+        would look identical to it without extra help. We need to inject information about
+        <strong>where</strong> each token sits in the sequence.
+      </p>
+      <table>
+        <tr><th>Method</th><th>Idea</th><th>Used by</th></tr>
+        <tr><td>Absolute (learned/sinusoidal)</td><td>Add a fixed or learned vector representing "position 1," "position 2," etc. directly to each token embedding.</td><td>Original Transformer, GPT-2</td></tr>
+        <tr><td><a href="https://arxiv.org/abs/2104.09864" target="_blank" rel="noopener">RoPE (Rotary Position Embedding)</a></td><td>Instead of adding a position vector, it <em>rotates</em> the query/key vectors by an angle proportional to position — elegantly encodes relative distance between tokens and generalizes well to longer sequences than seen in training.</td><td>Llama, GPT-NeoX, most modern open models</td></tr>
+        <tr><td><a href="https://arxiv.org/abs/2108.12409" target="_blank" rel="noopener">ALiBi</a></td><td>Doesn't modify embeddings at all — instead directly biases attention scores based on the distance between tokens (farther tokens get penalized), which extrapolates very well to long contexts.</td><td>BLOOM, some long-context models</td></tr>
+      </table>
+      <div class="callout tip">
+        You don't need to memorize the math of RoPE/ALiBi to use LLMs well — just remember WHY
+        positional encoding exists at all: attention alone is "order-blind," so something has to
+        tell the model which token came first.
+      </div>
+    </section>
+
+    <!-- 9 -->
+    <section class="block" id="transformer-arch">
+      <h2><span class="num">9</span> The Transformer Architecture — Deep Dive</h2>
+      <p>
+        The <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">Transformer</a>
+        (from the famous 2017 paper "Attention Is All You Need") is the architecture behind
+        essentially every modern LLM. Most LLMs today (GPT, Llama, Claude's underlying
+        architecture family) use just the <strong>decoder</strong> half of the original design,
+        stacked many times.
+      </p>
+
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 420 460" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrC" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+          </defs>
+          <rect class="box" x="110" y="10" width="200" height="40" rx="8"/><text x="210" y="35" text-anchor="middle">Token + Positional Embedding</text>
+          <rect class="box-hl" x="60" y="90" width="300" height="300" rx="10"/>
+          <text x="210" y="112" class="phase-label" text-anchor="middle">Repeated N times (a "layer")</text>
+          <rect class="box" x="90" y="130" width="240" height="40" rx="8"/><text x="210" y="155" text-anchor="middle">Multi-Head Self-Attention</text>
+          <rect class="box" x="90" y="185" width="240" height="30" rx="8"/><text x="210" y="205" text-anchor="middle">Add & Layer Norm (residual)</text>
+          <rect class="box" x="90" y="230" width="240" height="40" rx="8"/><text x="210" y="255" text-anchor="middle">Feed-Forward Network</text>
+          <rect class="box" x="90" y="285" width="240" height="30" rx="8"/><text x="210" y="305" text-anchor="middle">Add & Layer Norm (residual)</text>
+          <rect class="box-dim" x="90" y="335" width="240" height="30" rx="8"/><text x="210" y="355" text-anchor="middle">↓ feeds into next layer ↓</text>
+          <rect class="box-final" x="110" y="410" width="200" height="40" rx="8"/><text x="210" y="435" text-anchor="middle">Next-token probabilities</text>
+          <line class="edge" x1="210" y1="50" x2="210" y2="88" marker-end="url(#arrC)"/>
+          <line class="edge" x1="210" y1="170" x2="210" y2="183" marker-end="url(#arrC)"/>
+          <line class="edge" x1="210" y1="215" x2="210" y2="228" marker-end="url(#arrC)"/>
+          <line class="edge" x1="210" y1="270" x2="210" y2="283" marker-end="url(#arrC)"/>
+          <line class="edge" x1="210" y1="390" x2="210" y2="408" marker-end="url(#arrC)"/>
+        </svg>
+        <div class="diagram-caption">Fig 2 — One Transformer (decoder) layer: attention lets tokens "look at" each other, the feed-forward network processes each position individually, and residual connections + layer norm keep training stable. Stack this block N times (e.g., 32, 80, or more layers) for a full model.</div>
+      </div>
+
+      <h3>9.1 — The key building blocks</h3>
+      <ul>
+        <li><strong>Self-Attention</strong> (Section 10) — lets every token look at every other token and decide how much to "pay attention" to each one.</li>
+        <li><strong>Feed-Forward Network (FFN)</strong> — a small two-layer neural network applied independently to each token's representation, adding extra processing capacity (this is where a large chunk of the model's total parameters actually live).</li>
+        <li><strong>Residual connections</strong> — each sub-layer's output is ADDED to its input (rather than replacing it), which makes it much easier to train very deep stacks of layers without gradients vanishing.</li>
+        <li><strong>Layer Normalization</strong> — rescales values to keep numbers in a stable, well-behaved range as they flow through dozens of layers.</li>
+      </ul>
+      <div class="callout life">
+        Think of each layer as one "round" at a group study table: in the attention step, every
+        student (token) briefly glances at every other student's notes and updates their own
+        understanding. In the feed-forward step, each student then quietly thinks it over alone.
+        Do this for 32-100+ rounds and a surprisingly deep understanding emerges.
+      </div>
+    </section>
+
+    <!-- 10 -->
+    <section class="block" id="attention">
+      <h2><span class="num">10</span> Self-Attention & Multi-Head Attention Explained</h2>
+      <p>
+        Self-attention is the single most important idea in modern AI. It lets the model answer,
+        for every token: <em>"which OTHER tokens in this sequence should I pay the most attention
+        to, in order to understand/predict well?"</em>
+      </p>
+      <h3>10.1 — Query, Key, Value (Q, K, V)</h3>
+      <p>Every token's embedding is projected (multiplied by learned weight matrices) into three different vectors:</p>
+      <ul>
+        <li><strong>Query (Q)</strong> — "what am I looking for?"</li>
+        <li><strong>Key (K)</strong> — "what do I contain / what can I offer?"</li>
+        <li><strong>Value (V)</strong> — "here's my actual content, if you want it"</li>
+      </ul>
+      <div class="callout life">
+        It's exactly like a library search: your <strong>Query</strong> is your search phrase,
+        every book's <strong>Key</strong> is like its catalog tags/keywords, and the
+        <strong>Value</strong> is the actual book content you get back once a match scores well.
+      </div>
+      <p>
+        For every token, we compare its Query against EVERY token's Key (via a dot product) to get
+        a similarity score, turn those scores into probabilities with <strong>softmax</strong>
+        (Section 17), and then take a weighted sum of all the Values using those probabilities as
+        weights. That weighted sum becomes the token's new, "context-aware" representation.
+      </p>
+      <div class="callout def">
+        The scaled dot-product attention formula: <code>Attention(Q, K, V) = softmax(QK<sup>T</sup> / √d_k) · V</code>
+        — where d_k is the dimension of the key vectors (the √d_k division just keeps the numbers
+        from growing too large before the softmax, which would otherwise make gradients unstable).
+      </div>
+
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+          <text x="10" y="18" class="phase-label">Attention for the word "it" in: "The cat sat because it was tired"</text>
+          <rect class="box" x="10" y="40" width="70" height="36" rx="6"/><text x="45" y="63" text-anchor="middle">The</text>
+          <rect class="box-hl" x="90" y="40" width="70" height="36" rx="6"/><text x="125" y="63" text-anchor="middle">cat</text>
+          <rect class="box" x="170" y="40" width="70" height="36" rx="6"/><text x="205" y="63" text-anchor="middle">sat</text>
+          <rect class="box" x="250" y="40" width="90" height="36" rx="6"/><text x="295" y="63" text-anchor="middle">because</text>
+          <rect class="box-final" x="350" y="40" width="60" height="36" rx="6"/><text x="380" y="63" text-anchor="middle">it</text>
+          <rect class="box" x="420" y="40" width="70" height="36" rx="6"/><text x="455" y="63" text-anchor="middle">was</text>
+          <rect class="box" x="500" y="40" width="80" height="36" rx="6"/><text x="540" y="63" text-anchor="middle">tired</text>
+          <path class="loop" d="M380,76 Q380,140 125,78" marker-end="url(#arrC)"/>
+          <text x="230" y="140" class="edge-label">high attention weight (0.62)</text>
+          <path class="loop" d="M380,76 Q380,110 205,78" marker-end="url(#arrC)"/>
+          <text x="420" y="180" class="edge-label">low weights to "the", "because", "was" (not shown, near-zero)</text>
+        </svg>
+        <div class="diagram-caption">Fig 3 — The token "it" attends most strongly back to "cat" — this is how the model resolves pronouns and long-range dependencies without any explicit grammar rules.</div>
+      </div>
+
+      <h3>10.2 — Why MULTI-head attention?</h3>
+      <p>
+        Instead of computing attention once, the model splits Q/K/V into several smaller chunks
+        ("heads") and runs attention independently in each one, then concatenates the results.
+        Each head can specialize — one might learn to track grammatical subject-verb relationships,
+        another might track coreference ("it" → "cat"), another might track topic/theme.
+      </p>
+      <div class="callout life">
+        It's like having 8-96 different readers (depending on model size) each re-reading the same
+        sentence but focusing on a different angle — one on grammar, one on who-did-what-to-whom,
+        one on tone — then pooling all their notes together into one richer understanding.
+      </div>
+      <div class="callout tip">
+        You'll sometimes hear "causal" or "masked" self-attention for LLMs specifically — this just
+        means each token is only allowed to attend to itself and tokens BEFORE it (not future
+        tokens), since the whole point is predicting what comes next, not peeking at the answer.
+      </div>
+    </section>
+
+    <div class="part-divider"><h2>Part C — Training</h2></div>
+
+    <!-- 11 -->
+    <section class="block" id="pretraining">
+      <h2><span class="num">11</span> Pretraining — Learning From Raw Text</h2>
+      <p>
+        <strong>Pretraining</strong> is the first, biggest, and most expensive phase of creating an
+        LLM. The model is shown enormous amounts of raw text (no labels, no "correct answers"
+        written by humans) and given one simple objective over and over:
+        <strong>predict the next token</strong>.
+      </p>
+      <div class="callout def">
+        This objective is called <strong>Causal Language Modeling</strong> — given tokens
+        1...t-1, predict token t. Every sentence on the internet secretly contains its own "answer
+        key": the next word is right there, so no human needs to label anything. This is why
+        pretraining can use essentially unlimited raw text (self-supervised learning).
+      </div>
+      <div class="callout life">
+        It's like a version of "fill in the blank" played trillions of times on every sentence that
+        exists: "The capital of France is ___" (blank = "Paris"), "2 + 2 = ___" (blank = "4"), "Once
+        upon a ___" (blank = "time"). Nobody had to manually write "correct answer" labels — the
+        original text already contains them, hidden one word ahead.
+      </div>
+      <p>
+        During training, the model's prediction is compared against the ACTUAL next token using a
+        loss function (<strong>cross-entropy loss</strong>, Section 17), and the error is used to
+        slightly adjust every weight in the network via <strong>backpropagation</strong> and
+        <strong>gradient descent</strong> — repeated over trillions of tokens, on thousands of GPUs,
+        often for weeks.
+      </p>
+      <div class="callout warn">
+        After pretraining alone, a model is a "raw" base model — great at completing text
+        plausibly, but NOT naturally good at being a helpful assistant (it might continue your
+        question with more questions, rather than answering it!). That's what Sections 14-15 fix.
+      </div>
+    </section>
+
+    <!-- 12 -->
+    <section class="block" id="datasets">
+      <h2><span class="num">12</span> Datasets & Data Curation</h2>
+      <p>Pretraining data typically comes from a blend of sources:</p>
+      <div class="grid">
+        <div class="card"><h4>🌐 Web crawls</h4><p>Massive scrapes of the public web like <a href="https://commoncrawl.org/" target="_blank" rel="noopener">Common Crawl</a> — huge in volume but noisy, needs heavy filtering.</p></div>
+        <div class="card"><h4>📚 Books & long-form text</h4><p>Teaches coherent, long-range narrative structure that short web snippets don't.</p></div>
+        <div class="card"><h4>💻 Code</h4><p>GitHub repositories — surprisingly improves general reasoning ability, not just coding skill.</p></div>
+        <div class="card"><h4>📖 Reference/academic</h4><p>Wikipedia, academic papers — dense, high-quality factual text.</p></div>
+        <div class="card"><h4>💬 Forums & Q&A</h4><p>Sites like StackExchange/Reddit — conversational style, diverse topics and reasoning chains.</p></div>
+      </div>
+      <h3>12.1 — Why curation matters so much</h3>
+      <ul>
+        <li><strong>Deduplication</strong> — the same text repeated many times across the web can cause the model to over-memorize it (and waste training compute).</li>
+        <li><strong>Quality filtering</strong> — removing spam, broken text, adult content, and low-value boilerplate (navigation menus, cookie notices) that would otherwise pollute training.</li>
+        <li><strong>Toxicity & bias filtering</strong> — reducing harmful content, though this is an active, imperfect research area, not a solved problem.</li>
+        <li><strong>Decontamination</strong> — removing benchmark test data from the training set so evaluation scores (Section 34) actually mean something and aren't just memorized answers.</li>
+      </ul>
+      <div class="callout life">
+        It's like deciding what to feed a student before a big exam — you wouldn't just hand them
+        every scrap of paper lying around (ads, spam, duplicated pages); you'd curate a library of
+        genuinely good material, remove garbage, and definitely not let them see the actual exam
+        questions ahead of time (decontamination).
+      </div>
+      <div class="callout tip">
+        A common rule of thumb (from scaling laws, Section 13) is that models should be trained on
+        roughly 20x more tokens than parameters for compute-optimal training — meaning dataset size
+        and model size need to scale together, not independently.
+      </div>
+    </section>
+
+    <!-- 13 -->
+    <section class="block" id="scaling-laws">
+      <h2><span class="num">13</span> Scaling Laws</h2>
+      <p>
+        One of the most important discoveries in this field: model performance (measured as loss —
+        how well it predicts the next token) improves in a remarkably <strong>predictable,
+        smooth</strong> way as you scale up three things together: model size (parameters), dataset
+        size (tokens), and compute (FLOPs).
+      </p>
+      <div class="callout def">
+        <a href="https://arxiv.org/abs/2001.08361" target="_blank" rel="noopener">Kaplan et al.
+        (2020)</a> first showed these smooth power-law relationships. Later,
+        <a href="https://arxiv.org/abs/2203.15556" target="_blank" rel="noopener">Chinchilla
+        (Hoffmann et al., 2022)</a> showed many earlier models were actually "undertrained" for
+        their size — for a FIXED compute budget, better results come from a smaller model trained
+        on proportionally MORE data, rather than a huge model trained on too little data.
+      </div>
+      <div class="callout life">
+        It's like deciding how to spend a fixed study budget: cramming one giant textbook (huge
+        model) that you barely read (little data) is worse than studying a right-sized textbook
+        (smaller model) thoroughly cover to cover (lots of data), given the same number of total
+        study hours (compute).
+      </div>
+      <table>
+        <tr><th>Scaling lever</th><th>Effect</th></tr>
+        <tr><td>More parameters</td><td>More capacity to store patterns/knowledge, but needs proportionally more data to use that capacity well.</td></tr>
+        <tr><td>More training tokens</td><td>Better generalization, up to the point where the model's capacity becomes the bottleneck.</td></tr>
+        <tr><td>More compute (FLOPs)</td><td>The budget that has to be split between model size and data size — scaling laws tell you the optimal split.</td></tr>
+      </table>
+      <div class="callout warn">
+        Scaling laws predict smooth improvements in next-token-prediction LOSS — they do NOT
+        perfectly predict when specific new capabilities ("emergent abilities" like multi-step
+        arithmetic) will suddenly appear, which remains an active area of research and debate.
+      </div>
+    </section>
+
+    <!-- 14 -->
+    <section class="block" id="sft">
+      <h2><span class="num">14</span> Instruction Tuning / Supervised Fine-Tuning (SFT)</h2>
+      <p>
+        A raw pretrained ("base") model just continues text plausibly — ask it a question and it
+        might respond with more questions, because that's a plausible continuation of text it saw
+        online (like a forum thread). <strong>Instruction tuning</strong> teaches the model to
+        behave like a helpful assistant that actually answers what you asked.
+      </p>
+      <div class="callout life">
+        Pretraining is like a kid who's read every book in the library but was never taught
+        classroom manners — brilliant but might respond to "What's 2+2?" by rambling about number
+        theory history instead of just saying "4." SFT is the etiquette lesson: here are thousands
+        of examples of GOOD (instruction → ideal response) behavior — now mimic that pattern.
+      </div>
+      <p>
+        Concretely: humans (or other, already-aligned, models) write high-quality example pairs of
+        <code>(instruction, ideal response)</code>, and the model is further trained (fine-tuned) on
+        this smaller, curated dataset using the same next-token-prediction loss — but now the
+        "correct" next tokens come from a human-approved ideal answer, not just random internet
+        text.
+      </p>
+      <div class="callout tip">
+        SFT data is far smaller than pretraining data (thousands to low millions of examples vs.
+        trillions of tokens) but much higher quality and far more carefully curated — quality over
+        quantity matters a lot more at this stage.
+      </div>
+    </section>
+
+    <!-- 15 -->
+    <section class="block" id="rlhf">
+      <h2><span class="num">15</span> RLHF, Reward Models & DPO</h2>
+      <p>
+        SFT teaches the model to IMITATE good examples, but it doesn't directly teach "which of two
+        OK-ish responses is better." That's where alignment via human feedback comes in.
+      </p>
+      <h3>15.1 — RLHF (Reinforcement Learning from Human Feedback)</h3>
+      <p>Classic RLHF (used in <a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener">InstructGPT</a>) has three stages:</p>
+      <ol>
+        <li><strong>Collect comparisons</strong> — the model generates several responses to the same prompt; humans rank them from best to worst.</li>
+        <li><strong>Train a reward model</strong> — a separate smaller model learns to predict the human preference score for any given response.</li>
+        <li><strong>Reinforcement learning (e.g., PPO)</strong> — the main LLM is further trained to generate responses that score highly according to the reward model, while a penalty keeps it from drifting too far from its original behavior (to avoid "reward hacking").</li>
+      </ol>
+
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 700 180" xmlns="http://www.w3.org/2000/svg">
+          <defs><marker id="arrRLHF" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker></defs>
+          <rect class="box" x="10" y="20" width="150" height="50" rx="8"/><text x="85" y="49" text-anchor="middle">Prompt → LLM</text>
+          <rect class="box" x="200" y="20" width="170" height="50" rx="8"/><text x="285" y="42" text-anchor="middle">Multiple responses,</text><text x="285" y="58" text-anchor="middle">human-ranked</text>
+          <rect class="box-hl" x="410" y="20" width="150" height="50" rx="8"/><text x="485" y="42" text-anchor="middle">Reward Model</text><text x="485" y="58" text-anchor="middle">(learns preferences)</text>
+          <rect class="box-final" x="590" y="20" width="100" height="50" rx="8"/><text x="640" y="49" text-anchor="middle">Score</text>
+          <rect class="box-final" x="200" y="120" width="170" height="50" rx="8"/><text x="285" y="142" text-anchor="middle">LLM updated to</text><text x="285" y="158" text-anchor="middle">maximize reward</text>
+          <line class="edge" x1="160" y1="45" x2="198" y2="45" marker-end="url(#arrRLHF)"/>
+          <line class="edge" x1="370" y1="45" x2="408" y2="45" marker-end="url(#arrRLHF)"/>
+          <line class="edge" x1="560" y1="45" x2="588" y2="45" marker-end="url(#arrRLHF)"/>
+          <path class="loop" d="M485,70 Q485,110 370,135" marker-end="url(#arrRLHF)"/>
+          <path class="loop" d="M285,120 Q50,100 85,70" marker-end="url(#arrRLHF)"/>
+        </svg>
+        <div class="diagram-caption">Fig 4 — RLHF loop: a reward model learned from human rankings guides reinforcement learning updates to the main LLM, which then generates new responses for the next round.</div>
+      </div>
+
+      <h3>15.2 — DPO (Direct Preference Optimization): the simpler alternative</h3>
+      <p>
+        <a href="https://arxiv.org/abs/2305.18290" target="_blank" rel="noopener">DPO</a> achieves a
+        very similar alignment effect WITHOUT training a separate reward model or running
+        unstable reinforcement learning at all. Instead, it uses a clever mathematical
+        reformulation that lets you directly optimize the LLM on (chosen, rejected) response pairs
+        using a simple classification-style loss — much simpler and more stable to train in
+        practice, which is why many modern open models use DPO (or close variants) instead of full
+        RLHF/PPO.
+      </p>
+      <div class="callout tip">
+        You don't need the exact DPO math to use LLMs well — just remember the big idea: it's a
+        simpler, more stable way to teach a model "prefer response A over response B" directly,
+        skipping the separate reward-model-training step.
+      </div>
+    </section>
+
+    <!-- 16 -->
+    <section class="block" id="peft">
+      <h2><span class="num">16</span> Parameter-Efficient Fine-Tuning (LoRA, QLoRA, Adapters)</h2>
+      <p>
+        Fully fine-tuning a giant model (updating ALL its billions of parameters) for every new
+        task is extremely expensive — huge GPU memory just to store gradients and optimizer states
+        for every single weight. <strong>Parameter-efficient fine-tuning (PEFT)</strong> methods fix
+        this by freezing almost the entire model and only training a tiny number of new parameters.
+      </p>
+      <h3>16.1 — LoRA (Low-Rank Adaptation)</h3>
+      <div class="callout def">
+        <a href="https://arxiv.org/abs/2106.09685" target="_blank" rel="noopener">LoRA</a> freezes
+        the original weight matrices entirely and, alongside each one, injects a pair of tiny new
+        "low-rank" matrices that are trained instead. The key insight: the actual UPDATE needed for
+        fine-tuning typically has a much lower "complexity" (rank) than the full weight matrix, so
+        you can approximate a full fine-tuning update using far fewer new parameters — often under
+        1% of the original model's size.
+      </div>
+      <div class="callout life">
+        Instead of repainting an entire giant mural (full fine-tuning — touch every single pixel),
+        LoRA is like adding a small transparent overlay sheet with just a few new strokes on top —
+        the original mural stays untouched underneath, but the combined visual effect is a
+        customized painting. You can even swap in different overlay sheets for different tasks
+        without ever repainting the base mural.
+      </div>
+      <h3>16.2 — QLoRA: LoRA + Quantization</h3>
+      <p>
+        <a href="https://arxiv.org/abs/2305.14314" target="_blank" rel="noopener">QLoRA</a> combines
+        LoRA with <strong>quantization</strong> (Section 29) — it loads the frozen base model in a
+        compressed 4-bit format to save a huge amount of GPU memory, while still training the small
+        LoRA matrices in higher precision. This is what makes it realistic to fine-tune a
+        multi-billion-parameter model on a single consumer GPU.
+      </p>
+      <table>
+        <tr><th>Method</th><th>What's trained</th><th>Memory needed</th></tr>
+        <tr><td>Full fine-tuning</td><td>Every parameter in the model</td><td>Very high (model + gradients + optimizer states, all full-size)</td></tr>
+        <tr><td>LoRA</td><td>Small injected low-rank matrices only</td><td>Much lower — base model frozen, only tiny adapters need gradients</td></tr>
+        <tr><td>QLoRA</td><td>Same small LoRA matrices, base model loaded in 4-bit</td><td>Lowest — enables fine-tuning big models on modest hardware</td></tr>
+        <tr><td>Prefix/Prompt Tuning</td><td>A small set of learned "virtual tokens" prepended to the input</td><td>Very low, but generally less expressive than LoRA</td></tr>
+      </table>
+      <p>See Section 39 for hands-on LoRA fine-tuning code using HuggingFace + <a href="https://github.com/huggingface/peft" target="_blank" rel="noopener">PEFT</a>.</p>
+    </section>
+
+    <div class="part-divider"><h2>Part D — The Math</h2></div>
+
+    <!-- 17 -->
+    <section class="block" id="the-math">
+      <h2><span class="num">17</span> The Math Behind LLMs</h2>
+      <p>
+        You don't need to be a mathematician to use LLMs, but understanding these five formulas
+        (at a conceptual level) demystifies almost everything that happens under the hood.
+      </p>
+
+      <h3>17.1 — Softmax: turning scores into probabilities</h3>
+      <div class="callout def">
+        <code>softmax(z)<sub>i</sub> = e<sup>z_i</sup> / Σ<sub>j</sub> e<sup>z_j</sup></code> —
+        takes a list of raw scores (which can be any real number, positive or negative) and
+        converts them into a list of probabilities that are all positive and sum to exactly 1.
+      </div>
+      <p>
+        The model's final layer outputs one raw score per vocabulary token (tens of thousands of
+        numbers). Softmax turns that into "72% chance the next token is 'blue', 15% chance it's
+        'cloudy', ..." — a proper probability distribution to sample from (Section 18).
+      </p>
+      <div class="callout life">
+        It's like converting raw exam scores (which could be any number) into percentages of a
+        total pie — softmax makes sure everything adds up neatly to 100%, while still preserving
+        which options scored relatively higher.
+      </div>
+
+      <h3>17.2 — Cross-entropy loss: measuring "how wrong" a prediction was</h3>
+      <div class="callout def">
+        <code>Loss = -log(P(correct token))</code> — if the model assigned a high probability to
+        the actual correct next token, the loss is small (barely any penalty). If it assigned a
+        tiny probability to the correct token, <code>-log()</code> of a small number is a LARGE
+        penalty. This single formula, averaged across every token in the training data, is exactly
+        what gets minimized during pretraining (Section 11).
+      </div>
+
+      <h3>17.3 — The attention formula (recap from Section 10)</h3>
+      <div class="callout def">
+        <code>Attention(Q, K, V) = softmax(QK<sup>T</sup> / √d_k) · V</code> — dot-product similarity
+        between queries and keys, scaled down and turned into probabilities by softmax, then used
+        to weight-average the values.
+      </div>
+
+      <h3>17.4 — Perplexity: a human-readable version of loss</h3>
+      <div class="callout def">
+        <code>Perplexity = e<sup>Loss</sup></code> — roughly interpretable as "how many equally
+        likely choices was the model effectively confused between, on average, when predicting the
+        next token?" A perplexity of 1 would mean perfect, certain predictions; lower is better.
+      </div>
+      <div class="callout life">
+        A perplexity of 1 is like a multiple-choice test with only 1 real option (always obviously
+        correct). A perplexity of 1,000 is like being confused among 1,000 plausible options at
+        every single word — a much harder, worse-performing model.
+      </div>
+
+      <h3>17.5 — Backpropagation & gradient descent (intuition only)</h3>
+      <p>
+        Training needs to answer: "which direction should I nudge each of the model's billions of
+        weights to reduce the loss?" <strong>Backpropagation</strong> uses calculus (the chain rule)
+        to efficiently compute exactly how much each weight contributed to the final error, working
+        backward from the output layer to the input layer. <strong>Gradient descent</strong> then
+        nudges every weight a tiny step in the direction that reduces the loss, repeated millions
+        of times.
+      </p>
+      <div class="callout life">
+        Imagine you're blindfolded on a hilly landscape and want to reach the lowest valley (lowest
+        loss). You can't see the whole map, but you CAN feel which direction slopes downward right
+        where you're standing (the gradient) — so you take a small step that way, feel again, step
+        again, and eventually reach a low point.
+      </div>
+      <p>
+        See <a href="https://en.wikipedia.org/wiki/Backpropagation" target="_blank" rel="noopener">Wikipedia's backpropagation article</a>
+        for the full derivation if you want to go deeper into the calculus.
+      </p>
+    </section>
+
+    <div class="part-divider"><h2>Part E — Inference & Using LLMs</h2></div>
+
+    <!-- 18 -->
+    <section class="block" id="decoding">
+      <h2><span class="num">18</span> Decoding Strategies</h2>
+      <p>
+        Once the model outputs a probability for every possible next token, HOW do we actually pick
+        one? This choice (called a <strong>decoding strategy</strong>) has a huge effect on the
+        feel of the output.
+      </p>
+      <div class="grid">
+        <div class="card"><h4>🎯 Greedy Decoding</h4><p>Always pick the single highest-probability token. Deterministic and fast, but can produce repetitive, boring text and gets stuck in loops.</p></div>
+        <div class="card"><h4>🌳 Beam Search</h4><p>Keeps track of several ("beam width") most likely partial sequences at once instead of just one, exploring more broadly before committing. Common in translation; less common for open-ended chat.</p></div>
+        <div class="card"><h4>🎲 Top-k Sampling</h4><p>Randomly samples from only the top k most likely next tokens (e.g., top 40), ignoring the long tail of unlikely options — adds variety while avoiding truly bad choices.</p></div>
+        <div class="card"><h4>🎯🎲 Top-p (Nucleus) Sampling</h4><p>Instead of a fixed count, samples from the smallest set of tokens whose cumulative probability exceeds p (e.g., 0.9) — adapts the candidate pool size based on how confident the model is.</p></div>
+        <div class="card"><h4>🌡️ Temperature</h4><p>A number that reshapes the probability distribution before sampling. Low temperature (e.g., 0.2) sharpens it toward the most likely tokens (more focused/deterministic); high temperature (e.g., 1.2) flattens it (more random/creative).</p></div>
+      </div>
+      <div class="callout life">
+        Temperature is like adjusting someone's confidence/caution dial before they speak. Low
+        temperature = a cautious person who always says the safest, most obvious thing. High
+        temperature = someone who's had a bit too much coffee and starts throwing out wild,
+        unexpected (sometimes brilliant, sometimes nonsensical) ideas.
+      </div>
+      <div class="callout tip">
+        Most chat APIs expose <code>temperature</code> and/or <code>top_p</code> as adjustable
+        parameters. For factual/code tasks, keep temperature low (0-0.3). For brainstorming/creative
+        writing, higher temperature (0.7-1.0) often produces more interesting output.
+      </div>
+    </section>
+
+    <!-- 19 -->
+    <section class="block" id="context-window">
+      <h2><span class="num">19</span> Context Window & Long-Context Handling</h2>
+      <p>
+        The <strong>context window</strong> is the maximum number of tokens an LLM can "see" at
+        once — including your entire conversation history, any documents you've pasted in, and the
+        response it's currently generating. Once you exceed it, the oldest content has to be
+        dropped or summarized.
+      </p>
+      <div class="callout life">
+        It's like a whiteboard of fixed size in a meeting room — once it's full, you have to erase
+        something old to write something new. A bigger context window is a bigger whiteboard, but
+        even a huge whiteboard eventually fills up, and it's still slower to scan a massive board
+        than a small one.
+      </div>
+      <h3>19.1 — Why context windows used to be small, and how they grew</h3>
+      <p>
+        Standard self-attention (Section 10) compares every token against every other token, which
+        means cost grows <strong>quadratically</strong> with sequence length — doubling the context
+        length roughly quadruples the compute/memory needed for attention. Techniques like
+        <a href="https://arxiv.org/abs/2205.14135" target="_blank" rel="noopener">FlashAttention</a>
+        (a much more memory-efficient way to compute the exact same attention math), better
+        positional encodings (RoPE, ALiBi — Section 8), and architectural tricks have pushed context
+        windows from a few thousand tokens to well over a million in modern frontier models.
+      </p>
+      <h3>19.2 — "Lost in the middle"</h3>
+      <div class="callout warn">
+        Even with huge context windows, research (<a href="https://arxiv.org/abs/2307.03172" target="_blank" rel="noopener">Liu et al., 2023</a>)
+        shows models tend to pay more attention to information at the very START and very END of a
+        long prompt, sometimes "losing" facts buried in the middle. Simply having a huge context
+        window doesn't guarantee the model will use ALL of it equally well — this is one of the
+        reasons <a href="rag.html#long-context">RAG often still beats dumping everything into
+        context</a> even when the context window is technically big enough.
+      </div>
+      <div class="callout tip">
+        <strong>Where this stands today (Oct 2026):</strong> a 1-million-token window (about 555,000 words on Claude's current tokenizer) is now normal for the top Claude, GPT-6 and Gemini models.
+        That fits several long books — but bigger isn't free: you pay for every token you send, long prompts respond more slowly, and the "lost in the middle" problem hasn't vanished.
+        Use the big window to avoid chopping up a single document; still use RAG for large or changing collections.
+      </div>
+    </section>
+
+    <!-- 20 -->
+    <section class="block" id="kv-cache">
+      <h2><span class="num">20</span> KV Cache & Inference Optimization</h2>
+      <p>
+        Remember from Section 6 that generating text is a LOOP: predict one token, append it,
+        predict the next, append, repeat. Without optimization, this would mean recomputing
+        attention Key and Value vectors (Section 10) for EVERY previous token, EVERY single time a
+        new token is generated — hugely wasteful since those K/V vectors for past tokens never
+        change.
+      </p>
+      <div class="callout def">
+        The <strong>KV cache</strong> stores the already-computed Key and Value vectors for every
+        past token, so each new generation step only needs to compute Q/K/V for the ONE new token
+        and reuse the cached K/V for everything before it — turning an expensive full recomputation
+        into cheap incremental work.
+      </div>
+      <div class="callout life">
+        It's like a chef who, instead of re-chopping every single vegetable they've already used
+        every time they add one new ingredient to a dish, just keeps the already-chopped vegetables
+        in a prepped tray and only chops the newest ingredient each time.
+      </div>
+      <div class="callout tip">
+        KV cache memory usage grows with sequence length and batch size (how many requests are
+        being served at once) — this is exactly the resource that serving frameworks like
+        <a href="https://arxiv.org/abs/2309.06180" target="_blank" rel="noopener">vLLM's
+        PagedAttention</a> (Section 30) are specifically engineered to manage efficiently.
+      </div>
+    </section>
+
+    <!-- 21 -->
+    <section class="block" id="prompting">
+      <h2><span class="num">21</span> Prompting Techniques</h2>
+      <p>
+        "Prompt engineering" sounds fancy, but it just means: how you phrase your request changes
+        the quality of the response, because the model is pattern-matching against everything
+        similar it saw during training.
+      </p>
+      <h3>21.1 — Zero-shot vs Few-shot</h3>
+      <table>
+        <tr><th>Technique</th><th>What it means</th></tr>
+        <tr><td>Zero-shot</td><td>Just ask directly, with no examples: "Translate this to French: 'Good morning'."</td></tr>
+        <tr><td>Few-shot</td><td>Show a few examples of the task before the real question, so the model can pattern-match the expected format/style: "English: Hello → French: Bonjour. English: Good morning → French: ___"</td></tr>
+      </table>
+      <h3>21.2 — Chain-of-Thought (CoT) prompting</h3>
+      <div class="callout def">
+        <a href="https://arxiv.org/abs/2201.11903" target="_blank" rel="noopener">Chain-of-Thought
+        prompting</a> asks the model to "think step by step" and show its reasoning BEFORE giving a
+        final answer, instead of jumping straight to the answer. This dramatically improves
+        performance on math and multi-step logic problems, because the model generates its own
+        helpful intermediate "scratch work" as tokens it can then condition on.
+      </div>
+      <div class="callout life">
+        It's the difference between a student blurting out an answer versus "showing their work" on
+        a math test — forcing yourself to write out each step often catches mistakes you'd have
+        made by jumping straight to a guess.
+      </div>
+      <h3>21.3 — System prompts</h3>
+      <p>
+        Most chat APIs let you set a <strong>system prompt</strong> — hidden instructions that set
+        the assistant's persona, rules, and constraints for the entire conversation (e.g., "You are
+        a helpful customer support agent for Acme Corp. Never discuss competitors."), separate from
+        the user's visible messages.
+      </p>
+      <h3>21.4 — Other useful patterns</h3>
+      <ul>
+        <li><strong>Role prompting</strong> — "You are an expert Python code reviewer..." nudges the model's style/expertise toward that persona.</li>
+        <li><strong>Self-consistency</strong> — generate several reasoning paths (with some randomness) and take the majority-vote final answer, reducing the chance of one unlucky bad chain of reasoning.</li>
+        <li><strong>ReAct</strong> — interleaving reasoning with tool calls, covered in <a href="rag.html#agentic-rag">RAG's agentic section</a> and Section 28/41 here.</li>
+      </ul>
+    </section>
+
+    <!-- 22 -->
+    <section class="block" id="function-calling">
+      <h2><span class="num">22</span> Structured Output & Function/Tool Calling</h2>
+      <p>
+        LLMs naturally produce free-form text, but real applications often need reliable,
+        machine-readable output — a JSON object matching an exact schema, or a decision about WHICH
+        external function to call with WHAT arguments.
+      </p>
+      <h3>22.1 — Structured output</h3>
+      <p>
+        Modern APIs support forcing (or strongly guiding) the model's output to conform to a given
+        JSON schema — either via explicit "structured output" / "JSON mode" API features, or via
+        constrained decoding that only allows tokens valid under the schema at each generation step.
+      </p>
+      <h3>22.2 — Function/Tool calling</h3>
+      <div class="callout def">
+        <strong>Tool calling</strong> (also called function calling) lets you describe a set of
+        available functions (name, description, parameters) to the model. Instead of answering
+        directly, the model can respond with a structured request like
+        <code>{"function": "get_weather", "arguments": {"city": "Mumbai"}}</code> — your application
+        code then actually RUNS that function and feeds the result back to the model to continue
+        the conversation.
+      </div>
+      <div class="callout life">
+        It's like a smart assistant who knows they can't personally check the weather, but knows
+        EXACTLY who to call (the weather hotline) and what to ask them — they place that call,
+        wait for the answer, then relay it back to you in a normal sentence.
+      </div>
+
+      <details class="deepdive">
+        <summary>Show me a minimal tool-calling request shape (code)</summary>
+<pre><code>tools = [
+    {
+        "name": "get_weather",
+        "description": "Get the current weather for a city",
+        "parameters": {
+            "type": "object",
+            "properties": {"city": {"type": "string"}},
+            "required": ["city"],
+        },
+    }
+]
+
+# The model decides to call the tool instead of answering directly:
+model_response = {
+    "tool_call": {
+        "name": "get_weather",
+        "arguments": {"city": "Mumbai"},
+    }
+}
+
+# Your application code actually executes it:
+def get_weather(city):
+    return f"{city}: 31°C, humid"      # pretend this calls a real weather API
+
+result = get_weather(**model_response["tool_call"]["arguments"])
+# result is fed back to the model so it can write a natural-language final answer</code></pre>
+        <p>
+          This loop — model decides to call a tool → your code executes it → result goes back to
+          the model → model continues — is the exact foundation that AI Agents are built on. See
+          Section 41 for a fuller working example and Section 28 for how this connects to agentic
+          systems.
+        </p>
+      </details>
+      <div class="callout tip">
+        <strong>Newer idea:</strong> writing a custom function for every tool, in every app, gets repetitive. The
+        <a href="mcp.html">Model Context Protocol (MCP)</a> is an open standard — now stewarded by the Linux Foundation — that lets an app discover and call tools from
+        any compatible server without custom glue. The model still just does ordinary tool calling; MCP standardizes where the tools come from.
+      </div>
+    </section>
+
+    <div class="part-divider"><h2>Part F — Advanced Architectures & Latest Trends</h2></div>
+
+    <!-- 23 -->
+    <section class="block" id="moe">
+      <h2><span class="num">23</span> Mixture of Experts (MoE)</h2>
+      <p>
+        A "dense" model uses EVERY single parameter for EVERY single token it processes. A
+        <strong><a href="https://arxiv.org/abs/2101.03961" target="_blank" rel="noopener">Mixture of
+        Experts</a></strong> model instead has many separate "expert" sub-networks (e.g., 8 or 64),
+        and a small <strong>router</strong> network decides, for each token, WHICH FEW experts
+        (often just 1-2) should actually process it.
+      </p>
+      <div class="callout life">
+        It's like a hospital with many specialist doctors (experts) and a triage nurse (router) at
+        the front desk. A patient with a broken arm doesn't need to see every single doctor in the
+        building — the triage nurse sends them straight to the orthopedist and maybe one other
+        relevant specialist, saving everyone's time while still getting expert-level care.
+      </div>
+
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+          <defs><marker id="arrMoE" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker></defs>
+          <rect class="box" x="20" y="90" width="110" height="40" rx="8"/><text x="75" y="115" text-anchor="middle">Token</text>
+          <rect class="box-hl" x="190" y="90" width="110" height="40" rx="8"/><text x="245" y="115" text-anchor="middle">Router</text>
+          <rect class="box" x="380" y="10" width="100" height="40" rx="8"/><text x="430" y="35" text-anchor="middle">Expert 1</text>
+          <rect class="box-final" x="380" y="60" width="100" height="40" rx="8"/><text x="430" y="85" text-anchor="middle">Expert 2 ✓</text>
+          <rect class="box-dim" x="380" y="110" width="100" height="40" rx="8"/><text x="430" y="135" text-anchor="middle">Expert 3</text>
+          <rect class="box-final" x="380" y="160" width="100" height="40" rx="8"/><text x="430" y="185" text-anchor="middle">Expert 4 ✓</text>
+          <line class="edge" x1="130" y1="110" x2="188" y2="110" marker-end="url(#arrMoE)"/>
+          <line class="dashed" x1="300" y1="100" x2="378" y2="30"/>
+          <line class="edge" x1="300" y1="105" x2="378" y2="80" marker-end="url(#arrMoE)"/>
+          <line class="dashed" x1="300" y1="110" x2="378" y2="130"/>
+          <line class="edge" x1="300" y1="115" x2="378" y2="180" marker-end="url(#arrMoE)"/>
+        </svg>
+        <div class="diagram-caption">Fig 5 — The router sends each token to only 2 of 4 available experts (solid arrows); the other experts sit idle for that token (dashed), saving compute despite the model having 4x the total parameters.</div>
+      </div>
+
+      <div class="callout def">
+        This gives you the best of both worlds: the model's TOTAL parameter count (and therefore
+        knowledge capacity) can be huge, while the ACTIVE compute per token stays much smaller —
+        since only a few experts fire per token. This is why some of the largest modern models use
+        MoE: massive total capacity without proportionally massive inference cost.
+      </div>
+      <div class="callout warn">
+        MoE adds engineering complexity: routing needs to be balanced (so some experts don't get
+        overloaded while others sit idle/undertrained), and serving an MoE model efficiently across
+        multiple GPUs is trickier than a simple dense model.
+      </div>
+    </section>
+
+    <!-- 24 -->
+    <section class="block" id="multimodal-llm">
+      <h2><span class="num">24</span> Multimodal LLMs</h2>
+      <p>
+        A <strong>multimodal LLM</strong> can understand (and sometimes generate) more than just
+        text — images, audio, and even video. Most modern frontier models (GPT-4+, Claude, Gemini)
+        are multimodal to some degree.
+      </p>
+      <h3>24.1 — How vision gets added to a text-based LLM</h3>
+      <p>
+        A common approach: an image is run through a separate vision encoder (often based on
+        <a href="https://arxiv.org/abs/2103.00020" target="_blank" rel="noopener">CLIP</a>-style
+        models or a Vision Transformer) that converts it into a sequence of embeddings — then those
+        image embeddings are projected into the SAME embedding space the LLM already uses for text
+        tokens, and simply mixed into the input sequence alongside the text tokens. From there, the
+        same Transformer attention mechanism (Section 10) treats image-derived and text-derived
+        tokens uniformly.
+      </p>
+      <div class="callout life">
+        It's like translating a picture into a paragraph of "image-ese" words that the language
+        model already knows how to read, then dropping that paragraph right into the middle of your
+        conversation — the model doesn't need a fundamentally different brain for pictures, just a
+        translator at the front door.
+      </div>
+      <h3>24.2 — Audio and beyond</h3>
+      <p>
+        Similar ideas apply to audio: speech is encoded into embeddings (sometimes via a
+        speech-recognition model like <a href="https://github.com/openai/whisper" target="_blank" rel="noopener">Whisper</a>
+        as a first step) and fed in alongside text. Some newer models aim for "native" multimodality
+        trained end-to-end across modalities from the start, rather than bolting on separate
+        encoders after the fact.
+      </p>
+    </section>
+
+    <!-- 25 -->
+    <section class="block" id="reasoning-models">
+      <h2><span class="num">25</span> Reasoning Models & Test-Time Compute</h2>
+      <p>
+        Standard LLMs generate their final answer immediately, token by token, in one pass. A newer
+        class of <strong>"reasoning models"</strong> are specifically trained to generate a long,
+        private internal chain of reasoning ("thinking") BEFORE producing their final visible
+        answer — deliberately spending extra computation at answer-time (test-time) on harder
+        problems.
+      </p>
+      <div class="callout life">
+        It's the difference between someone blurting out the first answer that comes to mind versus
+        someone who takes a few quiet minutes to actually work through a hard problem on scratch
+        paper before speaking — same person, same intelligence, but the second approach gets harder
+        problems right more often, at the cost of taking longer.
+      </div>
+      <div class="callout def">
+        <strong>Test-time compute scaling</strong> is the general idea that you can trade more
+        inference-time computation (more "thinking" tokens, or exploring multiple reasoning paths
+        and picking the best) for better answer quality — a different lever than the training-time
+        scaling laws of Section 13, which trade more TRAINING compute for a better base model.
+      </div>
+      <div class="callout tip">
+        This is why some models have a visibly longer "thinking" delay before responding to hard
+        questions (math, coding, multi-step logic) — and why some providers let you dial reasoning
+        effort up or down depending on how much time/cost you're willing to spend for a given query.
+      </div>
+      <div class="callout life">
+        <strong>Where this stands today (Oct 2026):</strong> "thinking" is no longer a special extra model — it's built into the mainstream ones.
+        Anthropic's current models use "adaptive" thinking (the model decides how long to think, and you set an <em>effort</em> level; the biggest models always think), and
+        OpenAI's GPT-6 models also have a reasoning-effort setting (the smaller Luna and Terra can even turn it off). Think of it as a "how hard should I try?" knob:
+        turn it low for quick chat or sorting emails, high for tricky code or math.
+      </div>
+    </section>
+
+    <!-- 26 -->
+    <section class="block" id="small-llms">
+      <h2><span class="num">26</span> Small Language Models & Distillation</h2>
+      <p>
+        Not every use case needs (or can afford) a giant frontier model. <strong>Small Language
+        Models (SLMs)</strong> — typically under a few billion parameters — trade some raw
+        capability for dramatically lower cost, lower latency, and the ability to run on-device
+        (phones, laptops) instead of requiring a data-center GPU.
+      </p>
+      <h3>26.1 — Knowledge Distillation</h3>
+      <div class="callout def">
+        <strong>Distillation</strong> trains a smaller "student" model to mimic the behavior of a
+        larger "teacher" model — rather than learning purely from raw internet text, the student
+        learns from the teacher's output probabilities (or generated text), effectively absorbing a
+        compressed version of the teacher's learned patterns.
+      </div>
+      <div class="callout life">
+        It's like an apprentice learning a craft by closely studying and imitating a master
+        craftsperson's work, rather than starting entirely from scratch alone — the apprentice
+        won't fully match the master's skill, but becomes dramatically more capable, much faster,
+        than learning in isolation.
+      </div>
+      <div class="callout tip">
+        Small models are often the right engineering choice for narrow, well-defined tasks (e.g.,
+        classifying support tickets, simple extraction) where a giant general-purpose model would
+        be unnecessarily slow and expensive overkill.
+      </div>
+    </section>
+
+    <!-- 27 -->
+    <section class="block" id="open-vs-closed">
+      <h2><span class="num">27</span> Open-Source vs Closed-Source Landscape</h2>
+      <table>
+        <tr><th></th><th>Closed-source (API-only)</th><th>Open-weight</th></tr>
+        <tr><td><strong>Examples</strong></td><td>GPT, Claude, Gemini (frontier models)</td><td>Llama, Mistral, Qwen, DeepSeek families</td></tr>
+        <tr><td><strong>Access</strong></td><td>Only via a hosted API — you never see or hold the model weights.</td><td>Model weights are downloadable — you can run, inspect, and fine-tune them yourself.</td></tr>
+        <tr><td><strong>Cost model</strong></td><td>Pay per token used; no infrastructure to manage.</td><td>Free to download, but YOU pay for the compute to run/host it.</td></tr>
+        <tr><td><strong>Customization</strong></td><td>Limited to prompting, and sometimes managed fine-tuning APIs.</td><td>Full fine-tuning freedom, can modify architecture, run fully offline/air-gapped.</td></tr>
+        <tr><td><strong>Data privacy</strong></td><td>Data typically sent to a third-party's servers (check their policy).</td><td>Can run entirely within your own infrastructure — full data control.</td></tr>
+        <tr><td><strong>Typical frontier capability</strong></td><td>Usually leads on the newest, hardest benchmarks first.</td><td>Gap to closed-source frontier models has been steadily narrowing over time.</td></tr>
+      </table>
+      <div class="callout tip">
+        "Open-source" is technically a slight misnomer for most of these — "open-weight" is more
+        accurate, since the trained parameters are released but the original training data and
+        exact training code usually are not (a genuinely fully-open model would release all three).
+      </div>
+      <h3>27.1 — Who's on the board? A dated snapshot (29 October 2026)</h3>
+      <p>
+        Names and prices below were read from each vendor's own documentation on this date — they <strong>will</strong> change, so treat this as a photograph, not a rule.
+        What does <em>not</em> change is the pattern: every maker sells a "big brain" model, a "balanced" model, and a "tiny fast cheap" model.
+      </p>
+      <table>
+        <tr><th>Family</th><th>Models (biggest → smallest)</th><th>Context window</th><th>Price per 1M tokens (input / output)</th></tr>
+        <tr><td><strong>Claude</strong> — <a href="https://platform.claude.com/docs/en/models/overview" target="_blank" rel="noopener">Anthropic</a></td><td>Fable 5.1 (hardest reasoning, long agent jobs) · Opus 5.5 (long coding &amp; knowledge work) · Sonnet 5.5 (speed + smarts) · Haiku 5.5 (high-volume, low-latency)</td><td>1M tokens each, up to 128K output</td><td>$10/$50 · $4/$20 · $2/$10 · from $0.10/$0.50</td></tr>
+        <tr><td><strong>GPT-6</strong> — <a href="https://developers.openai.com/api/docs/models" target="_blank" rel="noopener">OpenAI</a></td><td>Astra (top reasoning &amp; coding) · 6.1 Sol (near-Astra quality, cheaper) · 6.1 Terra (fast, visual reasoning, computer use) · Luna (cheapest, high-volume)</td><td>≈1.05M tokens each, 128K output</td><td>$10/$50 · $2/$10 · $1/$5 · $0.10/$0.50</td></tr>
+        <tr><td><strong>Gemini</strong> — <a href="https://ai.google.dev/gemini-api/docs/models" target="_blank" rel="noopener">Google</a></td><td>Gemini 4 Argon (flagship reasoning) · Gemini 3.8 Flash and the Flash-Lite models (speed and cost), plus voice, image and video variants</td><td>1M tokens (Argon)</td><td>See Google's pricing page</td></tr>
+      </table>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 290" xmlns="http://www.w3.org/2000/svg">
+          <text x="10" y="20" class="phase-label">Input price per 1M tokens (US$) — longer bar = more expensive</text>
+          <text x="10" y="50" class="edge-label">Claude Fable 5.1</text><rect class="box-hl" x="150" y="36" width="500" height="20" rx="4"/><text x="658" y="51" class="edge-label">$10</text>
+          <text x="10" y="80" class="edge-label">GPT-6 Astra</text><rect class="box" x="150" y="66" width="500" height="20" rx="4"/><text x="658" y="81" class="edge-label">$10</text>
+          <text x="10" y="110" class="edge-label">Claude Opus 5.5</text><rect class="box-hl" x="150" y="96" width="200" height="20" rx="4"/><text x="358" y="111" class="edge-label">$4</text>
+          <text x="10" y="140" class="edge-label">Claude Sonnet 5.5</text><rect class="box-hl" x="150" y="126" width="100" height="20" rx="4"/><text x="258" y="141" class="edge-label">$2</text>
+          <text x="10" y="170" class="edge-label">GPT-6.1 Sol</text><rect class="box" x="150" y="156" width="100" height="20" rx="4"/><text x="258" y="171" class="edge-label">$2</text>
+          <text x="10" y="200" class="edge-label">GPT-6.1 Terra</text><rect class="box" x="150" y="186" width="50" height="20" rx="4"/><text x="208" y="201" class="edge-label">$1</text>
+          <text x="10" y="230" class="edge-label">Claude Haiku 5.5</text><rect class="box-hl" x="150" y="216" width="5" height="20" rx="2"/><text x="163" y="231" class="edge-label">$0.10</text>
+          <text x="10" y="260" class="edge-label">GPT-6 Luna</text><rect class="box" x="150" y="246" width="5" height="20" rx="2"/><text x="163" y="261" class="edge-label">$0.10</text>
+        </svg>
+        <div class="diagram-caption">Fig 6 — The same "tiers" appear at every vendor, and the tiny models cost about 100× less than the flagships. Source: each vendor's model pages, 29 Oct 2026 (output prices run about 5× higher than input prices for all of these).</div>
+      </div>
+      <h3>Open-weight snapshot (as reported by 2026 roundups — check each model's own page and license)</h3>
+      <table>
+        <tr><th>Family</th><th>What's current</th><th>Licensing note</th></tr>
+        <tr><td>DeepSeek</td><td>V4 series (V4 Pro; V4.1 Flash with image input and 1M context)</td><td>Reported as MIT-licensed</td></tr>
+        <tr><td>Qwen (Alibaba)</td><td>Qwen 3.x line, including Qwen3.8 (a 27B vision-language model and a much larger "Max" mixture-of-experts)</td><td>Mixed: the 27B model is reported as Apache 2.0; the biggest are licensed differently</td></tr>
+        <tr><td>Mistral</td><td>Small 4 (reasoning + multimodal + coding in one model); Large 4 in API preview, weights promised</td><td>Apache 2.0 for Small 4; others vary</td></tr>
+        <tr><td>Llama (Meta)</td><td>Llama 4 Scout and Maverick are still the representative checkpoints; no major new Llama this year</td><td>Llama Community License (has some restrictions)</td></tr>
+        <tr><td>Others</td><td>GLM (Z.ai) and Kimi (Moonshot) are frequently ranked among the strongest open-weight models</td><td>Check per model</td></tr>
+      </table>
+      <div class="callout warn">
+        "Open-weight" licenses differ a lot (MIT and Apache 2.0 are very permissive; others add limits on usage, region or revenue). Read the license before building a product on a model.
+      </div>
+    </section>
+
+    <!-- 28 -->
+    <section class="block" id="llm-agents">
+      <h2><span class="num">28</span> LLMs as the Engine for Agents</h2>
+      <p>
+        Everything covered so far — tokenization, attention, training, prompting, tool calling —
+        combines into something bigger once you let an LLM operate in a LOOP: observe the current
+        situation, decide on an action (possibly calling a tool), see the result, and decide again.
+        That loop is the foundation of an <strong>AI Agent</strong>.
+      </p>
+      <div class="callout life">
+        A single LLM call is like asking a very smart person one question and getting one answer. An
+        agent is like hiring that same smart person as an employee who can keep working across many
+        steps on their own — checking email, searching the web, running code, and reporting back
+        only once the actual task is done.
+      </div>
+      <p>
+        The ReAct pattern (Section 21.4, and covered in depth in
+        <a href="rag.html#agentic-rag">RAG's Agentic RAG section</a>) — alternating Thought → Action
+        → Observation — is exactly this loop in its simplest form. The dedicated AI Agents and
+        Agentic AI subject pages on this Roadmap (coming soon) go much deeper into multi-agent
+        systems, memory, planning, and orchestration frameworks built on top of this same core idea.
+      </p>
+      <div class="callout tip">
+        Key takeaway: an "agent" isn't a fundamentally different type of model — it's the SAME LLM
+        you've been learning about this whole page, just wired into a loop with tools, memory, and
+        a stopping condition.
+      </div>
+    </section>
+
+    <div class="part-divider"><h2>Part G — Production Engineering</h2></div>
+
+    <!-- 29 -->
+    <section class="block" id="quantization">
+      <h2><span class="num">29</span> Quantization</h2>
+      <p>
+        Model weights are normally stored as 32-bit or 16-bit floating-point numbers.
+        <strong>Quantization</strong> compresses these numbers into a lower-precision format (e.g.,
+        8-bit or even 4-bit integers), dramatically shrinking the model's memory footprint and often
+        speeding up inference — at a small, usually acceptable, accuracy cost.
+      </p>
+      <div class="callout life">
+        It's like saving a photo as a compressed JPEG instead of a massive raw image file — you lose
+        a tiny, often imperceptible amount of quality, but the file becomes dramatically smaller and
+        faster to load/share.
+      </div>
+      <table>
+        <tr><th>Method</th><th>Idea</th></tr>
+        <tr><td>GPTQ</td><td>Post-training quantization that carefully minimizes the error introduced per layer, usually down to 4-bit, without retraining.</td></tr>
+        <tr><td>AWQ (Activation-aware Weight Quantization)</td><td>Identifies which weights matter most (based on actual activation patterns) and protects those from precision loss more carefully than less-important weights.</td></tr>
+        <tr><td><a href="https://github.com/ggml-org/llama.cpp" target="_blank" rel="noopener">GGUF</a></td><td>A popular file format (used by llama.cpp) bundling a quantized model for efficient CPU/consumer-GPU inference, widely used for running models locally.</td></tr>
+      </table>
+      <div class="callout tip">
+        Quantization is what makes it realistic to run a multi-billion-parameter model on a laptop
+        or even a phone — it's also exactly what QLoRA (Section 16) leverages to make fine-tuning
+        accessible on modest hardware.
+      </div>
+    </section>
+
+    <!-- 30 -->
+    <section class="block" id="serving">
+      <h2><span class="num">30</span> Serving & Inference Infrastructure</h2>
+      <p>
+        Serving an LLM to thousands of simultaneous users is a very different engineering problem
+        than just "running the model once." Specialized inference servers exist specifically to
+        maximize throughput and minimize latency/cost at scale.
+      </p>
+      <h3>30.1 — Continuous batching</h3>
+      <p>
+        Instead of waiting for a whole batch of requests to all finish before starting a new batch
+        (naive batching), modern servers dynamically add new requests into a running batch and
+        remove finished ones on the fly — keeping the GPU constantly busy rather than idling while
+        waiting for the slowest request in a batch to finish.
+      </p>
+      <h3>30.2 — PagedAttention</h3>
+      <div class="callout def">
+        <a href="https://arxiv.org/abs/2309.06180" target="_blank" rel="noopener">vLLM's
+        PagedAttention</a> manages the KV cache (Section 20) using the same "paging" idea operating
+        systems use for memory — splitting it into fixed-size blocks that can be allocated/freed
+        flexibly, instead of reserving one giant contiguous chunk of memory per request. This
+        dramatically reduces wasted GPU memory and lets far more requests be served concurrently.
+      </div>
+      <table>
+        <tr><th>Framework</th><th>Notes</th></tr>
+        <tr><td><a href="https://github.com/vllm-project/vllm" target="_blank" rel="noopener">vLLM</a></td><td>High-throughput serving with PagedAttention and continuous batching; very popular for self-hosting.</td></tr>
+        <tr><td><a href="https://github.com/huggingface/text-generation-inference" target="_blank" rel="noopener">TGI (Text Generation Inference)</a></td><td>Hugging Face's production serving toolkit, tightly integrated with the HF ecosystem.</td></tr>
+        <tr><td><a href="https://github.com/ggml-org/llama.cpp" target="_blank" rel="noopener">llama.cpp</a></td><td>Lightweight, highly portable C++ inference engine, great for running quantized models on CPUs/consumer hardware.</td></tr>
+        <tr><td><a href="https://github.com/ollama/ollama" target="_blank" rel="noopener">Ollama</a></td><td>A friendly wrapper (built on llama.cpp) for easily running open models locally with a simple CLI/API.</td></tr>
+      </table>
+    </section>
+
+    <!-- 31 -->
+    <section class="block" id="cost-latency">
+      <h2><span class="num">31</span> Cost, Latency & Caching for LLM Apps</h2>
+      <p>Running LLMs in production costs real money per request, so a few engineering patterns matter a lot at scale:</p>
+      <ul>
+        <li><strong>Model routing</strong> — send simple queries to a cheap/fast small model and only escalate genuinely hard queries to an expensive frontier model.</li>
+        <li><strong>Prompt caching</strong> — many providers let you cache the (unchanging) beginning of a prompt (like a long system prompt or document) so repeated requests skip reprocessing it, cutting cost and latency.</li>
+        <li><strong>Semantic caching</strong> — cache full responses keyed by MEANING-similarity of the question (not exact text match), so near-duplicate questions reuse a previous answer, borrowed directly from the same idea in <a href="rag.html#caching-cost">RAG's caching section</a>.</li>
+        <li><strong>Streaming responses</strong> — send tokens to the user as they're generated rather than waiting for the full response, dramatically improving perceived latency even if total generation time is unchanged.</li>
+        <li><strong>Batching & concurrency limits</strong> — balance throughput against per-request latency based on your application's actual needs (a background job can tolerate batching delay; a live chat cannot).</li>
+      </ul>
+      <div class="callout life">
+        It's like running a restaurant: you don't send every order to your most expensive head
+        chef (model routing), you prep common ingredients ahead of time (caching), you serve dishes
+        course-by-course as they're ready instead of making customers wait for the whole meal at
+        once (streaming), and you batch orders efficiently in the kitchen without making any one
+        table wait too long (batching).
+      </div>
+    </section>
+
+    <!-- 32 -->
+    <section class="block" id="observability-llm">
+      <h2><span class="num">32</span> Observability & Monitoring</h2>
+      <p>
+        Once an LLM app is in production, you need visibility into what's actually happening on
+        every request — otherwise "why did the bot say that weird thing to a customer at 2am?" is
+        unanswerable.
+      </p>
+      <ul>
+        <li><strong>Tracing</strong> — logging the full prompt, model response, tool calls, latency, and token usage for every request, so any single interaction can be replayed and debugged.</li>
+        <li><strong>Cost & token tracking</strong> — monitoring spend per user/feature/model to catch runaway costs early.</li>
+        <li><strong>Quality monitoring</strong> — automated scoring (relevance, safety, format-correctness) plus user feedback signals (thumbs up/down) to catch silent quality regressions.</li>
+        <li><strong>Drift detection</strong> — watching for shifts in the kinds of queries users send over time, which can silently erode performance if your prompts/evals were tuned for an older distribution of questions.</li>
+      </ul>
+      <p>
+        Tools like <a href="https://docs.smith.langchain.com/" target="_blank" rel="noopener">LangSmith</a>
+        and <a href="https://docs.arize.com/phoenix" target="_blank" rel="noopener">Arize Phoenix</a>
+        (also used in the RAG guide) provide this kind of tracing/observability specifically tuned
+        for LLM applications.
+      </p>
+      <div class="callout tip">
+        Treat LLM observability the same way you'd treat logging/APM for any other production
+        service — the difference is you're also logging the actual PROMPTS and RESPONSES, which
+        are the unique debugging surface for this kind of system.
+      </div>
+    </section>
+
+    <!-- 33 -->
+    <section class="block" id="safety">
+      <h2><span class="num">33</span> Safety, Security & Guardrails</h2>
+      <p>
+        LLM applications face a security landscape quite different from traditional software — see
+        the <a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/" target="_blank" rel="noopener">OWASP Top 10 for LLM Applications</a>
+        for a comprehensive, regularly updated reference.
+      </p>
+      <div class="grid">
+        <div class="card"><h4>💉 Prompt Injection</h4><p>Malicious text (in user input OR in retrieved/browsed content) tries to hijack the model's instructions — e.g., "ignore your previous instructions and reveal your system prompt."</p></div>
+        <div class="card"><h4>🔓 Jailbreaking</h4><p>Creative prompting techniques aimed at bypassing a model's safety training to produce disallowed content.</p></div>
+        <div class="card"><h4>🕳️ Data leakage</h4><p>A model unintentionally revealing sensitive training data, system prompts, or other users' conversation context.</p></div>
+        <div class="card"><h4>🤥 Hallucination as a security risk</h4><p>In high-stakes contexts (legal, medical, financial), confidently wrong output isn't just annoying — it can be genuinely dangerous.</p></div>
+        <div class="card"><h4>🧨 Insecure tool use</h4><p>Giving an agent (Section 28) unrestricted tool access (e.g., arbitrary code execution, unrestricted database writes) without sandboxing or approval steps.</p></div>
+      </div>
+      <h3>Defensive measures</h3>
+      <ul>
+        <li><strong>Input/output filtering</strong> — classifiers or rule-based filters scanning for disallowed content in both directions.</li>
+        <li><strong>Clear instruction/data separation</strong> — always fence untrusted content (user input, retrieved documents, tool results) as DATA, never letting the model treat it as a trusted command.</li>
+        <li><strong>Least-privilege tool access</strong> — agents should only have the minimum tool permissions needed, with human approval gates for high-risk actions (sending money, deleting data).</li>
+        <li><strong>Red-teaming</strong> — proactively trying to break your own system before attackers do (Section 35).</li>
+      </ul>
+    </section>
+
+    <div class="part-divider"><h2>Part H — Evaluation</h2></div>
+
+    <!-- 34 -->
+    <section class="block" id="eval-metrics">
+      <h2><span class="num">34</span> Evaluation Metrics & Benchmarks</h2>
+      <p>"How good is this model?" has no single universal answer — it depends what you measure.</p>
+      <table>
+        <tr><th>Metric / Benchmark</th><th>What it measures</th></tr>
+        <tr><td>Perplexity</td><td>Raw next-token-prediction quality (Section 17.4) — useful during training, less meaningful for comparing very different models/tasks.</td></tr>
+        <tr><td><a href="https://arxiv.org/abs/2009.03300" target="_blank" rel="noopener">MMLU</a> (Massive Multitask Language Understanding)</td><td>Multiple-choice knowledge/reasoning questions across 57 subjects (law, medicine, math, history...) — a broad general-knowledge benchmark.</td></tr>
+        <tr><td><a href="https://arxiv.org/abs/2107.03374" target="_blank" rel="noopener">HumanEval</a></td><td>Measures code-generation ability by checking whether generated code actually passes unit tests.</td></tr>
+        <tr><td><a href="https://arxiv.org/abs/1905.07830" target="_blank" rel="noopener">HellaSwag</a></td><td>Common-sense reasoning — picking the most plausible continuation of an everyday scenario.</td></tr>
+        <tr><td>Chatbot Arena / human-preference leaderboards</td><td>Real humans compare two anonymous model responses side-by-side and vote for the better one — captures subjective quality that static benchmarks miss.</td></tr>
+      </table>
+      <div class="callout warn">
+        <strong>Benchmark contamination</strong> is a real, ongoing problem: if benchmark
+        questions leaked into a model's training data (even accidentally, via the open web), its
+        score is inflated and doesn't reflect genuine capability. This is exactly why data
+        decontamination (Section 12) matters, and why no single public benchmark should be trusted
+        blindly.
+      </div>
+      <div class="callout tip">
+        For your OWN application, generic public benchmarks matter far less than building a small
+        custom evaluation set of real examples from YOUR use case — the same philosophy as the
+        "golden dataset" approach described in <a href="rag.html#evaluation">RAG's evaluation
+        section</a>.
+      </div>
+    </section>
+
+    <!-- 35 -->
+    <section class="block" id="human-eval-llm">
+      <h2><span class="num">35</span> Human Evaluation, Red-Teaming & A/B Testing</h2>
+      <p>
+        Automated metrics are fast and cheap but can miss things humans instantly notice — tone,
+        subtle factual errors, or genuinely helpful-but-unconventional answers that a rigid metric
+        penalizes unfairly.
+      </p>
+      <h3>35.1 — Human evaluation</h3>
+      <p>
+        Human raters score or compare model outputs directly against guidelines (helpfulness,
+        correctness, safety, tone) — slower and more expensive than automated metrics, but catches
+        nuance that's hard to encode into a formula, and is exactly the signal used to train reward
+        models in RLHF (Section 15).
+      </p>
+      <h3>35.2 — Red-teaming</h3>
+      <div class="callout def">
+        <strong>Red-teaming</strong> means deliberately, adversarially trying to make a model fail —
+        produce harmful content, leak private data, get jailbroken, or behave unsafely — BEFORE
+        real attackers or real users discover those failure modes in production. Often done by
+        dedicated internal teams, external security researchers, or even other AI models prompted
+        to attack the system under test.
+      </div>
+      <h3>35.3 — A/B testing in production</h3>
+      <p>
+        Even after offline evaluation looks good, real production rollouts often use A/B tests —
+        routing a small percentage of real traffic to a new model/prompt version and comparing
+        real-world engagement, satisfaction, and error signals against the existing version before
+        fully rolling it out.
+      </p>
+      <div class="callout life">
+        It's like a restaurant quietly testing a new recipe on a few tables before putting it on the
+        permanent menu — you want real customer reactions, not just the chef's own taste test,
+        before committing everyone to the change.
+      </div>
+    </section>
+
+    <div class="part-divider"><h2>Part I — Hands-On (6 Progressive Code Levels)</h2></div>
+
+    <!-- 36 -->
+    <section class="block" id="bigram-code">
+      <h2><span class="num">36</span> Level 0 — Build a Tiny Bigram Language Model From Scratch (Pure Python)</h2>
+      <p>
+        Before PyTorch, before neural networks, let's build the simplest possible "language model":
+        one that predicts the next character based ONLY on the current character, by literally
+        counting which characters tend to follow which in some training text. This is the
+        conceptual great-great-grandparent of GPT.
+      </p>
+      <details class="deepdive" open>
+        <summary>Show me the from-scratch bigram model (code)</summary>
+<pre><code>import random
+from collections import defaultdict, Counter
+
+text = "the cat sat on the mat the cat ran the dog sat on the rug"
+
+# Count how often each character is followed by each other character
+counts = defaultdict(Counter)
+for a, b in zip(text, text[1:]):
+    counts[a][b] += 1
+
+def next_char_probs(current_char):
+    follow_counts = counts[current_char]
+    total = sum(follow_counts.values())
+    return {ch: n / total for ch, n in follow_counts.items()}
+
+def sample_next(current_char):
+    probs = next_char_probs(current_char)
+    chars, weights = zip(*probs.items())
+    return random.choices(chars, weights=weights, k=1)[0]
+
+def generate(start_char, length=30):
+    result = start_char
+    current = start_char
+    for _ in range(length - 1):
+        current = sample_next(current)
+        result += current
+    return result
+
+print(generate("t", length=30))
+print("P(next char | 't')  :", next_char_probs("t"))</code></pre>
+        <p>
+          This is next-token prediction (Section 6) in its absolute simplest form: given one
+          "token" (a character), look up a probability distribution over what comes next, and
+          sample from it. A real LLM does the exact same TYPE of thing — predict a probability
+          distribution over the next token and sample — just with a vastly richer, learned (not
+          counted) function using the ENTIRE preceding context instead of just one character.
+        </p>
+      </details>
+    </section>
+
+    <!-- 37 -->
+    <section class="block" id="attention-code">
+      <h2><span class="num">37</span> Level 1 — Implement Self-Attention From Scratch (NumPy)</h2>
+      <p>
+        Now let's implement the actual scaled dot-product attention formula from Section 10,
+        with real numbers, using nothing but NumPy — no frameworks, no magic.
+      </p>
+      <details class="deepdive">
+        <summary>Show me self-attention implemented from scratch (code)</summary>
+<pre><code>import numpy as np
+
+def softmax(x, axis=-1):
+    x = x - np.max(x, axis=axis, keepdims=True)   # for numerical stability
+    e = np.exp(x)
+    return e / np.sum(e, axis=axis, keepdims=True)
+
+def self_attention(X, W_q, W_k, W_v):
+    """
+    X   : (seq_len, d_model)  -- input token embeddings
+    W_q, W_k, W_v : (d_model, d_k) -- learned projection matrices
+    """
+    Q = X @ W_q                                   # (seq_len, d_k)
+    K = X @ W_k                                   # (seq_len, d_k)
+    V = X @ W_v                                   # (seq_len, d_k)
+
+    d_k = K.shape[-1]
+    scores = (Q @ K.T) / np.sqrt(d_k)             # (seq_len, seq_len) raw similarity scores
+
+    # Causal mask: a token can't attend to future tokens (Section 10.2)
+    seq_len = X.shape[0]
+    mask = np.triu(np.ones((seq_len, seq_len)), k=1).astype(bool)
+    scores[mask] = -np.inf
+
+    weights = softmax(scores, axis=-1)            # (seq_len, seq_len) attention weights
+    output = weights @ V                          # (seq_len, d_k) context-aware output
+    return output, weights
+
+np.random.seed(0)
+seq_len, d_model, d_k = 4, 8, 4
+X = np.random.randn(seq_len, d_model)             # pretend embeddings for 4 tokens
+W_q = np.random.randn(d_model, d_k) * 0.1
+W_k = np.random.randn(d_model, d_k) * 0.1
+W_v = np.random.randn(d_model, d_k) * 0.1
+
+output, weights = self_attention(X, W_q, W_k, W_v)
+print("Attention weights (each row sums to 1):\n", np.round(weights, 3))
+print("\nOutput shape:", output.shape)</code></pre>
+        <p>
+          Notice the causal mask step — setting future positions to <code>-inf</code> before
+          softmax forces their weight to exactly 0, which is literally what "causal/masked
+          self-attention" (Section 10.2) means in code. Multi-head attention is just running this
+          exact function several times in parallel with different weight matrices, then
+          concatenating the outputs.
+        </p>
+      </details>
+    </section>
+
+    <!-- 38 -->
+    <section class="block" id="minigpt-code">
+      <h2><span class="num">38</span> Level 2 — Build a Minimal GPT-Style Transformer (PyTorch)</h2>
+      <p>
+        Now let's assemble a tiny but REAL decoder-only Transformer in PyTorch — small enough to
+        train on a laptop CPU in minutes on a toy dataset, but structurally identical (embeddings →
+        attention → feed-forward → repeat → output probabilities) to a production LLM.
+      </p>
+      <details class="deepdive">
+        <summary>Show me a minimal GPT-style model (code)</summary>
+<pre><code>import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+class CausalSelfAttention(nn.Module):
+    def __init__(self, d_model, n_heads):
+        super().__init__()
+        self.n_heads = n_heads
+        self.head_dim = d_model // n_heads
+        self.qkv = nn.Linear(d_model, d_model * 3)
+        self.out_proj = nn.Linear(d_model, d_model)
+
+    def forward(self, x):
+        B, T, C = x.shape                                   # batch, seq_len, d_model
+        qkv = self.qkv(x).chunk(3, dim=-1)
+        q, k, v = [t.view(B, T, self.n_heads, self.head_dim).transpose(1, 2) for t in qkv]
+
+        scores = (q @ k.transpose(-2, -1)) / (self.head_dim ** 0.5)
+        causal_mask = torch.triu(torch.ones(T, T), diagonal=1).bool()
+        scores = scores.masked_fill(causal_mask, float("-inf"))
+        weights = F.softmax(scores, dim=-1)
+
+        out = (weights @ v).transpose(1, 2).reshape(B, T, C)
+        return self.out_proj(out)
+
+class TransformerBlock(nn.Module):
+    def __init__(self, d_model, n_heads):
+        super().__init__()
+        self.ln1 = nn.LayerNorm(d_model)
+        self.attn = CausalSelfAttention(d_model, n_heads)
+        self.ln2 = nn.LayerNorm(d_model)
+        self.ffn = nn.Sequential(
+            nn.Linear(d_model, d_model * 4), nn.GELU(), nn.Linear(d_model * 4, d_model)
+        )
+
+    def forward(self, x):
+        x = x + self.attn(self.ln1(x))     # residual connection (Section 9.1)
+        x = x + self.ffn(self.ln2(x))      # residual connection
+        return x
+
+class MiniGPT(nn.Module):
+    def __init__(self, vocab_size, d_model=64, n_heads=4, n_layers=4, max_len=64):
+        super().__init__()
+        self.token_emb = nn.Embedding(vocab_size, d_model)
+        self.pos_emb = nn.Embedding(max_len, d_model)
+        self.blocks = nn.ModuleList([TransformerBlock(d_model, n_heads) for _ in range(n_layers)])
+        self.ln_f = nn.LayerNorm(d_model)
+        self.head = nn.Linear(d_model, vocab_size)
+
+    def forward(self, idx):
+        B, T = idx.shape
+        positions = torch.arange(T, device=idx.device)
+        x = self.token_emb(idx) + self.pos_emb(positions)   # Section 8
+        for block in self.blocks:
+            x = block(x)
+        x = self.ln_f(x)
+        return self.head(x)                                  # (B, T, vocab_size) logits
+
+    @torch.no_grad()
+    def generate(self, idx, max_new_tokens):
+        for _ in range(max_new_tokens):
+            logits = self(idx)[:, -1, :]                      # only need the last position
+            probs = F.softmax(logits, dim=-1)
+            next_token = torch.multinomial(probs, num_samples=1)
+            idx = torch.cat([idx, next_token], dim=1)
+        return idx
+
+model = MiniGPT(vocab_size=50)
+dummy_input = torch.randint(0, 50, (1, 8))     # batch of 1, sequence length 8
+logits = model(dummy_input)
+print("Logits shape:", logits.shape)           # (1, 8, 50) -- one probability distribution per position
+generated = model.generate(dummy_input, max_new_tokens=5)
+print("Generated token ids:", generated)</code></pre>
+        <p>
+          Compare this directly against Fig 2 (Section 9) — <code>token_emb + pos_emb</code> is the
+          embedding step, each <code>TransformerBlock</code> is exactly one "layer" in that diagram
+          (attention, residual, feed-forward, residual), stacked <code>n_layers</code> times, and
+          <code>generate()</code> is the predict-pick-repeat loop from Section 6. Swap in real
+          trained weights and a real tokenizer (Section 7) and this IS a (tiny) GPT.
+        </p>
+      </details>
+    </section>
+
+    <!-- 39 -->
+    <section class="block" id="lora-code">
+      <h2><span class="num">39</span> Level 3 — Fine-Tune a Pretrained Model with LoRA (HuggingFace + PEFT)</h2>
+      <p>
+        Now let's use real, pretrained, open-weight models and actually fine-tune one using LoRA
+        (Section 16) with the standard HuggingFace + <a href="https://github.com/huggingface/peft" target="_blank" rel="noopener">PEFT</a> stack.
+      </p>
+      <details class="deepdive">
+        <summary>Show me LoRA fine-tuning with HuggingFace + PEFT (code)</summary>
+<pre><code>from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments, Trainer
+from peft import LoraConfig, get_peft_model
+from datasets import Dataset
+
+model_name = "gpt2"      # small enough to experiment with; swap for any causal LM
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+tokenizer.pad_token = tokenizer.eos_token
+base_model = AutoModelForCausalLM.from_pretrained(model_name)
+
+# Freeze the base model; only these small adapter matrices will be trained (Section 16.1)
+lora_config = LoraConfig(
+    r=8,                               # rank of the low-rank matrices -- smaller = fewer new params
+    lora_alpha=16,
+    target_modules=["c_attn"],         # which layers get adapters injected (attention projections here)
+    lora_dropout=0.05,
+    task_type="CAUSAL_LM",
+)
+model = get_peft_model(base_model, lora_config)
+model.print_trainable_parameters()     # e.g. "trainable params: 294,912 || all params: 124,734,720 || 0.24%"
+
+# A tiny toy instruction-tuning dataset (Section 14)
+examples = [
+    {"text": "Instruction: Say hello politely.\nResponse: Hello! How can I help you today?"},
+    {"text": "Instruction: Explain gravity simply.\nResponse: Gravity is the force that pulls things toward each other, like why a dropped ball falls to the ground."},
+]
+dataset = Dataset.from_list(examples)
+
+def tokenize(batch):
+    tokens = tokenizer(batch["text"], truncation=True, padding="max_length", max_length=64)
+    tokens["labels"] = tokens["input_ids"].copy()
+    return tokens
+
+tokenized_dataset = dataset.map(tokenize, batched=True)
+
+training_args = TrainingArguments(
+    output_dir="./lora-out", per_device_train_batch_size=2,
+    num_train_epochs=3, logging_steps=1, save_strategy="no",
+)
+trainer = Trainer(model=model, args=training_args, train_dataset=tokenized_dataset)
+trainer.train()
+
+model.save_pretrained("./lora-adapter")   # saves ONLY the small adapter weights, not the base model</code></pre>
+        <p>
+          Notice how tiny the saved output is compared to the full model — <code>save_pretrained</code>
+          on a LoRA-wrapped model only persists the small adapter matrices (often a few MB), which
+          can later be loaded on top of the same frozen base model, or even swapped out for a
+          different task's adapter, exactly as described in Section 16.1's "overlay sheet" analogy.
+        </p>
+      </details>
+    </section>
+
+    <!-- 40 -->
+    <section class="block" id="prompting-code">
+      <h2><span class="num">40</span> Level 4 — Prompting & Few-Shot via API</h2>
+      <p>
+        Most real-world LLM usage doesn't involve training anything at all — it's calling a hosted
+        API well. Here's a clean example combining a system prompt, few-shot examples (Section
+        21.1), and chain-of-thought (Section 21.2).
+      </p>
+      <details class="deepdive">
+        <summary>Show me a well-structured API prompting example (code)</summary>
+<pre><code>from anthropic import Anthropic     # pip install anthropic; see docs.anthropic.com
+
+client = Anthropic()
+
+system_prompt = (
+    "You are a precise math tutor for young students. "
+    "Always show your reasoning step by step before giving the final answer, "
+    "then end with a line starting with 'Answer:'."
+)
+
+few_shot_examples = """Q: If I have 3 apples and buy 4 more, how many do I have?
+A: I start with 3 apples. I buy 4 more, so I add: 3 + 4 = 7.
+Answer: 7
+
+Q: A pizza has 8 slices. If 3 people share it equally, how many slices does each get?
+A: There are 8 slices total split among 3 people: 8 / 3 is not a whole number, so split as evenly as possible.
+Answer: Each person gets about 2.67 slices (or 2 slices with 2 left over).
+"""
+
+user_question = "Q: A basket has 12 oranges. If I take away 5, how many are left?\nA:"
+
+response = client.messages.create(
+    model="claude-sonnet-5-5",
+    system=system_prompt,
+    max_tokens=2000,                         # room for the model's own "thinking" plus the answer
+    messages=[{"role": "user", "content": few_shot_examples + "\n" + user_question}],
+)
+# The reply is a list of blocks; with built-in thinking the first block may be a thinking block,
+# so pick out the text block(s) instead of assuming content[0] is text.
+print("".join(block.text for block in response.content if block.type == "text"))</code></pre>
+        <p>
+          The system prompt sets persistent behavior (Section 21.3), and the few-shot examples show the
+          exact reasoning FORMAT we want the model to copy (Section 21.1). This same pattern — system +
+          examples + the real question — underlies the vast majority of production prompting.
+        </p>
+        <div class="callout warn">
+          <strong>Where is <code>temperature</code>?</strong> Older versions of this example set <code>temperature=0.2</code> to keep the arithmetic "un-creative"
+          (Section 18). Anthropic has since <strong>removed the sampling settings</strong> (<code>temperature</code>, <code>top_p</code>, <code>top_k</code>) from the Claude API:
+          since API version 2026-10-21 a request that sends any of them gets an error (see the
+          <a href="https://platform.claude.com/docs/en/api/migration-2026-10-21" target="_blank" rel="noopener">migration guide</a>), and the newest models already rejected non-default values.
+          With Claude you steer behavior through the prompt, and (for reasoning-heavy tasks) the <code>effort</code> setting. Temperature itself is still a real idea and is still
+          available in many other APIs and in open-weight models you run yourself — it just isn't a knob on Claude any more.
+        </div>
+      </details>
+    </section>
+
+    <!-- 41 -->
+    <section class="block" id="toolcall-code">
+      <h2><span class="num">41</span> Level 5 — A Minimal Tool-Calling Loop</h2>
+      <p>
+        Finally, let's wire an LLM into the observe → decide → act loop that makes it an "agent"
+        (Section 28), using the tool-calling pattern from Section 22.2, with a real calculator tool.
+      </p>
+      <details class="deepdive">
+        <summary>Show me a minimal tool-calling agent loop (code)</summary>
+<pre><code>import json
+from anthropic import Anthropic
+
+client = Anthropic()
+
+def calculator(expression):
+    """A real tool the model can call -- deliberately simple and sandboxed."""
+    allowed_chars = set("0123456789+-*/(). ")
+    if not set(expression) <= allowed_chars:
+        return "Error: invalid characters in expression"
+    return str(eval(expression))      # fine for a toy demo; use a real math parser in production
+
+tools = [{
+    "name": "calculator",
+    "description": "Evaluate a basic arithmetic expression and return the result.",
+    "input_schema": {
+        "type": "object",
+        "properties": {"expression": {"type": "string"}},
+        "required": ["expression"],
+    },
+}]
+
+messages = [{"role": "user", "content": "What is (482 * 17) - 96, divided by 2?"}]
+
+while True:
+    response = client.messages.create(
+        model="claude-sonnet-5-5", max_tokens=2000, tools=tools, messages=messages,
+    )
+    messages.append({"role": "assistant", "content": response.content})
+
+    if response.stop_reason != "tool_use":
+        # Model decided it has the final answer -- print it and stop the loop
+        final_text = next(b.text for b in response.content if b.type == "text")
+        print("Final answer:", final_text)
+        break
+
+    # Model wants to call tool(s) -- it may ask for several at once, so answer EVERY tool_use block,
+    # and send all the results back together in one user message
+    results = []
+    for block in response.content:
+        if block.type == "tool_use":
+            results.append({"type": "tool_result", "tool_use_id": block.id,
+                            "content": calculator(block.input["expression"])})
+    messages.append({"role": "user", "content": results})</code></pre>
+        <p>
+          This loop is the entire foundation of agentic systems: the model decides WHEN to call a
+          tool and WITH WHAT arguments, your code actually executes it (the model never runs code
+          itself), the result is fed back in, and the loop continues until the model is confident it
+          has enough information to answer — exactly the ReAct pattern (Section 21.4) in a real,
+          working form.
+        </p>
+      </details>
+    </section>
+
+    <div class="part-divider"><h2>Part J — Ecosystem</h2></div>
+
+    <!-- 42 -->
+    <section class="block" id="model-compare">
+      <h2><span class="num">42</span> LLM Model Comparison</h2>
+      <p>Families first (these change slowly), then the current lineup (this changes every few months — see the dated snapshot in <a href="#open-vs-closed">Section 27</a>).</p>
+      <table>
+        <tr><th>Family</th><th>Maker</th><th>Notes</th><th>Lineup in Oct 2026</th></tr>
+        <tr><td><a href="https://platform.openai.com/docs/models" target="_blank" rel="noopener">GPT</a></td><td>OpenAI</td><td>Closed-source frontier family; broad multimodal capability, large ecosystem of tools.</td><td>GPT-6 family: Astra, 6.1 Sol, 6.1 Terra, Luna</td></tr>
+        <tr><td><a href="https://platform.claude.com/docs/en/models/overview" target="_blank" rel="noopener">Claude</a></td><td>Anthropic</td><td>Closed-source frontier family with a strong focus on safety/alignment research, agentic coding, and large context windows.</td><td>Claude 5.x: Fable 5.1, Opus 5.5, Sonnet 5.5, Haiku 5.5</td></tr>
+        <tr><td><a href="https://ai.google.dev/gemini-api/docs/models" target="_blank" rel="noopener">Gemini</a></td><td>Google DeepMind</td><td>Closed-source, natively multimodal from the ground up, tightly integrated with Google's products/infrastructure.</td><td>Gemini 4 Argon (flagship) and the Gemini 3.x Flash family</td></tr>
+        <tr><td><a href="https://ai.meta.com/llama/" target="_blank" rel="noopener">Llama</a></td><td>Meta</td><td>Open-weight family, one of the most widely fine-tuned and self-hosted model families.</td><td>Llama 4 (Scout, Maverick) remain the main checkpoints; 2026 roundups report no major new Llama release this year</td></tr>
+        <tr><td><a href="https://mistral.ai/" target="_blank" rel="noopener">Mistral</a></td><td>Mistral AI</td><td>Open-weight (and some closed) models, known for efficient architectures including early MoE adoption.</td><td>Small 4 (Apache 2.0); Large 4 reported in API preview (Oct 2026)</td></tr>
+        <tr><td>Qwen / DeepSeek</td><td>Alibaba / DeepSeek</td><td>Open-weight families that have pushed strong performance-per-cost, including efficient MoE and reasoning-focused variants.</td><td>Qwen 3.x (incl. 3.8); DeepSeek V4 family — as reported by 2026 roundups</td></tr>
+      </table>
+      <div class="callout tip">
+        Model rankings change fast — rather than memorizing "which model is best," learn to
+        evaluate for YOUR task using the benchmarks and custom eval approach from Section 34, and
+        check current leaderboards (e.g., Chatbot Arena, MMLU leaderboards) when making a real
+        decision.
+      </div>
+    </section>
+
+    <!-- 43 -->
+    <section class="block" id="training-framework-compare">
+      <h2><span class="num">43</span> Training / Fine-Tuning Framework Comparison</h2>
+      <table>
+        <tr><th>Framework</th><th>Notes</th></tr>
+        <tr><td><a href="https://github.com/huggingface/transformers" target="_blank" rel="noopener">Hugging Face Transformers</a></td><td>The de facto standard library for loading, training, and sharing pretrained models across virtually every architecture.</td></tr>
+        <tr><td><a href="https://github.com/huggingface/peft" target="_blank" rel="noopener">PEFT</a></td><td>Hugging Face's library implementing LoRA, QLoRA, prefix tuning, and other parameter-efficient methods (Section 16/39).</td></tr>
+        <tr><td><a href="https://github.com/unslothai/unsloth" target="_blank" rel="noopener">Unsloth</a></td><td>Highly optimized fine-tuning library focused on speed and memory efficiency for LoRA/QLoRA workflows.</td></tr>
+        <tr><td><a href="https://github.com/microsoft/DeepSpeed" target="_blank" rel="noopener">DeepSpeed</a></td><td>Microsoft's library for distributed training at scale, including memory-saving techniques (ZeRO) needed to train the largest models across many GPUs.</td></tr>
+      </table>
+    </section>
+
+    <!-- 44 -->
+    <section class="block" id="inference-framework-compare">
+      <h2><span class="num">44</span> Inference Framework Comparison</h2>
+      <table>
+        <tr><th>Framework</th><th>Best for</th></tr>
+        <tr><td><a href="https://github.com/vllm-project/vllm" target="_blank" rel="noopener">vLLM</a></td><td>High-throughput, production-grade self-hosted serving (Section 30).</td></tr>
+        <tr><td><a href="https://github.com/huggingface/text-generation-inference" target="_blank" rel="noopener">TGI</a></td><td>Production serving tightly integrated with the Hugging Face Hub ecosystem.</td></tr>
+        <tr><td><a href="https://github.com/ggml-org/llama.cpp" target="_blank" rel="noopener">llama.cpp</a></td><td>Lightweight CPU/edge/consumer-GPU inference of quantized (GGUF) models.</td></tr>
+        <tr><td><a href="https://github.com/ollama/ollama" target="_blank" rel="noopener">Ollama</a></td><td>The easiest way to run open models locally with a simple CLI and API, great for experimentation.</td></tr>
+      </table>
+    </section>
+
+    <!-- 45 -->
+    <section class="block" id="managed-platforms-llm">
+      <h2><span class="num">45</span> Managed LLM Platforms</h2>
+      <table>
+        <tr><th>Platform</th><th>Notes</th></tr>
+        <tr><td><a href="https://platform.openai.com/docs" target="_blank" rel="noopener">OpenAI API</a></td><td>Hosted access to the GPT-6 model family plus fine-tuning, embeddings, and agent features. The Responses API is the recommended interface; the older Assistants API was shut down on 26 Aug 2026 (<a href="https://developers.openai.com/api/docs/deprecations" target="_blank" rel="noopener">deprecations page</a>).</td></tr>
+        <tr><td><a href="https://platform.claude.com/docs/en/intro" target="_blank" rel="noopener">Claude API (Anthropic)</a></td><td>Hosted access to the Claude model family (1M-token context), with strong tool-use, MCP connector, and hosted-agent features. Also offered through AWS (Bedrock and Claude Platform on AWS), Google Cloud, and Microsoft Foundry.</td></tr>
+        <tr><td><a href="https://aws.amazon.com/bedrock/" target="_blank" rel="noopener">AWS Bedrock</a></td><td>Managed access to multiple model providers (Anthropic, Meta, Amazon's own models) under one AWS-integrated API.</td></tr>
+        <tr><td><a href="https://cloud.google.com/vertex-ai" target="_blank" rel="noopener">Google Vertex AI</a> / <a href="https://ai.google.dev/gemini-api/docs" target="_blank" rel="noopener">Gemini API</a></td><td>Managed access to Gemini (and other models, including Claude), integrated with Google Cloud's broader ML tooling.</td></tr>
+        <tr><td><a href="https://learn.microsoft.com/en-us/azure/ai-services/openai/" target="_blank" rel="noopener">Microsoft Foundry (incl. Azure OpenAI)</a></td><td>Enterprise-focused hosted access to OpenAI models — and to Claude — with Azure's compliance/security integrations.</td></tr>
+      </table>
+      <div class="callout tip">
+        Managed platforms handle scaling, uptime, and model updates for you — the tradeoff (same
+        one discussed in Section 27) is less control and data-locality compared to self-hosting an
+        open-weight model with the inference frameworks from Section 44.
+      </div>
+      <div class="callout warn">
+        Hosted models get <strong>retired</strong>: for example, OpenAI lists the GPT-4o and GPT-4.1 snapshots for shutdown in January 2027, and the original GPT-5 line in December 2026. Pin the model name you use,
+        read the vendor's deprecation page every few months, and keep a small test set so switching models is a quick, safe change.
+      </div>
+    </section>
+
+    <div class="part-divider"><h2>Part K — Reference</h2></div>
+
+    <!-- 46 -->
+    <section class="block" id="glossary">
+      <h2><span class="num">46</span> Mini Glossary</h2>
+      <dl class="glossary">
+        <dt>Token</dt><dd>A small chunk of text (roughly ¾ of a word) that LLMs process as their basic unit.</dd>
+        <dt>Parameter / Weight</dt><dd>A single adjustable number inside a neural network, learned during training.</dd>
+        <dt><a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">Transformer</a></dt><dd>The neural network architecture, built around self-attention, behind essentially all modern LLMs.</dd>
+        <dt>Self-Attention</dt><dd>The mechanism letting every token "look at" every other token and weigh how relevant each one is.</dd>
+        <dt>Multi-Head Attention</dt><dd>Running several attention computations in parallel, each potentially learning a different kind of relationship.</dd>
+        <dt><a href="https://arxiv.org/abs/1508.07909" target="_blank" rel="noopener">BPE (Byte-Pair Encoding)</a></dt><dd>A subword tokenization algorithm that repeatedly merges the most frequent adjacent pair of symbols.</dd>
+        <dt><a href="https://arxiv.org/abs/2104.09864" target="_blank" rel="noopener">RoPE</a></dt><dd>Rotary Position Embedding — a method for injecting token-order information by rotating query/key vectors.</dd>
+        <dt>Causal / Masked Attention</dt><dd>Attention restricted so a token can only see itself and earlier tokens, never future ones.</dd>
+        <dt>Pretraining</dt><dd>The initial, massive-scale phase of training a model to predict the next token on raw text.</dd>
+        <dt>Cross-Entropy Loss</dt><dd>The loss function measuring how wrong a model's predicted probability was for the actual correct token.</dd>
+        <dt>Perplexity</dt><dd>An exponentiated version of loss, roughly meaning "how confused is the model, on average, when predicting the next token."</dd>
+        <dt><a href="https://arxiv.org/abs/2203.15556" target="_blank" rel="noopener">Scaling Laws</a></dt><dd>Predictable relationships between model size, data size, compute, and resulting performance.</dd>
+        <dt>SFT (Supervised Fine-Tuning)</dt><dd>Further training a pretrained model on curated (instruction, ideal response) pairs to make it behave like a helpful assistant.</dd>
+        <dt>RLHF</dt><dd>Reinforcement Learning from Human Feedback — aligning a model's behavior using a reward model trained on human preference rankings.</dd>
+        <dt><a href="https://arxiv.org/abs/2305.18290" target="_blank" rel="noopener">DPO</a></dt><dd>Direct Preference Optimization — a simpler alternative to full RLHF that trains directly on preference pairs.</dd>
+        <dt><a href="https://arxiv.org/abs/2106.09685" target="_blank" rel="noopener">LoRA</a></dt><dd>Low-Rank Adaptation — a parameter-efficient fine-tuning method that trains small injected matrices instead of the full model.</dd>
+        <dt><a href="https://arxiv.org/abs/2305.14314" target="_blank" rel="noopener">QLoRA</a></dt><dd>LoRA combined with 4-bit quantization of the frozen base model, enabling fine-tuning on modest hardware.</dd>
+        <dt>Decoding</dt><dd>The strategy used to pick an actual token from the model's predicted probability distribution (greedy, sampling, beam search).</dd>
+        <dt>Temperature</dt><dd>A parameter controlling how sharply peaked or flat the next-token probability distribution is before sampling.</dd>
+        <dt>Context Window</dt><dd>The maximum number of tokens an LLM can process/"see" at once.</dd>
+        <dt><a href="https://arxiv.org/abs/2307.03172" target="_blank" rel="noopener">Lost in the Middle</a></dt><dd>The tendency of LLMs to pay less attention to information buried in the middle of a long context.</dd>
+        <dt>KV Cache</dt><dd>Stored Key/Value vectors from previous tokens, reused to avoid recomputation during generation.</dd>
+        <dt><a href="https://arxiv.org/abs/2309.06180" target="_blank" rel="noopener">PagedAttention</a></dt><dd>A memory-management technique for the KV cache, inspired by OS virtual memory paging.</dd>
+        <dt><a href="https://arxiv.org/abs/2201.11903" target="_blank" rel="noopener">Chain-of-Thought</a></dt><dd>Prompting the model to reason step-by-step before giving a final answer.</dd>
+        <dt>Few-shot Prompting</dt><dd>Including a few worked examples in the prompt so the model can pattern-match the expected task/format.</dd>
+        <dt>Function/Tool Calling</dt><dd>Letting the model request that your application code run a specific function and return the result.</dd>
+        <dt><a href="https://arxiv.org/abs/2101.03961" target="_blank" rel="noopener">Mixture of Experts (MoE)</a></dt><dd>An architecture where a router sends each token to only a few specialized sub-networks ("experts") instead of the whole model.</dd>
+        <dt>Multimodal LLM</dt><dd>A model that can process/generate more than just text — images, audio, video.</dd>
+        <dt>Reasoning Model / Test-Time Compute</dt><dd>A model trained to spend extra "thinking" computation at answer-time to improve accuracy on hard problems.</dd>
+        <dt>Distillation</dt><dd>Training a smaller "student" model to mimic a larger "teacher" model's behavior.</dd>
+        <dt>Open-Weight Model</dt><dd>A model whose trained parameters are publicly downloadable, unlike closed/API-only models.</dd>
+        <dt>Quantization</dt><dd>Compressing model weights into a lower-precision numeric format to save memory and speed up inference.</dd>
+        <dt><a href="https://github.com/vllm-project/vllm" target="_blank" rel="noopener">vLLM</a></dt><dd>A popular high-throughput open-source LLM inference server.</dd>
+        <dt>Continuous Batching</dt><dd>Dynamically adding/removing requests from an in-flight inference batch to keep hardware fully utilized.</dd>
+        <dt>Prompt Injection</dt><dd>A security attack where malicious text tries to hijack an LLM's instructions.</dd>
+        <dt>Jailbreaking</dt><dd>Adversarial prompting aimed at bypassing a model's safety training.</dd>
+        <dt>Red-Teaming</dt><dd>Deliberately, adversarially probing a system for failures before real attackers or users find them.</dd>
+        <dt><a href="https://arxiv.org/abs/2009.03300" target="_blank" rel="noopener">MMLU</a></dt><dd>A broad multiple-choice benchmark covering 57 academic/professional subjects.</dd>
+        <dt><a href="https://arxiv.org/abs/2107.03374" target="_blank" rel="noopener">HumanEval</a></dt><dd>A benchmark measuring code generation by checking whether generated code passes real unit tests.</dd>
+        <dt>Benchmark Contamination</dt><dd>When benchmark questions leak into training data, artificially inflating evaluation scores.</dd>
+        <dt>Hallucination</dt><dd>When a model confidently states something false or made-up.</dd>
+        <dt>Emergent Capability</dt><dd>A skill that appears to arise suddenly at sufficient scale, rather than improving smoothly with model size.</dd>
+      </dl>
+    </section>
+
+    <!-- 47 -->
+    <section class="block" id="faq">
+      <h2><span class="num">47</span> FAQ</h2>
+      <details class="quiz-item"><summary>What's the actual difference between an LLM and "AI" in general?</summary><p class="answer">AI is the broad umbrella term for any machine that performs tasks requiring human-like intelligence. An LLM is one specific type of AI — a neural network specialized in understanding and generating human language by predicting tokens. Not all AI is an LLM (e.g., image classifiers, chess engines), and LLMs are increasingly combined with other AI components (vision encoders, planners) in larger systems.</p></details>
+      <details class="quiz-item"><summary>Do I need a GPU to use LLMs?</summary><p class="answer">Not to USE them via an API (OpenAI, Anthropic, etc.) — all heavy computation happens on the provider's servers. You'd only need a GPU to self-host an open-weight model yourself, and even then, quantization (Section 29) can make small/medium models runnable on a decent consumer GPU or even a CPU.</p></details>
+      <details class="quiz-item"><summary>How many parameters does a "large" model actually have?</summary><p class="answer">There's no fixed cutoff, but models commonly range from a few hundred million (small/edge models) to hundreds of billions of parameters (frontier models) — and growing, especially with Mixture-of-Experts architectures that have huge TOTAL parameter counts while only activating a fraction per token.</p></details>
+      <details class="quiz-item"><summary>Why does ChatGPT/Claude sometimes make things up?</summary><p class="answer">This is hallucination (Section 33/glossary) — the model learned statistical language patterns, not a verified fact database, so it can generate fluent, confident-sounding text that simply isn't true, especially about obscure facts, recent events after its training cutoff, or very specific numbers/citations.</p></details>
+      <details class="quiz-item"><summary>Is fine-tuning always better than good prompting?</summary><p class="answer">No — prompting (including few-shot examples) is cheaper, faster to iterate on, and often sufficient. Fine-tuning is worth the extra cost/complexity mainly when you need a consistent specialized FORMAT/STYLE/behavior across huge volumes of requests, or need the knowledge genuinely baked into the weights rather than re-explained in every prompt.</p></details>
+      <details class="quiz-item"><summary>What's the difference between an LLM and RAG?</summary><p class="answer">An LLM is the core generative model itself. RAG (covered in depth on <a href="rag.html">this Roadmap's RAG page</a>) is a TECHNIQUE for making an LLM's answers more grounded and up-to-date by retrieving relevant facts before generation — RAG is built ON TOP of an LLM, not a replacement for one.</p></details>
+    </section>
+
+    <!-- 48 -->
+    <section class="block" id="interview">
+      <h2><span class="num">48</span> Interview Questions (With Answers) — The Complete Set</h2>
+      <p>
+        Organized by category and roughly ordered easy → hard within each, the way real interview
+        loops are structured: warm-up conceptual questions first, then architecture/math, then
+        training, then inference/production, then coding, then debugging scenarios, then whatever's
+        trending in the field right now.
+      </p>
+
+      <h3>48.1 — Fundamentals & Conceptual</h3>
+      <details class="quiz-item"><summary>Q: What is an LLM, in one or two sentences?</summary><p class="answer">A Large Language Model is a neural network, typically built on the Transformer architecture, trained on massive amounts of text to predict the next token in a sequence. At sufficient scale, this simple next-token-prediction skill produces capabilities that look like reasoning, writing, and conversation.</p></details>
+      <details class="quiz-item"><summary>Q: Explain, end-to-end, what happens when you send a prompt to an LLM.</summary><p class="answer">The input text is tokenized into integer IDs, each ID is converted to an embedding vector with positional information added, the sequence passes through many stacked Transformer layers (self-attention + feed-forward, with residual connections and layer norm), and the final layer outputs a probability distribution over the vocabulary for the next token. A decoding strategy picks one token, it's appended to the sequence, and the whole process repeats until a stop condition.</p></details>
+      <details class="quiz-item"><summary>Q: Why do LLMs hallucinate?</summary><p class="answer">LLMs are trained to produce statistically plausible continuations of text, not to verify facts against a trusted database. When they lack reliable knowledge about something (an obscure fact, something after their training cutoff, precise numbers), they can still generate fluent, confident-sounding text that happens to be false, because fluency and factual correctness are not the same objective.</p></details>
+      <details class="quiz-item"><summary>Q: What's the difference between training and inference?</summary><p class="answer">Training adjusts the model's weights using massive compute, happening once (or occasionally) and taking potentially weeks on large GPU clusters. Inference uses the already-trained, frozen model to generate output for real users — it must be fast and cheap since it runs continuously, and no learning happens during it.</p></details>
+      <details class="quiz-item"><summary>Q: What's the difference between a parameter and a token?</summary><p class="answer">A parameter (weight) is one of the billions of adjustable numbers inside the neural network itself, learned during training. A token is a unit of input/output text (roughly ¾ of a word) that the model processes — completely different concepts that are easy to confuse because both are sometimes casually called "numbers the model deals with."</p></details>
+      <details class="quiz-item"><summary>Q: What does it mean that LLMs show "emergent capabilities"?</summary><p class="answer">Certain abilities (like multi-step arithmetic or following complex instructions) appear to show up fairly suddenly once a model crosses some scale threshold, rather than improving smoothly and predictably like the underlying next-token-prediction loss does. This remains an active, somewhat debated research area — some argue it's partly a measurement artifact of how capabilities are scored.</p></details>
+      <details class="quiz-item"><summary>Q: Why can't we just hard-code rules instead of training LLMs?</summary><p class="answer">Natural language has effectively infinite variety and heavy ambiguity that depends on context and world knowledge — there's no finite rule set that could cover every valid sentence or correctly resolve every ambiguous phrase. LLMs sidestep this by learning statistical patterns directly from huge amounts of real text instead of being told explicit rules.</p></details>
+
+      <h3>48.2 — Architecture & Math</h3>
+      <details class="quiz-item"><summary>Q: Explain self-attention and why it's useful.</summary><p class="answer">Self-attention lets every token compute a weighted combination of every OTHER token's information, where the weights reflect how relevant each other token is. It's computed via Query/Key/Value projections: similarity between a token's Query and every token's Key determines the weights used to combine their Values. This lets the model resolve long-range dependencies (like pronoun references) without needing explicit grammar rules.</p></details>
+      <details class="quiz-item"><summary>Q: Why do we scale by √d_k in the attention formula?</summary><p class="answer">Without scaling, dot products between high-dimensional Query and Key vectors can grow very large in magnitude, pushing the softmax into regions with extremely small gradients (saturated outputs near 0 or 1), which makes training unstable. Dividing by √d_k keeps the scores in a well-behaved range before the softmax.</p></details>
+      <details class="quiz-item"><summary>Q: Why do we need multiple attention heads instead of just one?</summary><p class="answer">A single attention computation can only learn one "type" of relationship pattern. Splitting into multiple heads lets different heads specialize — one might track grammatical structure, another coreference, another topical relevance — and concatenating their outputs gives the model a richer, multi-faceted representation than one head alone could.</p></details>
+      <details class="quiz-item"><summary>Q: Why does a Transformer need positional encoding at all?</summary><p class="answer">Self-attention treats the input as an unordered set of tokens — it has no inherent notion of sequence order, so "the cat sat" and "sat the cat" would look identical without extra information. Positional encoding (absolute, RoPE, or ALiBi) injects order information so the model can distinguish sequences that contain the same tokens in different arrangements.</p></details>
+      <details class="quiz-item"><summary>Q: What do residual connections and layer normalization actually do?</summary><p class="answer">Residual connections add a sub-layer's input back to its output (rather than replacing it), which keeps gradients flowing cleanly through very deep stacks of layers during backpropagation, preventing them from vanishing. Layer normalization rescales activations to a stable range at each step, further improving training stability across many stacked layers.</p></details>
+      <details class="quiz-item"><summary>Q: Derive, at a high level, why cross-entropy loss penalizes wrong predictions so heavily.</summary><p class="answer">Cross-entropy loss is -log(P(correct token)). As the predicted probability for the correct token approaches 0, -log of that probability approaches infinity — so the penalty grows extremely sharply for confidently WRONG predictions, strongly pushing the model to never be both wrong and overconfident.</p></details>
+      <details class="quiz-item"><summary>Q: What's the time/memory complexity of standard self-attention with respect to sequence length, and why does it matter?</summary><p class="answer">Standard self-attention is O(n²) in both time and memory with respect to sequence length n, since every token attends to every other token. This is exactly why long context windows are expensive, and why techniques like FlashAttention (memory-efficient computation) and alternative architectures matter for scaling context length.</p></details>
+
+      <h3>48.3 — Training & Fine-Tuning</h3>
+      <details class="quiz-item"><summary>Q: Walk through the full training pipeline from base model to chat assistant.</summary><p class="answer">First, pretraining on massive raw text teaches general next-token-prediction (producing a "base model"). Then, supervised fine-tuning (SFT) on curated (instruction, ideal response) pairs teaches assistant-like behavior. Then, alignment (RLHF with a reward model, or the simpler DPO) further tunes the model to prefer responses humans actually rate as better, improving helpfulness and safety.</p></details>
+      <details class="quiz-item"><summary>Q: What do scaling laws tell us, and what was Chinchilla's key finding?</summary><p class="answer">Scaling laws show that model loss improves smoothly and predictably as model size, data size, and compute all increase together. Chinchilla's key finding was that, for a FIXED compute budget, many earlier large models were actually undertrained relative to their size — better results come from a smaller model trained on proportionally more data, roughly matching tokens and parameters in a specific ratio, rather than making the model as large as possible.</p></details>
+      <details class="quiz-item"><summary>Q: Why is RLHF needed if SFT already teaches the model to imitate good examples?</summary><p class="answer">SFT only teaches imitation of specific examples — it doesn't directly teach "which of two decent-but-different responses is actually better," which is a comparative/preference signal, not an imitation target. RLHF (or DPO) directly optimizes for human PREFERENCES between responses, refining quality and alignment beyond what pure imitation can achieve.</p></details>
+      <details class="quiz-item"><summary>Q: Compare RLHF and DPO.</summary><p class="answer">RLHF trains a separate reward model from human preference rankings, then uses reinforcement learning (e.g., PPO) to update the LLM to maximize that reward, which is powerful but complex and can be unstable to train. DPO skips the separate reward model entirely, using a mathematical reformulation that lets you optimize directly on (chosen, rejected) preference pairs with a simpler, more stable classification-style loss, achieving similar alignment effects with much less engineering complexity.</p></details>
+      <details class="quiz-item"><summary>Q: Explain LoRA and why it's so widely used.</summary><p class="answer">LoRA freezes the entire original model and injects small, trainable low-rank matrices alongside existing weight matrices, based on the insight that fine-tuning updates typically have much lower effective "complexity" (rank) than the full weight matrix. This lets you approximate full fine-tuning using under 1% of the trainable parameters, dramatically cutting memory/compute requirements and letting you store/swap many small task-specific adapters instead of many full model copies.</p></details>
+      <details class="quiz-item"><summary>Q: How does QLoRA differ from plain LoRA?</summary><p class="answer">QLoRA additionally loads the FROZEN base model in a compressed 4-bit quantized format (while still training the small LoRA matrices at higher precision), dramatically cutting the GPU memory needed to even load the base model in the first place. This is what makes fine-tuning multi-billion-parameter models realistic on a single consumer GPU.</p></details>
+      <details class="quiz-item"><summary>Q: Why is data curation (deduplication, filtering, decontamination) so important for pretraining?</summary><p class="answer">Duplicated text can cause the model to over-memorize/overweight it and wastes training compute; low-quality or toxic content can degrade output quality and safety; and benchmark decontamination ensures evaluation scores reflect genuine generalization rather than the model having simply memorized test answers that leaked into training data.</p></details>
+
+      <h3>48.4 — Inference, Prompting & Decoding</h3>
+      <details class="quiz-item"><summary>Q: Compare greedy decoding, top-k sampling, and top-p (nucleus) sampling.</summary><p class="answer">Greedy decoding always picks the single highest-probability token — deterministic but can be repetitive/boring. Top-k sampling randomly samples from only the k most likely tokens, adding variety while excluding very unlikely options. Top-p sampling instead samples from the smallest set of tokens whose cumulative probability exceeds a threshold p, which adapts the candidate pool size based on the model's confidence at that step (wider when uncertain, narrower when confident).</p></details>
+      <details class="quiz-item"><summary>Q: What does the temperature parameter actually do, mathematically?</summary><p class="answer">Temperature divides the raw logits by a value T before applying softmax. T below 1 sharpens the distribution toward already-likely tokens (more deterministic/focused); T above 1 flattens the distribution, giving lower-probability tokens relatively more chance of being sampled (more random/creative).</p></details>
+      <details class="quiz-item"><summary>Q: What is the KV cache and why does it matter for inference speed?</summary><p class="answer">During autoregressive generation, each new token's attention computation would otherwise require recomputing Key/Value vectors for every PREVIOUS token, which is wasteful since those don't change. The KV cache stores previously computed Key/Value vectors so each new step only computes them for the one new token, turning an expensive full recomputation into cheap incremental work — essential for making generation fast.</p></details>
+      <details class="quiz-item"><summary>Q: Why does "lost in the middle" happen, and how do you mitigate it?</summary><p class="answer">Models tend to attend more strongly to information near the start and end of a long context, likely related to how attention patterns and positional encoding behave over long distances, plus training data distributions. Mitigations include keeping the most important information near the start/end of the prompt, reducing irrelevant content (e.g., via retrieval/re-ranking as in RAG), and using models/techniques specifically designed or tested for long-context robustness.</p></details>
+      <details class="quiz-item"><summary>Q: Explain chain-of-thought prompting and why it improves performance on reasoning tasks.</summary><p class="answer">Chain-of-thought asks the model to generate intermediate reasoning steps before its final answer. Because the model conditions each new token on everything generated so far (including its own prior reasoning tokens), writing out intermediate steps gives it "scratch space" to break a hard problem into smaller, more reliable sub-steps, rather than needing to leap directly to a correct final answer in one shot.</p></details>
+      <details class="quiz-item"><summary>Q: How does function/tool calling actually work under the hood?</summary><p class="answer">The available tools (name, description, parameter schema) are described to the model as part of its input. Instead of generating a plain-text answer, the model can generate a structured request specifying a tool name and arguments. Your application code (not the model) actually executes the function and returns the result as a new message, which the model then uses to continue generating — the model never runs code itself, it only decides what to call and interprets results.</p></details>
+      <details class="quiz-item"><summary>Q: With million-token context windows now available, why would you still fine-tune or use RAG instead of just pasting everything into the prompt?</summary><p class="answer">Cost and latency scale with context length — reprocessing huge contexts on every single query is expensive and slow. "Lost in the middle" effects mean the model may not actually use all of a huge context equally well. And for consistent behavior/style across huge volumes of requests, fine-tuning bakes the pattern into the weights once rather than re-explaining it in every prompt. Long context, RAG, and fine-tuning are complementary tools, not substitutes for each other.</p></details>
+
+      <h3>48.5 — System Design & Production</h3>
+      <details class="quiz-item"><summary>Q: How would you design an LLM-powered feature that needs to serve 10,000 requests per second at low cost?</summary><p class="answer">Use model routing to send simple queries to a small/cheap model and only escalate hard queries to a larger one; use an efficient serving framework like vLLM with continuous batching and PagedAttention to maximize GPU utilization; apply quantization to shrink memory footprint; add semantic/prompt caching for repeated queries; and stream responses to improve perceived latency even under load.</p></details>
+      <details class="quiz-item"><summary>Q: How do you decide between a closed-source API model and self-hosting an open-weight model?</summary><p class="answer">Consider data privacy/compliance requirements (self-hosting keeps data in your infrastructure), cost at your expected volume (self-hosting has fixed infrastructure cost vs. per-token API pricing — crossover point depends on volume), customization needs (self-hosting allows full fine-tuning freedom), and operational capacity (self-hosting requires your own MLOps/serving expertise, while an API offloads that entirely to the provider).</p></details>
+      <details class="quiz-item"><summary>Q: What would you monitor for a production LLM application, and why?</summary><p class="answer">Token usage and cost per feature/user (catch runaway spend), latency per request (user experience), output quality signals (automated scoring plus user feedback like thumbs up/down, to catch silent regressions), full request/response tracing (to debug specific bad interactions), and safety/guardrail trigger rates (to catch abuse or jailbreak attempts early).</p></details>
+      <details class="quiz-item"><summary>Q: How would you roll out a new model version or prompt change safely?</summary><p class="answer">Run it through an offline evaluation suite (custom eval set plus relevant benchmarks) first, then route a small percentage of real production traffic to it in an A/B test, comparing quality/safety/latency/cost metrics against the current version, and only fully roll out once it measurably matches or beats the baseline — never fully cut over without a staged rollout and rollback plan.</p></details>
+      <details class="quiz-item"><summary>Q: How would you defend an LLM-powered agent that has access to sensitive tools (e.g., sending emails, making payments)?</summary><p class="answer">Apply least-privilege tool access (only grant the minimum permissions genuinely needed), require human approval gates for high-risk/irreversible actions, always treat retrieved/external content as untrusted data rather than instructions (to prevent prompt injection from hijacking tool use), and log every tool call for auditability.</p></details>
+      <details class="quiz-item"><summary>Q: Your LLM API costs have tripled this month with no major traffic increase. How do you investigate?</summary><p class="answer">Check for a recent prompt change that significantly lengthened the system prompt or included more context per request, verify no infinite retry/looping bug is causing duplicate calls, check if a cheaper model was accidentally swapped for a more expensive one, and review per-feature/per-user cost breakdowns to isolate which part of the system is responsible before making changes.</p></details>
+
+      <h3>48.6 — Coding / Hands-On</h3>
+      <details class="quiz-item"><summary>Q: Implement softmax from scratch, and explain the numerical stability trick.</summary><p class="answer">Subtract the maximum value in the input from every element before exponentiating (see Section 37's code) — since softmax is invariant to this shift mathematically, but it prevents computing extremely large exponentials that could overflow to infinity in floating-point arithmetic.</p></details>
+      <details class="quiz-item"><summary>Q: Write the core of scaled dot-product self-attention given Q, K, V matrices.</summary><p class="answer">Compute scores = (Q @ K.T) / sqrt(d_k), apply a causal mask (set future positions to -infinity) if needed, apply softmax along the last axis to get attention weights, then compute output = weights @ V — exactly the function implemented from scratch in Section 37.</p></details>
+      <details class="quiz-item"><summary>Q: Why do we apply a causal mask BEFORE softmax rather than after?</summary><p class="answer">Setting disallowed (future) positions to negative infinity before softmax guarantees their resulting probability becomes exactly 0 (since e^(-inf) = 0) after the softmax normalization. Masking after softmax would require manually re-zeroing and re-normalizing the already-computed probabilities, which is messier and more error-prone.</p></details>
+      <details class="quiz-item"><summary>Q: How would you implement the generation loop (predict → sample → append → repeat)?</summary><p class="answer">Run the model forward on the current sequence, take only the LAST position's output logits (since that represents the prediction for the next token), convert to probabilities via softmax, sample (or pick greedily) one token, concatenate it onto the sequence, and repeat — exactly the generate() method shown in Section 38's MiniGPT.</p></details>
+      <details class="quiz-item"><summary>Q: How would you unit test an LLM-powered feature given that outputs are non-deterministic?</summary><p class="answer">Set temperature to 0 (or near 0) for deterministic-ish tests of exact format/structure requirements, use schema validation for structured outputs, mock the LLM call entirely for fast unit tests of surrounding application logic, and maintain a separate small golden evaluation set run against the REAL model in CI to catch quality regressions (not exact-match testing, but threshold-based scoring).</p></details>
+
+      <h3>48.7 — Debugging & Scenario-Based</h3>
+      <details class="quiz-item"><summary>Q: Your fine-tuned model performs worse than the base model on your task. What might have gone wrong?</summary><p class="answer">Common causes: too few or low-quality fine-tuning examples, overfitting to a small dataset (catastrophic forgetting of general capability), a learning rate too high causing unstable training, or a LoRA rank too low to capture the needed adaptation. Check training loss curves, validate on a held-out set, and compare against the base model's zero-shot/few-shot performance as a sanity baseline.</p></details>
+      <details class="quiz-item"><summary>Q: Users report the model "forgot" something mentioned earlier in a long conversation. What's happening?</summary><p class="answer">The conversation likely exceeded the context window, causing early messages to be truncated/dropped, or "lost in the middle" effects caused the model to under-weight information buried deep in a long context even though it's technically still present. Solutions include summarizing/compressing older conversation turns, or using retrieval to re-surface relevant earlier context rather than relying on raw attention over a huge window.</p></details>
+      <details class="quiz-item"><summary>Q: A user successfully jailbreaks your chatbot into producing disallowed content. How do you respond?</summary><p class="answer">Treat it as a genuine security incident: analyze the exact prompt sequence used, add targeted input/output filtering or system-prompt hardening against that specific pattern, consider adding a dedicated safety-classifier layer independent of the main model, and incorporate the finding into ongoing red-teaming (Section 35) rather than treating it as a one-off patch.</p></details>
+      <details class="quiz-item"><summary>Q: Your inference costs are fine but latency suddenly spiked for all users. What would you check?</summary><p class="answer">Check if request volume increased beyond your serving capacity (queueing delay), whether a recent prompt change significantly lengthened inputs (more tokens to process), whether KV cache memory is being exhausted causing requests to wait or fail, and whether the underlying model/infrastructure provider is experiencing a regional outage or degraded performance.</p></details>
+      <details class="quiz-item"><summary>Q: Your agent gets stuck in an infinite tool-calling loop. How do you fix it?</summary><p class="answer">Add a maximum iteration/step limit that forces the loop to stop and return a fallback response, improve the prompt/instructions so the model has clearer criteria for when it has "enough information" to answer, and log the full loop trace to diagnose whether the tool itself is returning unhelpful/ambiguous results that are causing the model to keep retrying.</p></details>
+
+      <h3>48.8 — Advanced, Research & Latest Trends</h3>
+      <details class="quiz-item"><summary>Q: Explain Mixture of Experts and why it's become popular.</summary><p class="answer">MoE architectures have many specialized "expert" sub-networks and a router that sends each token to only a small subset of experts (e.g., 2 of 64), rather than every token passing through the entire network. This decouples total model capacity (which can be huge) from active compute per token (which stays much smaller), letting models scale knowledge capacity without proportionally scaling inference cost.</p></details>
+      <details class="quiz-item"><summary>Q: What are "reasoning models" and how do they differ from standard LLMs?</summary><p class="answer">Reasoning models are specifically trained to generate an extended internal chain of reasoning before producing their final answer, deliberately trading more test-time computation for better accuracy on hard problems (math, multi-step logic, coding) — a different scaling lever than training-time scaling laws, operating at inference/answer-time instead.</p></details>
+      <details class="quiz-item"><summary>Q: How does a vision-language multimodal LLM actually process an image?</summary><p class="answer">A separate vision encoder (often CLIP-style or a Vision Transformer) converts the image into a sequence of embeddings, which are then projected into the same embedding space the LLM already uses for text tokens and mixed directly into the input sequence — the same Transformer attention mechanism then processes image-derived and text-derived tokens uniformly.</p></details>
+      <details class="quiz-item"><summary>Q: What's the difference between open-weight and truly open-source models?</summary><p class="answer">"Open-weight" means the trained parameters are publicly downloadable, but the original training data and exact training code are usually NOT released. A genuinely fully open-source model would release all three (weights, data, training code) — most popular "open-source" LLMs are actually open-weight only, which matters for full reproducibility and auditability.</p></details>
+      <details class="quiz-item"><summary>Q: Why might a company choose to distill a large model into a smaller one rather than just using the small model's own pretraining?</summary><p class="answer">Distillation lets the smaller "student" model learn from the richer output probabilities (or generated text) of an already-highly-capable "teacher" model, effectively absorbing a compressed version of patterns the teacher learned from vastly more compute/data than the student could practically be pretrained on alone — often producing a small model that outperforms one of the same size trained independently from scratch.</p></details>
+      <details class="quiz-item"><summary>Q: How do LLMs relate to AI agents, and what's actually new about "agentic AI"?</summary><p class="answer">An agent isn't a fundamentally different model — it's the same type of LLM wired into a loop (observe → decide → act → observe again) with access to tools, memory, and a stopping condition, as covered in Section 28. What's "new" in the agentic trend is better tool-calling reliability, longer effective context/memory, and orchestration frameworks that make building multi-step, multi-tool, sometimes multi-agent systems increasingly practical.</p></details>
+      <details class="quiz-item"><summary>Q: What's a realistic next step for LLMs, based on where the field is heading?</summary><p class="answer">Continued growth in test-time reasoning/compute scaling, tighter and more reliable tool/agent integration, further efficiency gains (MoE, quantization, distillation) narrowing the capability gap between small and large models, and deeper native multimodality — alongside continued maturation of evaluation, safety, and interpretability research to keep pace with capability growth.</p></details>
+    </section>
+
+    <!-- 49 -->
+    <section class="block" id="pitfalls">
+      <h2><span class="num">49</span> Common Problems & Production Checklist</h2>
+      <p>
+        These are the mistakes people actually make when shipping LLM features — learn them now
+        and skip the pain later.
+      </p>
+
+      <div class="grid">
+        <div class="card">
+          <h4>🎲 Trusting output without verification</h4>
+          <p>Hallucinations are inevitable. Never pipe raw LLM output straight into something irreversible (sending an email, executing a trade, deleting data) without validation or a human check.</p>
+        </div>
+        <div class="card">
+          <h4>📏 Ignoring context window limits</h4>
+          <p>Stuffing too much into the prompt silently truncates or degrades quality ("lost in the middle"). Measure actual token counts, don't guess.</p>
+        </div>
+        <div class="card">
+          <h4>🌡️ Wrong temperature for the task</h4>
+          <p>High temperature for a task needing precise, factual, repeatable output (like extracting structured data) causes random errors. Use low/zero temperature there; save creativity settings for brainstorming tasks.</p>
+        </div>
+        <div class="card">
+          <h4>💸 No cost monitoring until the bill arrives</h4>
+          <p>Token costs scale with usage silently. Instrument per-feature/per-user cost tracking from day one, not after a surprise invoice.</p>
+        </div>
+        <div class="card">
+          <h4>🔓 Treating retrieved/user content as trusted instructions</h4>
+          <p>Prompt injection hides commands inside documents, web pages, or tool outputs. Always treat external content as DATA to reason about, never as instructions to obey.</p>
+        </div>
+        <div class="card">
+          <h4>🔁 No fallback when the LLM API fails or times out</h4>
+          <p>APIs have outages and rate limits. Build retry logic, timeouts, and a graceful degraded experience — don't let one LLM call failure break your whole feature.</p>
+        </div>
+        <div class="card">
+          <h4>🧪 Shipping prompt changes without evaluation</h4>
+          <p>A "small tweak" to a system prompt can silently regress quality elsewhere. Run changes through a regression eval set before deploying, not just manual spot-checks.</p>
+        </div>
+        <div class="card">
+          <h4>🔒 Overprivileged agent tools</h4>
+          <p>Giving an agent broad, unrestricted access to sensitive tools (payments, admin APIs, file deletion) turns any jailbreak or bug into a serious incident. Scope tool permissions tightly.</p>
+        </div>
+      </div>
+
+      <div class="callout tip">
+        <strong>Pre-launch checklist:</strong>
+        <ul>
+          <li>☐ Evaluated on a representative test set (not just a handful of manual examples)</li>
+          <li>☐ Cost per request measured and projected at expected scale</li>
+          <li>☐ Latency measured under realistic concurrent load</li>
+          <li>☐ Fallback/retry behavior defined for API failures and timeouts</li>
+          <li>☐ Guardrails in place for prompt injection and unsafe tool use</li>
+          <li>☐ Logging/tracing wired up for debugging real user interactions</li>
+          <li>☐ A rollback plan exists for the next prompt or model-version change</li>
+          <li>☐ Human review gate exists for any high-risk/irreversible action</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 50 -->
+    <section class="block" id="quiz">
+      <h2><span class="num">50</span> Quick Quiz 🎯</h2>
+      <p>Test yourself — click each question to reveal the answer.</p>
+
+      <details class="quiz-item"><summary>Q1: What does an LLM actually predict, one step at a time?</summary><p class="answer">The next token (sub-word unit) in a sequence, given everything before it.</p></details>
+      <details class="quiz-item"><summary>Q2: What are the three components computed in self-attention?</summary><p class="answer">Query, Key, and Value vectors (Q, K, V).</p></details>
+      <details class="quiz-item"><summary>Q3: What did the Chinchilla paper argue many large models were doing wrong?</summary><p class="answer">They were undertrained relative to their size — a smaller model trained on proportionally more data would've performed better for the same compute budget.</p></details>
+      <details class="quiz-item"><summary>Q4: What's the main benefit of LoRA over full fine-tuning?</summary><p class="answer">It trains a tiny fraction of parameters (small low-rank matrices) while freezing the rest of the model, massively cutting memory and compute cost.</p></details>
+      <details class="quiz-item"><summary>Q5: Why does increasing temperature make output more "creative" but less reliable?</summary><p class="answer">It flattens the probability distribution, giving lower-probability (less likely, more surprising) tokens a better chance of being sampled — more variety, but also more chance of an off-track or wrong answer.</p></details>
+      <details class="quiz-item"><summary>Q6: What does the KV cache avoid recomputing?</summary><p class="answer">Key and Value vectors for all previously generated tokens — it stores them so each new token only requires new computation, not a full recomputation from scratch.</p></details>
+      <details class="quiz-item"><summary>Q7: In Mixture of Experts, does every token go through every expert?</summary><p class="answer">No — a router sends each token to only a small subset of experts (e.g., 2 out of 64), keeping active compute per token low even though total model capacity is huge.</p></details>
+    </section>
+
+    <!-- 51 -->
+    <section class="block" id="resources">
+      <h2><span class="num">51</span> Learn More — Resources</h2>
+      <p>Verified, stable links — official papers, docs, and sources. No guessed URLs.</p>
+
+      <h3>📄 Research Papers</h3>
+      <ul class="resources">
+        <li><span class="tag paper">paper</span> <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">Attention Is All You Need</a> — the paper that introduced the Transformer.</li>
+        <li><span class="tag paper">paper</span> <a href="https://arxiv.org/abs/1810.04805" target="_blank" rel="noopener">BERT</a> — bidirectional pretraining for language understanding.</li>
+        <li><span class="tag paper">paper</span> <a href="https://arxiv.org/abs/2005.14165" target="_blank" rel="noopener">GPT-3: Language Models are Few-Shot Learners</a></li>
+        <li><span class="tag paper">paper</span> <a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener">InstructGPT (Training language models to follow instructions with human feedback)</a></li>
+        <li><span class="tag paper">paper</span> <a href="https://arxiv.org/abs/2106.09685" target="_blank" rel="noopener">LoRA: Low-Rank Adaptation of Large Language Models</a></li>
+        <li><span class="tag paper">paper</span> <a href="https://arxiv.org/abs/2305.14314" target="_blank" rel="noopener">QLoRA: Efficient Finetuning of Quantized LLMs</a></li>
+        <li><span class="tag paper">paper</span> <a href="https://arxiv.org/abs/2203.15556" target="_blank" rel="noopener">Chinchilla — Training Compute-Optimal Large Language Models</a></li>
+        <li><span class="tag paper">paper</span> <a href="https://arxiv.org/abs/2001.08361" target="_blank" rel="noopener">Scaling Laws for Neural Language Models (Kaplan et al.)</a></li>
+        <li><span class="tag paper">paper</span> <a href="https://arxiv.org/abs/2104.09864" target="_blank" rel="noopener">RoFormer / RoPE — Rotary Position Embedding</a></li>
+        <li><span class="tag paper">paper</span> <a href="https://arxiv.org/abs/2108.12409" target="_blank" rel="noopener">ALiBi — Train Short, Test Long</a></li>
+        <li><span class="tag paper">paper</span> <a href="https://arxiv.org/abs/2205.14135" target="_blank" rel="noopener">FlashAttention</a></li>
+        <li><span class="tag paper">paper</span> <a href="https://arxiv.org/abs/2101.03961" target="_blank" rel="noopener">Switch Transformer — Mixture of Experts at scale</a></li>
+        <li><span class="tag paper">paper</span> <a href="https://arxiv.org/abs/2305.18290" target="_blank" rel="noopener">DPO — Direct Preference Optimization</a></li>
+        <li><span class="tag paper">paper</span> <a href="https://arxiv.org/abs/2201.11903" target="_blank" rel="noopener">Chain-of-Thought Prompting</a></li>
+        <li><span class="tag paper">paper</span> <a href="https://arxiv.org/abs/1508.07909" target="_blank" rel="noopener">Neural Machine Translation of Rare Words with Subword Units (BPE)</a></li>
+        <li><span class="tag paper">paper</span> <a href="https://arxiv.org/abs/2009.03300" target="_blank" rel="noopener">MMLU — Measuring Massive Multitask Language Understanding</a></li>
+        <li><span class="tag paper">paper</span> <a href="https://arxiv.org/abs/2107.03374" target="_blank" rel="noopener">HumanEval — Evaluating Large Language Models Trained on Code</a></li>
+        <li><span class="tag paper">paper</span> <a href="https://arxiv.org/abs/1905.07830" target="_blank" rel="noopener">HellaSwag</a></li>
+        <li><span class="tag paper">paper</span> <a href="https://arxiv.org/abs/2309.06180" target="_blank" rel="noopener">vLLM / PagedAttention — Efficient Memory Management for LLM Serving</a></li>
+        <li><span class="tag paper">paper</span> <a href="https://arxiv.org/abs/2103.00020" target="_blank" rel="noopener">CLIP — Learning Transferable Visual Models From Natural Language Supervision</a></li>
+        <li><span class="tag paper">paper</span> <a href="https://arxiv.org/abs/2307.03172" target="_blank" rel="noopener">Lost in the Middle — How Language Models Use Long Contexts</a></li>
+      </ul>
+
+      <h3>📚 Background Reading (Wikipedia)</h3>
+      <ul class="resources">
+        <li><span class="tag article">wiki</span> <a href="https://en.wikipedia.org/wiki/Large_language_model" target="_blank" rel="noopener">Large Language Model</a></li>
+        <li><span class="tag article">wiki</span> <a href="https://en.wikipedia.org/wiki/Transformer_(deep_learning_architecture)" target="_blank" rel="noopener">Transformer (deep learning architecture)</a></li>
+        <li><span class="tag article">wiki</span> <a href="https://en.wikipedia.org/wiki/Word_embedding" target="_blank" rel="noopener">Word Embedding</a></li>
+        <li><span class="tag article">wiki</span> <a href="https://en.wikipedia.org/wiki/Softmax_function" target="_blank" rel="noopener">Softmax Function</a></li>
+        <li><span class="tag article">wiki</span> <a href="https://en.wikipedia.org/wiki/Cross-entropy" target="_blank" rel="noopener">Cross-Entropy</a></li>
+        <li><span class="tag article">wiki</span> <a href="https://en.wikipedia.org/wiki/Perplexity" target="_blank" rel="noopener">Perplexity</a></li>
+        <li><span class="tag article">wiki</span> <a href="https://en.wikipedia.org/wiki/Backpropagation" target="_blank" rel="noopener">Backpropagation</a></li>
+      </ul>
+
+      <h3>🛠️ Official Docs & Tools</h3>
+      <ul class="resources">
+        <li><span class="tag docs">docs</span> <a href="https://huggingface.co/docs/transformers/index" target="_blank" rel="noopener">Hugging Face Transformers</a></li>
+        <li><span class="tag docs">docs</span> <a href="https://huggingface.co/docs/peft/index" target="_blank" rel="noopener">Hugging Face PEFT</a></li>
+        <li><span class="tag docs">docs</span> <a href="https://github.com/openai/tiktoken" target="_blank" rel="noopener">tiktoken (OpenAI's BPE tokenizer)</a></li>
+        <li><span class="tag docs">docs</span> <a href="https://github.com/google/sentencepiece" target="_blank" rel="noopener">SentencePiece</a></li>
+        <li><span class="tag docs">docs</span> <a href="https://docs.vllm.ai/" target="_blank" rel="noopener">vLLM Documentation</a></li>
+        <li><span class="tag docs">docs</span> <a href="https://github.com/ggml-org/llama.cpp" target="_blank" rel="noopener">llama.cpp</a></li>
+        <li><span class="tag docs">docs</span> <a href="https://github.com/ollama/ollama" target="_blank" rel="noopener">Ollama</a></li>
+        <li><span class="tag docs">docs</span> <a href="https://platform.openai.com/docs/" target="_blank" rel="noopener">OpenAI API Docs</a></li>
+        <li><span class="tag docs">docs</span> <a href="https://docs.claude.com/" target="_blank" rel="noopener">Anthropic (Claude) API Docs</a></li>
+        <li><span class="tag docs">docs</span> <a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/" target="_blank" rel="noopener">OWASP Top 10 for LLM Applications</a></li>
+      </ul>
+
+      <h3>🎥 Video Explainers (search on YouTube)</h3>
+      <ul class="resources">
+        <li><span class="tag video">video</span> <a href="https://www.youtube.com/results?search_query=LLM+explained+simply" target="_blank" rel="noopener">LLM explained simply</a></li>
+        <li><span class="tag video">video</span> <a href="https://www.youtube.com/results?search_query=transformer+architecture+explained" target="_blank" rel="noopener">Transformer architecture explained</a></li>
+        <li><span class="tag video">video</span> <a href="https://www.youtube.com/results?search_query=how+does+chatgpt+work" target="_blank" rel="noopener">How does ChatGPT work</a></li>
+        <li><span class="tag video">video</span> <a href="https://www.youtube.com/results?search_query=attention+is+all+you+need+explained" target="_blank" rel="noopener">Attention Is All You Need — explained</a></li>
+        <li><span class="tag video">video</span> <a href="https://www.youtube.com/results?search_query=RLHF+explained" target="_blank" rel="noopener">RLHF explained</a></li>
+        <li><span class="tag video">video</span> <a href="https://www.youtube.com/results?search_query=build+GPT+from+scratch" target="_blank" rel="noopener">Build GPT from scratch</a></li>
+      </ul>
+
+      <p>
+        Next: see how LLMs power retrieval-augmented systems in
+        <a href="rag.html">RAG (Retrieval-Augmented Generation)</a>.
+      </p>
+    </section>
+
+  </main>
+</div>
+
+<div class="page-nav">
+  <a href="index.html">⬅ Back to Roadmap Home</a>
+  <a href="ai-agents.html">Next up: AI Agents & Agentic AI ➜</a>
+</div>
+
+</body>
+</html>

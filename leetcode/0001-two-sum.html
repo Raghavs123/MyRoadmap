@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LeetCode 1. Two Sum - C++, Java, Python solutions</title>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="lc.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧩</text></svg>">
+</head>
+<body>
+
+<header class="hero">
+  <div class="breadcrumb"><a href="../index.html">🏠 Roadmap Home</a> / <a href="index.html">LeetCode</a> / 1. Two Sum</div>
+  <h1>🧩 1. Two Sum</h1>
+  <p class="subtitle">Find the two numbers in a list that add up to a target, and report where they sit. Full solutions in <strong>C++, Java and Python</strong>, from brute force to the most optimized approach, with step-by-step dry runs. <strong>Last reviewed: 14 November 2026.</strong></p>
+  <div class="badge-row"><span class="diff Easy">Easy</span><span class="badge intermediate">Array</span><span class="badge intermediate">Hash Table</span></div>
+  <p><a class="lc-button" href="https://leetcode.com/problems/two-sum/" target="_blank" rel="noopener">Open on LeetCode ↗</a></p>
+</header>
+<div class="layout">
+  <nav class="toc"><h3>On this page (11 sections)</h3><ol><li><a href="#statement">Problem Statement</a></li><li><a href="#examples">Examples and Constraints</a></li><li><a href="#think">How to Think About It (in Easy Words)</a></li><li><a href="#approach-1">Approach 1: Brute Force: Try Every Pair</a></li><li><a href="#approach-2">Approach 2: Sort and Use Two Pointers</a></li><li><a href="#approach-3">Approach 3: Two-Pass Hash Map</a></li><li><a href="#approach-4">Approach 4: One-Pass Hash Map (Most Optimized)</a></li><li><a href="#compare">Comparing the Approaches</a></li><li><a href="#tests">Test Report (Run for Real)</a></li><li><a href="#mistakes">Common Mistakes</a></li><li><a href="#related">Related Problems to Try Next</a></li></ol></nav>
+  <main>
+<section class="block" id="statement"><h2><span class="num">1</span> Problem Statement</h2><div class="callout tip"><strong>Wording note:</strong> LeetCode's own problem text is their copyright, so this page re-states the problem <em>in my own words</em> with the same task, the same examples and the same constraints (as I know them). For LeetCode's exact wording, open the official problem: <a href="https://leetcode.com/problems/two-sum/">LeetCode 1. Two Sum</a> (the site blocks automated link checks, so this link was not verified by a script).</div><p><a class="lc-button" href="https://leetcode.com/problems/two-sum/" target="_blank" rel="noopener">Open on LeetCode ↗</a></p><div class="statement"><p><span class="diff Easy">Easy</span> &nbsp; Topics: Array, Hash Table</p><p>You are given a list of whole numbers <code>nums</code> and one whole number <code>target</code>. Find <strong>two different positions</strong> <code>i</code> and <code>j</code> in the list such that <code>nums[i] + nums[j] == target</code>, and return those two positions (the <em>indices</em>, counting from 0).</p>
+<ul><li>You may assume that every input has <strong>exactly one</strong> valid answer.</li><li>You may not use the same element twice (positions <code>i</code> and <code>j</code> must be different).</li><li>You may return the two indices in any order.</li></ul></div></section><section class="block" id="examples"><h2><span class="num">2</span> Examples and Constraints</h2><div class="example"><div class="label">Example 1</div><p><strong>Input:</strong> <code>nums = [2,7,11,15], target = 9</code><br><strong>Output:</strong> <code>[0,1]</code><br><strong>Explanation:</strong> nums[0] + nums[1] = 2 + 7 = 9, so the answer is [0, 1].</p></div><div class="example"><div class="label">Example 2</div><p><strong>Input:</strong> <code>nums = [3,2,4], target = 6</code><br><strong>Output:</strong> <code>[1,2]</code><br><strong>Explanation:</strong> nums[1] + nums[2] = 2 + 4 = 6.</p></div><div class="example"><div class="label">Example 3</div><p><strong>Input:</strong> <code>nums = [3,3], target = 6</code><br><strong>Output:</strong> <code>[0,1]</code><br><strong>Explanation:</strong> The same value may appear twice, but at two different positions.</p></div><h3>Constraints</h3><ul><li><code>2 &lt;= nums.length &lt;= 10<sup>4</sup></code></li><li><code>-10<sup>9</sup> &lt;= nums[i] &lt;= 10<sup>9</sup></code></li><li><code>-10<sup>9</sup> &lt;= target &lt;= 10<sup>9</sup></code></li><li><code>Only one valid answer exists.</code></li></ul><div class="callout tip"><strong>Follow-up:</strong> Can you come up with an algorithm that is faster than O(n²)?</div></section><section class="block" id="think"><h2><span class="num">3</span> How to Think About It (in Easy Words)</h2><div class="callout life">Imagine a shelf of price tags and you must pick <strong>two</strong> that cost exactly your target amount. The slow way is to try every pair. The fast way is to remember what you have already seen, so for each new tag you only have to ask: <em>'did I already see the tag that completes this one?'</em></div><p>Below you will find <strong>4 approaches</strong>, from the simplest (brute force) to the best. Each one has the idea in plain words, its speed and memory cost, the code in <strong>C++, Java and Python</strong> (click the tabs; your choice is remembered), and a <strong>step-by-step dry run</strong> on a small input.</p></section><section class="block" id="approach-1"><h2><span class="num">4</span> Approach 1: Brute Force: Try Every Pair</h2><p class="meta"><span class="level">Brute force</span></p><p><strong>Idea:</strong> Take the first number, then check it with every number after it. Then take the second number and do the same, and so on. The first pair that adds up to the target is the answer.</p><div class="callout life">Like asking every pair of children in a class 'do your ages add up to 20?' until you find the pair.</div><table class=""><tr><th>Time</th><th>Space</th><th>Good side</th><th>Weak side</th></tr><tr><td>O(n²)</td><td>O(1)</td><td>Very easy to write and to trust.</td><td>For 10,000 numbers this checks about 50 million pairs; it is the slowest option.</td></tr></table><h3>Code</h3><div class="code-box"><div class="lang-tabs"><button data-lang="cpp">C++</button><button data-lang="java">Java</button><button data-lang="py">Python</button><button class="copy">Copy</button></div><pre class="lang-code" data-lang="cpp"><code>class Solution {
+public:
+    vector&lt;int&gt; twoSum(vector&lt;int&gt;&amp; nums, int target) {
+        int n = nums.size();
+        for (int i = 0; i &lt; n; i++) {               // choose the first number
+            for (int j = i + 1; j &lt; n; j++) {       // choose a second number that comes AFTER it
+                if (nums[i] + nums[j] == target) {  // do they add up to the target?
+                    return {i, j};                  // yes: report their positions
+                }
+            }
+        }
+        return {};                                  // never happens: an answer always exists
+    }
+};</code></pre><pre class="lang-code" data-lang="java"><code>class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        int n = nums.length;
+        for (int i = 0; i &lt; n; i++) {               // choose the first number
+            for (int j = i + 1; j &lt; n; j++) {       // choose a second number that comes AFTER it
+                if (nums[i] + nums[j] == target) {  // do they add up to the target?
+                    return new int[]{i, j};         // yes: report their positions
+                }
+            }
+        }
+        return new int[0];                          // never happens: an answer always exists
+    }
+}</code></pre><pre class="lang-code" data-lang="py"><code>class Solution:
+    def twoSum(self, nums: List[int], target: int) -&gt; List[int]:
+        n = len(nums)
+        for i in range(n):                          # choose the first number
+            for j in range(i + 1, n):               # choose a second number that comes AFTER it
+                if nums[i] + nums[j] == target:     # do they add up to the target?
+                    return [i, j]                   # yes: report their positions
+        return []                                   # never happens: an answer always exists</code></pre></div><details class="deepdive" open><summary>Step-by-step dry run (computed by running the algorithm)</summary><p><strong>Sample:</strong> <code>nums = [3, 2, 4], target = 6</code></p><div style="overflow-x:auto"><table class="trace-table"><tr><th>i</th><th>j</th><th>nums[i]</th><th>nums[j]</th><th>sum</th><th>sum == 6?</th></tr><tr><td>0</td><td>1</td><td>3</td><td>2</td><td>5</td><td>no</td></tr><tr><td>0</td><td>2</td><td>3</td><td>4</td><td>7</td><td>no</td></tr><tr><td>1</td><td>2</td><td>2</td><td>4</td><td>6</td><td>yes, return [1, 2]</td></tr></table></div><p><strong>Result:</strong> <code>[1, 2]</code></p></details></section><section class="block" id="approach-2"><h2><span class="num">5</span> Approach 2: Sort and Use Two Pointers</h2><p class="meta"><span class="level">Optimized (sorting)</span></p><p><strong>Idea:</strong> If the numbers are in order, we can stand one finger on the smallest and one on the biggest. If their sum is too big, move the right finger left (a smaller number). If it is too small, move the left finger right (a bigger number). Because sorting loses the original positions, we sort <em>pairs</em> of (value, original index).</p><div class="callout life">Two people walking towards each other along a number line, adjusting until their numbers meet the target.</div><table class=""><tr><th>Time</th><th>Space</th><th>Good side</th><th>Weak side</th></tr><tr><td>O(n log n)</td><td>O(n)</td><td>No hash map needed; shows the two-pointer trick used in many problems.</td><td>Sorting costs O(n log n) and we must remember the old indices.</td></tr></table><h3>Code</h3><div class="code-box"><div class="lang-tabs"><button data-lang="cpp">C++</button><button data-lang="java">Java</button><button data-lang="py">Python</button><button class="copy">Copy</button></div><pre class="lang-code" data-lang="cpp"><code>class Solution {
+public:
+    vector&lt;int&gt; twoSum(vector&lt;int&gt;&amp; nums, int target) {
+        int n = nums.size();
+        vector&lt;pair&lt;int, int&gt;&gt; a;                   // pairs of (value, original index)
+        for (int i = 0; i &lt; n; i++) a.push_back({nums[i], i});
+        sort(a.begin(), a.end());                   // sort by value; the index travels with it
+        int left = 0, right = n - 1;                // one finger at each end
+        while (left &lt; right) {
+            int sum = a[left].first + a[right].first;
+            if (sum == target) {
+                return {a[left].second, a[right].second};
+            } else if (sum &lt; target) {
+                left++;                             // too small: we need a bigger number
+            } else {
+                right--;                            // too big: we need a smaller number
+            }
+        }
+        return {};
+    }
+};</code></pre><pre class="lang-code" data-lang="java"><code>class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        int n = nums.length;
+        int[][] a = new int[n][2];                  // each row is {value, original index}
+        for (int i = 0; i &lt; n; i++) {
+            a[i][0] = nums[i];
+            a[i][1] = i;
+        }
+        Arrays.sort(a, (x, y) -&gt; Integer.compare(x[0], y[0]));   // sort by value; index travels with it
+        int left = 0, right = n - 1;                // one finger at each end
+        while (left &lt; right) {
+            int sum = a[left][0] + a[right][0];
+            if (sum == target) {
+                return new int[]{a[left][1], a[right][1]};
+            } else if (sum &lt; target) {
+                left++;                             // too small: we need a bigger number
+            } else {
+                right--;                            // too big: we need a smaller number
+            }
+        }
+        return new int[0];
+    }
+}</code></pre><pre class="lang-code" data-lang="py"><code>class Solution:
+    def twoSum(self, nums: List[int], target: int) -&gt; List[int]:
+        # pairs of (value, original index), sorted by value; the index travels with the value
+        a = sorted((value, i) for i, value in enumerate(nums))
+        left, right = 0, len(a) - 1                 # one finger at each end
+        while left &lt; right:
+            total = a[left][0] + a[right][0]
+            if total == target:
+                return [a[left][1], a[right][1]]
+            elif total &lt; target:
+                left += 1                           # too small: we need a bigger number
+            else:
+                right -= 1                          # too big: we need a smaller number
+        return []</code></pre></div><details class="deepdive" open><summary>Step-by-step dry run (computed by running the algorithm)</summary><p><strong>Sample:</strong> <code>nums = [2, 7, 11, 15], target = 9</code></p><div style="overflow-x:auto"><table class="trace-table"><tr><th>fingers</th><th>numbers</th><th>sum</th><th>compare</th><th>what we do</th></tr><tr><td>sorted pairs (value, original index)</td><td>[(2, 0), (7, 1), (11, 2), (15, 3)]</td><td></td><td></td><td></td></tr><tr><td>left=0, right=3</td><td>2 + 15</td><td>17</td><td>vs target 9</td><td>too big: right--</td></tr><tr><td>left=0, right=2</td><td>2 + 11</td><td>13</td><td>vs target 9</td><td>too big: right--</td></tr><tr><td>left=0, right=1</td><td>2 + 7</td><td>9</td><td>vs target 9</td><td>found! return the original indices [0, 1]</td></tr></table></div><p><strong>Result:</strong> <code>[0, 1]</code></p></details></section><section class="block" id="approach-3"><h2><span class="num">6</span> Approach 3: Two-Pass Hash Map</h2><p class="meta"><span class="level">Optimized (hashing)</span></p><p><strong>Idea:</strong> A hash map answers 'have I seen this number, and where?' almost instantly. Pass 1: write every number and its position into the map. Pass 2: for each number, look up <code>target - number</code>; if it is in the map (and is not the same position), we are done.</p><div class="callout life">Write every price tag in a notebook with its shelf number first; then for each tag, look in the notebook for the tag that completes it.</div><table class=""><tr><th>Time</th><th>Space</th><th>Good side</th><th>Weak side</th></tr><tr><td>O(n)</td><td>O(n)</td><td>Linear time; very clear in two simple steps.</td><td>Uses extra memory and walks the list twice.</td></tr></table><h3>Code</h3><div class="code-box"><div class="lang-tabs"><button data-lang="cpp">C++</button><button data-lang="java">Java</button><button data-lang="py">Python</button><button class="copy">Copy</button></div><pre class="lang-code" data-lang="cpp"><code>class Solution {
+public:
+    vector&lt;int&gt; twoSum(vector&lt;int&gt;&amp; nums, int target) {
+        unordered_map&lt;int, int&gt; position;           // value -&gt; index
+        for (int i = 0; i &lt; (int)nums.size(); i++) {
+            position[nums[i]] = i;                  // pass 1: remember where each number is
+        }
+        for (int i = 0; i &lt; (int)nums.size(); i++) {
+            int need = target - nums[i];            // pass 2: which number completes nums[i]?
+            auto it = position.find(need);
+            if (it != position.end() &amp;&amp; it-&gt;second != i) {   // found, and not the same element
+                return {i, it-&gt;second};
+            }
+        }
+        return {};
+    }
+};</code></pre><pre class="lang-code" data-lang="java"><code>class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        Map&lt;Integer, Integer&gt; position = new HashMap&lt;&gt;();   // value -&gt; index
+        for (int i = 0; i &lt; nums.length; i++) {
+            position.put(nums[i], i);                       // pass 1: remember where each number is
+        }
+        for (int i = 0; i &lt; nums.length; i++) {
+            int need = target - nums[i];                    // pass 2: which number completes nums[i]?
+            Integer j = position.get(need);
+            if (j != null &amp;&amp; j != i) {                      // found, and not the same element
+                return new int[]{i, j};
+            }
+        }
+        return new int[0];
+    }
+}</code></pre><pre class="lang-code" data-lang="py"><code>class Solution:
+    def twoSum(self, nums: List[int], target: int) -&gt; List[int]:
+        position = {}                               # value -&gt; index
+        for i, value in enumerate(nums):
+            position[value] = i                     # pass 1: remember where each number is
+        for i, value in enumerate(nums):
+            need = target - value                   # pass 2: which number completes this one?
+            if need in position and position[need] != i:   # found, and not the same element
+                return [i, position[need]]
+        return []</code></pre></div><details class="deepdive" open><summary>Step-by-step dry run (computed by running the algorithm)</summary><p><strong>Sample:</strong> <code>nums = [2, 7, 11, 15], target = 9</code></p><div style="overflow-x:auto"><table class="trace-table"><tr><th>pass</th><th>i</th><th>nums[i]</th><th>what happens</th><th>map / result</th></tr><tr><td>pass 1</td><td>0</td><td>2</td><td>store 2 -&gt; 0</td><td>{2: 0}</td></tr><tr><td>pass 1</td><td>1</td><td>7</td><td>store 7 -&gt; 1</td><td>{2: 0, 7: 1}</td></tr><tr><td>pass 1</td><td>2</td><td>11</td><td>store 11 -&gt; 2</td><td>{2: 0, 7: 1, 11: 2}</td></tr><tr><td>pass 1</td><td>3</td><td>15</td><td>store 15 -&gt; 3</td><td>{2: 0, 7: 1, 11: 2, 15: 3}</td></tr><tr><td>pass 2</td><td>0</td><td>2</td><td>need = 9 - 2 = 7: found at index 1</td><td>return [0, 1]</td></tr></table></div><p><strong>Result:</strong> <code>[0, 1]</code></p></details></section><section class="block" id="approach-4"><h2><span class="num">7</span> Approach 4: One-Pass Hash Map (Most Optimized)</h2><p class="meta"><span class="level">Most optimized</span></p><p><strong>Idea:</strong> Do both jobs in a single walk. For each number, first ask the map 'is <code>target - number</code> already here?'. If yes, the answer is that older position and the current one. If not, write the current number into the map and move on. A number can never match itself, because it is only added <em>after</em> we have looked.</p><div class="callout life">Walking along the shelf with a notebook: at each tag you check the notebook for its partner, then add the tag to the notebook.</div><table class=""><tr><th>Time</th><th>Space</th><th>Good side</th><th>Weak side</th></tr><tr><td>O(n)</td><td>O(n)</td><td>Fastest in practice, only one loop, handles equal values like [3, 3] naturally.</td><td>Needs a hash map (extra memory).</td></tr></table><h3>Code</h3><div class="code-box"><div class="lang-tabs"><button data-lang="cpp">C++</button><button data-lang="java">Java</button><button data-lang="py">Python</button><button class="copy">Copy</button></div><pre class="lang-code" data-lang="cpp"><code>class Solution {
+public:
+    vector&lt;int&gt; twoSum(vector&lt;int&gt;&amp; nums, int target) {
+        unordered_map&lt;int, int&gt; seen;               // value -&gt; index, for numbers we already visited
+        for (int i = 0; i &lt; (int)nums.size(); i++) {
+            int need = target - nums[i];            // the partner this number is looking for
+            auto it = seen.find(need);
+            if (it != seen.end()) {                 // the partner was seen earlier
+                return {it-&gt;second, i};
+            }
+            seen[nums[i]] = i;                      // otherwise remember this number
+        }
+        return {};
+    }
+};</code></pre><pre class="lang-code" data-lang="java"><code>class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        Map&lt;Integer, Integer&gt; seen = new HashMap&lt;&gt;();       // value -&gt; index, for numbers we already visited
+        for (int i = 0; i &lt; nums.length; i++) {
+            int need = target - nums[i];                    // the partner this number is looking for
+            if (seen.containsKey(need)) {                   // the partner was seen earlier
+                return new int[]{seen.get(need), i};
+            }
+            seen.put(nums[i], i);                           // otherwise remember this number
+        }
+        return new int[0];
+    }
+}</code></pre><pre class="lang-code" data-lang="py"><code>class Solution:
+    def twoSum(self, nums: List[int], target: int) -&gt; List[int]:
+        seen = {}                                   # value -&gt; index, for numbers we already visited
+        for i, value in enumerate(nums):
+            need = target - value                   # the partner this number is looking for
+            if need in seen:                        # the partner was seen earlier
+                return [seen[need], i]
+            seen[value] = i                         # otherwise remember this number
+        return []</code></pre></div><details class="deepdive" open><summary>Step-by-step dry run (computed by running the algorithm)</summary><p><strong>Sample:</strong> <code>nums = [3, 2, 4], target = 6</code></p><div style="overflow-x:auto"><table class="trace-table"><tr><th>i</th><th>nums[i]</th><th>need = target - nums[i]</th><th>seen before?</th><th>map before this step</th><th>result</th></tr><tr><td>0</td><td>3</td><td>3</td><td>no</td><td>{}</td><td>store 3 -&gt; 0</td></tr><tr><td>1</td><td>2</td><td>4</td><td>no</td><td>{3: 0}</td><td>store 2 -&gt; 1</td></tr><tr><td>2</td><td>4</td><td>2</td><td>yes, at index 1</td><td>{3: 0, 2: 1}</td><td>return [1, 2]</td></tr></table></div><p><strong>Result:</strong> <code>[1, 2]</code></p><p><strong>Sample:</strong> <code>nums = [3, 3], target = 6</code></p><div style="overflow-x:auto"><table class="trace-table"><tr><th>i</th><th>nums[i]</th><th>need = target - nums[i]</th><th>seen before?</th><th>map before this step</th><th>result</th></tr><tr><td>0</td><td>3</td><td>3</td><td>no</td><td>{}</td><td>store 3 -&gt; 0</td></tr><tr><td>1</td><td>3</td><td>3</td><td>yes, at index 0</td><td>{3: 0}</td><td>return [0, 1]</td></tr></table></div><p><strong>Result:</strong> <code>[0, 1]</code></p></details></section><section class="block" id="compare"><h2><span class="num">8</span> Comparing the Approaches</h2><table class=""><tr><th>Approach</th><th>Level</th><th>Time</th><th>Extra space</th></tr><tr><td>1. Brute Force: Try Every Pair</td><td>Brute force</td><td>O(n²)</td><td>O(1)</td></tr><tr><td>2. Sort and Use Two Pointers</td><td>Optimized (sorting)</td><td>O(n log n)</td><td>O(n)</td></tr><tr><td>3. Two-Pass Hash Map</td><td>Optimized (hashing)</td><td>O(n)</td><td>O(n)</td></tr><tr><td>4. One-Pass Hash Map (Most Optimized)</td><td>Most optimized</td><td>O(n)</td><td>O(n)</td></tr></table><p><strong>Which one should I write in an interview?</strong> Start by saying the brute force out loud (it proves you understand the problem), then explain the improvement and write the <em>most optimized</em> one that you can explain clearly: One-Pass Hash Map (Most Optimized).</p></section><section class="block" id="tests"><h2><span class="num">9</span> Test Report (Run for Real)</h2><div class="callout warn"><strong>Not submitted to LeetCode.</strong> I cannot log in to or submit to LeetCode from here, so I cannot honestly say 'Accepted'. What I <em>can</em> say is below: every approach in every language was compiled and run on the same <strong>376 correctness tests</strong>, and the results are real. To see the green 'Accepted' yourself, paste a solution into the LeetCode editor.</div><ul><li>The tests contain LeetCode's own examples, hand-made edge cases (empty or tiny inputs, repeats, maximum values) and many random inputs checked against an independent reference answer, plus inputs of the largest size allowed by the constraints.</li><li>Code was compiled with: C++17 (Clang 22 via Zig, <code>-O2 -Wall -Wextra</code>, no warnings), Java (JDK 25, <code>-Xlint:all</code>, no warnings), Python 3.12.</li><li>The code shown above is the <em>same text</em> that was tested: the test program is built from it automatically.</li></ul><table class=""><tr><th>Approach</th><th>C++ (tests passed)</th><th>Java (tests passed)</th><th>Python (tests passed)</th></tr><tr><td>1. Brute Force: Try Every Pair</td><td><span class="pass">376/376</span><br><span class="skip">largest input n = 10,000: 21.2 ms total, 3/3 ok</span></td><td><span class="pass">376/376</span><br><span class="skip">largest input n = 10,000: 13.6 ms total, 3/3 ok</span></td><td><span class="pass">376/376</span><br><span class="skip">largest input n = 10,000: 2523.2 ms total, 3/3 ok</span></td></tr><tr><td>2. Sort and Use Two Pointers</td><td><span class="pass">376/376</span><br><span class="skip">largest input n = 10,000: 1.4 ms total, 3/3 ok</span></td><td><span class="pass">376/376</span><br><span class="skip">largest input n = 10,000: 5.2 ms total, 3/3 ok</span></td><td><span class="pass">376/376</span><br><span class="skip">largest input n = 10,000: 6.4 ms total, 3/3 ok</span></td></tr><tr><td>3. Two-Pass Hash Map</td><td><span class="pass">376/376</span><br><span class="skip">largest input n = 10,000: 2.2 ms total, 3/3 ok</span></td><td><span class="pass">376/376</span><br><span class="skip">largest input n = 10,000: 2.6 ms total, 3/3 ok</span></td><td><span class="pass">376/376</span><br><span class="skip">largest input n = 10,000: 2.9 ms total, 3/3 ok</span></td></tr><tr><td>4. One-Pass Hash Map (Most Optimized)</td><td><span class="pass">376/376</span><br><span class="skip">largest input n = 10,000: 2.0 ms total, 3/3 ok</span></td><td><span class="pass">376/376</span><br><span class="skip">largest input n = 10,000: 2.3 ms total, 3/3 ok</span></td><td><span class="pass">376/376</span><br><span class="skip">largest input n = 10,000: 2.6 ms total, 3/3 ok</span></td></tr></table><p>Times are from one laptop, one run each: use them to compare approaches, not to predict LeetCode's runtime numbers.</p></section><section class="block" id="mistakes"><h2><span class="num">10</span> Common Mistakes</h2><ul><li>Using the same element twice: <code>nums[i] + nums[i]</code>. Always make sure the two positions are different (in the one-pass version this is automatic).</li><li>Returning the <em>values</em> instead of the <em>indices</em>.</li><li>After sorting, returning the sorted positions instead of the original ones (store the original index with each value).</li><li>In the two-pass hash map, forgetting the <code>!= i</code> check: for <code>nums = [3,2,4]</code>, <code>target = 6</code> the number 3 would pair with itself and return <code>[0,0]</code>.</li></ul></section><section class="block" id="related"><h2><span class="num">11</span> Related Problems to Try Next</h2><ul><li>LeetCode 15: 3Sum</li><li>LeetCode 167: Two Sum II - Input Array Is Sorted</li><li>LeetCode 653: Two Sum IV - Input is a BST</li><li>LeetCode 560: Subarray Sum Equals K</li></ul></section>
+  </main>
+</div>
+<div class="page-nav"><a href="index.html">⬅ LeetCode list</a><a href="index.html">LeetCode list</a><a href="0002-add-two-numbers.html">2. Add Two Numbers ➜</a></div>
+<script src="lc.js"></script>
+</body>
+</html>

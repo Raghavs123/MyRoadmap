@@ -1,0 +1,1719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generative AI — The Complete A-Z Guide</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
+</head>
+<body>
+
+<header class="hero">
+  <div class="breadcrumb"><a href="index.html">🏠 Roadmap Home</a> / Generative AI</div>
+  <h1>✨ Generative AI — Making New Things With AI</h1>
+  <p class="subtitle">
+    The complete A-to-Z guide: how AI creates brand-new text, images, voices, music, video and 3D worlds —
+    the big ideas (autoregressive models, VAEs, GANs, diffusion, flow matching), every modality, the
+    best-known tools today, prompting and editing, from-scratch code, and the hard questions about
+    fakes, copyright and the law — in plain words, with daily-life examples and diagrams.
+    <strong>Last reviewed: 29 October 2026</strong> (this field changes monthly — dated notes mark what to re-check).
+  </p>
+  <div class="badge-row">
+    <span class="badge beginner">Beginner friendly</span>
+    <span class="badge intermediate">Intermediate concepts</span>
+    <span class="badge advanced">Advanced / Research-level</span>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- ============ SIDEBAR TOC ============ -->
+  <nav class="toc">
+    <h3>On this page (51 sections)</h3>
+    <ol>
+      <li class="toc-part">Part A — Foundations</li>
+      <li><a href="#what-is-genai">What is Generative AI?</a></li>
+      <li><a href="#why-genai">Why is it different? (making vs sorting)</a></li>
+      <li><a href="#prereq-genai">Prerequisite crash course</a></li>
+      <li><a href="#genai-map">The map: every kind of GenAI</a></li>
+      <li><a href="#history-genai">History & timeline</a></li>
+
+      <li class="toc-part">Part B — How It Works</li>
+      <li><a href="#learn-distribution">How a model learns to "make things"</a></li>
+      <li><a href="#latent-space">Latent space: the map of ideas</a></li>
+      <li><a href="#model-families">The five families compared</a></li>
+      <li><a href="#autoregressive-gen">Autoregressive models</a></li>
+      <li><a href="#vae-gen">Autoencoders & VAEs</a></li>
+      <li><a href="#gan-gen">GANs: forger vs detective</a></li>
+      <li><a href="#diffusion-gen">Diffusion: clean up the noise</a></li>
+      <li><a href="#latent-diffusion">Latent diffusion & Stable Diffusion</a></li>
+      <li><a href="#flow-dit">Flow matching & Diffusion Transformers</a></li>
+      <li><a href="#conditioning-guidance">Steering: text, CLIP & guidance</a></li>
+      <li><a href="#fast-sampling">Making it fast</a></li>
+
+      <li class="toc-part">Part C — Every Modality</li>
+      <li><a href="#text-gen">Text generation (a quick tour)</a></li>
+      <li><a href="#image-gen">Image generation</a></li>
+      <li><a href="#image-snapshot">Image models today (Oct 2026)</a></li>
+      <li><a href="#video-gen">Video generation</a></li>
+      <li><a href="#audio-speech">Voice: speech, cloning, listening</a></li>
+      <li><a href="#music-gen">Music generation</a></li>
+      <li><a href="#three-d-world">3D & world models</a></li>
+      <li><a href="#code-science-gen">Code, science & other things</a></li>
+      <li><a href="#multimodal-unified">One model for everything</a></li>
+
+      <li class="toc-part">Part D — Using It Well</li>
+      <li><a href="#image-prompting">Prompting for images</a></li>
+      <li><a href="#editing-workflows">Editing: inpaint, outpaint, control</a></li>
+      <li><a href="#customization-gen">Customizing: LoRA & DreamBooth</a></li>
+      <li><a href="#eval-gen">Is it any good? Evaluation</a></li>
+      <li><a href="#production-gen">From demo to product</a></li>
+
+      <li class="toc-part">Part E — Hands-On Code</li>
+      <li><a href="#toy-text-code">Level 0 — a text generator from scratch</a></li>
+      <li><a href="#toy-diffusion-code">Level 1 — a tiny diffusion model</a></li>
+      <li><a href="#diffusers-code">Level 2 — text-to-image with diffusers</a></li>
+      <li><a href="#whisper-code">Level 3 — speech to text</a></li>
+      <li><a href="#clip-code">Level 4 — does the picture match the words?</a></li>
+
+      <li class="toc-part">Part F — Risks, Rules & Responsibility</li>
+      <li><a href="#limits-gen">Limits & weird failures</a></li>
+      <li><a href="#deepfakes-misuse">Deepfakes & misuse</a></li>
+      <li><a href="#provenance-gen">Watermarks & provenance</a></li>
+      <li><a href="#copyright-gen">Copyright & training data</a></li>
+      <li><a href="#regulation-gen">Laws & regulation (EU AI Act)</a></li>
+      <li><a href="#bias-privacy-env">Bias, privacy, memorization, energy</a></li>
+      <li><a href="#model-collapse">Model collapse</a></li>
+      <li><a href="#responsible-use">Responsible-use checklist</a></li>
+
+      <li class="toc-part">Part G — Ecosystem</li>
+      <li><a href="#use-cases-gen">Real-world use cases</a></li>
+      <li><a href="#tools-compare-gen">Tools & platforms compared</a></li>
+
+      <li class="toc-part">Part H — Reference</li>
+      <li><a href="#glossary-genai">Mini glossary</a></li>
+      <li><a href="#faq-genai">FAQ</a></li>
+      <li><a href="#interview-genai">Interview questions (with answers)</a></li>
+      <li><a href="#pitfalls-genai">Common problems & checklist</a></li>
+      <li><a href="#quiz-genai">Quick quiz</a></li>
+      <li><a href="#resources-genai">Learn more — resources</a></li>
+    </ol>
+  </nav>
+
+  <!-- ============ MAIN CONTENT ============ -->
+  <main>
+
+    <div class="part-divider"><h2>Part A — Foundations</h2></div>
+
+    <!-- 1 -->
+    <section class="block" id="what-is-genai">
+      <h2><span class="num">1</span> What is Generative AI? (the 10-second answer)</h2>
+      <div class="callout def">
+        <strong><a href="https://en.wikipedia.org/wiki/Generative_artificial_intelligence" target="_blank" rel="noopener">Generative AI</a></strong>
+        is AI that <em>makes new things</em> — text, pictures, voices, music, videos, computer code, 3D shapes — that didn't exist before,
+        by learning the patterns in huge amounts of examples and then producing fresh work in the same style.
+      </div>
+      <div class="callout life">
+        Imagine a child who has looked at a million drawings of cats. Ask them to "draw a cat wearing a tiny hat" and they can — they've never seen
+        that exact picture, but they know what cats look like and what hats look like, and can combine the ideas. Generative AI is that child, at enormous scale.
+      </div>
+      <p>
+        Three words capture it: <strong>learn the pattern → start from a prompt → produce something new</strong>. You type a request (the <em>prompt</em>);
+        the model makes an answer that has never been written, painted or filmed before.
+      </p>
+      <table>
+        <tr><th>You give it…</th><th>It gives you…</th><th>Everyday example</th></tr>
+        <tr><td>A sentence</td><td>A paragraph, email, story, or program</td><td>"Write a thank-you note to my teacher"</td></tr>
+        <tr><td>A sentence</td><td>A picture</td><td>"A red panda reading a book in a cozy library"</td></tr>
+        <tr><td>A picture + a sentence</td><td>An edited picture</td><td>"Make the sky sunset-orange"</td></tr>
+        <tr><td>A sentence</td><td>A video clip, maybe with sound</td><td>"A paper boat sailing down a rainy street"</td></tr>
+        <tr><td>Some text</td><td>A spoken voice or a song</td><td>"Read this bedtime story in a calm voice"</td></tr>
+        <tr><td>A photo</td><td>A 3D scene you can walk around</td><td>Turn photos of a room into a 3D model</td></tr>
+      </table>
+      <p>
+        Chat assistants like Claude or ChatGPT are generative AI for <strong>text</strong>; the deep-dive on how they work is the
+        <a href="llm.html">LLM guide</a>. This guide is the <em>whole family</em> — and especially the picture, sound and video side.
+      </p>
+    </section>
+
+    <!-- 2 -->
+    <section class="block" id="why-genai">
+      <h2><span class="num">2</span> Why is it different? Making vs sorting</h2>
+      <p>
+        For many years, most AI was <strong>discriminative</strong> — it <em>sorted</em> or <em>judged</em> things: "is this email spam?", "is this photo a cat or a dog?".
+        <strong>Generative</strong> AI does the opposite job: it <em>makes</em> the cat.
+      </p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 230" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrGe1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+          </defs>
+          <text x="180" y="22" text-anchor="middle" class="phase-label">Discriminative — sorts</text>
+          <rect class="box" x="20" y="50" width="110" height="60" rx="8"/><text x="75" y="85" text-anchor="middle">🐱 a photo</text>
+          <rect class="box-hl" x="150" y="50" width="100" height="60" rx="8"/><text x="200" y="76" text-anchor="middle">Model</text><text x="200" y="94" text-anchor="middle" class="edge-label">judges</text>
+          <rect class="box-final" x="270" y="50" width="100" height="60" rx="8"/><text x="320" y="85" text-anchor="middle">"cat" ✔</text>
+          <line class="edge" x1="130" y1="80" x2="148" y2="80" marker-end="url(#arrGe1)"/><line class="edge" x1="250" y1="80" x2="268" y2="80" marker-end="url(#arrGe1)"/>
+          <text x="180" y="140" text-anchor="middle" class="edge-label">picture in → label out</text>
+
+          <text x="540" y="22" text-anchor="middle" class="phase-label">Generative — makes</text>
+          <rect class="box" x="390" y="50" width="110" height="60" rx="8"/><text x="445" y="76" text-anchor="middle">✍️ "a cat in</text><text x="445" y="94" text-anchor="middle">a tiny hat"</text>
+          <rect class="box-hl" x="520" y="50" width="100" height="60" rx="8"/><text x="570" y="76" text-anchor="middle">Model</text><text x="570" y="94" text-anchor="middle" class="edge-label">creates</text>
+          <rect class="box-final" x="640" y="50" width="70" height="60" rx="8"/><text x="675" y="87" text-anchor="middle">🐱🎩</text>
+          <line class="edge" x1="500" y1="80" x2="518" y2="80" marker-end="url(#arrGe1)"/><line class="edge" x1="620" y1="80" x2="638" y2="80" marker-end="url(#arrGe1)"/>
+          <text x="550" y="140" text-anchor="middle" class="edge-label">words in → brand-new picture out</text>
+
+          <text x="360" y="195" text-anchor="middle">Same kind of brain, opposite job: one answers "what is this?", the other answers "make me one".</text>
+        </svg>
+        <div class="diagram-caption">Fig 1 — Discriminative models turn things into labels; generative models turn descriptions into things.</div>
+      </div>
+      <table>
+        <tr><th></th><th>Discriminative AI</th><th>Generative AI</th></tr>
+        <tr><td>Core question</td><td>"Which category is this?"</td><td>"What would a new example look like?"</td></tr>
+        <tr><td>Output</td><td>A label or a number</td><td>A whole new piece of content</td></tr>
+        <tr><td>Math flavour</td><td>Learns the border between classes</td><td>Learns how the data itself is spread out (its <em>distribution</em>)</td></tr>
+        <tr><td>Example</td><td>Spam filter, face unlock</td><td>Chatbot, image maker, voice cloner</td></tr>
+      </table>
+      <div class="callout tip">
+        The two work together all the time: a generative model drafts, a discriminative model checks (is the picture safe? does it match the prompt? is the answer correct?).
+      </div>
+    </section>
+
+    <!-- 3 -->
+    <section class="block" id="prereq-genai">
+      <h2><span class="num">3</span> Prerequisite Crash Course</h2>
+      <p>You need only a handful of ideas. Each has a one-line version here and a link if you want more.</p>
+      <table>
+        <tr><th>Idea</th><th>Plain meaning</th><th>Learn more</th></tr>
+        <tr><td>Neural network</td><td>A big pile of adjustable dials (numbers) that turns an input into an output. Training = turning the dials until answers get good.</td><td><a href="llm.html#prereq">LLM guide — prerequisites</a></td></tr>
+        <tr><td>Token</td><td>A small chunk of text (or, for images, a small patch) that a model reads and writes one at a time.</td><td><a href="llm.html#tokenization">Tokenization</a></td></tr>
+        <tr><td>Embedding</td><td>Turning a thing (word, picture, sound) into a list of numbers so that similar things get similar numbers — a "map of meaning".</td><td><a href="llm.html#embeddings-pos">Embeddings</a></td></tr>
+        <tr><td>Transformer</td><td>The "pay attention to the important parts" design behind modern language models and many image/video models.</td><td><a href="llm.html#transformer-arch">Transformer</a></td></tr>
+        <tr><td>Probability / randomness</td><td>Generative models don't compute <em>the</em> answer — they pick from many plausible answers, so each run can differ.</td><td><a href="llm.html#decoding">Decoding</a></td></tr>
+        <tr><td>Training vs using (inference)</td><td>Training = learning from examples (slow, expensive). Inference = making new things afterwards (fast, per request).</td><td><a href="llm.html#pretraining">Pretraining</a></td></tr>
+        <tr><td>Pixel</td><td>One tiny dot of colour. A 1000×1000 picture has a million of them, each described by three numbers (red, green, blue).</td><td><a href="https://en.wikipedia.org/wiki/Pixel" target="_blank" rel="noopener">Pixel — Wikipedia</a></td></tr>
+      </table>
+      <div class="callout life">
+        A picture is "just numbers": a grid of colour values. A song is "just numbers" too: air-pressure readings taken thousands of times a second. Once everything is numbers, the same learning tricks apply to all of it.
+      </div>
+    </section>
+
+    <!-- 4 -->
+    <section class="block" id="genai-map">
+      <h2><span class="num">4</span> The Map: Every Kind of Generative AI</h2>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrGe2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+          </defs>
+          <rect class="box-final" x="270" y="115" width="180" height="70" rx="10"/><text x="360" y="145" text-anchor="middle">✨ Generative AI</text><text x="360" y="165" text-anchor="middle" class="edge-label">learn patterns → make new</text>
+          <rect class="box-hl" x="20" y="20" width="150" height="56" rx="8"/><text x="95" y="44" text-anchor="middle">📝 Text</text><text x="95" y="62" text-anchor="middle" class="edge-label">chat, stories, code</text>
+          <rect class="box-hl" x="285" y="10" width="150" height="56" rx="8"/><text x="360" y="34" text-anchor="middle">🖼️ Images</text><text x="360" y="52" text-anchor="middle" class="edge-label">art, photos, edits</text>
+          <rect class="box-hl" x="550" y="20" width="150" height="56" rx="8"/><text x="625" y="44" text-anchor="middle">🎬 Video</text><text x="625" y="62" text-anchor="middle" class="edge-label">clips, with sound</text>
+          <rect class="box-hl" x="20" y="224" width="150" height="56" rx="8"/><text x="95" y="248" text-anchor="middle">🗣️ Voice</text><text x="95" y="266" text-anchor="middle" class="edge-label">speech, cloning</text>
+          <rect class="box-hl" x="285" y="234" width="150" height="56" rx="8"/><text x="360" y="258" text-anchor="middle">🎵 Music</text><text x="360" y="276" text-anchor="middle" class="edge-label">songs, sound effects</text>
+          <rect class="box-hl" x="550" y="224" width="150" height="56" rx="8"/><text x="625" y="248" text-anchor="middle">🧊 3D &amp; worlds</text><text x="625" y="266" text-anchor="middle" class="edge-label">scenes, games</text>
+          <line class="edge" x1="170" y1="62" x2="285" y2="125" marker-end="url(#arrGe2)"/>
+          <line class="edge" x1="360" y1="66" x2="360" y2="113" marker-end="url(#arrGe2)"/>
+          <line class="edge" x1="550" y1="62" x2="435" y2="125" marker-end="url(#arrGe2)"/>
+          <line class="edge" x1="170" y1="238" x2="285" y2="175" marker-end="url(#arrGe2)"/>
+          <line class="edge" x1="360" y1="234" x2="360" y2="187" marker-end="url(#arrGe2)"/>
+          <line class="edge" x1="550" y1="238" x2="435" y2="175" marker-end="url(#arrGe2)"/>
+        </svg>
+        <div class="diagram-caption">Fig 2 — One idea, many outputs. Modern systems increasingly mix them: type a sentence, get a video with a voice and music.</div>
+      </div>
+      <table>
+        <tr><th>Kind</th><th>What it makes</th><th>Main engines (explained in Part B)</th><th>Section</th></tr>
+        <tr><td>Text &amp; code</td><td>Words, programs, answers</td><td>Autoregressive transformers (LLMs)</td><td><a href="llm.html">LLM guide</a></td></tr>
+        <tr><td>Images</td><td>Pictures, edits, designs</td><td>Diffusion / flow models (and some autoregressive)</td><td><a href="#image-gen">Section 18</a></td></tr>
+        <tr><td>Video</td><td>Moving pictures (often with audio)</td><td>Diffusion transformers over space + time</td><td><a href="#video-gen">Section 20</a></td></tr>
+        <tr><td>Voice</td><td>Speech, cloned voices, transcripts</td><td>Neural codecs + language models, diffusion</td><td><a href="#audio-speech">Section 21</a></td></tr>
+        <tr><td>Music &amp; sound</td><td>Songs, effects</td><td>Audio tokens + transformers, diffusion</td><td><a href="#music-gen">Section 22</a></td></tr>
+        <tr><td>3D &amp; worlds</td><td>Scenes, objects, playable worlds</td><td>NeRFs, Gaussian splats, video-style world models</td><td><a href="#three-d-world">Section 23</a></td></tr>
+      </table>
+    </section>
+
+    <!-- 5 -->
+    <section class="block" id="history-genai">
+      <h2><span class="num">5</span> A Short History &amp; Timeline</h2>
+      <p>The ideas are older than you'd think; what changed is size, data, and compute.</p>
+      <table>
+        <tr><th>When</th><th>What happened</th></tr>
+        <tr><td>1950s–2000s</td><td>Simple "next word" statistics and hand-written rules make crude text; neural nets are small and slow.</td></tr>
+        <tr><td>2013–2014</td><td><a href="https://arxiv.org/abs/1312.6114" target="_blank" rel="noopener">Variational Autoencoders</a> and <a href="https://arxiv.org/abs/1406.2661" target="_blank" rel="noopener">GANs</a> show neural networks can generate convincing new images (blurry at first, then startlingly sharp).</td></tr>
+        <tr><td>2016–2017</td><td><a href="https://arxiv.org/abs/1609.03499" target="_blank" rel="noopener">WaveNet</a> makes natural synthetic speech; the <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">Transformer</a> arrives and changes everything that follows.</td></tr>
+        <tr><td>2020</td><td><a href="https://arxiv.org/abs/2006.11239" target="_blank" rel="noopener">Denoising diffusion (DDPM)</a> shows a stable, high-quality way to generate images; GPT-3 shows language models at scale.</td></tr>
+        <tr><td>2021</td><td><a href="https://arxiv.org/abs/2102.12092" target="_blank" rel="noopener">DALL·E</a> and <a href="https://arxiv.org/abs/2103.00020" target="_blank" rel="noopener">CLIP</a> link words and pictures — "type a sentence, get an image" becomes real.</td></tr>
+        <tr><td>2022</td><td>DALL·E 2, Imagen, Midjourney and open-source <a href="https://arxiv.org/abs/2112.10752" target="_blank" rel="noopener">Stable Diffusion</a> go public; ChatGPT (Nov) makes generative AI a household word.</td></tr>
+        <tr><td>2023</td><td><a href="https://arxiv.org/abs/2302.05543" target="_blank" rel="noopener">ControlNet</a>, LoRA fine-tunes and tools for editing spread; music (Suno, Udio) and voice cloning boom; copyright lawsuits begin in earnest.</td></tr>
+        <tr><td>2024</td><td>Text-to-video previews (OpenAI Sora) stun the world; <a href="https://arxiv.org/abs/2403.03206" target="_blank" rel="noopener">flow-based transformers</a> (Stable Diffusion 3, FLUX) become the new image standard; <a href="https://arxiv.org/abs/2402.15391" target="_blank" rel="noopener">Genie</a> generates playable worlds from pictures.</td></tr>
+        <tr><td>2025</td><td>Video gets <strong>native sound</strong> (Google's Veo 3), image generation moves inside chat assistants, and editing by plain conversation becomes normal.</td></tr>
+        <tr><td>2026</td><td>Image leaders include GPT Image 2.x, Nano Banana Pro/2 and FLUX.2; video leaders include Veo 3.1, Kling 3.0 and Wan 3.0 (clips up to ~30 s with audio); music companies and AI labs sign <strong>licensing deals</strong>; the EU's AI-content labeling rules start applying on 2 Aug 2026; OpenAI reportedly closes its Sora app and API. Details in Parts C and F.</td></tr>
+      </table>
+      <div class="callout tip">
+        Notice the pattern: each jump came from a better <em>recipe</em> (GAN → diffusion → flow + transformers) <strong>plus</strong> more data and compute. The recipes are Part B of this guide.
+      </div>
+    </section>
+
+    <div class="part-divider"><h2>Part B — How It Works</h2></div>
+
+    <!-- 6 -->
+    <section class="block" id="learn-distribution">
+      <h2><span class="num">6</span> How a Model Learns to "Make Things"</h2>
+      <p>
+        There is one big idea hiding behind every generative model: <strong>learn what real examples look like, so you can produce new ones that look real too</strong>.
+        Mathematicians say the model learns the <em>distribution</em> of the data — the way the examples are spread out. You don't need the math to follow the picture:
+      </p>
+      <div class="callout life">
+        Picture a huge field, and every real cat photo ever taken is a flag planted in it. Photos of similar cats are planted close together; very different photos are far apart. The
+        model learns the <em>shape of where the flags are</em>. To make a new cat, it picks a spot in the flag-filled region that nobody has used yet. Because the spot is near many real cats, the result looks like a cat.
+      </div>
+      <h3>Three kinds of "learning games" the models play</h3>
+      <table>
+        <tr><th>Game</th><th>The rule</th><th>Used by</th></tr>
+        <tr><td>🔮 Guess the next piece</td><td>See the start; predict what comes next. Repeat many times.</td><td>Text models, and image/audio models that work in tokens</td></tr>
+        <tr><td>🧽 Clean up the noise</td><td>Take a real example, smear it with noise, learn to undo the damage.</td><td>Diffusion and flow models (most image/video/audio)</td></tr>
+        <tr><td>🎭 Fool the judge</td><td>One network forges, another tries to spot fakes; both get better.</td><td>GANs</td></tr>
+      </table>
+      <div class="callout tip">
+        None of them stores a picture album to copy from. They store <em>dials</em> (numbers) tuned so that realistic things come out. (Under special conditions a model can still
+        memorize a few training examples — see <a href="#bias-privacy-env">Section 41</a>.)
+      </div>
+    </section>
+
+    <!-- 7 -->
+    <section class="block" id="latent-space">
+      <h2><span class="num">7</span> Latent Space — The Map of Ideas</h2>
+      <p>
+        A 1000×1000 photo has a million pixel values — far too many to "think" about directly. So models learn to squeeze a picture into a short list of numbers capturing what matters
+        (<em>"a fluffy orange cat, sitting, facing left, indoors"</em>) and to expand it back. That squeezed-down space is the <strong>latent space</strong> ("latent" = hidden).
+      </p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrGe3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+          </defs>
+          <rect class="box" x="20" y="60" width="130" height="90" rx="8"/><text x="85" y="100" text-anchor="middle">🖼️ Picture</text><text x="85" y="120" text-anchor="middle" class="edge-label">1,000,000 numbers</text>
+          <rect class="box-hl" x="215" y="85" width="110" height="40" rx="8"/><text x="270" y="110" text-anchor="middle">Encoder (squeeze)</text>
+          <rect class="box-final" x="385" y="75" width="110" height="60" rx="8"/><text x="440" y="100" text-anchor="middle">Latent</text><text x="440" y="118" text-anchor="middle" class="edge-label">a few hundred numbers</text>
+          <rect class="box-hl" x="555" y="85" width="110" height="40" rx="8"/><text x="610" y="110" text-anchor="middle">Decoder (expand)</text>
+          <line class="edge" x1="150" y1="105" x2="213" y2="105" marker-end="url(#arrGe3)"/>
+          <line class="edge" x1="325" y1="105" x2="383" y2="105" marker-end="url(#arrGe3)"/>
+          <line class="edge" x1="495" y1="105" x2="553" y2="105" marker-end="url(#arrGe3)"/>
+          <text x="360" y="190" text-anchor="middle">Nearby points in latent space = similar pictures. Walk a straight line between two points and you get a smooth "morph".</text>
+        </svg>
+        <div class="diagram-caption">Fig 3 — The encoder/decoder pair compresses pictures to a compact "idea space" and back. Working there is much cheaper than working on raw pixels.</div>
+      </div>
+      <div class="callout life">
+        It's like describing a person to a sketch artist: you don't send a million measurements — you say "tall, curly hair, round glasses, big smile". Those few words are the latent code; the artist (decoder) turns them into a face.
+      </div>
+      <ul>
+        <li><strong>Why it matters:</strong> most modern image and video generators run their expensive steps in latent space, which is why they became fast enough to use (Section 13).</li>
+        <li><strong>Why it's fun:</strong> you can blend ideas — "half cat, half owl" — by mixing latent codes; and move along directions such as "older", "smiling" or "more sunny".</li>
+        <li><strong>Related:</strong> word embeddings from the <a href="llm.html#embeddings-pos">LLM guide</a> are the same idea for text.</li>
+      </ul>
+    </section>
+
+    <!-- 8 -->
+    <section class="block" id="model-families">
+      <h2><span class="num">8</span> The Five Families Compared</h2>
+      <p>Almost every generator you'll meet is built from one (or a mix) of these five ideas. The next sections explain each.</p>
+      <table>
+        <tr><th>Family</th><th>One-line idea</th><th>Strengths</th><th>Weaknesses</th><th>Used today for</th></tr>
+        <tr><td><strong>Autoregressive</strong></td><td>Make it one small piece at a time, each piece based on the previous ones</td><td>Very flexible; scales well; same engine as text; great at following long instructions</td><td>Slow for big pictures (many pieces); errors can pile up</td><td>All text/code; some image &amp; audio generation</td></tr>
+        <tr><td><strong>VAE</strong> (Variational Autoencoder)</td><td>Squeeze to a latent code and expand back, with the code kept tidy and random-friendly</td><td>Stable, fast, gives a nice latent space</td><td>Outputs a bit blurry on its own</td><td>The "compressor" inside latent diffusion models</td></tr>
+        <tr><td><strong>GAN</strong></td><td>A forger and a detective train each other</td><td>Very sharp, one-shot fast generation</td><td>Hard to train; can miss variety ("mode collapse")</td><td>Faces, upscaling, real-time effects, helper losses</td></tr>
+        <tr><td><strong>Diffusion</strong></td><td>Learn to remove noise step by step; generate by denoising pure noise</td><td>Excellent quality, stable training, easy to steer</td><td>Many steps = slower (until sped up)</td><td>Most image, video &amp; audio models</td></tr>
+        <tr><td><strong>Flow matching</strong> / rectified flow</td><td>Learn a smooth, straight-ish path from noise to data</td><td>Simpler training, fewer steps, scales nicely with transformers</td><td>Newer; recipes still evolving</td><td>Newest image/video models (e.g., Stable Diffusion 3-style, FLUX-style)</td></tr>
+      </table>
+      <div class="callout tip">
+        In real products these are <strong>combined</strong>: e.g., a VAE squeezes the picture, a transformer trained with flow matching creates the latent, a text model reads your prompt, and a GAN-like or distilled step makes it fast.
+      </div>
+    </section>
+
+    <!-- 9 -->
+    <section class="block" id="autoregressive-gen">
+      <h2><span class="num">9</span> Autoregressive Models — One Piece at a Time</h2>
+      <p>
+        "Autoregressive" is a fancy word for <em>"predict the next piece from everything so far, then add it and repeat."</em> That's exactly how language models write.
+        It works for anything you can cut into a sequence of pieces — including pictures and sounds.
+      </p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrGe4" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+          </defs>
+          <text x="10" y="20" class="phase-label">Text: pieces are word-chunks (tokens)</text>
+          <rect class="box" x="20" y="35" width="70" height="36" rx="6"/><text x="55" y="58" text-anchor="middle">The</text>
+          <rect class="box" x="100" y="35" width="70" height="36" rx="6"/><text x="135" y="58" text-anchor="middle">cat</text>
+          <rect class="box" x="180" y="35" width="70" height="36" rx="6"/><text x="215" y="58" text-anchor="middle">sat</text>
+          <rect class="box-final" x="260" y="35" width="70" height="36" rx="6"/><text x="295" y="58" text-anchor="middle">on ?</text>
+          <text x="400" y="58" class="edge-label">→ predict next word, append it, repeat</text>
+          <text x="10" y="115" class="phase-label">Image: pieces are picture-patches ("visual tokens")</text>
+          <rect class="box" x="20" y="130" width="46" height="46" rx="4"/><rect class="box" x="70" y="130" width="46" height="46" rx="4"/><rect class="box" x="120" y="130" width="46" height="46" rx="4"/><rect class="box" x="170" y="130" width="46" height="46" rx="4"/>
+          <rect class="box-final" x="220" y="130" width="46" height="46" rx="4"/><text x="243" y="158" text-anchor="middle">?</text>
+          <text x="300" y="158" class="edge-label">→ predict the next patch, left-to-right, top-to-bottom</text>
+        </svg>
+        <div class="diagram-caption">Fig 4 — The same "what comes next?" game works for words and for image patches. Pictures first have to be turned into a short list of discrete patch-codes by a tokenizer (like VQGAN).</div>
+      </div>
+      <ul>
+        <li><strong>Images as tokens:</strong> a "tokenizer" (for example the one in <a href="https://arxiv.org/abs/2012.09841" target="_blank" rel="noopener">VQGAN</a>) turns a picture into a grid of codes from a fixed "visual alphabet"; the transformer predicts the codes. The original <a href="https://arxiv.org/abs/2102.12092" target="_blank" rel="noopener">DALL·E</a> and Google's <a href="https://arxiv.org/abs/2206.10789" target="_blank" rel="noopener">Parti</a> worked this way.</li>
+        <li><strong>Audio as tokens:</strong> neural audio codecs make "sound tokens"; models like <a href="https://arxiv.org/abs/2209.03143" target="_blank" rel="noopener">AudioLM</a>, <a href="https://arxiv.org/abs/2301.02111" target="_blank" rel="noopener">VALL-E</a> and <a href="https://arxiv.org/abs/2301.11325" target="_blank" rel="noopener">MusicLM</a> predict them.</li>
+        <li><strong>Why it matters now:</strong> because it's the same machinery as text, one model can read and write words, pictures and sound together (Section 25).</li>
+      </ul>
+      <div class="callout life">
+        Like finishing a comic strip panel by panel: every new panel has to make sense given all the previous ones. Good for story-following, slower than drawing the whole page at once.
+      </div>
+    </section>
+
+    <!-- 10 -->
+    <section class="block" id="vae-gen">
+      <h2><span class="num">10</span> Autoencoders &amp; VAEs — Squeeze and Rebuild</h2>
+      <p>
+        An <strong>autoencoder</strong> has two halves: an <em>encoder</em> that squeezes data into a small latent code, and a <em>decoder</em> that rebuilds the data from the code
+        (Fig 3). Train it to rebuild perfectly and it learns the compact "essence" of the data.
+      </p>
+      <p>
+        A <strong><a href="https://arxiv.org/abs/1312.6114" target="_blank" rel="noopener">Variational Autoencoder (VAE)</a></strong> adds one trick: it keeps the latent codes <em>tidy</em> — neatly clustered around a simple bell-curve shape — so you can
+        pick a random point and decode it into something that looks real. That is generation.
+      </p>
+      <div class="callout life">
+        Think of a tidy, well-labelled suitcase-packing method: because everyone packs the same orderly way, you can invent a new packing list at random and still unpack a sensible suitcase.
+      </div>
+      <table>
+        <tr><th>Part</th><th>Job</th><th>Everyday picture</th></tr>
+        <tr><td>Encoder</td><td>Picture → small code</td><td>Summarizing a movie in one sentence</td></tr>
+        <tr><td>Latent code</td><td>The compact idea</td><td>The sentence</td></tr>
+        <tr><td>Decoder</td><td>Code → picture</td><td>Someone re-drawing the movie scene from the sentence</td></tr>
+        <tr><td>"Variational" tidiness</td><td>Keeps all codes in a smooth, sampleable shape</td><td>All summaries written in the same tidy format</td></tr>
+      </table>
+      <div class="callout tip">
+        On its own a VAE makes slightly soft pictures — but as the <strong>compressor</strong> inside Stable-Diffusion-style models (Section 13) it is everywhere, quietly doing the squeeze and the final "sharpen back to pixels".
+      </div>
+    </section>
+
+    <!-- 11 -->
+    <section class="block" id="gan-gen">
+      <h2><span class="num">11</span> GANs — The Forger and the Detective</h2>
+      <p>
+        A <strong><a href="https://arxiv.org/abs/1406.2661" target="_blank" rel="noopener">Generative Adversarial Network (GAN)</a></strong> trains <em>two</em> networks against each other:
+        a <strong>generator</strong> (the forger) that makes fakes, and a <strong>discriminator</strong> (the detective) that tries to tell fakes from real examples.
+      </p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 230" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrGe5" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+            <marker id="arrGe5b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent-3)"/></marker>
+          </defs>
+          <rect class="box" x="10" y="30" width="110" height="50" rx="8"/><text x="65" y="60" text-anchor="middle">🎲 random seed</text>
+          <rect class="box-hl" x="160" y="30" width="120" height="50" rx="8"/><text x="220" y="52" text-anchor="middle">Generator</text><text x="220" y="68" text-anchor="middle" class="edge-label">the forger</text>
+          <rect class="box" x="330" y="30" width="100" height="50" rx="8"/><text x="380" y="60" text-anchor="middle">🖼️ fake image</text>
+          <rect class="box" x="330" y="140" width="100" height="50" rx="8"/><text x="380" y="170" text-anchor="middle">📸 real image</text>
+          <rect class="box-final" x="490" y="85" width="130" height="60" rx="8"/><text x="555" y="110" text-anchor="middle">Discriminator</text><text x="555" y="128" text-anchor="middle" class="edge-label">the detective</text>
+          <rect class="box" x="650" y="95" width="60" height="40" rx="8"/><text x="680" y="120" text-anchor="middle">real?</text>
+          <line class="edge" x1="120" y1="55" x2="158" y2="55" marker-end="url(#arrGe5)"/>
+          <line class="edge" x1="280" y1="55" x2="328" y2="55" marker-end="url(#arrGe5)"/>
+          <line class="edge" x1="430" y1="60" x2="488" y2="100" marker-end="url(#arrGe5)"/>
+          <line class="edge" x1="430" y1="165" x2="488" y2="130" marker-end="url(#arrGe5)"/>
+          <line class="edge" x1="620" y1="115" x2="648" y2="115" marker-end="url(#arrGe5)"/>
+          <path class="loop" d="M555,85 Q555,10 285,25" marker-end="url(#arrGe5b)"/>
+          <text x="420" y="20" class="edge-label">"you were caught — improve!"</text>
+        </svg>
+        <div class="diagram-caption">Fig 5 — The detective's feedback teaches the forger; the forger's improving fakes teach the detective. Round after round, the fakes get convincing.</div>
+      </div>
+      <div class="callout life">
+        A counterfeiter and a bank inspector in an endless contest: every time the inspector learns a new trick, the counterfeiter has to improve — until the notes are nearly perfect.
+      </div>
+      <table>
+        <tr><th>Good at</th><th>Tricky about</th></tr>
+        <tr><td>Very sharp, realistic images in <strong>one</strong> quick pass (great for real-time use)</td><td>Training is touchy — one side can overpower the other</td></tr>
+        <tr><td>Face generation, upscaling, style transfer</td><td>"Mode collapse": the forger finds a few good fakes and keeps repeating them</td></tr>
+        <tr><td>Helping other models (adversarial losses in fast "distilled" generators)</td><td>Harder to steer with text than diffusion models</td></tr>
+      </table>
+      <div class="callout tip">
+        GANs powered the first wave of deepfake faces; today diffusion and flow models have taken over general image creation, but GAN ideas live on inside fast few-step generators (Section 16).
+      </div>
+    </section>
+
+    <!-- 12 -->
+    <section class="block" id="diffusion-gen">
+      <h2><span class="num">12</span> Diffusion — Learn to Clean Up the Noise</h2>
+      <p>
+        <strong><a href="https://arxiv.org/abs/2006.11239" target="_blank" rel="noopener">Diffusion models</a></strong> are behind most pictures and videos you see today. The idea has two halves.
+      </p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 270" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrGe6" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+            <marker id="arrGe6b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent-3)"/></marker>
+          </defs>
+          <text x="10" y="20" class="phase-label">Training (forward): destroy a real picture with noise, step by step</text>
+          <rect class="box" x="20" y="35" width="100" height="56" rx="6"/><text x="70" y="68" text-anchor="middle">🐱 clean</text>
+          <rect class="box" x="170" y="35" width="100" height="56" rx="6"/><text x="220" y="68" text-anchor="middle">🐱 a bit noisy</text>
+          <rect class="box" x="320" y="35" width="100" height="56" rx="6"/><text x="370" y="68" text-anchor="middle">▒ very noisy</text>
+          <rect class="box" x="470" y="35" width="100" height="56" rx="6"/><text x="520" y="68" text-anchor="middle">▓ pure noise</text>
+          <line class="edge" x1="120" y1="63" x2="168" y2="63" marker-end="url(#arrGe6)"/><line class="edge" x1="270" y1="63" x2="318" y2="63" marker-end="url(#arrGe6)"/><line class="edge" x1="420" y1="63" x2="468" y2="63" marker-end="url(#arrGe6)"/>
+          <text x="600" y="68" class="edge-label">(easy: just add noise)</text>
+          <text x="10" y="135" class="phase-label">Generating (reverse): start from noise and remove a little at a time</text>
+          <rect class="box" x="470" y="150" width="100" height="56" rx="6"/><text x="520" y="183" text-anchor="middle">▓ pure noise</text>
+          <rect class="box-hl" x="320" y="150" width="100" height="56" rx="6"/><text x="370" y="183" text-anchor="middle">▒ blob shapes</text>
+          <rect class="box-hl" x="170" y="150" width="100" height="56" rx="6"/><text x="220" y="183" text-anchor="middle">🐱 rough cat</text>
+          <rect class="box-final" x="20" y="150" width="100" height="56" rx="6"/><text x="70" y="183" text-anchor="middle">🐱 sharp cat</text>
+          <line class="edge" x1="468" y1="178" x2="422" y2="178" marker-end="url(#arrGe6b)"/><line class="edge" x1="318" y1="178" x2="272" y2="178" marker-end="url(#arrGe6b)"/><line class="edge" x1="168" y1="178" x2="122" y2="178" marker-end="url(#arrGe6b)"/>
+          <text x="600" y="183" class="edge-label">(a neural net does this)</text>
+          <text x="360" y="245" text-anchor="middle">The network learns one small skill: "given a noisy picture, what noise was added?" — then repeats it ~20–50 times.</text>
+        </svg>
+        <div class="diagram-caption">Fig 6 — Forward: add noise until nothing is left (no learning needed). Reverse: a trained network removes noise a little at a time, guided by your prompt, until a new picture appears.</div>
+      </div>
+      <div class="callout life">
+        Imagine a sculptor looking at a rough block of stone and chipping away only what doesn't belong. No single chip creates the statue; hundreds of tiny, well-judged chips do. Each denoising step is one chip.
+      </div>
+      <h3>Why diffusion won</h3>
+      <ul>
+        <li><strong>Stable to train</strong> — no forger-vs-detective tug of war.</li>
+        <li><strong>High quality and variety</strong> — different starting noise gives different pictures from the same prompt.</li>
+        <li><strong>Easy to steer</strong> — you can nudge each step with text, a sketch, a pose or another image (Section 15 and Part D).</li>
+        <li><strong>Unified view</strong> — it connects to "score-based" models (<a href="https://arxiv.org/abs/2011.13456" target="_blank" rel="noopener">Song et al.</a>) and flow matching (Section 14).</li>
+      </ul>
+      <details class="deepdive">
+        <summary>The math, gently (optional)</summary>
+        <pre><code>Forward (noising), jump straight to step t:
+    x_t = sqrt(alpha_bar_t) * x_0  +  sqrt(1 - alpha_bar_t) * noise
+
+    alpha_bar_t shrinks from ~1 (mostly picture) toward ~0 (mostly noise)
+
+Training: show the network x_t and t; ask it to predict `noise`; reward being close.
+Generating: start x_T = pure noise; for t = T ... 1:
+    guess the noise -> remove a little of it -> add a pinch of fresh randomness.</code></pre>
+        <p>You will run exactly this, on a toy problem you can read in one screen, in <a href="#toy-diffusion-code">Level 1</a>.</p>
+      </details>
+    </section>
+
+    <!-- 13 -->
+    <section class="block" id="latent-diffusion">
+      <h2><span class="num">13</span> Latent Diffusion &amp; Stable Diffusion — Work in the Small Space</h2>
+      <p>
+        Denoising a full-size picture pixel by pixel is slow and expensive. The breakthrough of <strong><a href="https://arxiv.org/abs/2112.10752" target="_blank" rel="noopener">latent diffusion</a></strong>
+        (the idea behind Stable Diffusion): <em>do the diffusion inside the small latent space</em> (Section 7) and only expand to pixels at the very end.
+      </p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 270" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrGe7" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+          </defs>
+          <rect class="box" x="10" y="20" width="130" height="56" rx="8"/><text x="75" y="44" text-anchor="middle">✍️ your prompt</text><text x="75" y="62" text-anchor="middle" class="edge-label">"a red panda reading"</text>
+          <rect class="box-hl" x="180" y="20" width="130" height="56" rx="8"/><text x="245" y="44" text-anchor="middle">Text encoder</text><text x="245" y="62" text-anchor="middle" class="edge-label">words → meaning numbers</text>
+          <line class="edge" x1="140" y1="48" x2="178" y2="48" marker-end="url(#arrGe7)"/>
+
+          <rect class="box" x="10" y="130" width="130" height="56" rx="8"/><text x="75" y="154" text-anchor="middle">🎲 random noise</text><text x="75" y="172" text-anchor="middle" class="edge-label">in latent space (small)</text>
+          <rect class="box-final" x="180" y="120" width="190" height="76" rx="8"/><text x="275" y="150" text-anchor="middle">Denoiser network</text><text x="275" y="168" text-anchor="middle" class="edge-label">(U-Net or transformer) — repeat 20–50×</text>
+          <line class="edge" x1="140" y1="158" x2="178" y2="158" marker-end="url(#arrGe7)"/>
+          <line class="edge" x1="245" y1="76" x2="245" y2="118" marker-end="url(#arrGe7)"/>
+          <text x="262" y="102" class="edge-label">guides each step</text>
+
+          <rect class="box-hl" x="420" y="130" width="130" height="56" rx="8"/><text x="485" y="154" text-anchor="middle">Clean latent</text><text x="485" y="172" text-anchor="middle" class="edge-label">a finished "idea"</text>
+          <rect class="box-hl" x="590" y="130" width="120" height="56" rx="8"/><text x="650" y="154" text-anchor="middle">VAE decoder</text><text x="650" y="172" text-anchor="middle" class="edge-label">expand to pixels</text>
+          <rect class="box-final" x="590" y="215" width="120" height="44" rx="8"/><text x="650" y="242" text-anchor="middle">🖼️ final picture</text>
+          <line class="edge" x1="370" y1="158" x2="418" y2="158" marker-end="url(#arrGe7)"/>
+          <line class="edge" x1="550" y1="158" x2="588" y2="158" marker-end="url(#arrGe7)"/>
+          <line class="edge" x1="650" y1="186" x2="650" y2="213" marker-end="url(#arrGe7)"/>
+        </svg>
+        <div class="diagram-caption">Fig 7 — The Stable-Diffusion-style pipeline: (1) understand the words, (2) denoise a small latent guided by them, (3) decode to a full-size picture.</div>
+      </div>
+      <table>
+        <tr><th>Part</th><th>Job</th><th>Analogy</th></tr>
+        <tr><td>Text encoder</td><td>Turns your prompt into numbers the denoiser can use</td><td>An interpreter</td></tr>
+        <tr><td>Denoiser (U-Net, now often a transformer)</td><td>Removes noise step by step, guided by the prompt</td><td>The sculptor</td></tr>
+        <tr><td>VAE decoder</td><td>Expands the finished latent into pixels</td><td>Enlarging a sketch into a full painting</td></tr>
+        <tr><td>Scheduler / sampler</td><td>Decides step sizes and how many steps</td><td>The sculptor's plan of how big each chip is</td></tr>
+      </table>
+      <div class="callout tip">
+        This design made image generation affordable on an ordinary gaming graphics card — and because the weights were released openly, a whole ecosystem of tools, fine-tunes and editors grew around it.
+      </div>
+    </section>
+
+    <!-- 14 -->
+    <section class="block" id="flow-dit">
+      <h2><span class="num">14</span> Flow Matching &amp; Diffusion Transformers — The Newer Recipe</h2>
+      <p>Two upgrades define the newest image and video models:</p>
+      <h3>14.1 — Flow matching (and "rectified flow")</h3>
+      <p>
+        Instead of learning to undo noise in a wiggly, many-step way, <strong><a href="https://arxiv.org/abs/2210.02747" target="_blank" rel="noopener">flow matching</a></strong> learns a smooth
+        <em>direction of travel</em> from "noise" to "picture". <a href="https://arxiv.org/abs/2209.03003" target="_blank" rel="noopener">Rectified flow</a> tries to make that path nearly a <strong>straight line</strong> — and a straight line needs very few steps.
+      </p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrGe8" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+            <marker id="arrGe8b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent-3)"/></marker>
+          </defs>
+          <circle cx="60" cy="100" r="22" fill="none" stroke="var(--accent)" stroke-width="2"/><text x="60" y="104" text-anchor="middle">noise</text>
+          <circle cx="660" cy="100" r="22" fill="none" stroke="var(--accent-4)" stroke-width="3"/><text x="660" y="104" text-anchor="middle">image</text>
+          <path class="loop" d="M82,92 Q200,10 300,70 T480,150 T638,108" marker-end="url(#arrGe8b)"/>
+          <text x="330" y="30" class="edge-label">older diffusion path: curvy → needs many small steps</text>
+          <line class="edge" x1="84" y1="104" x2="636" y2="104" marker-end="url(#arrGe8)"/>
+          <text x="330" y="132" text-anchor="middle" class="edge-label">rectified flow: nearly straight → few steps are enough</text>
+          <text x="360" y="180" text-anchor="middle">Straight roads are quicker to drive than winding ones.</text>
+        </svg>
+        <div class="diagram-caption">Fig 8 — Flow models aim for a straighter road from noise to picture, so generation can use fewer steps.</div>
+      </div>
+      <h3>14.2 — Diffusion Transformers (DiT)</h3>
+      <p>
+        Early diffusion models used a "U-Net" (a network shaped like a funnel, good for pictures). <a href="https://arxiv.org/abs/2212.09748" target="_blank" rel="noopener">Diffusion Transformers</a> swap in the
+        <strong>transformer</strong> (the same engine as language models) as the denoiser. The picture or video is chopped into patches, like words, and the transformer processes them all with attention.
+        Why this matters: transformers <em>scale</em> — bigger model + more data reliably gives better results — and the same recipe extends from images to video and audio.
+      </p>
+      <div class="callout life">
+        U-Net is a specialist craftsperson; the transformer is a flexible team that gets better the more people you hire — and speaks the same language as the text models, so it can read your prompt closely.
+      </div>
+      <p>
+        Real-world example: <a href="https://arxiv.org/abs/2403.03206" target="_blank" rel="noopener">Stable Diffusion 3</a> combines rectified flow with a transformer ("MM-DiT"); several 2026 leaders (image and video) follow the same pattern.
+      </p>
+    </section>
+
+    <!-- 15 -->
+    <section class="block" id="conditioning-guidance">
+      <h2><span class="num">15</span> Steering the Output — Text, CLIP &amp; Guidance</h2>
+      <p>A model that makes <em>random</em> pictures is a toy. To make <em>your</em> picture it must be steered. Three ingredients do that.</p>
+      <h3>15.1 — Understanding words: CLIP and text encoders</h3>
+      <p>
+        <a href="https://arxiv.org/abs/2103.00020" target="_blank" rel="noopener">CLIP</a> was trained on hundreds of millions of picture-and-caption pairs so that a photo of a dog and the words "a dog" land
+        <em>near each other</em> on the same map of meaning. That shared map lets a text prompt point at the right region of picture-space. Newer systems use large language models as text encoders for
+        even better understanding of long, detailed prompts.
+      </p>
+      <h3>15.2 — Classifier-free guidance (the "listen harder" knob)</h3>
+      <p>
+        At every denoising step the model makes <em>two</em> guesses: one that listens to your prompt and one that doesn't. <strong><a href="https://arxiv.org/abs/2207.12598" target="_blank" rel="noopener">Classifier-free guidance</a></strong>
+        pushes the result further in the direction of "the prompt-listening guess minus the ignoring guess". A number called the <strong>guidance scale</strong> controls how hard.
+      </p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 150" xmlns="http://www.w3.org/2000/svg">
+          <rect class="box" x="20" y="30" width="200" height="70" rx="8"/><text x="120" y="58" text-anchor="middle">Low guidance (e.g. 1–3)</text><text x="120" y="78" text-anchor="middle" class="edge-label">creative, loose, varied</text>
+          <rect class="box-hl" x="260" y="30" width="200" height="70" rx="8"/><text x="360" y="58" text-anchor="middle">Medium (e.g. 5–8)</text><text x="360" y="78" text-anchor="middle" class="edge-label">balanced — a common default</text>
+          <rect class="box-final" x="500" y="30" width="200" height="70" rx="8"/><text x="600" y="58" text-anchor="middle">Very high (15+)</text><text x="600" y="78" text-anchor="middle" class="edge-label">literal but harsh, oversaturated</text>
+          <text x="360" y="130" text-anchor="middle">Like a student's volume knob on "follow the teacher's instructions": too low drifts off, too high becomes stiff.</text>
+        </svg>
+        <div class="diagram-caption">Fig 9 — The guidance scale trades creativity for obedience. (Many 2026 models pick a good value for you or are trained so it matters less.)</div>
+      </div>
+      <h3>15.3 — Other steering signals</h3>
+      <table>
+        <tr><th>Signal</th><th>What it controls</th><th>Example</th></tr>
+        <tr><td>Negative prompt (older/open models)</td><td>What to avoid</td><td>"blurry, extra fingers"</td></tr>
+        <tr><td>Reference image</td><td>Style, subject or composition</td><td>"Same character, new pose"</td></tr>
+        <tr><td><a href="https://arxiv.org/abs/2302.05543" target="_blank" rel="noopener">ControlNet</a>-style maps</td><td>Exact layout: edges, depth, pose</td><td>A stick-figure pose → a person in that pose</td></tr>
+        <tr><td>Seed</td><td>The starting noise; same seed + same settings → same picture</td><td>Re-making yesterday's favourite</td></tr>
+      </table>
+    </section>
+
+    <!-- 16 -->
+    <section class="block" id="fast-sampling">
+      <h2><span class="num">16</span> Making It Fast — From 50 Steps to 1</h2>
+      <p>
+        Generating with 30–50 denoising steps is slow and costly. A big part of recent progress is doing the same job in <strong>very few steps</strong> without losing quality.
+      </p>
+      <table>
+        <tr><th>Technique</th><th>Idea</th><th>Plain picture</th></tr>
+        <tr><td>Better samplers / schedulers</td><td>Take bigger, smarter steps along the same path</td><td>Skipping stones instead of walking every step</td></tr>
+        <tr><td>Distillation</td><td>A "student" model learns to do in 4 steps what the "teacher" did in 50</td><td>A student copying a master's finished work in a fraction of the time</td></tr>
+        <tr><td><a href="https://arxiv.org/abs/2303.01469" target="_blank" rel="noopener">Consistency models</a></td><td>Train the network so any point on the path jumps <em>directly</em> to the final picture</td><td>Always knowing the destination from wherever you stand</td></tr>
+        <tr><td>Adversarial distillation</td><td>Borrow GAN-style judging to keep few-step images sharp</td><td>A strict art teacher grading the student's quick sketches</td></tr>
+        <tr><td>Straighter paths (rectified flow)</td><td>Make the route nearly straight, so few steps suffice (Section 14)</td><td>A highway instead of a mountain road</td></tr>
+        <tr><td>Quantization &amp; caching</td><td>Use smaller numbers; reuse repeated work</td><td>Packing lighter and reusing a map</td></tr>
+      </table>
+      <div class="callout tip">
+        This is why "turbo" / "lightning" / "flash" models exist: one-to-four-step generators that fit real-time uses like live previews, mobile apps and interactive tools. You'll try a one-step model in <a href="#diffusers-code">Level 2</a>.
+      </div>
+    </section>
+
+    <div class="part-divider"><h2>Part C — Every Modality</h2></div>
+
+    <!-- 17 -->
+    <section class="block" id="text-gen">
+      <h2><span class="num">17</span> Text Generation — A Quick Tour</h2>
+      <p>
+        Text is the most developed corner of generative AI. A <strong>large language model (LLM)</strong> is an autoregressive transformer (Section 9) trained on a vast amount of text to
+        predict the next token — and from that one skill come chatting, summarizing, translating, tutoring, and writing code. The full A-to-Z story is in the
+        <a href="llm.html">LLM guide</a>; here's the map.
+      </p>
+      <table>
+        <tr><th>Task</th><th>Example prompt</th><th>Where to read more</th></tr>
+        <tr><td>Writing &amp; rewriting</td><td>"Make this email friendlier and shorter"</td><td><a href="llm.html#prompting">Prompting</a></td></tr>
+        <tr><td>Question answering with sources</td><td>"What does our refund policy say?"</td><td><a href="rag.html">RAG guide</a></td></tr>
+        <tr><td>Using tools &amp; acting</td><td>"Book the cheapest train tomorrow"</td><td><a href="ai-agents.html">AI Agents guide</a></td></tr>
+        <tr><td>Hard reasoning</td><td>A multi-step math or logic problem</td><td><a href="llm.html#reasoning-models">Reasoning models</a></td></tr>
+        <tr><td>Writing code</td><td>"Add a login page to this app"</td><td><a href="ai-agents.html#case-studies">Coding agents</a></td></tr>
+      </table>
+      <div class="callout warn">
+        Text models can <strong>hallucinate</strong> — state something false in a confident voice — because they produce what <em>sounds</em> right. Check important facts (see <a href="#limits-gen">Section 36</a>).
+      </div>
+      <div class="callout tip">
+        Today's frontier families (Claude 5.x, GPT-6, Gemini 4) all offer roughly 1-million-token windows and adjustable "thinking effort". A dated snapshot with prices is in the
+        <a href="llm.html#open-vs-closed">LLM guide</a>.
+      </div>
+    </section>
+
+    <!-- 18 -->
+    <section class="block" id="image-gen">
+      <h2><span class="num">18</span> Image Generation</h2>
+      <p>
+        Type words, get a picture. Under the hood this is the pipeline of Fig 7: a text encoder reads your prompt, a denoiser (diffusion or flow, usually a transformer now) turns noise into a latent, and a decoder
+        makes the final pixels. Some assistants also generate images <em>inside</em> the chat model itself, which makes "edit it by talking to it" feel natural.
+      </p>
+      <h3>What you can do with an image model</h3>
+      <table>
+        <tr><th>Skill</th><th>What it means</th><th>Example</th></tr>
+        <tr><td>Text-to-image</td><td>Make a picture from a description</td><td>"A castle made of cake on a hill"</td></tr>
+        <tr><td>Image-to-image</td><td>Start from a picture and transform it</td><td>Turn a sketch into a painting</td></tr>
+        <tr><td>Inpainting</td><td>Repaint just a selected area</td><td>Remove a stranger from a holiday photo</td></tr>
+        <tr><td>Outpainting</td><td>Extend the picture beyond its borders</td><td>Make a square photo widescreen</td></tr>
+        <tr><td>Instruction editing</td><td>Change a picture by describing the change (<a href="https://arxiv.org/abs/2211.09800" target="_blank" rel="noopener">InstructPix2Pix</a> idea)</td><td>"Make it look like winter"</td></tr>
+        <tr><td>Upscaling / restoration</td><td>Add detail and resolution</td><td>Sharpen an old family photo</td></tr>
+        <tr><td>Text in images</td><td>Render readable words on signs, posters, logos</td><td>"A cafe sign that says OPEN"</td></tr>
+        <tr><td>Consistent characters</td><td>Keep the same face/outfit across pictures</td><td>A children's-book character on every page</td></tr>
+      </table>
+      <div class="callout life">
+        Early image generators were like a dreamy painter who couldn't spell and drew hands with seven fingers. Each generation got better at counting fingers, spelling words, and following long instructions — text rendering and
+        "do exactly what I said" improved the most in 2025–2026.
+      </div>
+      <h3>Two ways you'll meet image models</h3>
+      <ul>
+        <li><strong>Hosted</strong> — an app or API (chat assistant, design tool). Easiest; the company handles speed, safety filters and updates.</li>
+        <li><strong>Open weights</strong> — downloadable models (Stable Diffusion-style, FLUX-style) you can run on your own computer and customize with LoRA (Section 28). More control, more setup.</li>
+      </ul>
+    </section>
+
+    <!-- 19 -->
+    <section class="block" id="image-snapshot">
+      <h2><span class="num">19</span> Image Models Today — A Dated Snapshot (Oct 2026)</h2>
+      <p>
+        Leaderboards change weekly, and the sources below are mostly comparison articles that sometimes disagree — so treat this as a photograph, not a ranking. Google's own Gemini
+        API page (checked 29 Oct 2026) lists its image family as <strong>Nano Banana 2.1, Nano Banana 2, Nano Banana 2 Lite and Nano Banana Pro</strong>.
+      </p>
+      <table>
+        <tr><th>Model family</th><th>Maker</th><th>Often praised for (as reported in 2026 comparisons)</th></tr>
+        <tr><td>GPT Image (2 / 2.x)</td><td>OpenAI</td><td>Following detailed prompts, photorealism; reported at or near the top of blind-vote leaderboards in late Oct 2026; slower and pricier</td></tr>
+        <tr><td>Nano Banana Pro / 2 (Gemini image models)</td><td>Google</td><td>Prompt adherence, conversational editing, text in images, 4K output; the "2" tier is described as the best value and is free in the Gemini app</td></tr>
+        <tr><td>FLUX.2</td><td>Black Forest Labs</td><td>Photorealism and prompt following; runs up to 2K resolution; has open and hosted variants</td></tr>
+        <tr><td>Seedream (5.x)</td><td>ByteDance</td><td>Strong quality-for-price, good for high-volume pipelines</td></tr>
+        <tr><td>Midjourney (V8.x)</td><td>Midjourney</td><td>Artistic, stylized "look"; weaker at exact text</td></tr>
+        <tr><td>Ideogram</td><td>Ideogram</td><td>Typography: the most reliable text rendering in one scored comparison</td></tr>
+        <tr><td>Imagen 4</td><td>Google</td><td>Speed and volume; "Ultra" rated high for photorealism</td></tr>
+      </table>
+      <h3>Pick by job</h3>
+      <table>
+        <tr><th>I want…</th><th>Look at</th></tr>
+        <tr><td>A poster or logo with readable words</td><td>Ideogram, GPT Image, Nano Banana Pro</td></tr>
+        <tr><td>A beautiful illustration or concept art</td><td>Midjourney, GPT Image, FLUX</td></tr>
+        <tr><td>To edit a photo by chatting</td><td>Nano Banana family, GPT Image</td></tr>
+        <tr><td>Thousands of cheap images</td><td>Seedream, Nano Banana 2 Lite, Imagen</td></tr>
+        <tr><td>Full control / run it myself / fine-tune</td><td>Open-weight FLUX- or Stable-Diffusion-style models</td></tr>
+      </table>
+      <div class="callout warn">
+        Names, versions and prices shift every few months. Before choosing, test <em>your own</em> prompts on two or three models — a leaderboard's average isn't your use case. Check the maker's current page and any license (commercial use rules differ).
+      </div>
+    </section>
+
+    <!-- 20 -->
+    <section class="block" id="video-gen">
+      <h2><span class="num">20</span> Video Generation</h2>
+      <p>
+        A video is a stack of pictures (<em>frames</em>) shown quickly — 24 to 30 per second — plus sound. The hard part is making the frames agree with each other: the same person, the same room, objects that
+        move the way real objects move.
+      </p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrGe10" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+          </defs>
+          <rect class="box" x="10" y="30" width="120" height="56" rx="8"/><text x="70" y="54" text-anchor="middle">✍️ prompt</text><text x="70" y="72" text-anchor="middle" class="edge-label">(+ image, +audio cue)</text>
+          <rect class="box-hl" x="170" y="20" width="150" height="76" rx="8"/><text x="245" y="48" text-anchor="middle">Video "tokenizer"</text><text x="245" y="66" text-anchor="middle" class="edge-label">compress frames into</text><text x="245" y="80" text-anchor="middle" class="edge-label">space-time latent patches</text>
+          <rect class="box-final" x="360" y="20" width="160" height="76" rx="8"/><text x="440" y="48" text-anchor="middle">Diffusion transformer</text><text x="440" y="66" text-anchor="middle" class="edge-label">denoises ALL patches together</text><text x="440" y="80" text-anchor="middle" class="edge-label">(attention across space + time)</text>
+          <rect class="box-hl" x="560" y="30" width="150" height="56" rx="8"/><text x="635" y="54" text-anchor="middle">Decoder</text><text x="635" y="72" text-anchor="middle" class="edge-label">frames (+ synced audio)</text>
+          <line class="edge" x1="130" y1="58" x2="168" y2="58" marker-end="url(#arrGe10)"/>
+          <line class="edge" x1="320" y1="58" x2="358" y2="58" marker-end="url(#arrGe10)"/>
+          <line class="edge" x1="520" y1="58" x2="558" y2="58" marker-end="url(#arrGe10)"/>
+          <text x="360" y="130" text-anchor="middle">Think of the video as a 3-D block (width × height × time) cut into small cubes — the model fixes all cubes at once so neighbouring frames stay consistent.</text>
+          <rect class="box" x="260" y="150" width="40" height="40" rx="3"/><rect class="box" x="305" y="150" width="40" height="40" rx="3"/><rect class="box" x="350" y="150" width="40" height="40" rx="3"/><rect class="box" x="395" y="150" width="40" height="40" rx="3"/><rect class="box" x="440" y="150" width="40" height="40" rx="3"/>
+          <text x="360" y="215" text-anchor="middle" class="edge-label">frame 1 → frame 2 → frame 3 → … (time)</text>
+        </svg>
+        <div class="diagram-caption">Fig 10 — Modern video models treat a clip as patches in space <em>and</em> time and denoise them together; some also generate matching sound.</div>
+      </div>
+      <h3>Why video is so much harder than images</h3>
+      <table>
+        <tr><th>Challenge</th><th>What goes wrong</th></tr>
+        <tr><td>Consistency</td><td>A character's shirt changes colour between frames; a cup vanishes</td></tr>
+        <tr><td>Physics</td><td>Objects pass through each other, liquids flow oddly, gravity "forgets" itself</td></tr>
+        <tr><td>Length</td><td>Quality drifts over longer clips, so many tools chain short clips or "extend" them</td></tr>
+        <tr><td>Cost</td><td>Thousands of times more numbers than one image — pricing is often per second of video</td></tr>
+        <tr><td>Audio sync</td><td>Lips and sounds must line up with the picture (now often generated together)</td></tr>
+      </table>
+      <h3>Dated snapshot (late Oct 2026, as reported)</h3>
+      <table>
+        <tr><th>Model</th><th>Maker</th><th>Notes</th></tr>
+        <tr><td>Veo 3.1</td><td>Google</td><td>4/6/8-second clips with native synchronized audio; chain clips with "Extend" for longer scenes; 9:16 and 4K upscaling were added in Jan 2026 updates</td></tr>
+        <tr><td>Gemini Omni Flash</td><td>Google</td><td>Listed on Google's Gemini API page for video generation, editing and extension with native audio</td></tr>
+        <tr><td>Kling 3.0 (and Omni / Turbo variants)</td><td>Kuaishou</td><td>Launched Feb 2026; up to ~15-second clips, native 4K, speech in several languages</td></tr>
+        <tr><td>Wan 3.0</td><td>Alibaba</td><td>Reported generally available on Alibaba Cloud in Aug 2026; up to ~30-second clips with native dialogue, music and effects; API-only. The earlier Wan 2.7 was released as <strong>open weights</strong> (Apache 2.0)</td></tr>
+        <tr><td>Runway Gen-4.5, Luma Ray, Seedance, MiniMax, Grok Imagine Video, LTX</td><td>various</td><td>Strong alternatives; audio support differs by model — check each</td></tr>
+        <tr><td>Sora</td><td>OpenAI</td><td>Reported discontinued: the app closed in April 2026 and the Sora 2 API shut down on 24 Sep 2026</td></tr>
+      </table>
+      <div class="callout warn">
+        Product lines can disappear as fast as they appear (Sora is the cautionary tale). If a project depends on one video model, keep your prompts and assets portable so you can switch.
+      </div>
+    </section>
+
+    <!-- 21 -->
+    <section class="block" id="audio-speech">
+      <h2><span class="num">21</span> Voice — Speech, Cloning and Listening</h2>
+      <p>Sound is "air-pressure numbers over time". Several different jobs live under "voice AI":</p>
+      <table>
+        <tr><th>Job</th><th>What it does</th><th>Everyday example</th><th>How it's built (simple)</th></tr>
+        <tr><td>Text-to-speech (TTS)</td><td>Reads text aloud in a natural voice</td><td>Audiobooks, navigation, accessibility</td><td>Text → audio tokens (language-model style) or diffusion, then decode to sound (<a href="https://arxiv.org/abs/1609.03499" target="_blank" rel="noopener">WaveNet</a> started this; <a href="https://arxiv.org/abs/2301.02111" target="_blank" rel="noopener">VALL-E</a> showed a few seconds of voice can be enough to copy a speaker)</td></tr>
+        <tr><td>Voice cloning</td><td>Speaks in a particular person's voice</td><td>Dubbing a video in your own voice; restoring a lost voice</td><td>A TTS model conditioned on a short sample of that voice</td></tr>
+        <tr><td>Speech recognition (ASR)</td><td>Turns speech into text</td><td>Captions, meeting notes, voice typing</td><td>Models like <a href="https://arxiv.org/abs/2212.04356" target="_blank" rel="noopener">Whisper</a>, trained on huge amounts of speech</td></tr>
+        <tr><td>Real-time voice assistants</td><td>Listens and replies in speech, almost instantly</td><td>Talking to an AI like a phone call</td><td>Listen → think (LLM) → speak, increasingly in one model</td></tr>
+        <tr><td>Translation / dubbing</td><td>Keeps your voice but changes language</td><td>A cooking video in Spanish with the chef's own voice</td><td>ASR + translation + cloned TTS</td></tr>
+      </table>
+      <div class="callout life">
+        A good TTS voice is like a talented narrator who can read anything; a cloned voice is like an impressionist who can imitate your grandmother after hearing her say one sentence — wonderful for restoring a lost voice, dangerous in the wrong hands.
+      </div>
+      <div class="callout warn">
+        <strong>Consent matters.</strong> Cloning someone's voice without permission enables scams ("grandparent scam" calls) and impersonation. Reputable services require consent or verification; the EU's rules require synthetic audio to be machine-marked at generation (<a href="#regulation-gen">Section 40</a>).
+      </div>
+      <p>
+        Example from 2026: ElevenLabs, known for text-to-speech and voice cloning, has also expanded into music and reported a multi-year licensing agreement with Universal Music Group (Sept 2026).
+        You'll try speech-to-text yourself in <a href="#whisper-code">Level 3</a>.
+      </p>
+    </section>
+
+    <!-- 22 -->
+    <section class="block" id="music-gen">
+      <h2><span class="num">22</span> Music Generation</h2>
+      <p>
+        Music models turn a description ("a calm piano lullaby with soft rain") and optional lyrics into a full song. Techniques mirror the rest of the field: compress audio into tokens and
+        predict them with a transformer (<a href="https://arxiv.org/abs/2301.11325" target="_blank" rel="noopener">MusicLM</a>-style), or denoise audio latents with diffusion.
+      </p>
+      <div class="callout life">
+        Like a band that has listened to millions of songs and can jam in any style on request — which immediately raises the question: <em>whose songs were they listening to, and did they ask?</em>
+      </div>
+      <h3>The 2026 story is mostly about licensing</h3>
+      <table>
+        <tr><th>Who</th><th>What was reported (late Oct 2026)</th></tr>
+        <tr><td>Suno</td><td>Replaced its models with <strong>v6</strong> (9 Sept 2026), described as trained on licensed music, built with deals including Warner, BMG and Believe; downloads are capped by plan; litigation with Universal and Sony was reported to continue</td></tr>
+        <tr><td>Udio</td><td>Settled with major labels and moved to a closed "walled garden" — you can generate and stream but, per roundups, not freely export</td></tr>
+        <tr><td>ElevenLabs Music</td><td>Music v2.5 (11 Sept 2026) trained on music licensed via Merlin, Kobalt and Believe; a multi-year agreement with Universal Music Group announced 10 Sept 2026 (first with a major label), starting with a fan remix platform</td></tr>
+        <tr><td>Courts</td><td>The label-vs-AI cases were expanding in scope (one filing reportedly grew from ~560 to 61,000+ recordings) — details change quickly</td></tr>
+      </table>
+      <div class="callout tip">
+        The direction of travel: from "train on everything and argue later" toward <strong>licensed training data and permission-based products</strong>. Always read the platform's terms for commercial use of what you generate.
+      </div>
+    </section>
+
+    <!-- 23 -->
+    <section class="block" id="three-d-world">
+      <h2><span class="num">23</span> 3D &amp; World Models — Making Places You Can Move Through</h2>
+      <p>
+        A 3D scene is a place you can look at from <em>any</em> angle. Generative AI approaches it in three ways:
+      </p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 230" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrGe11" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+          </defs>
+          <rect class="box" x="10" y="20" width="200" height="60" rx="8"/><text x="110" y="46" text-anchor="middle">📷 Photos / video of a place</text><text x="110" y="64" text-anchor="middle" class="edge-label">or one prompt / one image</text>
+          <rect class="box-hl" x="260" y="20" width="200" height="60" rx="8"/><text x="360" y="46" text-anchor="middle">3D representation</text><text x="360" y="64" text-anchor="middle" class="edge-label">NeRF · Gaussian splats · meshes</text>
+          <rect class="box-final" x="510" y="20" width="200" height="60" rx="8"/><text x="610" y="46" text-anchor="middle">Any new viewpoint</text><text x="610" y="64" text-anchor="middle" class="edge-label">walk-through, VR, games</text>
+          <line class="edge" x1="210" y1="50" x2="258" y2="50" marker-end="url(#arrGe11)"/><line class="edge" x1="460" y1="50" x2="508" y2="50" marker-end="url(#arrGe11)"/>
+          <rect class="box-hl" x="10" y="120" width="320" height="70" rx="8"/><text x="170" y="148" text-anchor="middle">World model (video-style)</text><text x="170" y="168" text-anchor="middle" class="edge-label">predicts the NEXT frames as you press keys</text>
+          <rect class="box-final" x="380" y="120" width="330" height="70" rx="8"/><text x="545" y="148" text-anchor="middle">A playable, explorable world</text><text x="545" y="168" text-anchor="middle" class="edge-label">no game engine — the model "imagines" each frame</text>
+          <line class="edge" x1="330" y1="155" x2="378" y2="155" marker-end="url(#arrGe11)"/>
+        </svg>
+        <div class="diagram-caption">Fig 11 — Top: build an explicit 3D model, then render any view. Bottom: a world model skips the 3D model and generates each next frame directly in response to your actions.</div>
+      </div>
+      <table>
+        <tr><th>Approach</th><th>Idea</th><th>Where to read</th></tr>
+        <tr><td>NeRF</td><td>A neural network that stores a scene as "what colour and density at each point, seen from each direction"</td><td><a href="https://arxiv.org/abs/2003.08934" target="_blank" rel="noopener">NeRF paper</a></td></tr>
+        <tr><td>3D Gaussian Splatting</td><td>Represent the scene as millions of tiny soft, coloured blobs that render in real time</td><td><a href="https://arxiv.org/abs/2308.04079" target="_blank" rel="noopener">Paper</a></td></tr>
+        <tr><td>Text-to-3D</td><td>Use a 2D image model as a teacher so a 3D shape that looks right from every side emerges</td><td><a href="https://arxiv.org/abs/2209.14988" target="_blank" rel="noopener">DreamFusion</a></td></tr>
+        <tr><td>World models</td><td>Generate an interactive environment frame by frame, controlled by actions</td><td><a href="https://arxiv.org/abs/2402.15391" target="_blank" rel="noopener">Genie</a> (and its successors)</td></tr>
+      </table>
+      <div class="callout tip">
+        2026 research is busy here: interactive world models with better <strong>long-term memory</strong> (so the room you left is still there when you turn around), open-source versions, and "physical AI" models that help robots rehearse in imagined worlds. Treat it as the frontier — exciting, but still rough.
+      </div>
+    </section>
+
+    <!-- 24 -->
+    <section class="block" id="code-science-gen">
+      <h2><span class="num">24</span> Code, Science &amp; Other Things AI Can Generate</h2>
+      <table>
+        <tr><th>Thing generated</th><th>How/why it works</th><th>Example</th></tr>
+        <tr><td>Computer code</td><td>Code is text with strict rules; LLMs trained on lots of code predict it well — and tests give instant right/wrong feedback</td><td>Coding assistants and autonomous coding agents (<a href="ai-agents.html#case-studies">AI Agents guide</a>)</td></tr>
+        <tr><td>Slides, documents, spreadsheets</td><td>LLMs write the content; tools place it into formats</td><td>"Turn these notes into a 10-slide deck"</td></tr>
+        <tr><td>UI designs &amp; web pages</td><td>Models write layout code or draw mock-ups</td><td>Sketch → working web page</td></tr>
+        <tr><td>Synthetic data</td><td>Make realistic <em>fake</em> examples to train or test other systems (without real people's data)</td><td>Fake customer records for testing</td></tr>
+        <tr><td>Molecules &amp; proteins</td><td>Diffusion/language models propose new structures that meet a goal, which scientists then test in the lab</td><td>Designing a protein that binds a target</td></tr>
+        <tr><td>Weather, materials, chips, game levels</td><td>The "learn the distribution, sample new ones" idea applies to any data with patterns</td><td>Generating candidate materials or level layouts</td></tr>
+      </table>
+      <div class="callout life">
+        In science, generative AI is a tireless brainstormer: it proposes thousands of promising candidates, and humans (and experiments) decide which are real.
+      </div>
+    </section>
+
+    <!-- 25 -->
+    <section class="block" id="multimodal-unified">
+      <h2><span class="num">25</span> One Model for Everything — Multimodal &amp; "Omni" Models</h2>
+      <p>
+        "Modality" means a kind of data: text, images, audio, video. Early systems used a <em>separate</em> model for each. The trend is one model that reads and writes <strong>several</strong> at once.
+      </p>
+      <table>
+        <tr><th>Style</th><th>How it works</th><th>Example experience</th></tr>
+        <tr><td>Pipeline of specialists</td><td>An LLM writes a prompt; a separate image model draws; a separate voice model speaks</td><td>Classic assistant + plug-in image tool</td></tr>
+        <tr><td>Multimodal in, text out</td><td>One model understands pictures/audio/video, answers in text</td><td>"What's wrong with this chart?"</td></tr>
+        <tr><td>Any-to-any ("omni")</td><td>One model takes mixed inputs and can produce mixed outputs, often by treating everything as tokens (Section 9)</td><td>Talk to it, show it things, get speech, images or video back</td></tr>
+      </table>
+      <div class="callout life">
+        The difference between hiring three freelancers who don't talk to each other, and one multi-talented artist who hears your idea, sketches it, and narrates it in a single sitting.
+      </div>
+      <p>
+        Google's Gemini API lists, for example, <strong>Gemini Omni Flash</strong> for video generation, editing and extension with native audio, alongside voice and image models; other labs are heading the same way. Benefits: consistency
+        (the voice matches the picture), conversational editing, and simpler products. Costs: bigger, harder-to-evaluate models and new safety questions (what can it make with a voice <em>and</em> a face?).
+      </p>
+    </section>
+
+    <div class="part-divider"><h2>Part D — Using It Well</h2></div>
+
+    <!-- 26 -->
+    <section class="block" id="image-prompting">
+      <h2><span class="num">26</span> Prompting for Images (and Video)</h2>
+      <p>
+        A prompt is a briefing to a very talented, very literal artist who can't read your mind. The more clearly you describe what you want, the closer the result.
+      </p>
+      <h3>The seven ingredients</h3>
+      <table>
+        <tr><th>Ingredient</th><th>Question it answers</th><th>Example words</th></tr>
+        <tr><td>1. Subject</td><td>Who or what?</td><td>"a red panda wearing round glasses"</td></tr>
+        <tr><td>2. Action</td><td>Doing what?</td><td>"reading a thick book"</td></tr>
+        <tr><td>3. Setting</td><td>Where and when?</td><td>"in a cozy library at dusk"</td></tr>
+        <tr><td>4. Style</td><td>What does it look like?</td><td>"watercolor illustration", "35mm photo", "flat vector icon"</td></tr>
+        <tr><td>5. Light &amp; colour</td><td>What's the lighting and palette?</td><td>"warm lamp light, soft shadows, muted greens"</td></tr>
+        <tr><td>6. Camera &amp; composition</td><td>How is it framed?</td><td>"close-up, shallow depth of field", "wide shot from above"</td></tr>
+        <tr><td>7. Constraints</td><td>What must (not) appear?</td><td>"no text", "one animal only", "leave empty space on the right for a title"</td></tr>
+      </table>
+      <h3>From weak to strong</h3>
+      <table>
+        <tr><th>Level</th><th>Prompt</th><th>What you'll probably get</th></tr>
+        <tr><td>Weak</td><td>"a panda"</td><td>A generic panda, random style</td></tr>
+        <tr><td>Better</td><td>"a red panda reading a book in a library"</td><td>Right subject and action; style is a guess</td></tr>
+        <tr><td>Strong</td><td>"A red panda in round glasses reading a thick book in a cozy library at dusk, warm lamp light, soft watercolor illustration, close-up, shallow depth of field, calm mood"</td><td>Close to a deliberate picture; easy to tweak one ingredient at a time</td></tr>
+      </table>
+      <div class="callout tip">
+        Change <strong>one</strong> ingredient per attempt (and keep the seed the same if the tool lets you) so you can tell what helped. Newer models understand ordinary sentences — you rarely need the old "masterpiece, 8k, trending" spell lists.
+      </div>
+      <h3>Words inside the picture</h3>
+      <ul>
+        <li>Put the exact words in quotes: <em>a cafe sign that says "OPEN"</em>. Keep them short.</li>
+        <li>Models differ a lot at text rendering (Section 19) — check the result letter by letter.</li>
+      </ul>
+      <h3>Prompting video is prompting a tiny film</h3>
+      <table>
+        <tr><th>Add…</th><th>Example</th></tr>
+        <tr><td>Shot type</td><td>"low-angle tracking shot"</td></tr>
+        <tr><td>Motion</td><td>"the paper boat drifts and spins slowly down the gutter"</td></tr>
+        <tr><td>Camera move</td><td>"camera slowly pushes in"</td></tr>
+        <tr><td>Sound (if the model makes audio)</td><td>"soft rain, distant thunder, a child laughing"</td></tr>
+        <tr><td>Length &amp; format</td><td>"6 seconds, vertical 9:16"</td></tr>
+      </table>
+      <div class="callout life">
+        Like ordering a custom cake: "a cake" gets you whatever the baker likes; "two-layer lemon cake, white frosting, blue sugar flowers, 'Happy Birthday Maya' in cursive" gets you the cake in your head.
+      </div>
+    </section>
+
+    <!-- 27 -->
+    <section class="block" id="editing-workflows">
+      <h2><span class="num">27</span> Editing: Inpaint, Outpaint, and Exact Control</h2>
+      <p>Most real work isn't "make one picture" — it's "make <em>this</em> picture better". The main tools:</p>
+      <table>
+        <tr><th>Tool</th><th>How you use it</th><th>Typical use</th></tr>
+        <tr><td>Image-to-image</td><td>Give a starting image and a <strong>strength</strong> value: low (≈0.2–0.4) keeps most of it; high (≈0.7+) mostly redraws</td><td>Turn a rough sketch into polished art</td></tr>
+        <tr><td>Inpainting</td><td>Paint a mask over an area and describe what should be there</td><td>Remove an object, change an outfit, fix a hand</td></tr>
+        <tr><td>Outpainting</td><td>Extend the canvas; the model invents the surroundings</td><td>Square photo → widescreen banner</td></tr>
+        <tr><td>Conversational editing</td><td>Just say what to change in a chat assistant</td><td>"Same picture, but at night, with snow"</td></tr>
+        <tr><td>Reference images</td><td>Provide pictures of a subject/style to keep</td><td>Same product in many scenes</td></tr>
+        <tr><td><a href="https://arxiv.org/abs/2302.05543" target="_blank" rel="noopener">ControlNet</a>-style control</td><td>Give an edge map, depth map or pose skeleton that the output must follow</td><td>Exact layout: architectural sketch → rendering</td></tr>
+        <tr><td>Upscaling</td><td>A model adds believable detail at higher resolution</td><td>Print-quality versions</td></tr>
+      </table>
+      <div class="callout life">
+        A photo editor with a magic brush: "paint over the thing you don't like, tell me what should be there instead".
+      </div>
+      <div class="callout warn">
+        Edit with care: changing a real person's photo to make them appear to do or say something they didn't is a <em>deepfake</em> (<a href="#deepfakes-misuse">Section 37</a>). Never edit other people's images in misleading ways.
+      </div>
+    </section>
+
+    <!-- 28 -->
+    <section class="block" id="customization-gen">
+      <h2><span class="num">28</span> Customizing: LoRA, DreamBooth &amp; Friends</h2>
+      <p>
+        Base models know the "average" of the internet. To make <strong>your</strong> character, product or art style appear reliably, you can adapt a model with a small amount of extra training.
+      </p>
+      <table>
+        <tr><th>Method</th><th>How it works (simple)</th><th>Data needed</th><th>Result</th></tr>
+        <tr><td>Just prompt better</td><td>No training — describe it well</td><td>None</td><td>Cheapest; try first</td></tr>
+        <tr><td>Reference images (in-context)</td><td>Show examples at generation time</td><td>1–several images</td><td>Quick, no setup; may drift</td></tr>
+        <tr><td>Textual inversion</td><td>Learn one new "word" that points to your subject</td><td>~5–20 images</td><td>Tiny file; limited fidelity</td></tr>
+        <tr><td><a href="https://arxiv.org/abs/2208.12242" target="_blank" rel="noopener">DreamBooth</a></td><td>Fine-tune the model so a rare name means your subject</td><td>~3–30 images</td><td>High fidelity; larger change</td></tr>
+        <tr><td><a href="https://arxiv.org/abs/2106.09685" target="_blank" rel="noopener">LoRA</a></td><td>Train small add-on "adapter" layers; leave the big model frozen</td><td>~10–200 images</td><td>Small shareable file; stackable; the most popular</td></tr>
+        <tr><td>Full fine-tune</td><td>Update all the dials</td><td>Thousands+</td><td>Max control; expensive</td></tr>
+      </table>
+      <div class="callout life">
+        LoRA is like giving a chef a small seasoning kit for one dish instead of rebuilding the whole kitchen: the main recipes stay the same; a pinch of your flavour is added on top. (Same trick as in the <a href="llm.html#peft">LLM guide</a>.)
+      </div>
+      <div class="callout warn">
+        Only train on images you have the <strong>right</strong> to use. A LoRA of a real person's face made without consent is a common route to harmful deepfakes — and may be illegal where you live.
+      </div>
+    </section>
+
+    <!-- 29 -->
+    <section class="block" id="eval-gen">
+      <h2><span class="num">29</span> Is It Any Good? Evaluating Generative Models</h2>
+      <p>There's no single right answer to compare against ("a nice picture of a cat" has endless good versions), so evaluation is harder than for classification.</p>
+      <table>
+        <tr><th>Method</th><th>What it measures</th><th>Catch</th></tr>
+        <tr><td><a href="https://arxiv.org/abs/1706.08500" target="_blank" rel="noopener">FID</a> (Fréchet Inception Distance)</td><td>How close the <em>whole set</em> of generated images is to real ones (quality + variety)</td><td>Needs many images; doesn't judge prompt-following; can disagree with human taste</td></tr>
+        <tr><td><a href="https://arxiv.org/abs/1606.03498" target="_blank" rel="noopener">Inception Score</a></td><td>Are images clear and varied?</td><td>Older; easily fooled</td></tr>
+        <tr><td><a href="https://arxiv.org/abs/2104.08718" target="_blank" rel="noopener">CLIPScore</a></td><td>Does the picture match the text? (using CLIP)</td><td>CLIP has its own blind spots (counting, spatial relations)</td></tr>
+        <tr><td>Human preference / "arena" votes</td><td>Which of two results do people like better?</td><td>Averages hide your own use case; popularity ≠ correctness</td></tr>
+        <tr><td>Targeted test prompts</td><td>Counting, text, hands, left/right, negation, fine details</td><td>You must design them — but they reveal real weaknesses</td></tr>
+        <tr><td>Safety &amp; misuse tests</td><td>Does it refuse harmful requests? Can filters be bypassed?</td><td>An arms race; keep re-testing</td></tr>
+        <tr><td>Video-specific</td><td>Temporal consistency, motion realism, audio sync</td><td>Few good automatic metrics; humans still essential</td></tr>
+      </table>
+      <div class="callout tip">
+        Practical recipe: build a small <strong>private test set</strong> of 30–50 prompts that look like your real work, run each candidate model on it, and have two or three people vote blind. Same habit as in the
+        <a href="llm.html#eval-metrics">LLM evaluation section</a>.
+      </div>
+    </section>
+
+    <!-- 30 -->
+    <section class="block" id="production-gen">
+      <h2><span class="num">30</span> From Demo to Product</h2>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 150" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrGe12" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+          </defs>
+          <rect class="box" x="6" y="40" width="100" height="56" rx="8"/><text x="56" y="66" text-anchor="middle">User prompt</text><text x="56" y="82" text-anchor="middle" class="edge-label">+ settings</text>
+          <rect class="box-hl" x="130" y="40" width="100" height="56" rx="8"/><text x="180" y="66" text-anchor="middle">Input check</text><text x="180" y="82" text-anchor="middle" class="edge-label">policy / safety</text>
+          <rect class="box-final" x="254" y="40" width="100" height="56" rx="8"/><text x="304" y="66" text-anchor="middle">Generate</text><text x="304" y="82" text-anchor="middle" class="edge-label">model call</text>
+          <rect class="box-hl" x="378" y="40" width="100" height="56" rx="8"/><text x="428" y="66" text-anchor="middle">Output check</text><text x="428" y="82" text-anchor="middle" class="edge-label">safety / quality</text>
+          <rect class="box-hl" x="502" y="40" width="100" height="56" rx="8"/><text x="552" y="66" text-anchor="middle">Label</text><text x="552" y="82" text-anchor="middle" class="edge-label">watermark / C2PA</text>
+          <rect class="box" x="626" y="40" width="88" height="56" rx="8"/><text x="670" y="72" text-anchor="middle">Deliver</text>
+          <line class="edge" x1="106" y1="68" x2="128" y2="68" marker-end="url(#arrGe12)"/><line class="edge" x1="230" y1="68" x2="252" y2="68" marker-end="url(#arrGe12)"/><line class="edge" x1="354" y1="68" x2="376" y2="68" marker-end="url(#arrGe12)"/><line class="edge" x1="478" y1="68" x2="500" y2="68" marker-end="url(#arrGe12)"/><line class="edge" x1="602" y1="68" x2="624" y2="68" marker-end="url(#arrGe12)"/>
+          <text x="360" y="130" text-anchor="middle" class="edge-label">log every step (prompt, seed, model version) so you can reproduce, audit and fix</text>
+        </svg>
+        <div class="diagram-caption">Fig 12 — A typical production pipeline wraps the model call with safety checks before and after, labeling, and logging.</div>
+      </div>
+      <table>
+        <tr><th>Question</th><th>Options &amp; advice</th></tr>
+        <tr><td>Hosted API or self-host?</td><td>API: fastest start, no GPUs, vendor handles safety and updates (but model versions get retired). Self-host open weights: control and privacy, but you run GPUs, safety filters and upgrades.</td></tr>
+        <tr><td>Cost</td><td>Images are billed per image/size; video usually per second of output. Generate small previews first, upscale only winners; cache repeats.</td></tr>
+        <tr><td>Speed</td><td>Few-step "turbo" models for interactive use (Section 16); queue slow jobs (video) and notify when done.</td></tr>
+        <tr><td>Consistency</td><td>Fix the seed, pin the model version, use reference images or a LoRA for recurring characters.</td></tr>
+        <tr><td>Safety</td><td>Filter prompts <em>and</em> outputs; keep human review for risky categories; rate-limit.</td></tr>
+        <tr><td>Rights &amp; labeling</td><td>Check the model's license for commercial use; label AI-generated content where required (<a href="#regulation-gen">Section 40</a>).</td></tr>
+        <tr><td>Resilience</td><td>Keep prompts/assets portable — products and model lines get discontinued.</td></tr>
+      </table>
+    </section>
+
+    <div class="part-divider"><h2>Part E — Hands-On Code (5 Progressive Levels)</h2></div>
+
+    <div class="callout tip">
+      <strong>How these levels work:</strong> Levels 0 and 1 are tiny programs you can run with plain Python (and numpy) — they were run to produce the outputs shown. Levels 2–4 use the popular
+      <code>diffusers</code> and <code>transformers</code> libraries to run real pretrained models; they need a download (and ideally a GPU), so they are shown from the libraries' documented usage
+      and were <em>not</em> run for this page. Check each model's license before using results commercially.
+    </div>
+
+    <!-- 31 -->
+    <section class="block" id="toy-text-code">
+      <h2><span class="num">31</span> Level 0 — A Text Generator From Scratch</h2>
+      <p>
+        The smallest possible generative model: learn which word tends to follow which, then write by repeatedly picking a plausible next word. That is "learn the pattern, then sample" in about 20 lines.
+      </p>
+      <details class="deepdive" open>
+        <summary>gen0.py — pure Python, no libraries</summary>
+        <pre><code>import random
+
+text = "the cat sat on the mat. the dog sat on the log. the cat saw the dog."
+words = text.split()
+
+# 1) LEARN: count which word tends to follow which word
+follows = {}
+for current, nxt in zip(words, words[1:]):
+    follows.setdefault(current, []).append(nxt)
+
+# 2) GENERATE: start somewhere, then keep picking a plausible next word
+def generate(start="the", length=8, seed=None):
+    rng = random.Random(seed)
+    out = [start]
+    for _ in range(length - 1):
+        options = follows.get(out[-1])
+        if not options:                 # dead end: nothing ever followed this word
+            break
+        out.append(rng.choice(options))   # pick at random, weighted by how often it was seen
+    return " ".join(out)
+
+for seed in range(3):
+    print(generate(seed=seed))
+
+# Output from a real run:
+#   the log. the cat saw the log. the
+#   the mat. the dog sat on the log.
+#   the cat sat on the mat. the dog</code></pre>
+        <p>
+          It never saw "the cat saw the log." — yet it can write it. That's <strong>generalizing</strong>: recombining learned pieces into something new. A real LLM does the same with far richer memory
+          (a transformer looks at thousands of previous words, not one) and billions of examples.
+        </p>
+      </details>
+      <div class="callout life">
+        It's a very forgetful storyteller who only remembers the last word they said. A real language model is a storyteller who remembers the whole story so far.
+      </div>
+    </section>
+
+    <!-- 32 -->
+    <section class="block" id="toy-diffusion-code">
+      <h2><span class="num">32</span> Level 1 — A Tiny Diffusion Model (the mechanics, for real)</h2>
+      <p>
+        Here is diffusion on the smallest imaginable "pictures": single numbers that can only be <strong>−2</strong> or <strong>+2</strong>. We add noise (forward), then generate by starting from pure noise and
+        removing it step by step (reverse). Real models <em>learn</em> the denoiser with a neural network; because our world is so tiny we can write the perfect denoiser by hand, so you see the whole mechanism with nothing hidden.
+      </p>
+      <details class="deepdive" open>
+        <summary>diff1.py — numpy only</summary>
+        <pre><code>import numpy as np
+
+rng = np.random.default_rng(0)
+
+# The "training data": every real example is either -2 or +2 (two kinds of "pictures")
+data_points = np.array([-2.0, 2.0])
+
+# Noise schedule: how much noise gets added at each of T steps
+T = 100
+betas = np.linspace(1e-3, 0.05, T)
+alphas = 1.0 - betas
+alpha_bar = np.cumprod(alphas)           # how much of the original signal survives up to step t
+
+# FORWARD (easy, no learning): jump straight to step t by mixing signal and noise
+def add_noise(x0, t):
+    noise = rng.standard_normal(x0.shape)
+    return np.sqrt(alpha_bar[t]) * x0 + np.sqrt(1 - alpha_bar[t]) * noise
+
+# A "denoiser": given a noisy value x_t, guess the clean x0.
+# Real models LEARN this with a neural network; here we write the perfect one by hand
+# because we know the only two possible clean values.
+def predict_clean(x_t, t):
+    ab = alpha_bar[t]
+    scores = -((x_t[:, None] - np.sqrt(ab) * data_points[None, :]) ** 2) / (2 * (1 - ab))
+    weights = np.exp(scores - scores.max(axis=1, keepdims=True))
+    weights /= weights.sum(axis=1, keepdims=True)
+    return weights @ data_points
+
+# REVERSE (generation): start from pure noise and clean it up one small step at a time
+def sample(n):
+    x = rng.standard_normal(n)                      # pure noise
+    for t in reversed(range(T)):
+        x0_guess = predict_clean(x, t)
+        eps_guess = (x - np.sqrt(alpha_bar[t]) * x0_guess) / np.sqrt(1 - alpha_bar[t])
+        x = (x - betas[t] / np.sqrt(1 - alpha_bar[t]) * eps_guess) / np.sqrt(alphas[t])
+        if t > 0:                                   # add a little fresh randomness except at the end
+            x += np.sqrt(betas[t]) * rng.standard_normal(n)
+    return x
+
+samples = sample(1000)
+print("generated samples near -2:", int((samples < 0).sum()), "| near +2:", int((samples >= 0).sum()))
+print("example outputs:", np.round(samples[:6], 2))
+
+# Output from a real run:
+#   generated samples near -2: 506 | near +2: 494
+#   example outputs: [-2.  2. -2.  2.  2.  2.]</code></pre>
+        <p>
+          Start: 1,000 blobs of random noise. After 100 tiny clean-up steps, every blob has settled onto one of the two real values — about half and half, just like the training data.
+          That is generation: <strong>noise in, something that looks like the training data out</strong>. A real image model does exactly this, with a neural network guessing "what noise was added?" and each "number" being a million pixels (or a latent, Section 13).
+        </p>
+      </details>
+      <div class="callout life">
+        Each blob is a marble dropped onto a bumpy surface with two valleys. Every denoising step is a tiny nudge downhill. Wherever the marble starts, it rolls into one of the valleys — the two "real" values.
+      </div>
+    </section>
+
+    <!-- 33 -->
+    <section class="block" id="diffusers-code">
+      <h2><span class="num">33</span> Level 2 — Text-to-Image With a Real Model (diffusers)</h2>
+      <p>
+        The Hugging Face <a href="https://github.com/huggingface/diffusers" target="_blank" rel="noopener">diffusers</a> library wraps the pipeline of Fig 7 in a few lines. This example uses a one-step "turbo" model (Section 16).
+        Install with <code>pip install diffusers transformers accelerate torch</code>.
+      </p>
+      <details class="deepdive" open>
+        <summary>A one-step text-to-image generator (not run for this page)</summary>
+        <pre><code>import torch
+from diffusers import AutoPipelineForText2Image
+
+pipe = AutoPipelineForText2Image.from_pretrained(
+    "stabilityai/sdxl-turbo", torch_dtype=torch.float16, variant="fp16"
+)
+pipe.to("cuda")        # no GPU? remove torch_dtype/variant above and use pipe.to("cpu") (slow)
+
+prompt = "A red panda reading a book in a cozy library at dusk, warm lamp light, watercolor illustration"
+image = pipe(prompt=prompt, num_inference_steps=1, guidance_scale=0.0).images[0]
+image.save("red_panda.png")
+
+# Same seed + same settings -> same picture
+generator = torch.Generator("cuda").manual_seed(42)
+image2 = pipe(prompt=prompt, num_inference_steps=1, guidance_scale=0.0, generator=generator).images[0]</code></pre>
+        <p>
+          Notice the two numbers from earlier sections: <code>num_inference_steps=1</code> (a distilled model needs 1–4 steps instead of 30–50, Section 16) and <code>guidance_scale=0.0</code> (this model was trained so it doesn't need the extra
+          "listen harder" push, Section 15). The usage follows the model's published Hugging Face instructions; check the model card for its license (it is a research-oriented license) and current recommended settings.
+        </p>
+      </details>
+      <div class="callout tip">
+        Ordinary models (not "turbo") typically use about 20–40 steps and a guidance scale around 5–8. More steps rarely help beyond a point.
+      </div>
+    </section>
+
+    <!-- 34 -->
+    <section class="block" id="whisper-code">
+      <h2><span class="num">34</span> Level 3 — Speech to Text With Whisper</h2>
+      <p>
+        <a href="https://arxiv.org/abs/2212.04356" target="_blank" rel="noopener">Whisper</a> is an open speech-recognition model. With the <code>transformers</code> library it's one pipeline. (Install:
+        <code>pip install transformers torch</code>, and have <code>ffmpeg</code> installed to read audio files.)
+      </p>
+      <details class="deepdive" open>
+        <summary>Transcribe an audio file (not run for this page)</summary>
+        <pre><code>from transformers import pipeline
+
+asr = pipeline("automatic-speech-recognition", model="openai/whisper-small")
+
+result = asr("meeting.mp3", return_timestamps=True)   # long files are handled in chunks
+print(result["text"])</code></pre>
+        <p>
+          Bigger Whisper sizes (<code>medium</code>, <code>large</code>) are more accurate but slower. Remember: transcripts of other people's conversations may need their consent, and ASR can mis-hear names and numbers — proofread anything important.
+        </p>
+      </details>
+    </section>
+
+    <!-- 35 -->
+    <section class="block" id="clip-code">
+      <h2><span class="num">35</span> Level 4 — Does the Picture Match the Words? (CLIP)</h2>
+      <p>
+        Use <a href="https://arxiv.org/abs/2103.00020" target="_blank" rel="noopener">CLIP</a> (Section 15) as a judge: given a picture and several descriptions, which description fits best? This is the engine behind CLIPScore (Section 29) and image search.
+      </p>
+      <details class="deepdive" open>
+        <summary>Score a picture against captions (not run for this page)</summary>
+        <pre><code>from PIL import Image
+from transformers import CLIPModel, CLIPProcessor
+
+model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
+processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
+
+image = Image.open("red_panda.png")          # e.g. the picture from Level 2
+texts = ["a red panda reading a book", "a city skyline at night", "a bowl of soup"]
+
+inputs = processor(text=texts, images=image, return_tensors="pt", padding=True)
+probs = model(**inputs).logits_per_image.softmax(dim=1)[0]
+
+for text, p in zip(texts, probs):
+    print(f"{p:.2f}  {text}")</code></pre>
+        <p>
+          You should see the first caption score much higher than the others. This is a "discriminative" model judging a "generative" model's work — the teamwork from Section 2. It can still be fooled on counting ("three apples" vs "five apples") and left/right.
+        </p>
+      </details>
+    </section>
+
+    <div class="part-divider"><h2>Part F — Risks, Rules &amp; Responsibility</h2></div>
+
+    <!-- 36 -->
+    <section class="block" id="limits-gen">
+      <h2><span class="num">36</span> Limits &amp; Weird Failures</h2>
+      <p>Generative models are impressive and strange. They don't <em>understand</em> the world the way people do; they produce what looks plausible from patterns. That causes characteristic mistakes:</p>
+      <table>
+        <tr><th>Failure</th><th>Example</th><th>Why it happens</th><th>What to do</th></tr>
+        <tr><td>Hallucination (text)</td><td>A made-up book title or court case, stated confidently</td><td>The model produces what <em>sounds</em> right, not what it has verified (<a href="https://arxiv.org/abs/2311.05232" target="_blank" rel="noopener">survey</a>)</td><td>Check facts; give sources (<a href="rag.html">RAG</a>); ask for uncertainty</td></tr>
+        <tr><td>Counting &amp; spatial words</td><td>"Exactly five apples, one on the left" gives four on the right</td><td>Language-to-layout is hard to learn from captions</td><td>Be explicit, use layout control, generate then fix</td></tr>
+        <tr><td>Text in images</td><td>Misspelled sign letters</td><td>Letters are tiny detailed shapes; improving fast but uneven by model</td><td>Pick a model strong at text (Section 19); verify; add text in an editor</td></tr>
+        <tr><td>Hands, teeth, reflections</td><td>Extra fingers, odd mirrors</td><td>Fine structure appears in endless poses</td><td>Inpaint the area; regenerate</td></tr>
+        <tr><td>Physics &amp; continuity (video)</td><td>A glass falls up; a jacket changes colour</td><td>The model predicts how video <em>looks</em>, not physical laws</td><td>Short clips, simple actions, review every second</td></tr>
+        <tr><td>Negation</td><td>"No elephants" produces an elephant</td><td>Mentioning a thing activates it</td><td>Describe what you want instead of what you don't</td></tr>
+        <tr><td>Stale knowledge</td><td>Doesn't know last month's news</td><td>Training stops at a cutoff date</td><td>Add current info via search/RAG</td></tr>
+        <tr><td>Sameness &amp; clichés</td><td>Every portrait has the same "AI look"</td><td>Models drift toward the average of their data</td><td>Specify unusual details, styles, references</td></tr>
+      </table>
+      <div class="callout life">
+        Treat a generative model like a brilliant but overconfident intern: fast and creative, occasionally wrong, and never to be left unsupervised on anything important.
+      </div>
+    </section>
+
+    <!-- 37 -->
+    <section class="block" id="deepfakes-misuse">
+      <h2><span class="num">37</span> Deepfakes &amp; Misuse</h2>
+      <div class="callout def">
+        A <strong><a href="https://en.wikipedia.org/wiki/Deepfake" target="_blank" rel="noopener">deepfake</a></strong> is AI-made or AI-altered media (face, voice or video) designed to look real and make someone appear to say or do something they didn't.
+      </div>
+      <table>
+        <tr><th>Misuse</th><th>How it hurts</th><th>Simple defence</th></tr>
+        <tr><td>Voice-clone scam calls</td><td>"Grandma, I'm in trouble — send money" in a cloned voice</td><td>Agree a family <strong>code word</strong>; hang up and call back on a known number</td></tr>
+        <tr><td>CEO / boss impersonation</td><td>A fake video call or voice approves a payment</td><td>Out-of-band confirmation for money moves; two-person approval</td></tr>
+        <tr><td>Non-consensual intimate images</td><td>Fake explicit images of real people — deeply harmful</td><td>Don't create or share; report; know the legal remedies in your country</td></tr>
+        <tr><td>Disinformation</td><td>Fake clips of politicians or disasters</td><td>Check the source and provenance (Section 38); pause before sharing</td></tr>
+        <tr><td>Fraud &amp; fake identities</td><td>AI-made faces and documents for scams</td><td>Liveness checks, document verification, skepticism</td></tr>
+        <tr><td>Harassment &amp; bullying</td><td>Fake images of classmates or coworkers</td><td>Schools/workplaces need clear rules; report early</td></tr>
+      </table>
+      <div class="callout warn">
+        <strong>Detection is unreliable.</strong> "AI detector" tools make mistakes in both directions, and generators improve constantly. A better approach than spotting fakes is <em>proving what's real</em> — signed provenance (next section) — plus ordinary caution.
+      </div>
+      <p>
+        Lawmakers are responding: for example, the EU's rules prohibiting non-consensual intimate AI content and child sexual abuse material are reported to start applying on 2 Dec 2026, and several countries and US states have their own deepfake laws (Section 40).
+      </p>
+    </section>
+
+    <!-- 38 -->
+    <section class="block" id="provenance-gen">
+      <h2><span class="num">38</span> Watermarks &amp; Provenance — Labeling What's AI-Made</h2>
+      <p>Two complementary ideas try to make it possible to tell where a picture, clip or sound came from:</p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg">
+          <rect class="box-hl" x="20" y="20" width="320" height="120" rx="10"/>
+          <text x="180" y="46" text-anchor="middle" class="phase-label">Invisible watermark</text>
+          <text x="180" y="72" text-anchor="middle">A hidden pattern woven into the pixels / audio</text>
+          <text x="180" y="92" text-anchor="middle" class="edge-label">survives some cropping, resizing, compression</text>
+          <text x="180" y="112" text-anchor="middle" class="edge-label">only the maker's detector can read it</text>
+          <rect class="box-final" x="380" y="20" width="320" height="120" rx="10"/>
+          <text x="540" y="46" text-anchor="middle" class="phase-label">Content credentials (C2PA)</text>
+          <text x="540" y="72" text-anchor="middle">A signed "label" attached to the file: made by, edited how</text>
+          <text x="540" y="92" text-anchor="middle" class="edge-label">tamper-evident, readable by anyone</text>
+          <text x="540" y="112" text-anchor="middle" class="edge-label">can be stripped if the file is re-saved or screenshotted</text>
+          <text x="360" y="175" text-anchor="middle">Best used together: the hidden mark survives edits; the signed label explains the history.</text>
+        </svg>
+        <div class="diagram-caption">Fig 13 — Invisible watermarks live inside the content; content credentials travel with the file. Each covers the other's weakness.</div>
+      </div>
+      <table>
+        <tr><th>Approach</th><th>Examples</th><th>Limits</th></tr>
+        <tr><td>Invisible watermarking</td><td>Google's <a href="https://deepmind.google/science/synthid/" target="_blank" rel="noopener">SynthID</a> marks content from its models; other labs run their own schemes</td><td>Mostly detectable only by the maker; strong edits can degrade it; not universal</td></tr>
+        <tr><td>Signed provenance</td><td><a href="https://c2pa.org/" target="_blank" rel="noopener">C2PA</a> "Content Credentials" — a standard supported by many cameras, editors and platforms</td><td>Only helps if tools add it and platforms keep it; missing credentials don't prove a fake</td></tr>
+        <tr><td>Visible labels</td><td>"Made with AI" badges and on-screen marks</td><td>Easy to crop out</td></tr>
+        <tr><td>Detector classifiers</td><td>"Is this AI?" tools</td><td>Unreliable; false accusations happen</td></tr>
+      </table>
+      <div class="callout tip">
+        Regulation is making this mandatory: the EU's AI Act requires providers of generative systems to mark synthetic audio, image, video and text in a machine-readable way, and deployers to disclose deepfakes (<a href="#regulation-gen">Section 40</a>).
+      </div>
+    </section>
+
+    <!-- 39 -->
+    <section class="block" id="copyright-gen">
+      <h2><span class="num">39</span> Copyright &amp; Training Data</h2>
+      <p>
+        Generative models learn from enormous collections of existing work — books, photos, songs, code. That raises three separate questions. <em>(General information, not legal advice; the law differs by country and is changing.)</em>
+      </p>
+      <table>
+        <tr><th>Question</th><th>Plain version</th><th>Status</th></tr>
+        <tr><td>1. Training</td><td>Is it lawful to <em>learn from</em> copyrighted work without asking?</td><td>Unsettled; courts have split (see table below); licensing deals are spreading</td></tr>
+        <tr><td>2. Outputs</td><td>Can what the model makes copy or closely resemble existing work?</td><td>Possible in rare cases (memorization, Section 41) — copying the <em>output</em> can infringe regardless of how it was made</td></tr>
+        <tr><td>3. Ownership</td><td>Who owns what the AI makes?</td><td>In the US, work made without meaningful human authorship generally isn't copyrightable (Copyright Office guidance; the <em>Thaler</em> case); human creative input matters. Other countries differ</td></tr>
+      </table>
+      <h3>Where the big cases stood in late Oct 2026 (as reported by case trackers — details change)</h3>
+      <table>
+        <tr><th>Case</th><th>What was reported</th></tr>
+        <tr><td>Authors vs Anthropic (Bartz)</td><td>The judge held that training on books was fair use but that downloading and keeping <em>pirated</em> copies was not. A <strong>$1.5 billion</strong> class settlement (about 500,000 works, roughly $3,000 each, plus destroying the pirated files) received final approval in July 2026 according to most sources</td></tr>
+        <tr><td>New York Times vs OpenAI &amp; Microsoft</td><td>Still pending in New York; cross-motions on fair use were filed in Sept 2026 and no settlement reported as of 28 Oct</td></tr>
+        <tr><td>Getty Images vs Stability AI (UK)</td><td>The High Court rejected Getty's main copyright theory (a trained model isn't itself an "infringing copy"), found only limited trademark issues over old watermarks, and allowed an appeal; a US case continues</td></tr>
+        <tr><td>Thomson Reuters vs Ross</td><td>Copying a competitor's material to build a rival tool was held <em>not</em> fair use; reported affirmed on appeal in Sept 2026</td></tr>
+        <tr><td>Kadrey vs Meta</td><td>Training was held fair use on that record; other claims remained</td></tr>
+        <tr><td>Music labels vs Suno/Udio</td><td>Mix of settlements and licensing deals, with some litigation continuing (Section 22)</td></tr>
+      </table>
+      <div class="callout life">
+        Imagine a student who learned to paint by studying a museum: studying is normal, but copying a painting stroke for stroke and selling it is not — and sneaking into the museum after hours (pirated sources) is its own problem. Courts are still deciding where on that spectrum AI training sits.
+      </div>
+      <div class="callout tip">
+        What to do as a user: read the tool's terms on commercial use; avoid prompting for a living artist's or a brand's exact style/characters; keep records of your creative input; for important commercial work, ask a lawyer.
+      </div>
+    </section>
+
+    <!-- 40 -->
+    <section class="block" id="regulation-gen">
+      <h2><span class="num">40</span> Laws &amp; Regulation — The EU AI Act and Friends</h2>
+      <p>
+        The EU's <strong>AI Act</strong> is the broadest law so far. Its generative-AI rules come in stages. The dates below are as reported by law-firm summaries in mid-2026 — always check the official texts (and a lawyer) for real compliance.
+      </p>
+      <table>
+        <tr><th>When</th><th>What</th></tr>
+        <tr><td>2 Aug 2025</td><td>Duties for providers of general-purpose AI models began (including a copyright policy and a summary of training content)</td></tr>
+        <tr><td>10 Jun 2026</td><td>A voluntary code of practice on marking AI-generated content was published</td></tr>
+        <tr><td>24–27 Jul 2026</td><td>The "Digital Omnibus on AI" (Regulation (EU) 2026/1744) was published and entered into force: it <strong>postponed the high-risk-system rules</strong> to Dec 2027 / Aug 2028 — but <strong>not</strong> the transparency rules</td></tr>
+        <tr><td>20 Jul 2026</td><td>The European Commission adopted guidelines on the transparency obligations</td></tr>
+        <tr><td><strong>2 Aug 2026</strong></td><td><strong>Article 50 transparency applies:</strong> people must be told when they're talking to an AI; providers of generative systems must mark synthetic audio, image, video and text in a machine-readable way; deployers must disclose deepfakes and AI-generated public-interest text (unless a human takes editorial responsibility)</td></tr>
+        <tr><td>2 Dec 2026</td><td>Grace period ends for generative systems already on the market to add the machine-readable marking; new bans on non-consensual intimate content and child sexual abuse material start to apply</td></tr>
+      </table>
+      <h3>Elsewhere</h3>
+      <ul>
+        <li><strong>United States:</strong> no single federal AI law; a patchwork of state laws (deepfakes, election content, disclosure) and the federal "Take It Down Act" (2025) targeting non-consensual intimate imagery including AI-made fakes.</li>
+        <li><strong>China:</strong> rules requiring labeling of AI-generated content have applied since September 2025.</li>
+        <li><strong>Everywhere:</strong> existing laws on fraud, defamation, privacy, harassment and copyright already apply to AI-made content.</li>
+      </ul>
+      <div class="callout warn">
+        Practical takeaway for builders: <strong>label what you generate</strong> (watermark + metadata, Section 38), keep records, and don't build features that impersonate real people without consent. Not legal advice.
+      </div>
+    </section>
+
+    <!-- 41 -->
+    <section class="block" id="bias-privacy-env">
+      <h2><span class="num">41</span> Bias, Privacy, Memorization &amp; Energy</h2>
+      <table>
+        <tr><th>Issue</th><th>What it means</th><th>Example</th><th>Mitigation</th></tr>
+        <tr><td>Bias</td><td>Models mirror patterns (and prejudices) in their data</td><td>"A doctor" mostly draws men; "a nurse" mostly women</td><td>Test across groups; diversify data and prompts; add review</td></tr>
+        <tr><td>Privacy</td><td>People's data (faces, voices, writing) may be in training sets</td><td>A model reproducing someone's personal details</td><td>Data minimization, opt-outs, filtering, asking consent for voice/face use</td></tr>
+        <tr><td>Memorization</td><td>Rarely, a model can reproduce a training example almost exactly — researchers <a href="https://arxiv.org/abs/2301.13188" target="_blank" rel="noopener">extracted training images</a> from diffusion models</td><td>A near-copy of a heavily duplicated photo</td><td>De-duplicate training data; test for regurgitation; filter outputs</td></tr>
+        <tr><td>Creator impact</td><td>Artists, writers, voice actors worry about their livelihoods and consent</td><td>Style imitation of living artists</td><td>Licensing, opt-outs, credit; some artists use tools like <a href="https://arxiv.org/abs/2310.13828" target="_blank" rel="noopener">Nightshade</a> to "poison" scraped images (contested)</td></tr>
+        <tr><td>Energy &amp; cost</td><td>Training is very compute-heavy; each generation also uses electricity — video far more than text or one image</td><td>Generating many long clips</td><td>Use smaller/distilled models, cache, generate previews first, avoid waste</td></tr>
+      </table>
+      <div class="callout life">
+        A model is like a very well-read person: they carry the best <em>and</em> the worst of what they read. Good practice is to notice what they picked up and correct for it.
+      </div>
+    </section>
+
+    <!-- 42 -->
+    <section class="block" id="model-collapse">
+      <h2><span class="num">42</span> Model Collapse — When AI Learns From AI</h2>
+      <p>
+        As the internet fills with AI-made text and images, future models may train on them. Researchers showed that repeatedly training on a model's <em>own output</em> makes it forget the rare, interesting parts of the real distribution and drift toward bland averages
+        (<a href="https://arxiv.org/abs/2305.17493" target="_blank" rel="noopener">"The Curse of Recursion"</a>).
+      </p>
+      <div class="callout life">
+        Photocopy a photocopy of a photocopy: each generation loses detail and the picture turns to grey mush. Fresh originals keep the quality alive.
+      </div>
+      <table>
+        <tr><th>Cause</th><th>Effect</th><th>Protection</th></tr>
+        <tr><td>Training on generated data over and over</td><td>Rare cases vanish; diversity shrinks; mistakes compound</td><td>Keep a stream of <strong>real</strong> human data; mix, don't replace</td></tr>
+        <tr><td>Can't tell real from synthetic</td><td>Hard to filter AI output out of scraped data</td><td>Provenance and watermarks (Section 38) help data curators</td></tr>
+        <tr><td>Used carefully</td><td>Synthetic data can <em>help</em> (e.g., practice problems checked by a verifier)</td><td>Verify and filter synthetic data; keep it a part of the diet, not the whole</td></tr>
+      </table>
+    </section>
+
+    <!-- 43 -->
+    <section class="block" id="responsible-use">
+      <h2><span class="num">43</span> Responsible-Use Checklist</h2>
+      <div class="grid">
+        <div class="card"><h4>🙋 Get consent</h4><p>Don't clone a voice or put a real person's face into generated media without their clear permission.</p></div>
+        <div class="card"><h4>🏷️ Label it</h4><p>Say when content is AI-made, especially anything that could be mistaken for real; keep watermarks and credentials intact.</p></div>
+        <div class="card"><h4>🔍 Verify it</h4><p>Check facts, names, numbers and anything health, legal or financial before you rely on or publish AI output.</p></div>
+        <div class="card"><h4>📜 Respect rights</h4><p>Read licenses; avoid copying living artists' or brands' signature work; keep records of your own creative input.</p></div>
+        <div class="card"><h4>🔒 Protect data</h4><p>Don't paste private or confidential information into services that may store or train on it; check settings.</p></div>
+        <div class="card"><h4>🧑‍⚖️ Keep a human in charge</h4><p>For decisions that affect people (hiring, grading, medical, legal), a person reviews and takes responsibility.</p></div>
+        <div class="card"><h4>⚖️ Test for bias</h4><p>Try prompts across different groups and contexts; fix patterns that stereotype or exclude.</p></div>
+        <div class="card"><h4>🛑 Have a stop button</h4><p>Builders: filter inputs and outputs, rate-limit, log, and make it easy to report and remove harmful content.</p></div>
+      </div>
+      <div class="callout tip">
+        A simple test before you share anything AI-made: <strong>"Would the people in it, and the people seeing it, feel fairly treated if they knew exactly how it was made?"</strong>
+      </div>
+    </section>
+
+    <div class="part-divider"><h2>Part G — Ecosystem</h2></div>
+
+    <!-- 44 -->
+    <section class="block" id="use-cases-gen">
+      <h2><span class="num">44</span> Real-World Use Cases</h2>
+      <table>
+        <tr><th>Field</th><th>What generative AI does</th><th>Example</th><th>Watch out for</th></tr>
+        <tr><td>Marketing &amp; design</td><td>Drafts copy, makes ad images, resizes for every platform</td><td>100 social-media variants of one poster</td><td>Brand consistency; rights; labeling</td></tr>
+        <tr><td>Education</td><td>Explains at the learner's level, makes practice questions and illustrations</td><td>A story about fractions starring the student's pet</td><td>Accuracy; over-reliance; privacy of students</td></tr>
+        <tr><td>Software</td><td>Writes, explains and tests code; builds prototypes from sketches</td><td>A coding agent fixing a bug and opening a pull request</td><td>Security of generated code; review</td></tr>
+        <tr><td>Entertainment &amp; games</td><td>Concept art, voices, music, procedural levels, previsualization</td><td>Storyboard a scene in an afternoon</td><td>Artists' consent; union agreements; quality control</td></tr>
+        <tr><td>Accessibility</td><td>Captions, image descriptions, natural voices, voice restoration</td><td>Text-to-speech in a person's own recorded voice</td><td>Accuracy; consent</td></tr>
+        <tr><td>Customer service</td><td>Drafts replies, answers from company documents, speaks to callers</td><td>A voice assistant that books appointments</td><td>Disclose it's an AI; escalate to humans</td></tr>
+        <tr><td>Healthcare (admin &amp; research)</td><td>Drafts notes and summaries; creates synthetic data; proposes molecules</td><td>Summarizing a long patient history for a doctor to check</td><td>Errors can harm; strict human review and privacy rules</td></tr>
+        <tr><td>Architecture &amp; product design</td><td>Fast concept renders and variations</td><td>Ten facade options from one sketch</td><td>Feasibility; ownership</td></tr>
+        <tr><td>Film &amp; video</td><td>Previs, background plates, dubbing, effects</td><td>Dub a film into six languages in the actor's voice</td><td>Likeness rights; disclosure</td></tr>
+      </table>
+    </section>
+
+    <!-- 45 -->
+    <section class="block" id="tools-compare-gen">
+      <h2><span class="num">45</span> Tools &amp; Platforms Compared</h2>
+      <table>
+        <tr><th>Need</th><th>Kind of tool</th><th>Examples (non-exhaustive; check current availability)</th></tr>
+        <tr><td>Everyday help with text, plus images &amp; voice</td><td>Chat assistants</td><td>Claude, ChatGPT, Gemini</td></tr>
+        <tr><td>Images</td><td>Hosted image tools / APIs</td><td>GPT Image, Nano Banana (Gemini), Midjourney, Ideogram, Seedream, FLUX (hosted)</td></tr>
+        <tr><td>Video</td><td>Hosted video tools / APIs</td><td>Veo, Kling, Wan, Runway, Luma, Seedance</td></tr>
+        <tr><td>Voice</td><td>TTS / cloning / transcription</td><td>ElevenLabs, cloud TTS APIs; open-source Whisper for transcription</td></tr>
+        <tr><td>Music</td><td>Song generators</td><td>Suno, Udio, ElevenLabs Music (licensing terms differ)</td></tr>
+        <tr><td>Run it yourself</td><td>Open-source toolkits &amp; model hubs</td><td><a href="https://github.com/huggingface/diffusers" target="_blank" rel="noopener">diffusers</a>, <a href="https://github.com/comfyanonymous/ComfyUI" target="_blank" rel="noopener">ComfyUI</a> (node-based workflows), <a href="https://huggingface.co/models" target="_blank" rel="noopener">Hugging Face model hub</a></td></tr>
+        <tr><td>Production at scale</td><td>Cloud platforms</td><td>The big clouds' model services (AWS, Google Cloud, Microsoft Foundry) host many of these models</td></tr>
+      </table>
+      <h3>Open vs closed (same trade-off as for LLMs)</h3>
+      <table>
+        <tr><th></th><th>Closed / hosted</th><th>Open weights</th></tr>
+        <tr><td>Quality at the very top</td><td>Usually leads (and gets safety filters built in)</td><td>Close behind and improving</td></tr>
+        <tr><td>Control &amp; customization</td><td>Limited to what the vendor allows</td><td>Full — LoRA, ControlNet, local running</td></tr>
+        <tr><td>Privacy</td><td>Prompts/images go to the vendor</td><td>Can stay on your machine</td></tr>
+        <tr><td>Responsibility for misuse</td><td>Vendor filters; vendor terms</td><td>Largely on you — filters can be removed</td></tr>
+        <tr><td>Risk of disappearing</td><td>Products and model lines can be retired (see Sora, Section 20)</td><td>You keep the weights you downloaded</td></tr>
+      </table>
+      <p>See also the closed-vs-open discussion for text models in the <a href="llm.html#open-vs-closed">LLM guide</a>.</p>
+    </section>
+
+    <div class="part-divider"><h2>Part H — Reference</h2></div>
+
+    <!-- 46 -->
+    <section class="block" id="glossary-genai">
+      <h2><span class="num">46</span> Mini Glossary</h2>
+      <dl class="glossary">
+        <dt><a href="https://en.wikipedia.org/wiki/Generative_artificial_intelligence" target="_blank" rel="noopener">Generative AI</a></dt><dd>AI that creates new content (text, images, audio, video, code, 3D) by learning patterns from data.</dd>
+        <dt>Discriminative model</dt><dd>A model that sorts or judges inputs (spam/not spam) instead of creating them.</dd>
+        <dt>Prompt</dt><dd>The instruction or description you give a generative model.</dd>
+        <dt>Distribution</dt><dd>The way real examples are spread out; generative models learn it so they can sample new, realistic examples.</dd>
+        <dt>Sampling</dt><dd>Picking a new output from what the model learned; why the same prompt can give different results.</dd>
+        <dt>Seed</dt><dd>The number that fixes the starting randomness; same seed and settings usually reproduce the same output.</dd>
+        <dt>Token</dt><dd>A small chunk (word piece, image patch, sound snippet) a model reads or writes one at a time.</dd>
+        <dt>Autoregressive model</dt><dd>Generates one piece at a time, each based on all previous pieces (how LLMs write).</dd>
+        <dt>Latent space</dt><dd>A compact "map of ideas" that data is squeezed into; nearby points are similar.</dd>
+        <dt><a href="https://arxiv.org/abs/1312.6114" target="_blank" rel="noopener">VAE</a> (Variational Autoencoder)</dt><dd>An encoder-decoder pair that keeps latent codes tidy so random codes decode into realistic data.</dd>
+        <dt><a href="https://arxiv.org/abs/1406.2661" target="_blank" rel="noopener">GAN</a></dt><dd>Generative Adversarial Network: a generator and a discriminator train against each other.</dd>
+        <dt>Generator / Discriminator</dt><dd>The forger and the detective inside a GAN.</dd>
+        <dt>Mode collapse</dt><dd>A GAN failure where the generator keeps producing only a few kinds of outputs.</dd>
+        <dt><a href="https://arxiv.org/abs/2006.11239" target="_blank" rel="noopener">Diffusion model</a></dt><dd>Learns to remove noise step by step; generates by denoising pure noise into a new sample.</dd>
+        <dt>Denoising step</dt><dd>One small clean-up pass in the reverse process; typical models use tens, distilled ones 1–4.</dd>
+        <dt><a href="https://arxiv.org/abs/2112.10752" target="_blank" rel="noopener">Latent diffusion</a></dt><dd>Running diffusion in a compressed latent space instead of on raw pixels (Stable Diffusion's trick).</dd>
+        <dt>U-Net</dt><dd>A funnel-shaped network used as the denoiser in early diffusion models.</dd>
+        <dt><a href="https://arxiv.org/abs/2212.09748" target="_blank" rel="noopener">Diffusion Transformer (DiT)</a></dt><dd>A diffusion model whose denoiser is a transformer working on patches.</dd>
+        <dt><a href="https://arxiv.org/abs/2210.02747" target="_blank" rel="noopener">Flow matching</a> / rectified flow</dt><dd>Training that learns a smooth, near-straight path from noise to data, needing fewer steps.</dd>
+        <dt>Scheduler / sampler</dt><dd>The rule that decides how big each denoising step is and how many to take.</dd>
+        <dt><a href="https://arxiv.org/abs/2103.00020" target="_blank" rel="noopener">CLIP</a></dt><dd>A model that puts pictures and captions on one shared map of meaning; used to steer and to score.</dd>
+        <dt><a href="https://arxiv.org/abs/2207.12598" target="_blank" rel="noopener">Classifier-free guidance (CFG)</a></dt><dd>Pushing generation toward the prompt by contrasting a prompt-aware and prompt-ignoring guess; controlled by the guidance scale.</dd>
+        <dt>Negative prompt</dt><dd>Words describing what the model should steer away from (supported by many open models).</dd>
+        <dt>Distillation</dt><dd>Training a fast student model to imitate a slow teacher in far fewer steps.</dd>
+        <dt><a href="https://arxiv.org/abs/2303.01469" target="_blank" rel="noopener">Consistency model</a></dt><dd>A model trained to jump from any noisy point straight to the final result.</dd>
+        <dt>Text-to-image / image-to-image</dt><dd>Making a picture from words / transforming a given picture.</dd>
+        <dt>Inpainting / outpainting</dt><dd>Repainting a masked region / extending the picture beyond its borders.</dd>
+        <dt><a href="https://arxiv.org/abs/2302.05543" target="_blank" rel="noopener">ControlNet</a></dt><dd>An add-on that makes a diffusion model follow an exact edge, depth or pose map.</dd>
+        <dt><a href="https://arxiv.org/abs/2106.09685" target="_blank" rel="noopener">LoRA</a></dt><dd>Small add-on layers trained to customize a big frozen model cheaply.</dd>
+        <dt><a href="https://arxiv.org/abs/2208.12242" target="_blank" rel="noopener">DreamBooth</a></dt><dd>Fine-tuning that teaches an image model a specific subject from a few photos.</dd>
+        <dt>Text-to-video</dt><dd>Generating a clip from a description; often with synchronized audio in 2026 models.</dd>
+        <dt>Spacetime patches</dt><dd>Small 3-D chunks (width × height × time) of a video that a transformer denoises together.</dd>
+        <dt>TTS / ASR</dt><dd>Text-to-speech (reading aloud) / automatic speech recognition (transcribing).</dd>
+        <dt>Voice cloning</dt><dd>Generating speech in a specific person's voice from a sample; needs consent.</dd>
+        <dt><a href="https://arxiv.org/abs/2212.04356" target="_blank" rel="noopener">Whisper</a></dt><dd>An open speech-recognition model.</dd>
+        <dt>Audio codec (neural)</dt><dd>A learned compressor that turns sound into tokens a language model can predict.</dd>
+        <dt><a href="https://arxiv.org/abs/2003.08934" target="_blank" rel="noopener">NeRF</a></dt><dd>Neural Radiance Field: a network storing a 3-D scene as colour/density seen from any direction.</dd>
+        <dt><a href="https://arxiv.org/abs/2308.04079" target="_blank" rel="noopener">3D Gaussian splatting</a></dt><dd>Representing a scene as millions of soft coloured blobs that render in real time.</dd>
+        <dt>World model</dt><dd>A generative model that predicts what happens next in an environment, enabling playable or simulated worlds.</dd>
+        <dt>Multimodal / omni model</dt><dd>One model that handles several kinds of data, sometimes any-to-any.</dd>
+        <dt>Hallucination</dt><dd>Confident but false or made-up output.</dd>
+        <dt>Deepfake</dt><dd>AI-made or altered media made to look real, depicting something that didn't happen.</dd>
+        <dt><a href="https://deepmind.google/science/synthid/" target="_blank" rel="noopener">SynthID</a></dt><dd>Google's invisible watermarking approach for AI-generated content.</dd>
+        <dt><a href="https://c2pa.org/" target="_blank" rel="noopener">C2PA / Content Credentials</a></dt><dd>A standard for signed labels recording how a piece of media was made and edited.</dd>
+        <dt><a href="https://arxiv.org/abs/1706.08500" target="_blank" rel="noopener">FID</a></dt><dd>Fréchet Inception Distance: compares a set of generated images to real ones (lower is better).</dd>
+        <dt><a href="https://arxiv.org/abs/2104.08718" target="_blank" rel="noopener">CLIPScore</a></dt><dd>A text-image match score computed with CLIP.</dd>
+        <dt>Memorization</dt><dd>When a model reproduces a training example almost exactly (<a href="https://arxiv.org/abs/2301.13188" target="_blank" rel="noopener">demonstrated for diffusion models</a>).</dd>
+        <dt><a href="https://arxiv.org/abs/2305.17493" target="_blank" rel="noopener">Model collapse</a></dt><dd>Quality loss when models are repeatedly trained on AI-generated data.</dd>
+        <dt>Fair use</dt><dd>A US legal doctrine allowing some uses of copyrighted work without permission; how it applies to AI training is being decided in court.</dd>
+        <dt>EU AI Act Article 50</dt><dd>EU transparency rules for AI interaction, synthetic-content marking and deepfake disclosure; applicable since 2 Aug 2026.</dd>
+        <dt>Open weights</dt><dd>A model whose trained parameters can be downloaded and run by anyone (licenses vary).</dd>
+      </dl>
+    </section>
+
+    <!-- 47 -->
+    <section class="block" id="faq-genai">
+      <h2><span class="num">47</span> FAQ</h2>
+      <details class="quiz-item"><summary>Q: Does generative AI copy and paste existing pictures or text?</summary><p class="answer">No — it learns patterns and builds new outputs from them, so most results are genuinely new combinations. Rarely, a model can reproduce something it saw many times (memorization), and that output can still be an infringement or a privacy problem. That's why de-duplication and output checks exist.</p></details>
+      <details class="quiz-item"><summary>Q: Why does the same prompt give different pictures each time?</summary><p class="answer">Generation starts from random noise (or random token choices). A different seed means a different starting point, so a different result. Fix the seed and settings to get the same result again.</p></details>
+      <details class="quiz-item"><summary>Q: Is a bigger model always better?</summary><p class="answer">Often better quality, but also slower and costlier. For many tasks a smaller or "distilled" model is enough. Evaluate on your own tasks rather than assuming.</p></details>
+      <details class="quiz-item"><summary>Q: Diffusion vs GAN vs autoregressive — which is "best"?</summary><p class="answer">None universally. Autoregressive models dominate text and are flexible across modalities; diffusion/flow transformers dominate high-quality images and video; GANs are fast and sharp but harder to train. Real systems mix them (e.g., a VAE compressor + flow transformer + distillation).</p></details>
+      <details class="quiz-item"><summary>Q: Who owns what I generate?</summary><p class="answer">It depends on the tool's terms and your country. In the US, work with no meaningful human authorship generally isn't copyrightable; your creative input (selection, editing, arrangement) can matter. Read the platform terms for commercial use, and ask a lawyer for important cases.</p></details>
+      <details class="quiz-item"><summary>Q: Can I tell whether something is AI-made?</summary><p class="answer">Not reliably by eye or with "AI detector" tools. More dependable: provenance signals (C2PA Content Credentials, invisible watermarks like SynthID) and checking the original source — while remembering missing labels don't prove something is real or fake.</p></details>
+      <details class="quiz-item"><summary>Q: Is it legal to make a voice clone or deepfake of someone?</summary><p class="answer">Without consent it's risky or illegal in many places (fraud, impersonation, defamation, privacy, and specific deepfake and intimate-image laws). With clear consent for a legitimate purpose (dubbing, accessibility) it's generally fine. Rules vary by country; don't do it without permission.</p></details>
+      <details class="quiz-item"><summary>Q: Will generative AI replace artists, writers and coders?</summary><p class="answer">It changes the work: routine drafting and production get faster, while taste, direction, accountability and originality remain human strengths. Impact is uneven and contested, and licensing, consent and credit are active issues. Learning to direct and critique AI output is a valuable skill.</p></details>
+      <details class="quiz-item"><summary>Q: Why do old tutorials and model names stop working?</summary><p class="answer">The field moves very fast: models get retired (even popular products like Sora were reported shut down), libraries release breaking versions, and laws change. Check dates, pin versions, and keep your own prompts and test sets portable.</p></details>
+    </section>
+
+    <!-- 48 -->
+    <section class="block" id="interview-genai">
+      <h2><span class="num">48</span> Interview Questions (With Answers) — The Complete Set</h2>
+      <p>Grouped by category, easy → hard.</p>
+
+      <h3>48.1 — Fundamentals</h3>
+      <details class="quiz-item"><summary>Q: What is generative AI, and how does it differ from discriminative AI?</summary><p class="answer">Generative models learn the distribution of data so they can sample new examples (text, images, audio…). Discriminative models learn a boundary or mapping from inputs to labels. Generative answers "what would a new example look like?"; discriminative answers "which class is this?".</p></details>
+      <details class="quiz-item"><summary>Q: What does "learning the distribution" mean?</summary><p class="answer">Capturing how the training examples are spread — which features go together and how often — so that new points sampled from the learned model land in regions that look like real data.</p></details>
+      <details class="quiz-item"><summary>Q: Why can the same prompt produce different outputs?</summary><p class="answer">Generation is stochastic: it begins from random noise (diffusion) or samples tokens from a probability distribution (autoregressive). Seeds fix the randomness; temperature-like settings control how adventurous sampling is (where exposed).</p></details>
+      <details class="quiz-item"><summary>Q: What is a latent space and why use one?</summary><p class="answer">A compressed representation learned by an encoder in which similar items are close. Working there is far cheaper than in pixel space and gives a smooth space for interpolation and editing; latent diffusion exploits this.</p></details>
+      <details class="quiz-item"><summary>Q: Give examples of generative AI across modalities.</summary><p class="answer">Text/code (LLMs), images (diffusion/flow models), video (diffusion transformers over spacetime), speech and music (audio-token or diffusion models), 3D (NeRF, Gaussian splats, text-to-3D), and interactive world models.</p></details>
+      <details class="quiz-item"><summary>Q: Why are LLMs considered generative AI?</summary><p class="answer">They are autoregressive models that generate new token sequences by predicting the next token from the context, producing novel text, code and answers.</p></details>
+
+      <h3>48.2 — Model Families</h3>
+      <details class="quiz-item"><summary>Q: Explain how a VAE works and what its loss has two parts for.</summary><p class="answer">An encoder maps data to a distribution over latents; a decoder reconstructs data from a sampled latent. The loss has a reconstruction term (rebuild accurately) and a KL term (keep latent distributions close to a simple prior so sampling random latents gives sensible outputs). Result: a smooth, sampleable latent space, though raw outputs can be blurry.</p></details>
+      <details class="quiz-item"><summary>Q: Explain the GAN training game and its main failure modes.</summary><p class="answer">A generator maps noise to fake samples; a discriminator classifies real vs fake; each improves against the other. Failure modes: unstable training (one side overpowers), vanishing gradients, and mode collapse (limited output variety). Strengths: sharp samples in a single forward pass.</p></details>
+      <details class="quiz-item"><summary>Q: Why did diffusion models overtake GANs for images?</summary><p class="answer">Stable, simple training (a regression-style denoising objective), better coverage of the data distribution, high fidelity, and easy conditioning (text, images, control maps). The cost, many sampling steps, was reduced via better samplers, distillation and flow-based training.</p></details>
+      <details class="quiz-item"><summary>Q: Compare autoregressive and diffusion generation.</summary><p class="answer">Autoregressive: sequential, one token at a time with exact likelihoods; flexible across modalities but slow for long/high-resolution outputs. Diffusion: iterative refinement of the whole sample in parallel across positions; strong for continuous data like images/video/audio but needs multiple denoising passes. Hybrids exist.</p></details>
+      <details class="quiz-item"><summary>Q: What is flow matching / rectified flow and why is it attractive?</summary><p class="answer">It trains a model to predict the velocity field that transports noise to data along (nearly) straight paths. Training is simple and stable, and straighter paths allow fewer sampling steps; it pairs well with transformers and underlies several recent image/video models.</p></details>
+      <details class="quiz-item"><summary>Q: What changed when diffusion moved from U-Nets to transformers (DiT)?</summary><p class="answer">Treating the latent as patch tokens lets a transformer denoise with attention; it scales predictably with model size and data, shares tooling with LLMs, handles long contexts (video), and takes text conditioning more flexibly.</p></details>
+      <details class="quiz-item"><summary>Q: How can a model generate images autoregressively?</summary><p class="answer">Use a learned tokenizer (e.g., VQGAN-style) to turn images into discrete codes; train a transformer to predict codes in sequence; decode the codes back to pixels. Works naturally alongside text tokens, enabling unified multimodal models.</p></details>
+      <details class="quiz-item"><summary>Q: What is mode collapse versus memorization?</summary><p class="answer">Mode collapse: the model covers too few output varieties (a GAN issue). Memorization: the model reproduces specific training examples. Opposite problems of coverage vs copying; both are evaluated with diversity and nearest-neighbour/regurgitation tests.</p></details>
+
+      <h3>48.3 — Diffusion in Depth</h3>
+      <details class="quiz-item"><summary>Q: Describe the forward and reverse processes of DDPM.</summary><p class="answer">Forward: gradually add Gaussian noise over T steps (closed form x_t = √ᾱ_t x₀ + √(1−ᾱ_t) ε). Reverse: a neural network is trained to predict the noise ε (or x₀ or velocity) from x_t and t; sampling starts at pure noise and applies the learned denoising update step by step, adding a little fresh noise except at the end.</p></details>
+      <details class="quiz-item"><summary>Q: What is the training objective, intuitively?</summary><p class="answer">Pick a random timestep, noise a real sample, ask the network to predict the added noise, and minimize the mean-squared error. It's a simple regression that implicitly learns the score (gradient of the log-density).</p></details>
+      <details class="quiz-item"><summary>Q: What is classifier-free guidance and what does the guidance scale do?</summary><p class="answer">During training the condition (text) is randomly dropped so the model learns both conditional and unconditional predictions. At sampling, the output is extrapolated: unconditional + w × (conditional − unconditional). Larger w improves prompt adherence but reduces diversity and can cause oversaturation/artifacts.</p></details>
+      <details class="quiz-item"><summary>Q: Why do latent diffusion models use a VAE?</summary><p class="answer">The VAE compresses images by a large factor into a latent grid, so the expensive denoiser runs on far fewer values; the VAE decoder reconstructs pixels at the end. This cut compute and memory dramatically and made high-resolution generation practical.</p></details>
+      <details class="quiz-item"><summary>Q: How do you speed up diffusion sampling?</summary><p class="answer">Better solvers/schedulers (fewer, larger steps), distillation (student matches teacher in 1–8 steps), consistency models, adversarial distillation, straighter flow paths, and engineering (quantization, caching, compilation).</p></details>
+      <details class="quiz-item"><summary>Q: How does ControlNet add control without retraining the whole model?</summary><p class="answer">It attaches a trainable copy of the encoder blocks to a frozen base model, fed with a control signal (edges, depth, pose) through zero-initialized connections, so training starts from the base model's behaviour and learns to follow the control map.</p></details>
+      <details class="quiz-item"><summary>Q: What is the role of the seed and the scheduler?</summary><p class="answer">The seed fixes the initial noise (and any injected noise), making runs reproducible. The scheduler defines the noise levels and step update rule; changing it alters speed and the look of results.</p></details>
+
+      <h3>48.4 — Modalities</h3>
+      <details class="quiz-item"><summary>Q: Why is video generation harder than image generation?</summary><p class="answer">Far more data per sample, and it must be consistent across frames (identity, lighting, physics) over time, plus audio sync. Models use spacetime latent patches and diffusion transformers; cost is often per second of video, and long clips are produced by chaining/extending short ones.</p></details>
+      <details class="quiz-item"><summary>Q: How do modern text-to-speech and voice cloning work?</summary><p class="answer">Audio is compressed into tokens with a neural codec; a language-model-style or diffusion model predicts those tokens from text (and a short voice sample for cloning); the codec decodes them to a waveform. A few seconds of reference audio can capture a speaker's timbre — hence consent and misuse concerns.</p></details>
+      <details class="quiz-item"><summary>Q: What is Whisper and what is it good for?</summary><p class="answer">An open speech-recognition model trained on large, diverse weakly-supervised data; robust across accents and noise and usable for multilingual transcription and translation. Larger variants trade speed for accuracy; always proofread names and numbers.</p></details>
+      <details class="quiz-item"><summary>Q: Contrast NeRF, Gaussian splatting and a world model.</summary><p class="answer">NeRF stores a scene in a neural network queried per ray (high quality, slower). Gaussian splatting uses explicit 3-D blobs rendered quickly. A world model generates future frames conditioned on actions without an explicit 3-D scene — flexible and interactive but struggles with long-term consistency.</p></details>
+      <details class="quiz-item"><summary>Q: What are "omni"/any-to-any models and their trade-offs?</summary><p class="answer">One model that ingests and emits several modalities, often by tokenizing everything. Benefits: coherence across modalities, conversational editing, simpler stacks. Costs: scale, evaluation difficulty and broader safety surface (voice + face + text together).</p></details>
+      <details class="quiz-item"><summary>Q: Why is music generation tied up in licensing?</summary><p class="answer">Models learn from recorded music, which is copyrighted; labels sued some generators, and by 2026 several platforms moved to licensed training data and settlements with major labels, with some litigation continuing. The industry is shifting from "train first" to permission-based products.</p></details>
+
+      <h3>48.5 — Practice: Prompting, Editing, Customizing, Evaluating</h3>
+      <details class="quiz-item"><summary>Q: How do you write a good image prompt?</summary><p class="answer">State subject, action, setting, style, light/colour, camera/composition and constraints in clear sentences; change one element at a time and fix the seed to compare; put exact words in quotes for text; describe what you want rather than what you don't.</p></details>
+      <details class="quiz-item"><summary>Q: Inpainting vs image-to-image strength?</summary><p class="answer">Inpainting regenerates only a masked region conditioned on the rest; image-to-image partially noises the whole image and denoises it, with "strength" setting how much changes (low keeps layout, high redraws).</p></details>
+      <details class="quiz-item"><summary>Q: When would you choose LoRA over full fine-tuning or DreamBooth?</summary><p class="answer">LoRA trains small adapter weights on a frozen base: cheap, quick, shareable, stackable — best for adding a style or subject with modest data. Full fine-tuning is costlier and risks forgetting; DreamBooth gives strong subject fidelity but alters more weights.</p></details>
+      <details class="quiz-item"><summary>Q: How would you evaluate an image generator for your product?</summary><p class="answer">Build a private prompt set mirroring real use, include targeted tests (text, counting, hands, safety), run candidates blind with human raters, and track automatic metrics (FID for distribution quality, CLIPScore for prompt match) as secondary signals. Re-run when models change.</p></details>
+      <details class="quiz-item"><summary>Q: Why is FID alone not enough?</summary><p class="answer">It compares feature statistics of whole image sets: it ignores prompt-following, can miss specific failures, depends on the reference set and feature extractor, and doesn't always match human preference.</p></details>
+      <details class="quiz-item"><summary>Q: How do you keep a character consistent across images?</summary><p class="answer">Use reference images or a trained LoRA/subject adapter, fix the seed and model version, reuse a detailed character description, and use conversational-edit or reference-based tools that preserve identity; then review for drift.</p></details>
+
+      <h3>48.6 — Coding / Hands-On</h3>
+      <details class="quiz-item"><summary>Q: Write a tiny generative text model.</summary><p class="answer">Build a dictionary from each word to the list of words that followed it in the training text, then repeatedly choose a random follower of the last word (Level 0). This is a first-order Markov chain — the simplest "learn the pattern, then sample" model.</p></details>
+      <details class="quiz-item"><summary>Q: How do you generate an image with diffusers?</summary><p class="answer">Load a pipeline (e.g., <code>AutoPipelineForText2Image.from_pretrained(model_id)</code>), move it to the GPU, call <code>pipe(prompt=..., num_inference_steps=..., guidance_scale=...)</code> and save <code>.images[0]</code>; set a <code>torch.Generator</code> seed for reproducibility. Distilled "turbo" models need 1–4 steps and little or no guidance.</p></details>
+      <details class="quiz-item"><summary>Q: In the toy diffusion code, why does sampling end up near −2 and +2?</summary><p class="answer">The denoiser predicts the clean value from the noisy one using the only two possible clean values; each reverse step nudges the sample toward whichever is more likely, and noise shrinks to zero, so samples settle onto the two training values in roughly equal proportion.</p></details>
+      <details class="quiz-item"><summary>Q: How would you transcribe audio and then check a generated image matches a caption?</summary><p class="answer">Use a Whisper-based <code>transformers</code> ASR pipeline for the transcript, and CLIP (<code>CLIPModel</code>/<code>CLIPProcessor</code>) to compute image-text similarity over candidate captions, taking the highest softmax score.</p></details>
+
+      <h3>48.7 — Risk, Law &amp; Ethics</h3>
+      <details class="quiz-item"><summary>Q: What are the main risks of generative AI?</summary><p class="answer">Hallucination, bias, privacy leakage and memorization, deepfakes and fraud, non-consensual intimate imagery, copyright disputes, misinformation, creator displacement, energy use, and model collapse from training on synthetic data.</p></details>
+      <details class="quiz-item"><summary>Q: How do watermarking and C2PA differ?</summary><p class="answer">Invisible watermarks embed a hidden signal in the content itself (survives some edits, often readable only by the maker's detector). C2PA attaches cryptographically signed provenance metadata describing origin and edits (tamper-evident, but removable by re-saving or screenshots). They complement each other; neither proves authenticity alone.</p></details>
+      <details class="quiz-item"><summary>Q: What does EU AI Act Article 50 require?</summary><p class="answer">Transparency: tell people when they interact with an AI; providers of generative systems mark synthetic audio, image, video and text in a machine-readable way; deployers disclose deepfakes and AI-generated public-interest text (with an editorial-responsibility exception). Applicable since 2 Aug 2026, with a grace period to 2 Dec 2026 for the marking duty for systems already on the market (as reported).</p></details>
+      <details class="quiz-item"><summary>Q: Summarize the state of copyright and AI training.</summary><p class="answer">Unsettled. Some US rulings treated training as fair use while condemning use of pirated sources (Anthropic settled for $1.5B); other rulings found copying to build a competing tool not fair use; the UK Getty v. Stability ruling rejected the claim that a model is an infringing copy; the NYT v. OpenAI case is pending. Licensing deals are growing. Output copying and human authorship are separate questions.</p></details>
+      <details class="quiz-item"><summary>Q: What is model collapse and how do you avoid it?</summary><p class="answer">Repeated training on model-generated data erodes diversity and rare cases, degrading quality. Avoid by keeping fresh human data in the mix, curating and verifying synthetic data, and using provenance to filter scraped data.</p></details>
+      <details class="quiz-item"><summary>Q: A user asks your app for a realistic video of a named politician endorsing a product. What do you do?</summary><p class="answer">Refuse or restrict: it's impersonation/deepfake with legal and reputational risk. Apply policy filters on prompts and outputs, require consent/verification for likeness use, watermark and label outputs, log for audit, and provide a reporting channel.</p></details>
+
+      <h3>48.8 — Advanced, Trends &amp; Scenarios</h3>
+      <details class="quiz-item"><summary>Q: What are the main trends in generative AI as of late 2026?</summary><p class="answer">Flow-based diffusion transformers as the default for image/video; native audio in video; few-step distilled models; chat-based conversational editing; omni/any-to-any models; world models with better memory; licensed training data and settlements; mandatory content marking (EU); some products being retired or consolidated.</p></details>
+      <details class="quiz-item"><summary>Q: Your product depends on one video model API that gets discontinued. How do you de-risk?</summary><p class="answer">Abstract the model behind an interface, keep prompts/assets/seeds in your own storage, maintain a small evaluation set to compare replacements quickly, keep a second vendor or open-weight fallback, and watch vendor deprecation notices.</p></details>
+      <details class="quiz-item"><summary>Q: Image generation latency is too high for an interactive app. Options?</summary><p class="answer">Use a distilled few-step model, lower resolution then upscale selected results, cache and reuse, batch requests, quantize/compile the model, and show progressive previews.</p></details>
+      <details class="quiz-item"><summary>Q: Design a safe consumer image-generation feature.</summary><p class="answer">Prompt and output safety classifiers, restrictions on real-person likeness and sensitive categories, rate limits and abuse monitoring, watermark + content credentials, clear user terms and reporting, human review for edge cases, logs for audits, and bias testing on representative prompts.</p></details>
+      <details class="quiz-item"><summary>Q: How do text, image and video generation relate in a unified model?</summary><p class="answer">By tokenizing each modality into a shared sequence (or shared latent) and training one transformer to read and write them, the model can answer a spoken question with a picture or turn a script into a narrated video; the same attention machinery scales across modalities.</p></details>
+    </section>
+
+    <!-- 49 -->
+    <section class="block" id="pitfalls-genai">
+      <h2><span class="num">49</span> Common Problems &amp; Production Checklist</h2>
+      <div class="grid">
+        <div class="card"><h4>🔎 Trusting without checking</h4><p>Publishing AI facts, citations or numbers unchecked. Verify; use sources (RAG).</p></div>
+        <div class="card"><h4>🎯 Vague prompts</h4><p>"Make it nice" gets a generic result. Use the seven ingredients and iterate one change at a time.</p></div>
+        <div class="card"><h4>📜 Ignoring licenses &amp; terms</h4><p>Using a model or its outputs commercially without reading the license. Check each model's terms.</p></div>
+        <div class="card"><h4>🪪 Using real people's likeness</h4><p>Cloning faces/voices without consent. Don't; it's harmful and often illegal.</p></div>
+        <div class="card"><h4>🏷️ Dropping labels</h4><p>Stripping watermarks/credentials or failing to disclose. Keep provenance intact; comply with labeling rules.</p></div>
+        <div class="card"><h4>💸 Surprise bills</h4><p>Generating huge batches or long videos with no cap. Preview small, set budgets, cache.</p></div>
+        <div class="card"><h4>🧩 Single-vendor lock-in</h4><p>Everything depends on one model that may be retired. Keep prompts and tests portable; have a fallback.</p></div>
+        <div class="card"><h4>♻️ Training on your own output</h4><p>Feeding generated data back in repeatedly. Mix in real data (model collapse).</p></div>
+      </div>
+      <div class="callout tip">
+        <strong>Before you ship a generative feature:</strong>
+        <ul>
+          <li>☐ Input and output safety checks; rate limits; abuse reporting</li>
+          <li>☐ Clear user terms; consent rules for faces and voices</li>
+          <li>☐ Watermark/content credentials and required AI disclosures</li>
+          <li>☐ Licenses checked for model, data and outputs</li>
+          <li>☐ Private evaluation set (quality, safety, bias) re-run on every model change</li>
+          <li>☐ Cost caps, caching, and a plan for latency (few-step models, previews)</li>
+          <li>☐ Logs of prompts, seeds and model versions for reproducibility and audits</li>
+          <li>☐ Human review for high-stakes uses; fallback model or vendor</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 50 -->
+    <section class="block" id="quiz-genai">
+      <h2><span class="num">50</span> Quick Quiz 🎯</h2>
+      <p>Click each question to reveal the answer.</p>
+      <details class="quiz-item"><summary>Q1: What's the difference between generative and discriminative AI?</summary><p class="answer">Discriminative AI sorts or labels things; generative AI makes new things by learning how real data looks.</p></details>
+      <details class="quiz-item"><summary>Q2: In a diffusion model, what does the network learn to do?</summary><p class="answer">Given a noisy input (and the step number and prompt), predict the noise so it can be removed — repeated many times to turn pure noise into a picture.</p></details>
+      <details class="quiz-item"><summary>Q3: Why do image models work in "latent space"?</summary><p class="answer">It's a compressed version of the image, so the heavy denoising is much cheaper; a decoder expands the result to pixels at the end.</p></details>
+      <details class="quiz-item"><summary>Q4: What does a higher guidance scale do?</summary><p class="answer">Makes the output follow the prompt more strictly, at the cost of variety and sometimes harsh, oversaturated results.</p></details>
+      <details class="quiz-item"><summary>Q5: Name two ways to speed up image generation.</summary><p class="answer">Distillation into a few-step model, and straighter generation paths (flow/rectified flow) or consistency models; also better samplers, quantization and caching.</p></details>
+      <details class="quiz-item"><summary>Q6: What's the difference between an invisible watermark and C2PA content credentials?</summary><p class="answer">A watermark is hidden inside the content; credentials are a signed label attached to the file. The watermark survives some edits; the label explains history but can be stripped.</p></details>
+      <details class="quiz-item"><summary>Q7: What do the EU's Article 50 rules require of generative AI providers?</summary><p class="answer">Marking synthetic audio, image, video and text in a machine-readable way (plus disclosure of AI interaction and deepfakes by deployers); applicable since 2 Aug 2026, with a grace period to 2 Dec 2026 for existing systems.</p></details>
+      <details class="quiz-item"><summary>Q8: What is model collapse?</summary><p class="answer">Quality loss when models are trained repeatedly on AI-generated data — like photocopying a photocopy.</p></details>
+    </section>
+
+    <!-- 51 -->
+    <section class="block" id="resources-genai">
+      <h2><span class="num">51</span> Learn More — Resources</h2>
+      <p>Foundational papers and official sources. Model and law pages change quickly — check the dates.</p>
+
+      <h3>Core papers — the families</h3>
+      <ul class="resources">
+        <li><span class="tag paper">Paper</span> <a href="https://arxiv.org/abs/1312.6114" target="_blank" rel="noopener">Auto-Encoding Variational Bayes (VAE)</a></li>
+        <li><span class="tag paper">Paper</span> <a href="https://arxiv.org/abs/1406.2661" target="_blank" rel="noopener">Generative Adversarial Networks</a></li>
+        <li><span class="tag paper">Paper</span> <a href="https://arxiv.org/abs/2006.11239" target="_blank" rel="noopener">Denoising Diffusion Probabilistic Models</a></li>
+        <li><span class="tag paper">Paper</span> <a href="https://arxiv.org/abs/2011.13456" target="_blank" rel="noopener">Score-Based Generative Modeling through SDEs</a></li>
+        <li><span class="tag paper">Paper</span> <a href="https://arxiv.org/abs/2112.10752" target="_blank" rel="noopener">High-Resolution Image Synthesis with Latent Diffusion Models</a></li>
+        <li><span class="tag paper">Paper</span> <a href="https://arxiv.org/abs/2212.09748" target="_blank" rel="noopener">Scalable Diffusion Models with Transformers (DiT)</a></li>
+        <li><span class="tag paper">Paper</span> <a href="https://arxiv.org/abs/2210.02747" target="_blank" rel="noopener">Flow Matching for Generative Modeling</a> · <a href="https://arxiv.org/abs/2209.03003" target="_blank" rel="noopener">Rectified Flow</a></li>
+        <li><span class="tag paper">Paper</span> <a href="https://arxiv.org/abs/2403.03206" target="_blank" rel="noopener">Scaling Rectified Flow Transformers (Stable Diffusion 3)</a></li>
+        <li><span class="tag paper">Paper</span> <a href="https://arxiv.org/abs/2207.12598" target="_blank" rel="noopener">Classifier-Free Diffusion Guidance</a></li>
+        <li><span class="tag paper">Paper</span> <a href="https://arxiv.org/abs/2303.01469" target="_blank" rel="noopener">Consistency Models</a></li>
+        <li><span class="tag paper">Paper</span> <a href="https://arxiv.org/abs/2103.00020" target="_blank" rel="noopener">CLIP</a> · <a href="https://arxiv.org/abs/2204.06125" target="_blank" rel="noopener">DALL·E 2 (unCLIP)</a> · <a href="https://arxiv.org/abs/2102.12092" target="_blank" rel="noopener">DALL·E</a> · <a href="https://arxiv.org/abs/2206.10789" target="_blank" rel="noopener">Parti</a> · <a href="https://arxiv.org/abs/2012.09841" target="_blank" rel="noopener">VQGAN</a></li>
+      </ul>
+
+      <h3>Control, editing &amp; customization</h3>
+      <ul class="resources">
+        <li><span class="tag paper">Paper</span> <a href="https://arxiv.org/abs/2302.05543" target="_blank" rel="noopener">ControlNet</a> · <a href="https://arxiv.org/abs/2211.09800" target="_blank" rel="noopener">InstructPix2Pix</a></li>
+        <li><span class="tag paper">Paper</span> <a href="https://arxiv.org/abs/2106.09685" target="_blank" rel="noopener">LoRA</a> · <a href="https://arxiv.org/abs/2208.12242" target="_blank" rel="noopener">DreamBooth</a></li>
+      </ul>
+
+      <h3>Audio, music, 3D &amp; worlds</h3>
+      <ul class="resources">
+        <li><span class="tag paper">Paper</span> <a href="https://arxiv.org/abs/1609.03499" target="_blank" rel="noopener">WaveNet</a> · <a href="https://arxiv.org/abs/2209.03143" target="_blank" rel="noopener">AudioLM</a> · <a href="https://arxiv.org/abs/2301.11325" target="_blank" rel="noopener">MusicLM</a> · <a href="https://arxiv.org/abs/2301.02111" target="_blank" rel="noopener">VALL-E</a> · <a href="https://arxiv.org/abs/2212.04356" target="_blank" rel="noopener">Whisper</a></li>
+        <li><span class="tag paper">Paper</span> <a href="https://arxiv.org/abs/2003.08934" target="_blank" rel="noopener">NeRF</a> · <a href="https://arxiv.org/abs/2308.04079" target="_blank" rel="noopener">3D Gaussian Splatting</a> · <a href="https://arxiv.org/abs/2209.14988" target="_blank" rel="noopener">DreamFusion</a> · <a href="https://arxiv.org/abs/2402.15391" target="_blank" rel="noopener">Genie</a></li>
+      </ul>
+
+      <h3>Evaluation, safety &amp; limits</h3>
+      <ul class="resources">
+        <li><span class="tag paper">Paper</span> <a href="https://arxiv.org/abs/1706.08500" target="_blank" rel="noopener">FID</a> · <a href="https://arxiv.org/abs/1606.03498" target="_blank" rel="noopener">Inception Score</a> · <a href="https://arxiv.org/abs/2104.08718" target="_blank" rel="noopener">CLIPScore</a></li>
+        <li><span class="tag paper">Paper</span> <a href="https://arxiv.org/abs/2301.13188" target="_blank" rel="noopener">Extracting Training Data from Diffusion Models</a> · <a href="https://arxiv.org/abs/2310.13828" target="_blank" rel="noopener">Nightshade</a></li>
+        <li><span class="tag paper">Paper</span> <a href="https://arxiv.org/abs/2305.17493" target="_blank" rel="noopener">The Curse of Recursion (model collapse)</a> · <a href="https://arxiv.org/abs/2311.05232" target="_blank" rel="noopener">Hallucination survey</a></li>
+        <li><span class="tag paper">Paper</span> <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">Attention Is All You Need</a></li>
+      </ul>
+
+      <h3>Provenance, law &amp; policy</h3>
+      <ul class="resources">
+        <li><span class="tag docs">Docs</span> <a href="https://c2pa.org/" target="_blank" rel="noopener">C2PA — Content Credentials</a> · <a href="https://deepmind.google/science/synthid/" target="_blank" rel="noopener">SynthID</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://digital-strategy.ec.europa.eu/en/policies/guidelines-ai-transparency-obligations" target="_blank" rel="noopener">European Commission — guidelines on AI transparency obligations</a></li>
+        <li><span class="tag article">Wiki</span> <a href="https://en.wikipedia.org/wiki/Artificial_Intelligence_Act" target="_blank" rel="noopener">Artificial Intelligence Act — Wikipedia</a></li>
+        <li><span class="tag article">Tracker</span> <a href="https://ailawsuittracker.com/" target="_blank" rel="noopener">AI lawsuit tracker</a> (third-party; verify against court records)</li>
+      </ul>
+
+      <h3>Background reading &amp; tools</h3>
+      <ul class="resources">
+        <li><span class="tag article">Wiki</span> <a href="https://en.wikipedia.org/wiki/Generative_artificial_intelligence" target="_blank" rel="noopener">Generative AI</a> · <a href="https://en.wikipedia.org/wiki/Diffusion_model" target="_blank" rel="noopener">Diffusion model</a> · <a href="https://en.wikipedia.org/wiki/Generative_adversarial_network" target="_blank" rel="noopener">GAN</a> · <a href="https://en.wikipedia.org/wiki/Variational_autoencoder" target="_blank" rel="noopener">VAE</a> · <a href="https://en.wikipedia.org/wiki/Deepfake" target="_blank" rel="noopener">Deepfake</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://huggingface.co/docs/diffusers" target="_blank" rel="noopener">Hugging Face diffusers documentation</a> · <a href="https://github.com/huggingface/diffusers" target="_blank" rel="noopener">GitHub</a> · <a href="https://github.com/comfyanonymous/ComfyUI" target="_blank" rel="noopener">ComfyUI</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://ai.google.dev/gemini-api/docs/models" target="_blank" rel="noopener">Gemini API models (image, video, voice)</a> · <a href="https://developers.openai.com/api/docs/models" target="_blank" rel="noopener">OpenAI models</a></li>
+      </ul>
+
+      <h3>Video explainers</h3>
+      <ul class="resources">
+        <li><span class="tag video">Video</span> <a href="https://www.youtube.com/results?search_query=how+diffusion+models+work+explained" target="_blank" rel="noopener">Search: "how diffusion models work explained"</a></li>
+        <li><span class="tag video">Video</span> <a href="https://www.youtube.com/results?search_query=generative+AI+explained+for+beginners" target="_blank" rel="noopener">Search: "generative AI explained for beginners"</a></li>
+        <li><span class="tag video">Video</span> <a href="https://www.youtube.com/results?search_query=flow+matching+explained" target="_blank" rel="noopener">Search: "flow matching explained"</a></li>
+        <li><span class="tag video">Video</span> <a href="https://www.youtube.com/results?search_query=AI+video+generation+how+it+works" target="_blank" rel="noopener">Search: "AI video generation how it works"</a></li>
+      </ul>
+
+      <p>Related guides in this roadmap: <a href="llm.html">LLMs</a>, <a href="rag.html">RAG</a>, <a href="ai-agents.html">AI Agents</a> and <a href="mcp.html">MCP</a>.</p>
+    </section>
+
+  </main>
+</div>
+
+<div class="page-nav">
+  <a href="index.html">⬅ Back to Roadmap Home</a>
+  <a href="llm.html">Related: LLMs (Large Language Models) ➜</a>
+</div>
+
+</body>
+</html>

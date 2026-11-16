@@ -1,0 +1,1804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Git &amp; GitHub — The Complete A-Z Guide</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌿</text></svg>">
+</head>
+<body>
+
+<header class="hero">
+  <div class="breadcrumb"><a href="index.html">🏠 Roadmap Home</a> / Git &amp; GitHub</div>
+  <h1>🌿 Git &amp; GitHub — The Time Machine and the Meeting Place</h1>
+  <p class="subtitle">
+    The complete A-to-Z guide: what Git is and how it thinks (snapshots, branches, merges), every everyday and
+    "oh no!" command, how GitHub adds pull requests, reviews, issues, Actions, security and Copilot on top, how
+    teams and open-source projects work, and runnable examples — in plain words with daily-life analogies and
+    diagrams. <strong>Last reviewed: 29 October 2026</strong> (Git is at 2.56; GitHub changes weekly — dated notes
+    mark what to re-check).
+  </p>
+  <div class="badge-row">
+    <span class="badge beginner">Beginner friendly</span>
+    <span class="badge intermediate">Intermediate concepts</span>
+    <span class="badge advanced">Advanced / Internals</span>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- ============ SIDEBAR TOC ============ -->
+  <nav class="toc">
+    <h3>On this page (49 sections)</h3>
+    <ol>
+      <li class="toc-part">Part A — Foundations</li>
+      <li><a href="#what-is-git">What is Git?</a></li>
+      <li><a href="#git-vs-github">Git vs GitHub (and friends)</a></li>
+      <li><a href="#why-vcs">Why version control?</a></li>
+      <li><a href="#how-git-thinks">How Git thinks: snapshots</a></li>
+      <li><a href="#install-setup">Install & first-time setup</a></li>
+      <li><a href="#history-git">History & timeline</a></li>
+
+      <li class="toc-part">Part B — Everyday Git</li>
+      <li><a href="#first-repo">Your first repository</a></li>
+      <li><a href="#three-areas-workflow">The three areas</a></li>
+      <li><a href="#good-commits">Good commits & .gitignore</a></li>
+      <li><a href="#branching">Branches</a></li>
+      <li><a href="#merging-conflicts">Merging & conflicts</a></li>
+      <li><a href="#remotes">Remotes: clone, fetch, pull, push</a></li>
+      <li><a href="#undoing">Undoing things safely</a></li>
+      <li><a href="#inspecting-history">Looking at history</a></li>
+
+      <li class="toc-part">Part C — Going Deeper</li>
+      <li><a href="#stash-cherry-worktree">Stash, cherry-pick, worktrees</a></li>
+      <li><a href="#rebase-vs-merge">Rebase vs merge</a></li>
+      <li><a href="#tags-releases">Tags & versions</a></li>
+      <li><a href="#git-internals">Inside .git (internals)</a></li>
+      <li><a href="#config-hooks-aliases">Config, hooks & aliases</a></li>
+      <li><a href="#big-repos-perf">Big repos & performance</a></li>
+      <li><a href="#git-security">Git security</a></li>
+
+      <li class="toc-part">Part D — GitHub</li>
+      <li><a href="#github-intro">GitHub: accounts, repos, orgs</a></li>
+      <li><a href="#fork-pr-flow">Fork, branch, pull request</a></li>
+      <li><a href="#pull-requests">Pull requests in depth</a></li>
+      <li><a href="#code-review-github">Code review</a></li>
+      <li><a href="#issues-projects">Issues, Projects, Discussions</a></li>
+      <li><a href="#branch-protection-rulesets">Protecting main: rules</a></li>
+      <li><a href="#github-actions">GitHub Actions</a></li>
+      <li><a href="#github-security">GitHub security tools</a></li>
+      <li><a href="#pages-packages-codespaces">Pages, Releases, Packages, Codespaces</a></li>
+      <li><a href="#github-copilot-ai">Copilot & AI agents</a></li>
+      <li><a href="#gh-cli-api">gh CLI, API & apps</a></li>
+      <li><a href="#open-source-contrib">Contributing to open source</a></li>
+
+      <li class="toc-part">Part E — Teams & Ecosystem</li>
+      <li><a href="#branching-strategies">Branching strategies</a></li>
+      <li><a href="#monorepo-polyrepo">Monorepo vs many repos</a></li>
+      <li><a href="#alternatives-git">Alternatives & competitors</a></li>
+      <li><a href="#team-conventions">Team conventions</a></li>
+
+      <li class="toc-part">Part F — Hands-On</li>
+      <li><a href="#code-first-repo">Level 0 — first repo & undo</a></li>
+      <li><a href="#code-branch-merge">Level 1 — branches & conflicts</a></li>
+      <li><a href="#code-rescue">Level 2 — rescue with reflog</a></li>
+      <li><a href="#code-rebase-bisect">Level 3 — rebase, cherry-pick, bisect</a></li>
+      <li><a href="#code-remotes">Level 4 — two people, one remote</a></li>
+      <li><a href="#code-github-files">Level 5 — GitHub CLI & config files</a></li>
+
+      <li class="toc-part">Part G — Reference</li>
+      <li><a href="#glossary-git">Mini glossary</a></li>
+      <li><a href="#faq-git">FAQ</a></li>
+      <li><a href="#interview-git">Interview questions (with answers)</a></li>
+      <li><a href="#pitfalls-git">Common problems & checklist</a></li>
+      <li><a href="#quiz-git">Quick quiz</a></li>
+      <li><a href="#resources-git">Learn more — resources</a></li>
+    </ol>
+  </nav>
+
+  <!-- ============ MAIN CONTENT ============ -->
+  <main>
+
+    <div class="part-divider"><h2>Part A — Foundations</h2></div>
+
+    <!-- 1 -->
+    <section class="block" id="what-is-git">
+      <h2><span class="num">1</span> What is Git? (the 10-second answer)</h2>
+      <div class="callout def">
+        <strong><a href="https://git-scm.com/" target="_blank" rel="noopener">Git</a></strong> is a free tool that remembers every version of your project's files — who changed what, when and why —
+        so you can go back in time, try ideas safely on the side, and combine many people's work without overwriting each other.
+      </div>
+      <div class="callout life">
+        Imagine writing a story with friends. Without Git you'd email around files named <em>story_final.docx</em>, <em>story_final_v2.docx</em>, <em>story_REALLY_final.docx</em> — and someone always edits the wrong one.
+        Git is like a magical notebook that keeps every page-version automatically, lets each friend work on a private copy, and then helps you merge the copies into one story.
+      </div>
+      <p>Git does three big jobs:</p>
+      <table>
+        <tr><th>Job</th><th>What it means</th><th>Everyday picture</th></tr>
+        <tr><td>⏪ Time machine</td><td>Every saved snapshot (commit) can be viewed or restored</td><td>Video-game save points</td></tr>
+        <tr><td>🌿 Parallel universes</td><td>Branches let you try something without touching the main version</td><td>Drafting a risky paragraph on a spare sheet</td></tr>
+        <tr><td>🤝 Teamwork</td><td>Many people contribute and Git merges their changes</td><td>A shared recipe book where everyone adds pages</td></tr>
+      </table>
+      <p>
+        Git is <strong>distributed</strong>: every person has the <em>whole</em> project history on their own computer, not just a view of a central server. So you can work offline, and if a server disappears, any copy can rebuild it.
+        Git works with any kind of file but shines with text such as code; it is the standard tool in <a href="devops.html#git-vcs">DevOps</a> and almost all software teams.
+      </p>
+    </section>
+
+    <!-- 2 -->
+    <section class="block" id="git-vs-github">
+      <h2><span class="num">2</span> Git vs GitHub (and GitLab, Bitbucket…)</h2>
+      <p>The most common beginner confusion: <strong>Git and GitHub are not the same thing.</strong></p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 230" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrGh1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+          </defs>
+          <rect x="10" y="20" width="300" height="190" rx="12" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="6 4"/>
+          <text x="160" y="42" text-anchor="middle" class="phase-label">Your computer</text>
+          <rect class="box-hl" x="40" y="60" width="240" height="60" rx="8"/><text x="160" y="86" text-anchor="middle">🌿 Git (the tool)</text><text x="160" y="104" text-anchor="middle" class="edge-label">history, branches, commits — works offline</text>
+          <rect class="box" x="40" y="135" width="240" height="56" rx="8"/><text x="160" y="160" text-anchor="middle">📁 your project folder</text><text x="160" y="177" text-anchor="middle" class="edge-label">+ hidden .git history</text>
+
+          <rect x="410" y="20" width="300" height="190" rx="12" fill="none" stroke="var(--accent-3)" stroke-width="2" stroke-dasharray="6 4"/>
+          <text x="560" y="42" text-anchor="middle" class="phase-label">The internet</text>
+          <rect class="box-final" x="440" y="60" width="240" height="60" rx="8"/><text x="560" y="86" text-anchor="middle">🐙 GitHub (a website/service)</text><text x="560" y="104" text-anchor="middle" class="edge-label">hosts Git repos + adds teamwork tools</text>
+          <rect class="box" x="440" y="135" width="240" height="56" rx="8"/><text x="560" y="155" text-anchor="middle">PRs · Issues · Actions · Pages</text><text x="560" y="175" text-anchor="middle" class="edge-label">Copilot · security scanning · …</text>
+
+          <line class="edge" x1="312" y1="90" x2="408" y2="90" marker-end="url(#arrGh1)"/><text x="360" y="82" text-anchor="middle" class="edge-label">push</text>
+          <line class="edge" x1="408" y1="125" x2="312" y2="125" marker-end="url(#arrGh1)"/><text x="360" y="143" text-anchor="middle" class="edge-label">pull/clone</text>
+        </svg>
+        <div class="diagram-caption">Fig 1 — Git is the tool on your computer. GitHub is a website that stores Git repositories online and adds collaboration features around them.</div>
+      </div>
+      <table>
+        <tr><th>Name</th><th>What it is</th><th>Note</th></tr>
+        <tr><td><strong>Git</strong></td><td>The open-source version-control tool</td><td>Created 2005; free; runs locally</td></tr>
+        <tr><td><strong>GitHub</strong></td><td>The biggest hosting + collaboration platform for Git repos</td><td>Owned by Microsoft since 2018; home of most open source</td></tr>
+        <tr><td><strong>GitLab</strong></td><td>Another platform (SaaS or self-managed) with built-in CI/CD and DevOps tools</td><td>Popular where teams want one all-in-one tool</td></tr>
+        <tr><td><strong>Bitbucket</strong></td><td>Atlassian's Git hosting</td><td>Pairs with Jira</td></tr>
+        <tr><td>Gitea / Forgejo / Codeberg</td><td>Lightweight, community-driven, self-hostable alternatives</td><td>For people who want to run their own</td></tr>
+      </table>
+      <div class="callout life">
+        Git is the <strong>camera</strong> (it takes and keeps the pictures); GitHub is a <strong>photo-sharing website</strong> where you upload albums so friends can see, comment on, and add to them.
+      </div>
+    </section>
+
+    <!-- 3 -->
+    <section class="block" id="why-vcs">
+      <h2><span class="num">3</span> Why Version Control?</h2>
+      <table>
+        <tr><th>Without it</th><th>With Git</th></tr>
+        <tr><td>Files called <code>final_v7_REAL.docx</code></td><td>One file, full history</td></tr>
+        <tr><td>"Who changed this line and why?" — nobody knows</td><td><code>git blame</code> and commit messages tell you</td></tr>
+        <tr><td>Two people edit the same file → one overwrites the other</td><td>Git merges both, and flags real conflicts</td></tr>
+        <tr><td>A change breaks everything and nobody remembers the old state</td><td>Go back to any earlier snapshot in seconds</td></tr>
+        <tr><td>Trying a risky idea means copying the whole folder</td><td>Make a branch; throw it away if it fails</td></tr>
+        <tr><td>"It worked yesterday"</td><td>Compare yesterday's version to today's</td></tr>
+      </table>
+      <div class="callout tip">
+        Even if you work alone, use Git: it's your undo button, your diary and your backup in one.
+      </div>
+    </section>
+
+    <!-- 4 -->
+    <section class="block" id="how-git-thinks">
+      <h2><span class="num">4</span> How Git Thinks — Snapshots, Not Edits</h2>
+      <p>
+        Git doesn't store "change lists". Each time you commit, Git takes a <strong>snapshot</strong> of what all your files look like <em>right now</em> (reusing identical files from before to save space) and links it to the previous snapshot.
+        The result is a chain of snapshots — the project's <strong>history</strong>.
+      </p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 190" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrGh2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+          </defs>
+          <rect class="box" x="20" y="50" width="120" height="70" rx="8"/><text x="80" y="76" text-anchor="middle">Commit A</text><text x="80" y="94" text-anchor="middle" class="edge-label">"first version"</text><text x="80" y="110" text-anchor="middle" class="edge-label">id: 30d5030</text>
+          <rect class="box" x="190" y="50" width="120" height="70" rx="8"/><text x="250" y="76" text-anchor="middle">Commit B</text><text x="250" y="94" text-anchor="middle" class="edge-label">"add login"</text><text x="250" y="110" text-anchor="middle" class="edge-label">id: 9e4a7d6</text>
+          <rect class="box" x="360" y="50" width="120" height="70" rx="8"/><text x="420" y="76" text-anchor="middle">Commit C</text><text x="420" y="94" text-anchor="middle" class="edge-label">"fix typo"</text><text x="420" y="110" text-anchor="middle" class="edge-label">id: be94c65</text>
+          <rect class="box-final" x="560" y="50" width="130" height="70" rx="8"/><text x="625" y="76" text-anchor="middle">main → C</text><text x="625" y="94" text-anchor="middle" class="edge-label">a branch is just a</text><text x="625" y="110" text-anchor="middle" class="edge-label">movable label</text>
+          <line class="edge" x1="190" y1="85" x2="142" y2="85" marker-end="url(#arrGh2)"/>
+          <line class="edge" x1="360" y1="85" x2="312" y2="85" marker-end="url(#arrGh2)"/>
+          <line class="edge" x1="558" y1="85" x2="482" y2="85" marker-end="url(#arrGh2)"/>
+          <text x="360" y="160" text-anchor="middle" class="edge-label">each commit remembers its parent (arrows point back in time); the id is a fingerprint of its contents</text>
+        </svg>
+        <div class="diagram-caption">Fig 2 — A repository is a chain of commits. Each commit has a unique fingerprint (hash) and points to its parent. A branch is just a label pointing at one commit.</div>
+      </div>
+      <h3>The words you need</h3>
+      <table>
+        <tr><th>Word</th><th>Meaning</th><th>Picture</th></tr>
+        <tr><td><strong>Repository (repo)</strong></td><td>Your project folder plus its complete hidden history (the <code>.git</code> folder)</td><td>A filing cabinet with every past version</td></tr>
+        <tr><td><strong>Commit</strong></td><td>A saved snapshot + message + author + time + pointer to parent</td><td>A save point in a game</td></tr>
+        <tr><td><strong>Hash (commit id)</strong></td><td>A long fingerprint like <code>9e4a7d6…</code> computed from the content; changes if anything changes</td><td>A tamper-evident seal</td></tr>
+        <tr><td><strong>Branch</strong></td><td>A movable label pointing at a commit; new commits advance it</td><td>A bookmark that moves forward as you read</td></tr>
+        <tr><td><strong>HEAD</strong></td><td>"You are here" — the commit/branch you currently have checked out</td><td>The red dot on a map</td></tr>
+        <tr><td><strong>Working directory</strong></td><td>The actual files you see and edit</td><td>Your desk</td></tr>
+        <tr><td><strong>Staging area (index)</strong></td><td>The "next snapshot" waiting room</td><td>A shopping basket before checkout</td></tr>
+        <tr><td><strong>Remote</strong></td><td>A copy of the repo somewhere else (e.g., on GitHub), usually named <code>origin</code></td><td>The shared cloud album</td></tr>
+      </table>
+      <div class="callout tip">
+        The hash is a content fingerprint: if even one letter in any file (or the message, or the parent) changes, the id changes. That's why Git history is very hard to tamper with silently. (More in <a href="#git-internals">Section 18</a>.)
+      </div>
+    </section>
+
+    <!-- 5 -->
+    <section class="block" id="install-setup">
+      <h2><span class="num">5</span> Install &amp; First-Time Setup</h2>
+      <p>
+        Install Git from <a href="https://git-scm.com/downloads" target="_blank" rel="noopener">git-scm.com</a> (Windows, macOS, Linux; or your package manager). As of 29 Oct 2026 the latest release listed there is <strong>Git 2.56.0</strong> (28 Sep 2026). Check yours with <code>git --version</code>.
+      </p>
+      <h3>Tell Git who you are (once)</h3>
+      <pre><code>git config --global user.name  "Ada Lovelace"
+git config --global user.email "ada@example.com"
+git config --global init.defaultBranch main     # new repos start on a branch called main
+git config --global core.editor "code --wait"   # optional: use VS Code for commit messages
+git config --global pull.rebase true            # optional: tidy history on pull (see Section 16)</code></pre>
+      <table>
+        <tr><th>Setting level</th><th>Command flag</th><th>Applies to</th><th>Stored in</th></tr>
+        <tr><td>System</td><td><code>--system</code></td><td>Everyone on the computer</td><td>The Git install folder</td></tr>
+        <tr><td>Global (you)</td><td><code>--global</code></td><td>All your repos</td><td><code>~/.gitconfig</code></td></tr>
+        <tr><td>Local (this repo)</td><td>(none) / <code>--local</code></td><td>Just this repo</td><td><code>.git/config</code></td></tr>
+      </table>
+      <div class="callout warn">
+        Use the <strong>same email</strong> you registered on GitHub (or GitHub's private "noreply" address) so your commits link to your profile. Your name and email are written into every commit permanently, so don't use anything you wouldn't want public.
+      </div>
+      <h3>Connecting to GitHub</h3>
+      <table>
+        <tr><th>Method</th><th>How it works</th><th>Advice</th></tr>
+        <tr><td><strong>HTTPS + credential helper / GitHub CLI</strong></td><td>You log in once (<code>gh auth login</code>) and Git stores a token safely</td><td>Easiest for beginners</td></tr>
+        <tr><td><strong>SSH keys</strong></td><td>You make a key pair; GitHub knows your public key; no passwords afterwards</td><td>Great for daily use; protect the key with a passphrase</td></tr>
+        <tr><td>Personal access tokens</td><td>A password-like token for scripts</td><td>Prefer <em>fine-grained</em> tokens with minimal permissions and an expiry</td></tr>
+      </table>
+      <pre><code>ssh-keygen -t ed25519 -C "ada@example.com"   # make a key (accept the default path, add a passphrase)
+# then add the contents of ~/.ssh/id_ed25519.pub to GitHub → Settings → SSH and GPG keys
+ssh -T git@github.com                        # test: should greet you by username</code></pre>
+    </section>
+
+    <!-- 6 -->
+    <section class="block" id="history-git">
+      <h2><span class="num">6</span> A Short History &amp; Timeline</h2>
+      <table>
+        <tr><th>When</th><th>What happened</th></tr>
+        <tr><td>1970s–2000s</td><td>Early version-control systems (SCCS, RCS, CVS, then Subversion) keep history on a central server; branching and merging are painful.</td></tr>
+        <tr><td>2005</td><td>The Linux kernel loses access to its proprietary tool (BitKeeper). <strong>Linus Torvalds</strong> writes Git in a few weeks, aiming for speed, safe history and easy branching. The first version is released in April 2005; Mercurial appears around the same time.</td></tr>
+        <tr><td>2008</td><td><strong>GitHub</strong> launches, making hosting, forking and pull requests easy; Git spreads across open source.</td></tr>
+        <tr><td>2010s</td><td>Git becomes the default everywhere; pull-request workflows, CI services and "social coding" become normal. GitLab and Bitbucket grow.</td></tr>
+        <tr><td>2018</td><td>Microsoft completes its acquisition of GitHub. GitHub Actions (CI/CD built into GitHub) arrives in 2018–2019.</td></tr>
+        <tr><td>2020</td><td>The industry moves new repos' default branch name from <code>master</code> to <code>main</code>; Git adds <code>switch</code>/<code>restore</code> (2019) to make everyday commands clearer.</td></tr>
+        <tr><td>2021–2024</td><td>Copilot (AI pair-programmer) launches; SSH commit signing, rulesets and merge queues arrive; supply-chain security becomes a major theme; Git gains better large-repo tooling (partial clone, sparse checkout, scalar, maintenance).</td></tr>
+        <tr><td>2025–2026</td><td>AI coding agents open pull requests directly; Copilot CLI reaches general availability (Feb 2026); GitHub Actions gets <strong>workflow lockfiles</strong> (generally available 28 Oct 2026); Git reaches 2.56 (Sept 2026). <strong>Git 3.0</strong> is planned (new defaults: SHA-256 hashes, reftable ref storage, <code>main</code>, Rust required) but has no release date yet.</td></tr>
+      </table>
+      <div class="callout tip">
+        Git's core ideas haven't changed since 2005 — snapshots, hashes, branches. What changes is the world around it: bigger repos, stronger security, and now AI helpers that propose changes you still have to review.
+      </div>
+    </section>
+
+    <div class="part-divider"><h2>Part B — Everyday Git</h2></div>
+
+    <!-- 7 -->
+    <section class="block" id="first-repo">
+      <h2><span class="num">7</span> Your First Repository</h2>
+      <p>Five commands cover most of a beginner's day. The folder is your desk; Git watches it.</p>
+      <table>
+        <tr><th>Command</th><th>What it does</th><th>Picture</th></tr>
+        <tr><td><code>git init</code></td><td>Start tracking this folder (creates hidden <code>.git</code>)</td><td>Open a new notebook</td></tr>
+        <tr><td><code>git status</code></td><td>Show what changed and what's staged</td><td>"What's on my desk?"</td></tr>
+        <tr><td><code>git add FILE</code></td><td>Put changes in the staging basket</td><td>Put an item in the basket</td></tr>
+        <tr><td><code>git commit -m "message"</code></td><td>Save the basket as a snapshot</td><td>Check out and take a photo</td></tr>
+        <tr><td><code>git log --oneline</code></td><td>List past commits</td><td>Flip through the photo album</td></tr>
+      </table>
+      <pre><code>mkdir my-project &amp;&amp; cd my-project
+git init -b main
+echo "print('hello')" &gt; app.py
+git status                      # app.py is "untracked" (Git sees it but isn't saving it yet)
+git add app.py
+git commit -m "Add first version of app"
+git log --oneline</code></pre>
+      <div class="callout life">
+        Taking a family photo: first arrange everyone (edit files), then decide who's in the shot (<code>add</code>), then press the shutter with a caption (<code>commit -m</code>). The album (<code>log</code>) keeps every photo in order.
+      </div>
+      <p>You'll run a full version of this, with real output, in <a href="#code-first-repo">Level 0</a>.</p>
+    </section>
+
+    <!-- 8 -->
+    <section class="block" id="three-areas-workflow">
+      <h2><span class="num">8</span> The Three Areas — Desk, Basket, Album</h2>
+      <p>This picture explains 80% of Git:</p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrGh3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+            <marker id="arrGh3b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent-3)"/></marker>
+          </defs>
+          <rect class="box" x="10" y="40" width="190" height="90" rx="10"/><text x="105" y="70" text-anchor="middle">Working directory</text><text x="105" y="90" text-anchor="middle" class="edge-label">your files — you edit here</text><text x="105" y="110" text-anchor="middle" class="edge-label">🖥️ the desk</text>
+          <rect class="box-hl" x="265" y="40" width="190" height="90" rx="10"/><text x="360" y="70" text-anchor="middle">Staging area</text><text x="360" y="90" text-anchor="middle" class="edge-label">"what goes in the next snapshot"</text><text x="360" y="110" text-anchor="middle" class="edge-label">🧺 the basket</text>
+          <rect class="box-final" x="520" y="40" width="190" height="90" rx="10"/><text x="615" y="70" text-anchor="middle">Repository</text><text x="615" y="90" text-anchor="middle" class="edge-label">saved commits — permanent history</text><text x="615" y="110" text-anchor="middle" class="edge-label">📚 the album</text>
+          <line class="edge" x1="200" y1="70" x2="263" y2="70" marker-end="url(#arrGh3)"/><text x="232" y="62" text-anchor="middle" class="edge-label">add</text>
+          <line class="edge" x1="455" y1="70" x2="518" y2="70" marker-end="url(#arrGh3)"/><text x="487" y="62" text-anchor="middle" class="edge-label">commit</text>
+          <path class="loop" d="M520,115 Q360,190 202,115" marker-end="url(#arrGh3b)"/><text x="360" y="195" text-anchor="middle" class="edge-label">checkout / switch / restore (bring files back to the desk)</text>
+          <line class="edge" x1="265" y1="120" x2="202" y2="120" marker-end="url(#arrGh3b)"/><text x="232" y="140" text-anchor="middle" class="edge-label">restore --staged</text>
+          <text x="360" y="225" text-anchor="middle">Edit on the desk → pick what to save (basket) → press commit (album).</text>
+        </svg>
+        <div class="diagram-caption">Fig 3 — Three areas: edit in the working directory, choose what belongs in the next snapshot in the staging area, then commit to the repository.</div>
+      </div>
+      <table>
+        <tr><th>File state</th><th><code>git status</code> says</th><th>Meaning</th></tr>
+        <tr><td>Untracked</td><td>"Untracked files"</td><td>New file Git hasn't been told about</td></tr>
+        <tr><td>Modified</td><td>"Changes not staged for commit"</td><td>Edited since the last commit; not in the basket</td></tr>
+        <tr><td>Staged</td><td>"Changes to be committed"</td><td>In the basket, ready for the next commit</td></tr>
+        <tr><td>Committed</td><td>"nothing to commit, working tree clean"</td><td>Safely stored in history</td></tr>
+        <tr><td>Ignored</td><td>(not shown)</td><td>Matched by <code>.gitignore</code>; Git pretends it isn't there</td></tr>
+      </table>
+      <div class="callout tip">
+        Why a basket at all? It lets you make <strong>tidy commits</strong>: you edited five things, but you can save them as two separate, meaningful snapshots (<code>git add -p</code> even lets you stage <em>part</em> of a file).
+      </div>
+    </section>
+
+    <!-- 9 -->
+    <section class="block" id="good-commits">
+      <h2><span class="num">9</span> Good Commits &amp; <code>.gitignore</code></h2>
+      <h3>What makes a good commit</h3>
+      <table>
+        <tr><th>Habit</th><th>Why</th></tr>
+        <tr><td>One logical change per commit ("atomic")</td><td>Easy to review, undo and understand later</td></tr>
+        <tr><td>Commit often, in small steps</td><td>More save points; smaller risk</td></tr>
+        <tr><td>Write the message for a future reader</td><td>"Why" matters more than "what" (the diff already shows what)</td></tr>
+        <tr><td>Run the tests before committing</td><td>Don't save broken snapshots on shared branches</td></tr>
+        <tr><td>Never commit secrets or giant generated files</td><td>History is forever (see <a href="#git-security">Section 21</a>)</td></tr>
+      </table>
+      <h3>A good message</h3>
+      <pre><code>Short summary in 50 characters or fewer (imperative: "Fix", "Add", not "Fixed")
+
+A blank line, then a few lines explaining WHY this change was needed and
+anything surprising. Mention the issue it closes.
+
+Fixes #123</code></pre>
+      <table>
+        <tr><th>Weak</th><th>Better</th></tr>
+        <tr><td>"fix stuff"</td><td>"Fix crash when the cart is empty"</td></tr>
+        <tr><td>"updates"</td><td>"Add retry with backoff to payment calls"</td></tr>
+        <tr><td>"wip wip wip"</td><td>(squash these before sharing — see <a href="#rebase-vs-merge">Section 16</a>)</td></tr>
+      </table>
+      <p>
+        Some teams use <strong>Conventional Commits</strong> — a light format like <code>feat: add dark mode</code>, <code>fix: handle empty cart</code>, <code>docs: update README</code> — so tools can build changelogs and version numbers automatically.
+      </p>
+      <h3><code>.gitignore</code> — "don't track these"</h3>
+      <pre><code># .gitignore
+*.log
+node_modules/
+.env
+__pycache__/
+dist/</code></pre>
+      <table>
+        <tr><th>Ignore</th><th>Because</th></tr>
+        <tr><td>Secrets (<code>.env</code>, keys)</td><td>Never publish passwords</td></tr>
+        <tr><td>Dependencies (<code>node_modules/</code>, <code>venv/</code>)</td><td>Can be re-downloaded; huge</td></tr>
+        <tr><td>Build output (<code>dist/</code>, <code>*.class</code>)</td><td>Can be rebuilt</td></tr>
+        <tr><td>Editor/OS files (<code>.DS_Store</code>, <code>.idea/</code>)</td><td>Personal clutter</td></tr>
+        <tr><td>Logs and temp files</td><td>Noise</td></tr>
+      </table>
+      <div class="callout warn">
+        <code>.gitignore</code> only affects files Git <em>isn't already tracking</em>. If you committed a secret earlier, ignoring it later doesn't remove it from history — you must rotate the secret (<a href="#git-security">Section 21</a>). GitHub publishes ready-made <code>.gitignore</code> templates per language.
+      </div>
+    </section>
+
+    <!-- 10 -->
+    <section class="block" id="branching">
+      <h2><span class="num">10</span> Branches — Parallel Universes</h2>
+      <p>
+        A <strong>branch</strong> is an independent line of development. Because a branch is just a label on a commit (Fig 2), creating one is instant and free. The usual rule: <strong><code>main</code> always works; do new work on a branch.</strong>
+      </p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 230" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrGh4" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+          </defs>
+          <text x="20" y="62" class="edge-label">main</text>
+          <circle cx="90" cy="60" r="12" fill="var(--card)" stroke="var(--accent)" stroke-width="3"/><text x="90" y="64" text-anchor="middle" class="edge-label">A</text>
+          <circle cx="190" cy="60" r="12" fill="var(--card)" stroke="var(--accent)" stroke-width="3"/><text x="190" y="64" text-anchor="middle" class="edge-label">B</text>
+          <circle cx="470" cy="60" r="12" fill="var(--card)" stroke="var(--accent)" stroke-width="3"/><text x="470" y="64" text-anchor="middle" class="edge-label">E</text>
+          <circle cx="600" cy="60" r="14" fill="var(--card)" stroke="var(--accent-4)" stroke-width="4"/><text x="600" y="64" text-anchor="middle" class="edge-label">M</text>
+          <line class="edge" x1="102" y1="60" x2="176" y2="60" marker-end="url(#arrGh4)"/><line class="edge" x1="202" y1="60" x2="456" y2="60" marker-end="url(#arrGh4)"/><line class="edge" x1="482" y1="60" x2="584" y2="60" marker-end="url(#arrGh4)"/>
+          <text x="20" y="152" class="edge-label">feature/login</text>
+          <circle cx="290" cy="150" r="12" fill="var(--card)" stroke="var(--accent-3)" stroke-width="3"/><text x="290" y="154" text-anchor="middle" class="edge-label">C</text>
+          <circle cx="390" cy="150" r="12" fill="var(--card)" stroke="var(--accent-3)" stroke-width="3"/><text x="390" y="154" text-anchor="middle" class="edge-label">D</text>
+          <line class="edge" x1="196" y1="70" x2="282" y2="140" marker-end="url(#arrGh4)"/>
+          <line class="edge" x1="302" y1="150" x2="376" y2="150" marker-end="url(#arrGh4)"/>
+          <line class="edge" x1="402" y1="144" x2="592" y2="72" marker-end="url(#arrGh4)"/>
+          <text x="600" y="95" text-anchor="middle" class="edge-label">merge commit M</text>
+          <text x="360" y="205" text-anchor="middle">At B you branch off; main moves on (E) while you build the feature (C, D); finally you merge it back (M).</text>
+        </svg>
+        <div class="diagram-caption">Fig 4 — Branching and merging. Work on the feature never disturbs <code>main</code> until you choose to merge.</div>
+      </div>
+      <table>
+        <tr><th>Command</th><th>Does</th></tr>
+        <tr><td><code>git branch</code></td><td>List branches (the current one has a *)</td></tr>
+        <tr><td><code>git switch -c feature/login</code></td><td>Create a branch and move onto it</td></tr>
+        <tr><td><code>git switch main</code></td><td>Move to another branch</td></tr>
+        <tr><td><code>git merge feature/login</code></td><td>Bring that branch's work into the current one</td></tr>
+        <tr><td><code>git branch -d feature/login</code></td><td>Delete a merged branch (<code>-D</code> to force)</td></tr>
+      </table>
+      <p>(Older tutorials use <code>git checkout</code> for both switching and restoring; <code>switch</code> and <code>restore</code> were added to split those jobs. <code>checkout</code> still works and is not being removed.)</p>
+      <h3>Two kinds of merge</h3>
+      <table>
+        <tr><th>Type</th><th>When</th><th>Result</th></tr>
+        <tr><td><strong>Fast-forward</strong></td><td><code>main</code> hasn't moved since you branched</td><td>Git just slides the <code>main</code> label forward — no merge commit, straight line</td></tr>
+        <tr><td><strong>Three-way (merge commit)</strong></td><td>Both branches have new commits</td><td>Git creates a new commit with <em>two parents</em> that joins them (<code>--no-ff</code> forces this even when a fast-forward is possible, keeping the "feature happened here" bubble)</td></tr>
+      </table>
+      <div class="callout life">
+        You photocopy a chapter (branch), scribble improvements, and later staple your improved pages back into the book. If the book changed meanwhile, Git helps blend both sets of edits.
+      </div>
+    </section>
+
+    <!-- 11 -->
+    <section class="block" id="merging-conflicts">
+      <h2><span class="num">11</span> Merging &amp; Conflicts</h2>
+      <p>
+        Most merges just work. A <strong>conflict</strong> happens when two branches changed the <em>same lines</em> in different ways and Git can't decide which to keep. It stops and asks you.
+      </p>
+      <pre><code>$ git merge other
+Auto-merging c.txt
+CONFLICT (add/add): Merge conflict in c.txt
+Automatic merge failed; fix conflicts and then commit the result.
+
+$ cat c.txt
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+A
+=======
+B
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; other</code></pre>
+      <table>
+        <tr><th>Marker</th><th>Meaning</th></tr>
+        <tr><td><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code></td><td>Start: your current branch's version follows</td></tr>
+        <tr><td><code>=======</code></td><td>Divider</td></tr>
+        <tr><td><code>&gt;&gt;&gt;&gt;&gt;&gt;&gt; other</code></td><td>End: the incoming branch's version is above this line</td></tr>
+      </table>
+      <h3>How to resolve</h3>
+      <table>
+        <tr><th>Step</th><th>Do this</th></tr>
+        <tr><td>1</td><td>Open the file; decide the correct final text (keep A, keep B, or combine) and <strong>delete all the marker lines</strong></td></tr>
+        <tr><td>2</td><td><code>git add c.txt</code> — tells Git "this one is resolved"</td></tr>
+        <tr><td>3</td><td><code>git commit</code> (or <code>git merge --continue</code>) — finishes the merge</td></tr>
+        <tr><td>Panic button</td><td><code>git merge --abort</code> — go back to before the merge, nothing lost</td></tr>
+      </table>
+      <div class="callout life">
+        Two friends both rewrote the same sentence of the shared story. Git won't guess; it shows both versions side by side so you can pick the best (or blend them).
+      </div>
+      <div class="callout tip">
+        Fewer conflicts: keep branches short-lived, pull/rebase from <code>main</code> often, make small commits, and talk to teammates before big refactors of the same file. Editors like VS Code show conflicts with "Accept current / incoming / both" buttons.
+      </div>
+    </section>
+
+    <!-- 12 -->
+    <section class="block" id="remotes">
+      <h2><span class="num">12</span> Remotes — Clone, Fetch, Pull, Push</h2>
+      <p>
+        A <strong>remote</strong> is another copy of the repository, usually on GitHub. By convention the main one is called <code>origin</code>. Your computer has the <em>whole</em> history locally; these commands synchronise it with the remote.
+      </p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 260" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrGh5" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+            <marker id="arrGh5b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent-3)"/></marker>
+          </defs>
+          <rect class="box-final" x="480" y="20" width="230" height="110" rx="10"/><text x="595" y="48" text-anchor="middle">🐙 Remote: origin</text><text x="595" y="68" text-anchor="middle" class="edge-label">(GitHub) — the shared copy</text><text x="595" y="100" text-anchor="middle" class="edge-label">origin/main</text>
+          <rect x="10" y="20" width="440" height="220" rx="12" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="6 4"/>
+          <text x="230" y="42" text-anchor="middle" class="phase-label">Your computer</text>
+          <rect class="box-hl" x="30" y="60" width="190" height="60" rx="8"/><text x="125" y="86" text-anchor="middle">origin/main</text><text x="125" y="104" text-anchor="middle" class="edge-label">your last-seen copy of the remote</text>
+          <rect class="box" x="240" y="60" width="190" height="60" rx="8"/><text x="335" y="86" text-anchor="middle">main (local branch)</text><text x="335" y="104" text-anchor="middle" class="edge-label">where you commit</text>
+          <rect class="box" x="30" y="150" width="400" height="70" rx="8"/><text x="230" y="178" text-anchor="middle">Working directory (your files)</text><text x="230" y="198" text-anchor="middle" class="edge-label">pull = fetch + merge/rebase into this</text>
+          <line class="edge" x1="478" y1="70" x2="222" y2="80" marker-end="url(#arrGh5)"/><text x="350" y="46" text-anchor="middle" class="edge-label">fetch (download, change nothing)</text>
+          <line class="edge" x1="432" y1="100" x2="478" y2="110" marker-end="url(#arrGh5b)"/><text x="470" y="148" text-anchor="middle" class="edge-label">push</text>
+          <line class="edge" x1="222" y1="95" x2="238" y2="95" marker-end="url(#arrGh5)"/>
+        </svg>
+        <div class="diagram-caption">Fig 5 — <code>fetch</code> downloads new commits into <code>origin/main</code> without touching your work; <code>pull</code> = fetch + integrate; <code>push</code> uploads your commits.</div>
+      </div>
+      <table>
+        <tr><th>Command</th><th>What it does</th><th>Safe?</th></tr>
+        <tr><td><code>git clone URL</code></td><td>Copy a whole repo (with history) to your computer; sets up <code>origin</code></td><td>✔ Always</td></tr>
+        <tr><td><code>git remote -v</code></td><td>Show remote names and addresses</td><td>✔</td></tr>
+        <tr><td><code>git fetch</code></td><td>Download new commits; update <code>origin/*</code>; <strong>don't change your files</strong></td><td>✔ Always safe — look before you leap</td></tr>
+        <tr><td><code>git pull</code></td><td>fetch + merge (or rebase) into your branch</td><td>Usually fine; may cause a merge/conflict</td></tr>
+        <tr><td><code>git push</code></td><td>Upload your commits to the remote branch</td><td>Rejected if the remote has work you lack</td></tr>
+        <tr><td><code>git push -u origin my-branch</code></td><td>First push of a new branch; <code>-u</code> remembers the pairing</td><td>✔</td></tr>
+        <tr><td><code>git push --force-with-lease</code></td><td>Overwrite remote history, but only if nobody else has pushed since you looked</td><td>⚠ Only on your own branches</td></tr>
+      </table>
+      <div class="callout warn">
+        When <code>git push</code> says <em>"rejected … fetch first"</em>, it isn't an error to fear: it's Git protecting your teammate's work. <code>git pull --rebase</code> (or merge), then push again. You'll see this happen for real in <a href="#code-remotes">Level 4</a>. Avoid plain <code>--force</code>; if you must, use <code>--force-with-lease</code> and never on shared branches like <code>main</code>.
+      </div>
+      <div class="callout life">
+        Two people editing a shared cloud notebook, each with their own paper copy: <em>fetch</em> = peek at what changed in the cloud; <em>pull</em> = copy the changes onto your paper; <em>push</em> = upload your changes.
+      </div>
+    </section>
+
+    <!-- 13 -->
+    <section class="block" id="undoing">
+      <h2><span class="num">13</span> Undoing Things Safely</h2>
+      <p>The best thing about Git is that nearly any mistake can be undone — if you pick the right tool. Ask: <em>"What do I want to undo, and has it been shared?"</em></p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 230" xmlns="http://www.w3.org/2000/svg">
+          <rect class="box" x="10" y="30" width="165" height="100" rx="8"/><text x="92" y="56" text-anchor="middle">Edited a file,</text><text x="92" y="74" text-anchor="middle">not saved yet</text><text x="92" y="104" text-anchor="middle" class="edge-label">git restore FILE</text>
+          <rect class="box" x="190" y="30" width="165" height="100" rx="8"/><text x="272" y="56" text-anchor="middle">Staged by mistake</text><text x="272" y="104" text-anchor="middle" class="edge-label">git restore --staged FILE</text>
+          <rect class="box-hl" x="370" y="30" width="165" height="100" rx="8"/><text x="452" y="56" text-anchor="middle">Last commit has</text><text x="452" y="74" text-anchor="middle">a typo / forgot a file</text><text x="452" y="104" text-anchor="middle" class="edge-label">git commit --amend</text>
+          <rect class="box-hl" x="550" y="30" width="160" height="100" rx="8"/><text x="630" y="56" text-anchor="middle">Local commits you</text><text x="630" y="74" text-anchor="middle">want to drop</text><text x="630" y="104" text-anchor="middle" class="edge-label">git reset (soft/mixed/hard)</text>
+          <rect class="box-final" x="10" y="150" width="340" height="70" rx="8"/><text x="180" y="176" text-anchor="middle">Commit already SHARED (pushed)</text><text x="180" y="200" text-anchor="middle" class="edge-label">git revert COMMIT — adds a new "undo" commit; history stays honest</text>
+          <rect class="box-final" x="370" y="150" width="340" height="70" rx="8"/><text x="540" y="176" text-anchor="middle">"I lost commits!"</text><text x="540" y="200" text-anchor="middle" class="edge-label">git reflog → find the id → git reset --hard / switch -c to rescue</text>
+        </svg>
+        <div class="diagram-caption">Fig 6 — Pick the undo by situation: unsaved changes → <code>restore</code>; local commits → <code>reset</code>/<code>amend</code>; shared commits → <code>revert</code>; lost work → <code>reflog</code>.</div>
+      </div>
+      <table>
+        <tr><th>Command</th><th>Effect</th><th>Danger</th></tr>
+        <tr><td><code>git restore FILE</code></td><td>Throw away unsaved edits to FILE (back to last commit)</td><td>⚠ The edits are gone (they were never saved)</td></tr>
+        <tr><td><code>git restore --staged FILE</code></td><td>Take FILE out of the basket; keep your edits</td><td>None</td></tr>
+        <tr><td><code>git commit --amend</code></td><td>Replace the last commit (fix message, add forgotten file)</td><td>Rewrites that commit — don't amend after pushing</td></tr>
+        <tr><td><code>git reset --soft HEAD~1</code></td><td>Un-commit; keep changes <em>staged</em></td><td>Safe</td></tr>
+        <tr><td><code>git reset HEAD~1</code> (mixed)</td><td>Un-commit; keep changes in your files, unstaged</td><td>Safe</td></tr>
+        <tr><td><code>git reset --hard HEAD~1</code></td><td>Un-commit <em>and</em> delete the changes</td><td>⚠ Destroys uncommitted work (commits can still be rescued via reflog)</td></tr>
+        <tr><td><code>git revert COMMIT</code></td><td>Make a <em>new</em> commit that reverses an old one</td><td>Safe for shared history</td></tr>
+        <tr><td><code>git reflog</code></td><td>Git's private diary of where HEAD has been (kept for a while, about 90 days by default)</td><td>It's the rescue tool</td></tr>
+      </table>
+      <div class="callout life">
+        <code>restore</code> = erase a pencil mark on your page. <code>reset</code> = tear out the last pages of <em>your own</em> notebook. <code>revert</code> = add a new page saying "ignore page 12". <code>reflog</code> = the CCTV footage that shows where you put things.
+      </div>
+      <div class="callout tip">
+        Golden rule: <strong>rewrite only what you haven't shared.</strong> Once teammates have pulled a commit, undo it with <code>revert</code>, not <code>reset</code>. Real runs of all of these are in <a href="#code-first-repo">Levels 0</a> and <a href="#code-rescue">2</a>.
+      </div>
+    </section>
+
+    <!-- 14 -->
+    <section class="block" id="inspecting-history">
+      <h2><span class="num">14</span> Looking at History — Log, Diff, Blame, Bisect</h2>
+      <table>
+        <tr><th>Question</th><th>Command</th></tr>
+        <tr><td>What happened recently?</td><td><code>git log --oneline --graph --decorate</code></td></tr>
+        <tr><td>What did I change (unstaged)?</td><td><code>git diff</code></td></tr>
+        <tr><td>What's staged?</td><td><code>git diff --staged</code></td></tr>
+        <tr><td>What changed between two points?</td><td><code>git diff main..feature</code> or <code>git diff HEAD~2 HEAD --stat</code></td></tr>
+        <tr><td>What was in that commit?</td><td><code>git show 9e4a7d6</code></td></tr>
+        <tr><td>Who last changed each line?</td><td><code>git blame FILE</code> (or the "Blame" button on GitHub)</td></tr>
+        <tr><td>Which commit added or removed the word X?</td><td><code>git log -S"X" --oneline</code></td></tr>
+        <tr><td>History of one file?</td><td><code>git log --follow -p FILE</code></td></tr>
+        <tr><td>Who contributed how much?</td><td><code>git shortlog -sn</code></td></tr>
+        <tr><td><strong>Which commit broke it?</strong></td><td><code>git bisect</code> — binary search through history</td></tr>
+      </table>
+      <h3>git bisect — find the culprit fast</h3>
+      <p>
+        Say it worked 100 commits ago and is broken now. Instead of checking all 100, <code>bisect</code> checks the middle, you say good or bad, it halves the range again… finding the bad commit in about 7 steps (log₂ 100). With a test script it does it automatically (<a href="#code-rebase-bisect">Level 3</a>).
+      </p>
+      <div class="callout life">
+        Finding the page where a book's story first goes wrong: open the middle, decide "still fine" or "already wrong", and keep halving until you point at the exact page.
+      </div>
+    </section>
+
+    <div class="part-divider"><h2>Part C — Going Deeper</h2></div>
+
+    <!-- 15 -->
+    <section class="block" id="stash-cherry-worktree">
+      <h2><span class="num">15</span> Stash, Cherry-Pick &amp; Worktrees</h2>
+      <h3>Stash — "hold this for a minute"</h3>
+      <p>You're mid-edit and an urgent bug arrives. You're not ready to commit. <code>git stash</code> tucks your unfinished changes into a drawer and gives you a clean desk.</p>
+      <table>
+        <tr><th>Command</th><th>Does</th></tr>
+        <tr><td><code>git stash</code> (or <code>git stash push -m "wip search"</code>)</td><td>Save uncommitted changes and clean the working directory</td></tr>
+        <tr><td><code>git stash -u</code></td><td>Also stash new (untracked) files</td></tr>
+        <tr><td><code>git stash list</code></td><td>See the drawer</td></tr>
+        <tr><td><code>git stash pop</code></td><td>Bring back the latest stash and remove it from the drawer</td></tr>
+        <tr><td><code>git stash apply</code></td><td>Bring it back but keep a copy in the drawer</td></tr>
+        <tr><td><code>git stash drop</code></td><td>Throw a stash away</td></tr>
+      </table>
+      <div class="callout life">Sweeping your half-finished homework into a drawer so you can answer the door, then pulling it out exactly as it was.</div>
+      <h3>Cherry-pick — "copy just that one commit"</h3>
+      <p><code>git cherry-pick COMMIT</code> copies a single commit from anywhere onto your current branch. Typical use: a bug fix made on <code>main</code> must also go to the <code>release-1.2</code> branch.</p>
+      <div class="callout life">Photocopying one useful page out of another notebook and pasting it into yours, without copying the whole notebook.</div>
+      <div class="callout warn">Cherry-picked commits get <em>new ids</em> (they are copies), so overusing it can create duplicate-looking history and confusing conflicts later.</div>
+      <h3>Worktrees — two branches open at once</h3>
+      <p>
+        <code>git worktree add ../my-hotfix hotfix-branch</code> checks out another branch into a <em>second folder</em> sharing the same history. You can fix the hotfix in one window while your feature stays untouched in another — no stashing, no switching. Remove it with <code>git worktree remove ../my-hotfix</code>. Worktrees are also handy for letting AI coding agents work on separate branches in parallel without stepping on each other.
+      </p>
+      <div class="callout life">Two desks in the same office sharing one filing cabinet.</div>
+    </section>
+
+    <!-- 16 -->
+    <section class="block" id="rebase-vs-merge">
+      <h2><span class="num">16</span> Rebase vs Merge — Two Ways to Combine Work</h2>
+      <p>Both bring one branch's work into another. They differ in what history looks like afterwards.</p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrGh6" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+          </defs>
+          <text x="10" y="18" class="phase-label">Before: feature branched off, main moved on</text>
+          <circle cx="60" cy="50" r="11" fill="var(--card)" stroke="var(--accent)" stroke-width="3"/><circle cx="130" cy="50" r="11" fill="var(--card)" stroke="var(--accent)" stroke-width="3"/><circle cx="200" cy="50" r="11" fill="var(--card)" stroke="var(--accent)" stroke-width="3"/>
+          <line class="edge" x1="71" y1="50" x2="119" y2="50"/><line class="edge" x1="141" y1="50" x2="189" y2="50"/>
+          <text x="226" y="54" class="edge-label">main (C)</text>
+          <circle cx="170" cy="100" r="11" fill="var(--card)" stroke="var(--accent-3)" stroke-width="3"/><circle cx="240" cy="100" r="11" fill="var(--card)" stroke="var(--accent-3)" stroke-width="3"/>
+          <line class="edge" x1="135" y1="60" x2="162" y2="92"/><line class="edge" x1="181" y1="100" x2="229" y2="100"/>
+          <text x="266" y="104" class="edge-label">feature (F1, F2)</text>
+
+          <text x="10" y="150" class="phase-label">Merge — keeps the real story</text>
+          <circle cx="50" cy="185" r="10" fill="var(--card)" stroke="var(--accent)" stroke-width="3"/><circle cx="110" cy="185" r="10" fill="var(--card)" stroke="var(--accent)" stroke-width="3"/><circle cx="170" cy="185" r="10" fill="var(--card)" stroke="var(--accent)" stroke-width="3"/><circle cx="290" cy="185" r="12" fill="var(--card)" stroke="var(--accent-4)" stroke-width="4"/>
+          <line class="edge" x1="60" y1="185" x2="100" y2="185"/><line class="edge" x1="120" y1="185" x2="160" y2="185"/><line class="edge" x1="180" y1="185" x2="278" y2="185"/>
+          <circle cx="150" cy="235" r="10" fill="var(--card)" stroke="var(--accent-3)" stroke-width="3"/><circle cx="215" cy="235" r="10" fill="var(--card)" stroke="var(--accent-3)" stroke-width="3"/>
+          <line class="edge" x1="115" y1="193" x2="142" y2="228"/><line class="edge" x1="160" y1="235" x2="205" y2="235"/><line class="edge" x1="225" y1="232" x2="281" y2="195"/>
+          <text x="320" y="190" class="edge-label">a merge commit joins the two lines</text>
+          <text x="320" y="238" class="edge-label">history shows exactly when/how work diverged</text>
+
+          <text x="400" y="150" class="phase-label">Rebase — a tidy straight line</text>
+          <circle cx="440" cy="185" r="10" fill="var(--card)" stroke="var(--accent)" stroke-width="3"/><circle cx="500" cy="185" r="10" fill="var(--card)" stroke="var(--accent)" stroke-width="3"/><circle cx="560" cy="185" r="10" fill="var(--card)" stroke="var(--accent)" stroke-width="3"/>
+          <circle cx="620" cy="185" r="10" fill="var(--card)" stroke="var(--accent-3)" stroke-width="3"/><circle cx="680" cy="185" r="10" fill="var(--card)" stroke="var(--accent-3)" stroke-width="3"/>
+          <line class="edge" x1="450" y1="185" x2="490" y2="185"/><line class="edge" x1="510" y1="185" x2="550" y2="185"/><line class="edge" x1="570" y1="185" x2="610" y2="185"/><line class="edge" x1="630" y1="185" x2="670" y2="185"/>
+          <text x="650" y="215" text-anchor="middle" class="edge-label">F1′, F2′ = copies replayed on top of C</text>
+          <text x="560" y="250" text-anchor="middle" class="edge-label">no merge commit; linear history; F commits get NEW ids</text>
+          <text x="360" y="285" text-anchor="middle">Merge records what happened. Rebase rewrites it to look as if you'd started from the latest main.</text>
+        </svg>
+        <div class="diagram-caption">Fig 7 — Merge adds a joining commit and preserves history; rebase replays your commits on top of the target, producing a straight line with new commit ids.</div>
+      </div>
+      <table>
+        <tr><th></th><th>Merge</th><th>Rebase</th></tr>
+        <tr><td>History</td><td>Branching shape preserved</td><td>Linear</td></tr>
+        <tr><td>Commit ids</td><td>Unchanged</td><td>Replayed commits get new ids</td></tr>
+        <tr><td>Safe on shared branches?</td><td>Yes</td><td><strong>No</strong> — never rebase commits others have already pulled</td></tr>
+        <tr><td>Conflicts</td><td>Resolve once</td><td>May resolve per replayed commit</td></tr>
+        <tr><td>Best for</td><td>Bringing finished branches into <code>main</code>; keeping an honest record</td><td>Updating <em>your own</em> feature branch with the latest <code>main</code>; cleaning up before a PR</td></tr>
+      </table>
+      <div class="callout warn">
+        <strong>The golden rule of rebase:</strong> only rebase commits that exist only on your computer (or your own personal branch). Rewriting commits others already built on forces them into messy repairs.
+      </div>
+      <h3>Interactive rebase — tidy before you share</h3>
+      <p>
+        <code>git rebase -i HEAD~4</code> opens a list of your last 4 commits. Change the word at the start of a line to rearrange or clean up:
+      </p>
+      <table>
+        <tr><th>Word</th><th>Does</th></tr>
+        <tr><td><code>pick</code></td><td>Keep the commit as is</td></tr>
+        <tr><td><code>reword</code></td><td>Keep the changes, edit the message</td></tr>
+        <tr><td><code>squash</code> / <code>fixup</code></td><td>Melt this commit into the previous one (squash lets you edit the combined message; fixup discards this message)</td></tr>
+        <tr><td><code>drop</code></td><td>Delete the commit</td></tr>
+      </table>
+      <div class="callout life">Cleaning up a messy draft before handing in the essay: merge the three "typo fix" scribbles into the paragraph they belong to.</div>
+      <h3>Squash merge on GitHub</h3>
+      <p>GitHub can combine all of a PR's commits into one when merging ("Squash and merge"). Many teams love it: <code>main</code> gets one clean commit per PR. (More in <a href="#pull-requests">Section 24</a>.)</p>
+    </section>
+
+    <!-- 17 -->
+    <section class="block" id="tags-releases">
+      <h2><span class="num">17</span> Tags &amp; Versions — Naming the Special Moments</h2>
+      <p>A <strong>tag</strong> is a permanent, human-friendly label on a commit — usually a release like <code>v1.4.0</code>. Unlike a branch, it never moves.</p>
+      <table>
+        <tr><th>Kind</th><th>Command</th><th>Contains</th></tr>
+        <tr><td>Lightweight</td><td><code>git tag v1.4.0</code></td><td>Just a name pointing at a commit</td></tr>
+        <tr><td><strong>Annotated</strong> (recommended for releases)</td><td><code>git tag -a v1.4.0 -m "Release 1.4.0"</code></td><td>A full object: tagger, date, message (and can be signed)</td></tr>
+      </table>
+      <pre><code>git tag -a v1.0 -m "Release 1.0"
+git tag -l                  # list tags
+git push origin v1.0        # tags are NOT pushed automatically; push them (or: git push --tags)</code></pre>
+      <h3>Semantic Versioning (SemVer): MAJOR.MINOR.PATCH</h3>
+      <table>
+        <tr><th>Part</th><th>Bump it when…</th><th>Example</th></tr>
+        <tr><td><strong>MAJOR</strong></td><td>You make a breaking change</td><td>1.4.2 → <strong>2</strong>.0.0</td></tr>
+        <tr><td><strong>MINOR</strong></td><td>You add a feature, backwards-compatible</td><td>1.4.2 → 1.<strong>5</strong>.0</td></tr>
+        <tr><td><strong>PATCH</strong></td><td>You fix a bug, backwards-compatible</td><td>1.4.2 → 1.4.<strong>3</strong></td></tr>
+      </table>
+      <div class="callout life">Like edition numbers of a textbook: a typo fix is 1.4.3, a new chapter is 1.5, a total rewrite is 2.0.</div>
+      <p>On GitHub, a tag can become a <strong>Release</strong> — a page with release notes and downloadable files (<a href="#pages-packages-codespaces">Section 30</a>).</p>
+    </section>
+
+    <!-- 18 -->
+    <section class="block" id="git-internals">
+      <h2><span class="num">18</span> Inside <code>.git</code> — How Git Really Works</h2>
+      <p>Git's whole database is a simple "content-addressable" store: every piece of data is saved under the fingerprint (hash) of its own content. There are just four kinds of objects:</p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 250" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrGh7" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+          </defs>
+          <rect class="box-final" x="20" y="20" width="150" height="60" rx="8"/><text x="95" y="46" text-anchor="middle">commit f3d53e2…</text><text x="95" y="64" text-anchor="middle" class="edge-label">message, author, parent</text>
+          <rect class="box-hl" x="230" y="20" width="150" height="60" rx="8"/><text x="305" y="46" text-anchor="middle">tree afbdd27…</text><text x="305" y="64" text-anchor="middle" class="edge-label">the project's root folder</text>
+          <rect class="box" x="440" y="10" width="170" height="50" rx="8"/><text x="525" y="32" text-anchor="middle">blob ce01362…</text><text x="525" y="48" text-anchor="middle" class="edge-label">hello.txt = "hello\n"</text>
+          <rect class="box-hl" x="440" y="85" width="170" height="50" rx="8"/><text x="525" y="107" text-anchor="middle">tree 5f6ed9b…</text><text x="525" y="123" text-anchor="middle" class="edge-label">src/ folder</text>
+          <rect class="box" x="570" y="160" width="140" height="50" rx="8"/><text x="640" y="182" text-anchor="middle">blob …</text><text x="640" y="198" text-anchor="middle" class="edge-label">app.py contents</text>
+          <line class="edge" x1="170" y1="50" x2="228" y2="50" marker-end="url(#arrGh7)"/>
+          <line class="edge" x1="380" y1="40" x2="438" y2="35" marker-end="url(#arrGh7)"/>
+          <line class="edge" x1="380" y1="62" x2="438" y2="105" marker-end="url(#arrGh7)"/>
+          <line class="edge" x1="560" y1="135" x2="610" y2="158" marker-end="url(#arrGh7)"/>
+          <text x="20" y="130" class="edge-label">+ tag: a named pointer to a commit</text>
+          <text x="20" y="150" class="edge-label">+ refs: branch names → commit ids (tiny text files)</text>
+          <text x="20" y="170" class="edge-label">+ HEAD: which branch/commit you're on</text>
+          <text x="20" y="215" class="edge-label">Same content → same hash → stored once (that's how Git saves space).</text>
+        </svg>
+        <div class="diagram-caption">Fig 8 — A commit points to a tree (a folder listing), which points to blobs (file contents) and sub-trees. These real ids come from a tiny demo repo.</div>
+      </div>
+      <table>
+        <tr><th>Object</th><th>What it stores</th><th>Folder analogy</th></tr>
+        <tr><td><strong>Blob</strong></td><td>The contents of one file (no name)</td><td>A page's text</td></tr>
+        <tr><td><strong>Tree</strong></td><td>A folder: a list of names → blobs/trees</td><td>A table of contents</td></tr>
+        <tr><td><strong>Commit</strong></td><td>A tree + parent(s) + author + message</td><td>A dated cover sheet</td></tr>
+        <tr><td><strong>Tag</strong> (annotated)</td><td>A named, signed pointer to a commit</td><td>A bookmark with a note</td></tr>
+      </table>
+      <details class="deepdive">
+        <summary>Poke inside a real repo (real output)</summary>
+        <pre><code>$ git cat-file -p HEAD                 # a commit
+tree afbdd27cb0dd6021fb1232c2a3a96aa56c2bb3d4
+author Demo &lt;a@b.c&gt; &lt;time&gt;
+committer Demo &lt;a@b.c&gt; &lt;time&gt;
+
+first
+
+$ git cat-file -p HEAD^{tree}          # the folder it points to
+100644 blob ce013625030ba8dba906f756967f9e9ca394464a	hello.txt
+040000 tree 5f6ed9bfb37c89a89c650f1d713723d459bfcdd9	src
+
+$ git cat-file -p ce01362              # a file's contents
+hello
+
+$ printf 'hello\n' | git hash-object --stdin
+ce013625030ba8dba906f756967f9e9ca394464a   # same content -> same id, anywhere in the world
+
+$ ls .git
+COMMIT_EDITMSG HEAD config description hooks index info logs objects refs
+$ cat .git/HEAD
+ref: refs/heads/main                   # HEAD says "I'm on the branch called main"</code></pre>
+        <p>
+          That <code>ce01362…</code> id is the same for <em>any</em> file containing exactly "hello" plus a newline, in any repo on Earth — the id is computed from the content. A branch is literally a tiny text file under <code>.git/refs/heads/</code> containing a commit id.
+        </p>
+      </details>
+      <h3>Other things inside <code>.git</code></h3>
+      <table>
+        <tr><th>Thing</th><th>Role</th></tr>
+        <tr><td><code>objects/</code></td><td>The database (compressed into <em>packfiles</em> over time to save space)</td></tr>
+        <tr><td><code>refs/</code></td><td>Branch and tag pointers</td></tr>
+        <tr><td><code>index</code></td><td>The staging area</td></tr>
+        <tr><td><code>config</code></td><td>This repo's settings</td></tr>
+        <tr><td><code>hooks/</code></td><td>Scripts that run at Git events (Section 19)</td></tr>
+        <tr><td><code>logs/</code></td><td>The reflog (rescue diary)</td></tr>
+      </table>
+      <h3>The hash function is changing (slowly)</h3>
+      <p>
+        Git has used <strong>SHA-1</strong> (40 hex characters) since 2005. SHA-1 is now considered weak against deliberate attacks, so Git supports <strong>SHA-256</strong> (64 characters). You can try it today:
+        <code>git init --object-format=sha256</code> — in a quick test the commit id was 64 characters long instead of 40. The planned <strong>Git 3.0</strong> would make SHA-256 (and "reftable" ref storage, and <code>main</code>) the defaults for <em>new</em> repos; Git's own notes say there's no release date yet and that readiness of the wider ecosystem (hosting sites, other tools) is a prerequisite. Existing repos keep working.
+      </p>
+      <div class="callout life">
+        The hash is a fingerprint, not a name: change one comma in a file and the fingerprint (and every commit after it) becomes completely different — that's why you can trust history hasn't been secretly edited.
+      </div>
+    </section>
+
+    <!-- 19 -->
+    <section class="block" id="config-hooks-aliases">
+      <h2><span class="num">19</span> Config, Hooks, Aliases &amp; Line Endings</h2>
+      <h3>Aliases — your own shortcuts</h3>
+      <pre><code>git config --global alias.st "status -sb"
+git config --global alias.lg "log --oneline --graph --decorate --all"
+git config --global alias.undo "reset --soft HEAD~1"
+# now:  git st    git lg    git undo</code></pre>
+      <h3>Hooks — scripts that run automatically</h3>
+      <table>
+        <tr><th>Hook</th><th>Runs…</th><th>Use</th></tr>
+        <tr><td><code>pre-commit</code></td><td>Before a commit is created</td><td>Format code, lint, scan for secrets</td></tr>
+        <tr><td><code>commit-msg</code></td><td>After you write the message</td><td>Enforce a message format (e.g., Conventional Commits)</td></tr>
+        <tr><td><code>pre-push</code></td><td>Before pushing</td><td>Run tests</td></tr>
+      </table>
+      <div class="callout warn">Hooks live in <code>.git/hooks</code>, which is <strong>not</strong> copied when someone clones — so share them with a tool such as <em>pre-commit</em>, Husky or Lefthook, and remember local hooks can be skipped (<code>--no-verify</code>); enforce the same checks again in CI.</div>
+      <h3>Line endings — the Windows vs Mac/Linux gotcha</h3>
+      <p>
+        Windows ends lines with two invisible characters (CRLF); macOS/Linux use one (LF). Without care, Git sees "every line changed" or shows warnings like <em>"LF will be replaced by CRLF"</em>. (This bit the example repos used to write this page!) The clean fix is a committed <code>.gitattributes</code> file:
+      </p>
+      <pre><code># .gitattributes
+* text=auto          # let Git normalise text files to LF in the repo
+*.sh text eol=lf     # shell scripts must always be LF
+*.png binary         # never touch images</code></pre>
+      <table>
+        <tr><th><code>core.autocrlf</code></th><th>Meaning</th></tr>
+        <tr><td><code>true</code> (often the Windows installer default)</td><td>Convert to CRLF on checkout, back to LF on commit</td></tr>
+        <tr><td><code>input</code></td><td>Never convert on checkout; convert CRLF→LF on commit (common on Mac/Linux)</td></tr>
+        <tr><td><code>false</code></td><td>Do nothing</td></tr>
+      </table>
+      <div class="callout tip">A <code>.gitattributes</code> in the repo beats everyone's personal settings, so the whole team behaves the same.</div>
+    </section>
+
+    <!-- 20 -->
+    <section class="block" id="big-repos-perf">
+      <h2><span class="num">20</span> Big Repos &amp; Performance</h2>
+      <p>Git is fast, but huge histories or big binary files can slow it. Tools for that:</p>
+      <table>
+        <tr><th>Tool</th><th>What it does</th><th>Example</th></tr>
+        <tr><td><strong>Shallow clone</strong></td><td>Download only recent history</td><td><code>git clone --depth 1 URL</code> (great for CI)</td></tr>
+        <tr><td><strong>Partial clone</strong></td><td>Download commits now, file contents only when needed</td><td><code>git clone --filter=blob:none URL</code></td></tr>
+        <tr><td><strong>Sparse checkout</strong></td><td>Show only some folders of a big repo</td><td><code>git sparse-checkout set services/api</code></td></tr>
+        <tr><td><strong>Git LFS</strong> (Large File Storage)</td><td>Keep big binaries (videos, datasets) outside normal history; Git stores small pointers</td><td><code>git lfs track "*.psd"</code></td></tr>
+        <tr><td><strong>Maintenance / <code>gc</code></strong></td><td>Pack objects, speed up commands in the background</td><td><code>git maintenance start</code></td></tr>
+        <tr><td><strong>Scalar</strong></td><td>A Git-bundled tool that configures big-repo settings for you</td><td><code>scalar clone URL</code></td></tr>
+        <tr><td><strong>Reftable / SHA-256</strong></td><td>Newer storage options for refs and hashes (future defaults)</td><td><code>git init --object-format=sha256</code></td></tr>
+      </table>
+      <div class="callout warn">Git stores <em>every version</em> of every file forever. Committing a 500 MB video makes the repo heavy for everyone, even after you delete the file later. Use LFS or an artifact store for large binaries.</div>
+      <div class="callout life">A library of books: Git keeps the whole library on your shelf by default. Shallow = take only the newest edition; sparse = take only the shelf you need; LFS = leave the giant atlases in a warehouse and keep a library card.</div>
+    </section>
+
+    <!-- 21 -->
+    <section class="block" id="git-security">
+      <h2><span class="num">21</span> Git Security</h2>
+      <h3>Who really made this commit? Signing</h3>
+      <p>Anyone can type any name and email into <code>git config</code>, so commits can be faked. <strong>Signing</strong> proves the commit came from someone holding a specific key; GitHub shows a green <em>Verified</em> badge.</p>
+      <pre><code># sign with the SSH key you already use (no GPG needed)
+git config --global gpg.format ssh
+git config --global user.signingkey ~/.ssh/id_ed25519.pub
+git config --global commit.gpgsign true     # sign every commit
+# add the same public key on GitHub as a "Signing key" in Settings → SSH and GPG keys</code></pre>
+      <h3>"I committed a password!"</h3>
+      <table>
+        <tr><th>Step</th><th>Do</th></tr>
+        <tr><td>1. <strong>Rotate the secret NOW</strong></td><td>Revoke the key/token and issue a new one. Assume it's already copied — bots scan public repos within minutes</td></tr>
+        <tr><td>2. Remove from history (optional, after step 1)</td><td>Use <code>git filter-repo</code> (the tool Git recommends instead of the old <code>filter-branch</code>) or BFG Repo-Cleaner, then force-push and ask collaborators to re-clone</td></tr>
+        <tr><td>3. Prevent next time</td><td>Add to <code>.gitignore</code>; use a secrets manager; turn on GitHub secret scanning and push protection (<a href="#github-security">Section 29</a>)</td></tr>
+      </table>
+      <div class="callout warn">Deleting the file in a new commit does <strong>not</strong> remove it from history. Anyone who cloned earlier (or any fork) still has it. Rotation is the real fix.</div>
+      <h3>Other safety habits</h3>
+      <table>
+        <tr><th>Risk</th><th>Habit</th></tr>
+        <tr><td>Force-pushing over teammates' work</td><td>Use <code>--force-with-lease</code>; protect <code>main</code> from force pushes (<a href="#branch-protection-rulesets">Section 27</a>)</td></tr>
+        <tr><td>Malicious repositories</td><td>Don't run build scripts/hooks from repos you don't trust; Git's <code>safe.directory</code> and (planned) stricter <code>safe.bareRepository</code> defaults exist to block tricks</td></tr>
+        <tr><td>Stolen laptop / leaked token</td><td>SSH keys with passphrases; fine-grained tokens with expiry; two-factor authentication or passkeys on your GitHub account</td></tr>
+        <tr><td>Weak hash worries</td><td>Git uses a hardened SHA-1 implementation that detects known collision attacks; SHA-256 repos are available for the future</td></tr>
+      </table>
+    </section>
+
+    <div class="part-divider"><h2>Part D — GitHub</h2></div>
+
+    <!-- 22 -->
+    <section class="block" id="github-intro">
+      <h2><span class="num">22</span> GitHub — Accounts, Repositories &amp; Organizations</h2>
+      <p>
+        <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a> hosts Git repositories online and adds the social and project-management layer: pull requests, issues, automation, security scanning and more. It's where most open-source software lives.
+      </p>
+      <table>
+        <tr><th>Thing</th><th>Meaning</th></tr>
+        <tr><td>Account / profile</td><td>Your identity; you can add a profile README (a repo named after your username) as a landing page</td></tr>
+        <tr><td>Repository</td><td>A project: files + history + issues + PRs + settings</td></tr>
+        <tr><td>Visibility</td><td><strong>Public</strong> (anyone can see), <strong>Private</strong> (only people you invite), and in organizations <strong>Internal</strong> (visible to the company)</td></tr>
+        <tr><td>Organization</td><td>A shared account for a team/company with members, teams and permissions</td></tr>
+        <tr><td>Roles</td><td>Read, Triage, Write, Maintain, Admin — pick the lowest that works (least privilege)</td></tr>
+      </table>
+      <h3>The files a healthy repo has</h3>
+      <table>
+        <tr><th>File</th><th>Purpose</th></tr>
+        <tr><td><code>README.md</code></td><td>The front page: what it is, how to install and use it</td></tr>
+        <tr><td><code>LICENSE</code></td><td>What others may do with your code (without one, nobody has permission to reuse it)</td></tr>
+        <tr><td><code>CONTRIBUTING.md</code></td><td>How to help: setup, style, how to propose changes</td></tr>
+        <tr><td><code>CODE_OF_CONDUCT.md</code></td><td>Expected behaviour in the community</td></tr>
+        <tr><td><code>SECURITY.md</code></td><td>How to report vulnerabilities privately</td></tr>
+        <tr><td><code>.gitignore</code>, <code>.gitattributes</code></td><td>What Git should ignore / how to treat files</td></tr>
+        <tr><td><code>.github/</code> folder</td><td>GitHub settings-as-files: workflows, issue/PR templates, <code>CODEOWNERS</code>, <code>dependabot.yml</code> (Level 5 shows several)</td></tr>
+      </table>
+      <div class="callout life">A repository is a shared clubhouse: the README is the sign on the door, the LICENSE says whether visitors may borrow things, and CONTRIBUTING is the "how to join in" poster.</div>
+      <div class="callout tip">Spelling check: lots of platforms say "main"; some older repos still use <code>master</code> as the default branch. Your repo's default branch is a setting you can rename.</div>
+    </section>
+
+    <!-- 23 -->
+    <section class="block" id="fork-pr-flow">
+      <h2><span class="num">23</span> Fork, Branch, Pull Request — The Collaboration Loop</h2>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 270" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrGh9" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+          </defs>
+          <rect class="box" x="6" y="30" width="108" height="54" rx="8"/><text x="60" y="54" text-anchor="middle">1. Clone</text><text x="60" y="72" text-anchor="middle" class="edge-label">(or fork first)</text>
+          <rect class="box" x="130" y="30" width="108" height="54" rx="8"/><text x="184" y="54" text-anchor="middle">2. Branch</text><text x="184" y="72" text-anchor="middle" class="edge-label">fix-login-bug</text>
+          <rect class="box" x="254" y="30" width="108" height="54" rx="8"/><text x="308" y="54" text-anchor="middle">3. Commit</text><text x="308" y="72" text-anchor="middle" class="edge-label">small steps</text>
+          <rect class="box" x="378" y="30" width="108" height="54" rx="8"/><text x="432" y="54" text-anchor="middle">4. Push</text><text x="432" y="72" text-anchor="middle" class="edge-label">to GitHub</text>
+          <rect class="box-hl" x="502" y="30" width="108" height="54" rx="8"/><text x="556" y="54" text-anchor="middle">5. Open PR</text><text x="556" y="72" text-anchor="middle" class="edge-label">describe it</text>
+          <rect class="box-hl" x="620" y="30" width="94" height="54" rx="8"/><text x="667" y="54" text-anchor="middle">6. Checks</text><text x="667" y="72" text-anchor="middle" class="edge-label">CI runs</text>
+          <rect class="box-hl" x="502" y="130" width="108" height="54" rx="8"/><text x="556" y="154" text-anchor="middle">7. Review</text><text x="556" y="172" text-anchor="middle" class="edge-label">comments, fixes</text>
+          <rect class="box-final" x="378" y="130" width="108" height="54" rx="8"/><text x="432" y="154" text-anchor="middle">8. Merge</text><text x="432" y="172" text-anchor="middle" class="edge-label">into main</text>
+          <rect class="box-final" x="254" y="130" width="108" height="54" rx="8"/><text x="308" y="154" text-anchor="middle">9. Clean up</text><text x="308" y="172" text-anchor="middle" class="edge-label">delete branch</text>
+          <rect class="box" x="130" y="130" width="108" height="54" rx="8"/><text x="184" y="154" text-anchor="middle">10. Sync</text><text x="184" y="172" text-anchor="middle" class="edge-label">git pull main</text>
+          <line class="edge" x1="114" y1="57" x2="128" y2="57" marker-end="url(#arrGh9)"/><line class="edge" x1="238" y1="57" x2="252" y2="57" marker-end="url(#arrGh9)"/><line class="edge" x1="362" y1="57" x2="376" y2="57" marker-end="url(#arrGh9)"/><line class="edge" x1="486" y1="57" x2="500" y2="57" marker-end="url(#arrGh9)"/><line class="edge" x1="610" y1="57" x2="618" y2="57" marker-end="url(#arrGh9)"/>
+          <line class="edge" x1="667" y1="84" x2="615" y2="132" marker-end="url(#arrGh9)"/>
+          <line class="edge" x1="502" y1="157" x2="488" y2="157" marker-end="url(#arrGh9)"/><line class="edge" x1="378" y1="157" x2="364" y2="157" marker-end="url(#arrGh9)"/><line class="edge" x1="254" y1="157" x2="240" y2="157" marker-end="url(#arrGh9)"/>
+          <text x="360" y="225" text-anchor="middle">Changes needed in review? Just commit and push more to the same branch — the PR updates itself.</text>
+        </svg>
+        <div class="diagram-caption">Fig 9 — The pull-request loop used by nearly every team and open-source project.</div>
+      </div>
+      <h3>Fork vs branch vs clone</h3>
+      <table>
+        <tr><th>Word</th><th>Meaning</th><th>When</th></tr>
+        <tr><td><strong>Clone</strong></td><td>Copy a repo from GitHub to your computer</td><td>Always the first step on your machine</td></tr>
+        <tr><td><strong>Branch</strong></td><td>A parallel line of work <em>inside</em> one repo</td><td>You have write access (your team's repo)</td></tr>
+        <tr><td><strong>Fork</strong></td><td>Your own copy of someone else's repo on GitHub</td><td>You <em>don't</em> have write access (open source): you push to your fork and open a PR back</td></tr>
+        <tr><td>Upstream</td><td>The original repo you forked from</td><td>Add it as a remote to keep your fork current</td></tr>
+        <tr><td>Star / Watch</td><td>Bookmark a repo / get notifications</td><td>Following projects</td></tr>
+      </table>
+      <pre><code>git clone git@github.com:YOUR-NAME/project.git     # your fork
+git remote add upstream git@github.com:ORIGINAL/project.git
+git fetch upstream
+git switch main &amp;&amp; git merge --ff-only upstream/main   # bring your fork's main up to date
+git switch -c fix-typo-in-readme</code></pre>
+      <div class="callout life">A fork is photocopying someone's cookbook so you can scribble improvements; a pull request is sending the owner a note saying "I improved page 12 — want to take my version?"</div>
+    </section>
+
+    <!-- 24 -->
+    <section class="block" id="pull-requests">
+      <h2><span class="num">24</span> Pull Requests in Depth</h2>
+      <p>A <strong>pull request (PR)</strong> says: "Here are my commits; please review and merge them." It's the heart of GitHub. Every PR has:</p>
+      <table>
+        <tr><th>Tab / part</th><th>What you see</th></tr>
+        <tr><td>Conversation</td><td>Title, description, comments, review status, linked issues</td></tr>
+        <tr><td>Commits</td><td>The commits included</td></tr>
+        <tr><td>Checks</td><td>Automated results (tests, linters, security scans) — green ✓ or red ✗</td></tr>
+        <tr><td>Files changed</td><td>The diff; click any line to comment or suggest an edit</td></tr>
+      </table>
+      <h3>A great PR</h3>
+      <table>
+        <tr><th>Do</th><th>Why</th></tr>
+        <tr><td>Keep it small and focused</td><td>Reviewers can really understand it; faster merges</td></tr>
+        <tr><td>Explain <em>what</em> and <em>why</em>, how you tested, and add screenshots for UI changes</td><td>Saves the reviewer guessing</td></tr>
+        <tr><td>Link the issue: <code>Fixes #123</code></td><td>The issue closes automatically when the PR merges</td></tr>
+        <tr><td>Open a <strong>draft PR</strong> early if you want feedback</td><td>Signals "not ready to merge" while sharing progress</td></tr>
+        <tr><td>Respond to every comment (fix, or explain)</td><td>Keeps review collaborative</td></tr>
+      </table>
+      <h3>Three ways to merge a PR</h3>
+      <table>
+        <tr><th>Method</th><th>Result on <code>main</code></th><th>Good for</th></tr>
+        <tr><td><strong>Create a merge commit</strong></td><td>All PR commits kept + one merge commit</td><td>Preserving full history</td></tr>
+        <tr><td><strong>Squash and merge</strong></td><td>All commits combined into <em>one</em> commit</td><td>Messy "wip" histories; one commit per PR (very popular)</td></tr>
+        <tr><td><strong>Rebase and merge</strong></td><td>PR commits replayed one by one on top of <code>main</code>; no merge commit</td><td>Clean linear history when every commit is already tidy</td></tr>
+      </table>
+      <h3>Helpers</h3>
+      <table>
+        <tr><th>Feature</th><th>What it does</th></tr>
+        <tr><td><strong>Auto-merge</strong></td><td>"Merge this automatically once required reviews and checks pass"</td></tr>
+        <tr><td><strong>Merge queue</strong></td><td>Lines up approved PRs, tests each <em>combined with the latest main</em> so two individually-green PRs can't break main together</td></tr>
+        <tr><td>Required status checks</td><td>The merge button stays disabled until tests pass</td></tr>
+        <tr><td>Linked issues / closing keywords</td><td><code>Fixes</code>, <code>Closes</code>, <code>Resolves</code> + issue number</td></tr>
+        <tr><td>Conversation resolution</td><td>Require all review threads resolved before merging</td></tr>
+      </table>
+      <div class="callout life">A PR is handing your essay to a friend with a note, an automatic spell-check report stapled on top, and a promise that it only goes in the class magazine once they say yes.</div>
+    </section>
+
+    <!-- 25 -->
+    <section class="block" id="code-review-github">
+      <h2><span class="num">25</span> Code Review on GitHub</h2>
+      <table>
+        <tr><th>Review action</th><th>Means</th></tr>
+        <tr><td>Comment</td><td>General feedback; no decision</td></tr>
+        <tr><td>Approve</td><td>"Looks good to merge"</td></tr>
+        <tr><td>Request changes</td><td>"Please fix these before merging" (blocks if required)</td></tr>
+        <tr><td><strong>Suggested change</strong></td><td>A reviewer proposes exact replacement text; the author clicks "Commit suggestion"</td></tr>
+      </table>
+      <div class="grid">
+        <div class="card"><h4>🔍 Reviewer: what to look for</h4><p>Does it solve the stated problem? Is it correct and tested? Is it readable? Any security risk (secrets, injection, permissions)? Does it fit the project's style?</p></div>
+        <div class="card"><h4>💬 Reviewer: how to say it</h4><p>Be kind and specific. Ask questions ("what happens if the list is empty?"), label nitpicks ("nit:"), and praise good work.</p></div>
+        <div class="card"><h4>✍️ Author: how to respond</h4><p>Assume good intent; fix or explain each point; push follow-up commits; re-request review when ready.</p></div>
+        <div class="card"><h4>👥 CODEOWNERS</h4><p>A file mapping paths to people/teams who <em>must</em> review changes there (Level 5), e.g., workflow files need the platform team.</p></div>
+      </div>
+      <div class="callout warn">Treat AI-generated code (and AI-written PR descriptions) like code from a fast new teammate: read it, run it, and don't approve what you don't understand. Automated AI reviews can help as a first pass, but humans own the merge.</div>
+    </section>
+
+    <!-- 26 -->
+    <section class="block" id="issues-projects">
+      <h2><span class="num">26</span> Issues, Projects &amp; Discussions — Planning the Work</h2>
+      <table>
+        <tr><th>Tool</th><th>What it's for</th><th>Example</th></tr>
+        <tr><td><strong>Issues</strong></td><td>Track bugs, tasks and ideas; assign people, add labels and milestones; link to PRs</td><td>"Login fails on Safari" (#42)</td></tr>
+        <tr><td>Issue templates / forms</td><td>Structured bug-report or feature-request forms in <code>.github/ISSUE_TEMPLATE</code></td><td>Asks for version, steps to reproduce</td></tr>
+        <tr><td>Labels</td><td>Categorise (bug, enhancement, <code>good first issue</code>, help wanted)</td><td>Newcomers filter by "good first issue"</td></tr>
+        <tr><td>Milestones</td><td>Group issues towards a release or deadline</td><td>"v2.0"</td></tr>
+        <tr><td><strong>Projects</strong></td><td>Flexible boards, tables and roadmaps over issues and PRs</td><td>A sprint board: To do → In progress → Done</td></tr>
+        <tr><td><strong>Discussions</strong></td><td>Q&amp;A and open-ended chat that isn't a bug or task</td><td>"How do I deploy this on Windows?"</td></tr>
+        <tr><td>Wiki</td><td>Free-form documentation pages (many teams prefer docs inside the repo)</td><td>Architecture notes</td></tr>
+        <tr><td>Gists</td><td>Share a snippet or single file quickly</td><td>A handy script</td></tr>
+      </table>
+      <div class="callout life">Issues are sticky notes on a team's noticeboard ("fix the leaky tap"); Projects is the board that arranges the notes into columns; Discussions is the café table where people ask questions.</div>
+      <div class="callout tip">Good issue: a clear title, steps to reproduce, what you expected vs what happened, versions/environment, and a screenshot or log. A good issue is half the fix.</div>
+    </section>
+
+    <!-- 27 -->
+    <section class="block" id="branch-protection-rulesets">
+      <h2><span class="num">27</span> Protecting <code>main</code> — Branch Protection &amp; Rulesets</h2>
+      <p>Rules turn good habits into guardrails the system enforces — for humans <em>and</em> automated agents.</p>
+      <table>
+        <tr><th>Rule</th><th>What it enforces</th></tr>
+        <tr><td>Require a pull request before merging</td><td>No direct pushes to <code>main</code></td></tr>
+        <tr><td>Require approvals (and code-owner review)</td><td>At least N reviewers, and the right people for sensitive files</td></tr>
+        <tr><td>Require status checks to pass</td><td>CI must be green; optionally "up to date with main"</td></tr>
+        <tr><td>Require conversation resolution</td><td>No unresolved review threads</td></tr>
+        <tr><td>Require signed commits</td><td>Only verified commits</td></tr>
+        <tr><td>Require linear history</td><td>Only squash/rebase merges</td></tr>
+        <tr><td>Block force pushes and deletions</td><td>History can't be rewritten or branch deleted</td></tr>
+        <tr><td>Require merge queue</td><td>PRs merge through the queue (Section 24)</td></tr>
+        <tr><td>Restrict who can push or bypass</td><td>Tiny, audited exception list</td></tr>
+      </table>
+      <h3>Branch protection rules vs Rulesets</h3>
+      <table>
+        <tr><th></th><th>Classic branch protection</th><th>Rulesets (newer)</th></tr>
+        <tr><td>Scope</td><td>One rule per branch pattern, per repo</td><td>Multiple rulesets can <em>layer</em>; can target branches, <strong>tags</strong>, and (for organizations) many repos at once</td></tr>
+        <tr><td>Visibility</td><td>Admins see them</td><td>Can be viewed by anyone with read access; have an "evaluate" mode to test rules before enforcing</td></tr>
+        <tr><td>Bypass</td><td>Limited</td><td>Fine-grained bypass lists (roles, apps)</td></tr>
+        <tr><td>Advice</td><td>Still works</td><td>Preferred for new setups, especially at organization level</td></tr>
+      </table>
+      <div class="callout tip">A sensible starter for most teams: require PRs, 1 approval, passing CI, resolved conversations, block force-push and deletion on <code>main</code>. Add code-owner review for workflow and infrastructure files.</div>
+      <div class="callout life">A school gate with a sign-in desk: everyone (even the headteacher) goes through the same door, and the logbook records who came in.</div>
+    </section>
+
+    <!-- 28 -->
+    <section class="block" id="github-actions">
+      <h2><span class="num">28</span> GitHub Actions — Automation Built In</h2>
+      <p>
+        <strong>GitHub Actions</strong> runs automated <em>workflows</em> (YAML files in <code>.github/workflows/</code>) when things happen in your repo: tests on every PR, deploys on every release, labelling issues, nightly jobs. The full CI/CD story is in the <a href="devops.html#ci-devops">DevOps guide</a>; here are the GitHub-specific pieces.
+      </p>
+      <table>
+        <tr><th>Term</th><th>Meaning</th></tr>
+        <tr><td>Workflow</td><td>One automation file</td></tr>
+        <tr><td>Event / trigger</td><td>What starts it: <code>push</code>, <code>pull_request</code>, <code>schedule</code> (cron), <code>workflow_dispatch</code> (manual button), <code>release</code>…</td></tr>
+        <tr><td>Job</td><td>A group of steps on one machine; jobs can run in parallel or in order</td></tr>
+        <tr><td>Step</td><td>One command (<code>run:</code>) or one reusable action (<code>uses:</code>)</td></tr>
+        <tr><td>Runner</td><td>The machine that runs a job: GitHub-hosted (Linux, Windows, macOS) or your own (self-hosted)</td></tr>
+        <tr><td>Secrets &amp; variables</td><td>Stored values (passwords/settings) available to workflows; secrets are masked in logs</td></tr>
+        <tr><td>Environments</td><td>Named targets (staging, production) with required approvers and their own secrets</td></tr>
+        <tr><td>Matrix</td><td>Run the same job across several versions/OSes</td></tr>
+        <tr><td>Cache / artifacts</td><td>Reuse downloads between runs / save outputs</td></tr>
+        <tr><td>Reusable workflows &amp; composite actions</td><td>Share automation across repos</td></tr>
+      </table>
+      <h3>What's new (as of Oct 2026)</h3>
+      <ul>
+        <li><strong>Workflow lockfiles are generally available (28 Oct 2026).</strong> Actions that you reference by a friendly tag can be <em>locked</em> to the exact commits (including actions' own dependencies) in <code>.github/workflows/actions.lock</code>, created with the <code>gh actions-lock</code> extension. Once a workflow is onboarded, every dependency must be in the lockfile and the recorded commit is what runs; Dependabot updates the lockfile in the same PR; admins can switch on a "require lockfile" policy. GitHub notes a lockfile stops <em>surprise changes</em> — it doesn't tell you a dependency is safe, so still review what you lock. (<a href="https://github.blog/changelog/2026-10-28-github-actions-workflow-lockfiles-are-generally-available/" target="_blank" rel="noopener">GitHub changelog</a>)</li>
+        <li><strong>A published 2026 Actions security roadmap</strong> also lists execution policies, scoped secrets and a native egress firewall; check GitHub's changelog for what has shipped.</li>
+        <li><strong>Pricing:</strong> GitHub reduced prices of GitHub-hosted runners (by up to ~39% depending on size) from 1 Jan 2026; a planned per-minute platform charge for <em>self-hosted</em> runners was postponed for reconsideration. Standard usage on public repos remains free. Pricing changes often — read GitHub's current billing page.</li>
+      </ul>
+      <h3>Security habits (short version)</h3>
+      <table>
+        <tr><th>Do</th><th>Why</th></tr>
+        <tr><td>Set <code>permissions: contents: read</code> and add more only per job</td><td>A compromised step can't write to your repo</td></tr>
+        <tr><td>Pin third-party actions to a full commit SHA (or use a lockfile)</td><td>Tags can be moved to malicious code</td></tr>
+        <tr><td>Use OIDC for cloud logins instead of stored keys</td><td>Short-lived credentials</td></tr>
+        <tr><td>Never put untrusted text (PR titles, issue bodies) directly into shell commands; be careful with <code>pull_request_target</code></td><td>Script-injection attacks</td></tr>
+        <tr><td>Require review of changes to <code>.github/workflows</code> (CODEOWNERS)</td><td>Workflows can run with powerful tokens</td></tr>
+      </table>
+      <p>Details and 2026 incidents: <a href="devops.html#supply-chain">DevOps — supply chain</a> and GitHub's <a href="https://docs.github.com/en/actions/reference/security/secure-use" target="_blank" rel="noopener">secure-use guide</a>. A starter workflow is in <a href="#code-github-files">Level 5</a>.</p>
+      <div class="callout life">Actions are household robots triggered by events: "when the doorbell rings (a PR opens), the robot checks who it is (tests) and tells you." You decide what the robots are allowed to touch.</div>
+    </section>
+
+    <!-- 29 -->
+    <section class="block" id="github-security">
+      <h2><span class="num">29</span> GitHub's Security Tools</h2>
+      <table>
+        <tr><th>Feature</th><th>What it does</th><th>Plain picture</th></tr>
+        <tr><td><strong>Dependabot alerts</strong></td><td>Warns when a library you use has a known vulnerability</td><td>A recall notice for a part in your car</td></tr>
+        <tr><td><strong>Dependabot security / version updates</strong></td><td>Opens PRs that bump vulnerable (or outdated) dependencies — including GitHub Actions versions (<code>dependabot.yml</code>, Level 5)</td><td>A mechanic who books the replacement for you</td></tr>
+        <tr><td><strong>Secret scanning + push protection</strong></td><td>Detects API keys and tokens in code; <em>push protection</em> blocks the push before the secret reaches the repo. Enabled by default for supported secret types, including on public repositories; GitHub regularly adds detectors (28 new ones from 15 providers in March 2026, per its changelog)</td><td>A metal detector at the door</td></tr>
+        <tr><td><strong>Code scanning (CodeQL)</strong></td><td>Analyses your code for vulnerabilities; free "default setup" for public repos covers common languages and Actions workflows</td><td>A proofreader hunting for dangerous mistakes</td></tr>
+        <tr><td><strong>Dependency review</strong></td><td>Shows, in a PR, what new/changed dependencies bring in (vulnerabilities, licences)</td><td>An ingredient check on the new recipe</td></tr>
+        <tr><td><strong>Security advisories &amp; private vulnerability reporting</strong></td><td>Lets researchers report issues privately and lets maintainers publish fixes and advisories</td><td>A confidential tip line</td></tr>
+        <tr><td><code>SECURITY.md</code></td><td>Tells people how to report problems</td><td>The "who to call" notice</td></tr>
+      </table>
+      <h3>Securing <em>your account</em></h3>
+      <table>
+        <tr><th>Step</th><th>Why</th></tr>
+        <tr><td>Turn on two-factor authentication; prefer <strong>passkeys</strong> or hardware security keys</td><td>Stops stolen-password takeovers; GitHub requires 2FA for contributors</td></tr>
+        <tr><td>Use SSH keys with a passphrase; sign commits</td><td>Strong identity (Section 21)</td></tr>
+        <tr><td>Use <strong>fine-grained personal access tokens</strong> with an expiry and only the repos/permissions needed</td><td>A leaked token does limited damage</td></tr>
+        <tr><td>Review authorised apps and SSH keys occasionally</td><td>Remove forgotten access</td></tr>
+        <tr><td>Organisations: SSO, audit log, minimum-privilege roles</td><td>Central control and traceability</td></tr>
+      </table>
+      <div class="callout warn">Availability and price of some security features differ for public vs private repositories and by plan (for instance, some advanced secret-protection and code-security products are paid for private repos). Check GitHub's current plans page; the basics for public repos are free.</div>
+    </section>
+
+    <!-- 30 -->
+    <section class="block" id="pages-packages-codespaces">
+      <h2><span class="num">30</span> Pages, Releases, Packages &amp; Codespaces</h2>
+      <table>
+        <tr><th>Feature</th><th>What it is</th><th>Example</th></tr>
+        <tr><td><strong>GitHub Pages</strong></td><td>Free static website hosting straight from a repo (often built by an Action)</td><td>A portfolio at <code>yourname.github.io</code>; this kind of study-guide site</td></tr>
+        <tr><td><strong>Releases</strong></td><td>Turn a tag into a downloadable release with notes and files; can auto-generate notes from merged PRs</td><td>"v1.4.0 — what's new"</td></tr>
+        <tr><td><strong>Packages</strong> (GitHub Container Registry <code>ghcr.io</code>, npm, Maven…)</td><td>Host your built packages and container images next to your code</td><td><code>ghcr.io/you/app:1.0.0</code></td></tr>
+        <tr><td><strong>Codespaces</strong></td><td>A full development environment in the cloud, opened in the browser or VS Code; configured by <code>devcontainer.json</code> so everyone gets the same setup</td><td>Contribute to a project without installing anything locally</td></tr>
+        <tr><td>Marketplace</td><td>Find actions and apps to extend GitHub</td><td>Linters, deploy tools</td></tr>
+        <tr><td>Sponsors</td><td>Fund open-source maintainers</td><td>Support a library you rely on</td></tr>
+      </table>
+      <div class="callout life">Pages is a free noticeboard for your project; Releases are the packaged editions on the shelf; Packages is the stockroom; Codespaces is a fully equipped desk you can borrow from anywhere.</div>
+    </section>
+
+    <!-- 31 -->
+    <section class="block" id="github-copilot-ai">
+      <h2><span class="num">31</span> Copilot &amp; AI Agents on GitHub</h2>
+      <p>
+        GitHub Copilot started as autocomplete and has grown into a family of assistants and <strong>agents</strong> that can read your repository and propose real changes. What's reported as of Oct 2026 (from GitHub's own changelog, press and enterprise roundups — names and plans change often):
+      </p>
+      <table>
+        <tr><th>Capability</th><th>What it does</th><th>Note</th></tr>
+        <tr><td>Code completion and chat</td><td>Suggests code as you type; answers questions about code in your editor or on github.com</td><td>The original Copilot features</td></tr>
+        <tr><td>Agent mode (in editors like VS Code)</td><td>Plans and makes multi-file edits, runs commands and tests on your machine</td><td>You watch and approve</td></tr>
+        <tr><td><strong>Coding agent</strong> (also called the cloud agent)</td><td>Assign it an issue; it works in the background in a sandboxed environment and <strong>opens a pull request</strong> for you to review</td><td>Generally available since Sept 2025; reported integrations include Jira (preview)</td></tr>
+        <tr><td>Copilot CLI</td><td>An AI agent in your terminal</td><td>Reported generally available on 25 Feb 2026</td></tr>
+        <tr><td>VS Code Sept 2026 releases</td><td>"Automations" (scheduled/on-demand tasks) and "agent merge" (helps with review feedback, failed checks and merge conflicts); PRs can be created from Copilot, Claude or Codex agent sessions</td><td>Shows GitHub opening up to several agents</td></tr>
+        <tr><td>Copilot Memory, code-scanning alerts to the agent</td><td>Remembers repo knowledge; lets security alerts be assigned to the agent to fix</td><td>Reported public previews</td></tr>
+      </table>
+      <div class="callout tip">
+        The key idea: <strong>an agent is just another contributor.</strong> It works on a branch, opens a PR, and your branch rules, required checks and human review still apply. That's the safety net.
+      </div>
+      <div class="grid">
+        <div class="card"><h4>✅ Do</h4><p>Give agents small, well-described issues; keep CI strong; review every PR line by line; use <code>CODEOWNERS</code> and rulesets so sensitive paths need a human.</p></div>
+        <div class="card"><h4>⚠️ Watch out</h4><p>Agents read issue text and web pages — hidden instructions there can try to steer them (prompt injection). Keep their permissions minimal and don't let issue text trigger privileged actions.</p></div>
+        <div class="card"><h4>🔑 Secrets</h4><p>Never paste secrets into prompts or issues; keep push protection on.</p></div>
+        <div class="card"><h4>📏 Measure</h4><p>Track defects and rework after adopting AI: DORA 2025 found AI raises speed <em>and</em> instability unless foundations (tests, small PRs) are strong (<a href="devops.html#dora-metrics">DevOps guide</a>).</p></div>
+      </div>
+      <p>More background: <a href="ai-agents.html">AI Agents guide</a>, <a href="mcp.html">MCP</a> (the standard that lets agents use tools like GitHub itself), and <a href="devops.html#ai-devops">AI in DevOps</a>.</p>
+    </section>
+
+    <!-- 32 -->
+    <section class="block" id="gh-cli-api">
+      <h2><span class="num">32</span> The <code>gh</code> CLI, APIs &amp; Apps</h2>
+      <p>The <a href="https://cli.github.com/" target="_blank" rel="noopener">GitHub CLI (<code>gh</code>)</a> brings GitHub to your terminal:</p>
+      <table>
+        <tr><th>Command</th><th>Does</th></tr>
+        <tr><td><code>gh auth login</code></td><td>Log in (and set Git up to use that login)</td></tr>
+        <tr><td><code>gh repo create</code> / <code>gh repo clone OWNER/REPO</code></td><td>Create / clone a repo</td></tr>
+        <tr><td><code>gh issue list</code>, <code>gh issue create</code></td><td>Work with issues</td></tr>
+        <tr><td><code>gh pr create --fill</code></td><td>Open a PR from your current branch</td></tr>
+        <tr><td><code>gh pr checkout 123</code></td><td>Download someone's PR to test it</td></tr>
+        <tr><td><code>gh pr checks</code> / <code>gh pr merge --auto --squash</code></td><td>See CI status / set auto-merge</td></tr>
+        <tr><td><code>gh run list</code>, <code>gh run watch</code></td><td>Follow Actions runs</td></tr>
+        <tr><td><code>gh api repos/OWNER/REPO</code></td><td>Call any REST (or GraphQL) endpoint</td></tr>
+      </table>
+      <h3>Programming against GitHub</h3>
+      <table>
+        <tr><th>Piece</th><th>What it is</th></tr>
+        <tr><td>REST API and GraphQL API</td><td>Read and change almost anything: repos, issues, PRs, users</td></tr>
+        <tr><td>Webhooks</td><td>GitHub calls <em>your</em> URL when events happen (push, PR opened)</td></tr>
+        <tr><td><code>GITHUB_TOKEN</code></td><td>An automatic, short-lived token given to each Actions run (limit its permissions)</td></tr>
+      </table>
+      <h3>Which credential for what?</h3>
+      <table>
+        <tr><th>Option</th><th>Best for</th><th>Notes</th></tr>
+        <tr><td><strong>GitHub App</strong></td><td>Automation and integrations</td><td>Fine-grained permissions, acts as itself, short-lived tokens — recommended for bots</td></tr>
+        <tr><td>Fine-grained personal access token</td><td>Your own scripts</td><td>Choose repos/permissions and an expiry</td></tr>
+        <tr><td>OAuth app</td><td>"Sign in with GitHub" / acting for users</td><td>Broader scopes</td></tr>
+        <tr><td>Classic PAT</td><td>Legacy tools</td><td>Broad and long-lived — avoid when you can</td></tr>
+      </table>
+    </section>
+
+    <!-- 33 -->
+    <section class="block" id="open-source-contrib">
+      <h2><span class="num">33</span> Contributing to Open Source</h2>
+      <p>Open-source projects welcome help, and GitHub's PR flow makes joining straightforward.</p>
+      <table>
+        <tr><th>Step</th><th>Do this</th></tr>
+        <tr><td>1. Find a project you use</td><td>You'll understand its purpose; read README, CONTRIBUTING and CODE_OF_CONDUCT</td></tr>
+        <tr><td>2. Pick a small task</td><td>Look for <code>good first issue</code> / <code>help wanted</code>; docs and typo fixes count!</td></tr>
+        <tr><td>3. Say hi</td><td>Comment that you're taking it, so effort isn't duplicated</td></tr>
+        <tr><td>4. Fork, clone, branch</td><td>Section 23</td></tr>
+        <tr><td>5. Make a small, tested change; follow the style</td><td>Run the project's tests and linters</td></tr>
+        <tr><td>6. Open a clear PR</td><td>Link the issue; explain what and why</td></tr>
+        <tr><td>7. Be patient and responsive</td><td>Maintainers are often volunteers; revise graciously</td></tr>
+      </table>
+      <h3>Licenses in one table (not legal advice)</h3>
+      <table>
+        <tr><th>Licence</th><th>Plain meaning</th></tr>
+        <tr><td>MIT / BSD</td><td>Very permissive: use, change, sell; keep the notice</td></tr>
+        <tr><td>Apache 2.0</td><td>Permissive, plus an explicit patent grant</td></tr>
+        <tr><td>GPL (and AGPL)</td><td>"Copyleft": if you distribute (or, for AGPL, run as a service) a modified version, you must share your source under the same terms</td></tr>
+        <tr><td>No licence</td><td>All rights reserved: others may look, but not legally reuse — always add a licence to code you want shared</td></tr>
+      </table>
+      <div class="callout life">Contributing is like helping at a community garden: read the rules at the gate, start by pulling a few weeds, tell the organizers what you're doing, and bring your best work to the shared bed.</div>
+    </section>
+
+    <div class="part-divider"><h2>Part E — Teams &amp; Ecosystem</h2></div>
+
+    <!-- 34 -->
+    <section class="block" id="branching-strategies">
+      <h2><span class="num">34</span> Branching Strategies — How Teams Organise Branches</h2>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrGh10" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+          </defs>
+          <text x="10" y="20" class="phase-label">GitHub Flow — one rule: main is always deployable</text>
+          <text x="10" y="66" class="edge-label">main</text>
+          <line class="edge" x1="60" y1="62" x2="700" y2="62"/>
+          <circle cx="90" cy="62" r="8" fill="var(--accent)"/><circle cx="260" cy="62" r="8" fill="var(--accent)"/><circle cx="430" cy="62" r="8" fill="var(--accent)"/><circle cx="620" cy="62" r="8" fill="var(--accent)"/>
+          <text x="10" y="126" class="edge-label">short branches</text>
+          <path class="loop" d="M90,62 Q130,120 160,120 L220,120 Q250,110 260,62" marker-end="url(#arrGh10)"/><text x="175" y="140" text-anchor="middle" class="edge-label">branch → PR → merge</text>
+          <path class="loop" d="M260,62 Q300,120 330,120 L390,120 Q420,110 430,62" marker-end="url(#arrGh10)"/>
+          <path class="loop" d="M430,62 Q480,130 520,130 L580,130 Q610,110 620,62" marker-end="url(#arrGh10)"/>
+          <text x="360" y="182" text-anchor="middle">Branch from main → open a PR → review + checks → merge → deploy → repeat (hours or days, not weeks).</text>
+        </svg>
+        <div class="diagram-caption">Fig 10 — GitHub Flow: short feature branches, a pull request for each, merged straight back to <code>main</code>, which is always releasable.</div>
+      </div>
+      <table>
+        <tr><th>Strategy</th><th>How it works</th><th>Good for</th><th>Watch out</th></tr>
+        <tr><td><strong>GitHub Flow</strong></td><td><code>main</code> + short-lived feature branches + PRs</td><td>Web apps and services that deploy often; most teams</td><td>Needs good tests and fast CI</td></tr>
+        <tr><td><strong>Trunk-based</strong></td><td>Everyone commits to <code>main</code> (or very short branches) at least daily; unfinished work hidden by feature flags</td><td>High-performing teams with strong automation</td><td>Requires flags and discipline (<a href="devops.html#feature-flags-release">DevOps — feature flags</a>)</td></tr>
+        <tr><td><strong>GitFlow</strong></td><td><code>main</code> + <code>develop</code> + feature, release and hotfix branches</td><td>Software with scheduled versioned releases (desktop, embedded, mobile)</td><td>Heavy ceremony; long-lived branches cause big painful merges</td></tr>
+        <tr><td>Release branches</td><td>Cut <code>release/1.2</code> to stabilise and patch an old version while <code>main</code> moves on</td><td>Supporting several versions at once</td><td>Backport fixes with cherry-pick</td></tr>
+      </table>
+      <div class="callout tip">Pick the <em>simplest</em> strategy that fits how you release. If you deploy continuously, GitHub Flow or trunk-based wins; if you ship numbered versions that must be maintained, add release branches. DORA research links short-lived branches and frequent integration to better delivery results.</div>
+      <div class="callout life">GitHub Flow is a single conveyor belt with quick side-trips for each task. GitFlow is a railway station with many platforms — powerful, but you need a timetable.</div>
+    </section>
+
+    <!-- 35 -->
+    <section class="block" id="monorepo-polyrepo">
+      <h2><span class="num">35</span> Monorepo vs Many Repos</h2>
+      <table>
+        <tr><th></th><th>Monorepo (one big repo)</th><th>Polyrepo (one repo per project)</th></tr>
+        <tr><td>Sharing code</td><td>Easy: change a library and all its users in one commit</td><td>Needs published versions and updates</td></tr>
+        <tr><td>Consistency</td><td>One toolchain, one set of rules</td><td>Each repo may drift</td></tr>
+        <tr><td>Permissions</td><td>Harder to give access to only part (use CODEOWNERS, rulesets)</td><td>Natural boundaries per repo</td></tr>
+        <tr><td>CI</td><td>Needs path filtering/smart builds so you only test what changed</td><td>Simple per-repo pipelines</td></tr>
+        <tr><td>Scale</td><td>Needs tooling for size (sparse checkout, partial clone — Section 20)</td><td>Repos stay small</td></tr>
+        <tr><td>Famous users</td><td>Very large companies run huge monorepos</td><td>Most open-source projects and many startups</td></tr>
+      </table>
+      <div class="callout tip">Start with whatever is simplest; most teams do fine with a repo per service or product, and move to a monorepo when sharing code across many projects becomes the main pain.</div>
+    </section>
+
+    <!-- 36 -->
+    <section class="block" id="alternatives-git">
+      <h2><span class="num">36</span> Alternatives &amp; Competitors</h2>
+      <h3>Hosting platforms (all use Git)</h3>
+      <table>
+        <tr><th>Platform</th><th>Known for</th></tr>
+        <tr><td><a href="https://about.gitlab.com/" target="_blank" rel="noopener">GitLab</a></td><td>All-in-one DevOps platform (CI/CD, registry, security) in the cloud or self-managed; "merge requests" instead of pull requests</td></tr>
+        <tr><td><a href="https://bitbucket.org/" target="_blank" rel="noopener">Bitbucket</a></td><td>Atlassian's hosting; integrates with Jira</td></tr>
+        <tr><td><a href="https://forgejo.org/" target="_blank" rel="noopener">Forgejo</a> / Gitea / <a href="https://codeberg.org/" target="_blank" rel="noopener">Codeberg</a></td><td>Lightweight, community-governed, easy to self-host; Codeberg is a public service run on Forgejo</td></tr>
+        <tr><td>Cloud-provider repos</td><td>Azure DevOps Repos and others tied to a cloud ecosystem</td></tr>
+      </table>
+      <h3>Other version-control systems</h3>
+      <table>
+        <tr><th>Tool</th><th>Note</th></tr>
+        <tr><td>Subversion (SVN), Mercurial, Perforce, Fossil</td><td>Older or specialised systems; Perforce is still common in game studios with huge binary assets</td></tr>
+        <tr><td><strong>Jujutsu (<code>jj</code>)</strong></td><td>A newer, Git-compatible version-control tool with a simpler mental model (no staging area; easy history editing); can work on top of ordinary Git repos. Popular with early adopters — Git remains the standard</td></tr>
+        <tr><td>Sapling</td><td>Meta's source-control system, also compatible with Git hosting</td></tr>
+      </table>
+      <div class="callout life">Git is the common "language"; platforms are different cafés where people meet to speak it. Newer tools are like speed-reading glasses that still read the same books.</div>
+    </section>
+
+    <!-- 37 -->
+    <section class="block" id="team-conventions">
+      <h2><span class="num">37</span> Team Conventions That Keep Repos Tidy</h2>
+      <table>
+        <tr><th>Convention</th><th>Example</th></tr>
+        <tr><td>Branch names</td><td><code>feature/login-form</code>, <code>fix/cart-crash</code>, <code>docs/readme-install</code>, <code>chore/update-deps</code></td></tr>
+        <tr><td>Commit messages</td><td>Imperative summary ≤ 50 chars; or Conventional Commits (<code>feat:</code>, <code>fix:</code>)</td></tr>
+        <tr><td>PR template</td><td>What, why, how tested, checklist (Level 5)</td></tr>
+        <tr><td>PR size</td><td>Aim for reviewable in ~15 minutes</td></tr>
+        <tr><td>Review turnaround</td><td>Agree a target (e.g., within one working day) so PRs don't rot</td></tr>
+        <tr><td>Definition of done</td><td>Tests added, docs updated, CI green, reviewed</td></tr>
+        <tr><td>Merge method</td><td>One agreed default (often squash) and delete branches after merging</td></tr>
+        <tr><td>Releases</td><td>SemVer tags + generated release notes + a changelog</td></tr>
+        <tr><td>Who owns what</td><td><code>CODEOWNERS</code> and clear team permissions</td></tr>
+      </table>
+      <div class="callout tip">Write the conventions down in <code>CONTRIBUTING.md</code> and enforce what you can with rulesets, templates and CI — rules that exist only in people's heads get forgotten.</div>
+    </section>
+
+    <div class="part-divider"><h2>Part F — Hands-On (6 Progressive Levels)</h2></div>
+
+    <div class="callout tip">
+      <strong>How these levels work:</strong> Levels 0–4 are real Git commands that were run in scratch folders; the outputs shown are from those runs (your commit ids will differ). Level 5 uses the GitHub CLI and GitHub config files: the files were syntax-checked but the commands need your GitHub account and were <em>not</em> run for this page.
+      To follow along, make an empty folder and set <code>git config user.name</code> / <code>user.email</code> first (Section 5).
+    </div>
+
+    <!-- 38 -->
+    <section class="block" id="code-first-repo">
+      <h2><span class="num">38</span> Level 0 — First Repo, Commits, Diff, Undo &amp; Stash</h2>
+      <details class="deepdive" open>
+        <summary>Commands and real output</summary>
+        <pre><code>$ git init -b main my-project &amp;&amp; cd my-project
+$ echo "print('hello')" &gt; app.py
+$ git status -s
+?? app.py                          # ?? = untracked
+$ git add app.py
+$ git commit -m "Add first version of app"
+
+$ echo "print('hello, friend')" &gt; app.py
+$ git diff
+-print('hello')
++print('hello, friend')
+$ git commit -am "Make greeting friendlier"      # -a stages tracked files for you
+$ git log --oneline
+ba4274d Make greeting friendlier
+54a59b6 Add first version of app
+
+# --- undo an unsaved edit
+$ echo "oops, a bad edit" &gt;&gt; app.py
+$ git status -s
+ M app.py                          # M = modified
+$ git restore app.py               # back to the last commit
+$ git status -s                    # (prints nothing = clean)
+
+# --- stash: tuck work away, then bring it back
+$ echo "wip" &gt;&gt; app.py
+$ git stash                        # desk is clean again
+$ git stash list
+stash@{0}: WIP on main: ba4274d Make greeting friendlier
+$ git stash pop                    # work returns
+$ git restore app.py               # (we didn't want it after all)
+
+# --- fix the last commit's message
+$ git commit --amend -m "Make the greeting friendlier"
+$ git log --oneline
+d6e3c50 Make the greeting friendlier         # note: new id, because the commit was rewritten
+54a59b6 Add first version of app</code></pre>
+        <p>Notice the amended commit has a <em>new id</em> (<code>ba4274d</code> → <code>d6e3c50</code>): changing a commit's message creates a different commit — the fingerprint idea from Section 4.</p>
+      </details>
+    </section>
+
+    <!-- 39 -->
+    <section class="block" id="code-branch-merge">
+      <h2><span class="num">39</span> Level 1 — Branches, Merging &amp; Solving a Conflict</h2>
+      <details class="deepdive" open>
+        <summary>Commands and real output</summary>
+        <pre><code>$ git switch -c feature/shout
+$ echo "print('HELLO, FRIEND')" &gt; app.py
+$ git commit -am "Shout the greeting"
+$ git switch main
+$ git merge --no-ff feature/shout -m "Merge feature/shout"
+$ git log --oneline --graph
+*   6cb6a33 Merge feature/shout
+|\
+| * b7e2f38 Shout the greeting
+|/
+* d6e3c50 Make the greeting friendlier
+* 54a59b6 Add first version of app
+
+# --- now make two branches that disagree about the same file
+$ git switch -c branch-a &amp;&amp; echo "colour = 'red'"  &gt; theme.py &amp;&amp; git add . &amp;&amp; git commit -m "theme: red"
+$ git switch main &amp;&amp; git switch -c branch-b &amp;&amp; echo "colour = 'blue'" &gt; theme.py &amp;&amp; git add . &amp;&amp; git commit -m "theme: blue"
+$ git switch branch-a
+$ git merge branch-b
+Auto-merging theme.py
+CONFLICT (add/add): Merge conflict in theme.py
+Automatic merge failed; fix conflicts and then commit the result.
+
+$ cat theme.py
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+colour = 'red'
+=======
+colour = 'blue'
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; branch-b
+
+# decide (we chose purple!), delete the marker lines, then:
+$ echo "colour = 'purple'" &gt; theme.py
+$ git add theme.py
+$ git commit -m "Merge branch-b (chose purple)"
+$ git log --oneline --graph | head -5
+*   338c6dc Merge branch-b (chose purple)
+|\
+| * b83d7a8 theme: blue
+* | 8e5fef9 theme: red
+|/</code></pre>
+        <p>The first merge was a normal "bubble" because we asked for <code>--no-ff</code>. The second needed a human decision. Git never guesses when two people changed the same line.</p>
+      </details>
+    </section>
+
+    <!-- 40 -->
+    <section class="block" id="code-rescue">
+      <h2><span class="num">40</span> Level 2 — "I Lost My Commits!" Rescue With the Reflog</h2>
+      <details class="deepdive" open>
+        <summary>Commands and real output</summary>
+        <pre><code>$ git log --oneline
+0ba9b90 version 3
+999a8a5 version 2
+3604544 version 1
+
+$ git reset --hard HEAD~2          # ouch: throws away 2 commits (and their changes)
+$ git log --oneline
+3604544 version 1                  # "version 2" and "version 3" seem gone!
+
+$ git reflog                       # Git's diary of where HEAD has been
+3604544 HEAD@{0}: reset: moving to HEAD~2
+0ba9b90 HEAD@{1}: commit: version 3        # <- there it is
+999a8a5 HEAD@{2}: commit: version 2
+3604544 HEAD@{3}: commit (initial): version 1
+
+$ git reset --hard 0ba9b90         # jump back to the lost commit
+$ git log --oneline
+0ba9b90 version 3
+999a8a5 version 2
+3604544 version 1                  # everything is back
+
+# --- the SAFE way to undo something that was already shared:
+$ git revert --no-edit HEAD        # adds a NEW commit that reverses version 3
+$ git log --oneline
+88ef8bc Revert "version 3"
+0ba9b90 version 3
+999a8a5 version 2
+3604544 version 1</code></pre>
+        <p>
+          Commits you "lose" aren't deleted immediately — they stay in Git's database and in the reflog for a while until Git's cleanup removes them (by default reflog entries expire after 90 days, or 30 days for commits no branch can reach). <strong>Uncommitted</strong> changes destroyed by <code>--hard</code> are the only thing truly unrecoverable — one more reason to commit early.
+        </p>
+      </details>
+    </section>
+
+    <!-- 41 -->
+    <section class="block" id="code-rebase-bisect">
+      <h2><span class="num">41</span> Level 3 — Rebase, Cherry-Pick, Worktree &amp; Bisect</h2>
+      <details class="deepdive" open>
+        <summary>Commands and real output</summary>
+        <pre><code># Setup: nine commits; "commit 7" secretly introduced a bug (status.txt contains BROKEN from then on)
+
+# --- BISECT: let Git find the first bad commit automatically
+$ git bisect start HEAD HEAD~8            # bad = now, good = 8 commits ago
+$ git bisect run sh -c '! grep -q BROKEN status.txt'     # test script: succeeds when file is fine
+e4d274fd46c65ee8b7d5c97aed8f4eb259d762e7 is the first 'bad' commit
+bisect found first 'bad' commit           # -> "commit 7 (introduces bug)"
+$ git bisect reset                        # go back to where you were
+
+# --- REBASE: put feature work on top of the latest main
+$ git switch -c feature HEAD~4 &amp;&amp; echo f &gt; f.txt &amp;&amp; git add . &amp;&amp; git commit -m "feature work"
+$ git switch feature
+$ git rebase main
+$ git log --oneline --graph | head -3
+* 66e983f feature work                    # replayed on top of main's newest commit
+* 725d4b3 commit 9
+* bdf1b48 commit 8                        # a straight line: no merge commit
+
+# --- CHERRY-PICK: copy one commit onto another branch
+$ git switch -c release-1 HEAD~3
+$ git cherry-pick main~1                  # copies "commit 8"
+[release-1 88e327c] commit 8              # note the NEW id: it's a copy
+
+# --- WORKTREE: a second folder, another branch, same history
+$ git worktree add ../q-hotfix -b hotfix main~2
+$ git worktree list
+&lt;tmp&gt;/q         88e327c [release-1]
+&lt;tmp&gt;/q-hotfix  e4d274f [hotfix]
+$ git worktree remove ../q-hotfix</code></pre>
+        <p>
+          Bisect examined only a few of the nine commits to name the culprit; in a project with 1,000 commits it needs about 10 steps. The test script exits with success (0) for "good" and failure for "bad" — any command that can say yes/no (a test suite!) can drive it.
+        </p>
+      </details>
+    </section>
+
+    <!-- 42 -->
+    <section class="block" id="code-remotes">
+      <h2><span class="num">42</span> Level 4 — Two People, One Remote (Simulated Locally)</h2>
+      <p>You don't need GitHub to practise remotes: a <strong>bare repository</strong> (a repo with no working files, just history) plays the part of GitHub, and two clones play Alice and Bob.</p>
+      <details class="deepdive" open>
+        <summary>Commands and real output</summary>
+        <pre><code>$ git init --bare -b main origin.git             # the "GitHub" in the middle
+$ git clone origin.git alice                     # Alice's copy
+$ git clone origin.git bob                       # Bob's copy
+
+# Alice commits and pushes
+alice$ echo "hello" &gt; readme.txt &amp;&amp; git add . &amp;&amp; git commit -m "Alice: first commit" &amp;&amp; git push -u origin main
+# (Bob clones AFTER this so he has it) ...
+alice$ echo "from alice" &gt;&gt; readme.txt &amp;&amp; git commit -am "Alice: add line" &amp;&amp; git push origin main
+
+# Bob, who hasn't seen Alice's second commit, makes his own and tries to push
+bob$ echo "from bob" &gt; bob.txt &amp;&amp; git add . &amp;&amp; git commit -m "Bob: add file"
+bob$ git push origin main
+ ! [rejected]        main -&gt; main (fetch first)
+hint: Updates were rejected because the remote contains work that you do not
+hint: have locally. ...
+
+bob$ git fetch                                   # look first, change nothing
+bob$ git status -sb | head -1
+## main...origin/main [ahead 1, behind 1]        # he has 1 new commit, and is missing 1
+
+bob$ git pull --rebase origin main               # replay Bob's commit on top of Alice's
+bob$ git push origin main                        # accepted this time
+bob$ git log --oneline --graph
+* 78e501d Bob: add file
+* c1a7270 Alice: add line
+* be40f9a Alice: first commit</code></pre>
+        <p>
+          That "rejected" message is Git protecting Alice's work. The cure is always the same: <strong>fetch → integrate (<code>pull --rebase</code> or merge) → push</strong>. (Tip for Windows users: if you see surprise line-ending changes while practising, add a <code>.gitattributes</code> as in Section 19, or clone with <code>-c core.autocrlf=false</code>.)
+        </p>
+      </details>
+    </section>
+
+    <!-- 43 -->
+    <section class="block" id="code-github-files">
+      <h2><span class="num">43</span> Level 5 — GitHub CLI &amp; the Config Files Every Repo Should Have</h2>
+      <details class="deepdive" open>
+        <summary>The pull-request loop with <code>gh</code> (not run for this page)</summary>
+        <pre><code>gh auth login                                  # once: log in
+gh repo clone OWNER/REPO &amp;&amp; cd REPO
+git switch -c fix/typo-in-readme
+# ...edit files...
+git add -A &amp;&amp; git commit -m "Fix typo in README"
+git push -u origin fix/typo-in-readme
+gh pr create --fill                            # opens the PR, using your commit message
+gh pr checks                                   # see CI status
+gh pr merge --auto --squash                    # merge automatically when checks &amp; reviews pass
+git switch main &amp;&amp; git pull                    # sync afterwards
+git branch -d fix/typo-in-readme               # tidy up</code></pre>
+      </details>
+      <details class="deepdive" open>
+        <summary><code>.github/CODEOWNERS</code> (who must review what)</summary>
+        <pre><code># Each line: a file pattern, then who must review changes to it
+*                       @my-org/engineers
+/docs/                  @my-org/writers
+/.github/workflows/     @my-org/platform-team</code></pre>
+      </details>
+      <details class="deepdive" open>
+        <summary><code>.github/pull_request_template.md</code></summary>
+        <pre><code>## What does this change?
+&lt;!-- one or two sentences --&gt;
+
+## Why?
+&lt;!-- link the issue: Fixes #123 --&gt;
+
+## How was it tested?
+- [ ] Unit tests added/updated
+- [ ] Tried it locally
+
+## Checklist
+- [ ] Small, focused change
+- [ ] No secrets or personal data</code></pre>
+      </details>
+      <details class="deepdive" open>
+        <summary><code>.github/dependabot.yml</code> (YAML syntax-checked)</summary>
+        <pre><code>version: 2
+updates:
+  - package-ecosystem: "github-actions"   # keep your workflow actions up to date
+    directory: "/"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "pip"              # and your Python dependencies
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5</code></pre>
+      </details>
+      <details class="deepdive" open>
+        <summary><code>.github/workflows/ci.yml</code> (YAML syntax-checked)</summary>
+        <pre><code>name: CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read                  # least privilege
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@0000000000000000000000000000000000000000   # replace with the real full commit SHA you trust
+      - run: echo "run your tests here"</code></pre>
+        <p>
+          Together these four small files give you: required reviewers for sensitive paths, a consistent PR description, automatic dependency-update PRs, and a CI check that runs on every PR. Then turn on a ruleset that requires the CI check and a review before anything merges to <code>main</code> (Section 27).
+        </p>
+      </details>
+    </section>
+
+    <div class="part-divider"><h2>Part G — Reference</h2></div>
+
+    <!-- 44 -->
+    <section class="block" id="glossary-git">
+      <h2><span class="num">44</span> Mini Glossary</h2>
+      <dl class="glossary">
+        <dt><a href="https://git-scm.com/" target="_blank" rel="noopener">Git</a></dt><dd>A free, distributed version-control system that records snapshots of your project's history.</dd>
+        <dt>GitHub</dt><dd>A website/service that hosts Git repositories and adds pull requests, issues, Actions, security tools and more.</dd>
+        <dt>Repository (repo)</dt><dd>A project's files plus their complete history (stored in the hidden <code>.git</code> folder).</dd>
+        <dt>Commit</dt><dd>A saved snapshot with a message, author, time and a pointer to its parent commit.</dd>
+        <dt>Hash / commit id (SHA)</dt><dd>The unique fingerprint of a commit or object, computed from its content (40 hex characters for SHA-1, 64 for SHA-256).</dd>
+        <dt>Branch</dt><dd>A movable label pointing to a commit; the unit of parallel work.</dd>
+        <dt>HEAD</dt><dd>A pointer to where you currently are (usually the current branch's latest commit).</dd>
+        <dt>main / master</dt><dd>The conventional name of the primary branch; <code>main</code> is the modern default.</dd>
+        <dt>Working directory / working tree</dt><dd>The actual files you edit.</dd>
+        <dt>Staging area (index)</dt><dd>Where you collect changes for the next commit.</dd>
+        <dt>Untracked / modified / staged</dt><dd>States of files: unknown to Git / changed since last commit / queued for the next commit.</dd>
+        <dt>Clone</dt><dd>Copy a whole repository (with history) from a remote to your computer.</dd>
+        <dt>Remote / origin / upstream</dt><dd>Another copy of the repo (e.g., on GitHub); <code>origin</code> is the default name; <code>upstream</code> usually names the original of a fork.</dd>
+        <dt>Fetch / pull / push</dt><dd>Download new commits only / download and integrate them / upload your commits.</dd>
+        <dt>Merge</dt><dd>Combine another branch's history into the current one.</dd>
+        <dt>Fast-forward</dt><dd>A merge where the branch label simply moves forward because there's nothing to combine.</dd>
+        <dt>Merge commit</dt><dd>A commit with two parents that joins two lines of history.</dd>
+        <dt>Conflict</dt><dd>When two changes touch the same lines and Git needs a human to choose.</dd>
+        <dt>Rebase</dt><dd>Replay your commits on top of another base, producing a linear history with new commit ids.</dd>
+        <dt>Squash</dt><dd>Combine several commits into one.</dd>
+        <dt>Cherry-pick</dt><dd>Copy a single commit onto the current branch.</dd>
+        <dt>Stash</dt><dd>A drawer for uncommitted changes you want to set aside temporarily.</dd>
+        <dt>Reset / restore / revert</dt><dd>Move a branch back / discard unsaved changes / add a new commit that undoes an old one.</dd>
+        <dt>Reflog</dt><dd>Git's private log of where HEAD and branches have pointed; used to rescue "lost" commits.</dd>
+        <dt>Tag</dt><dd>A permanent label on a commit, often a release version.</dd>
+        <dt>Semantic Versioning (SemVer)</dt><dd>Version numbers MAJOR.MINOR.PATCH: breaking / feature / fix.</dd>
+        <dt>.gitignore</dt><dd>A file listing patterns Git should not track.</dd>
+        <dt>.gitattributes</dt><dd>A file that controls how Git treats certain files (line endings, binary, diff rules).</dd>
+        <dt>Hook</dt><dd>A script that Git runs automatically at certain events (pre-commit, pre-push).</dd>
+        <dt>Blob / tree</dt><dd>Git's internal objects for file contents / folder listings.</dd>
+        <dt>Packfile</dt><dd>A compressed bundle of many Git objects for efficient storage and transfer.</dd>
+        <dt>Worktree</dt><dd>An additional working folder attached to the same repository, on another branch.</dd>
+        <dt>Bisect</dt><dd>Binary-searching history to find the commit that introduced a bug.</dd>
+        <dt>Blame</dt><dd>Showing who last changed each line of a file and in which commit.</dd>
+        <dt>Shallow / partial clone</dt><dd>A clone with limited history / one that fetches file contents only when needed.</dd>
+        <dt>Sparse checkout</dt><dd>Checking out only chosen folders of a big repo.</dd>
+        <dt>Git LFS</dt><dd>Large File Storage: keeps big binaries outside normal history, replacing them with pointers.</dd>
+        <dt>Submodule</dt><dd>A repo nested inside another at a fixed commit.</dd>
+        <dt>SHA-1 / SHA-256</dt><dd>Hash functions Git can use; SHA-256 is the planned future default (Git 3.0, no date yet).</dd>
+        <dt>reftable</dt><dd>A newer on-disk format for storing branch/tag pointers (planned future default).</dd>
+        <dt>Pull request (PR)</dt><dd>A GitHub proposal to merge a branch, with review, comments and automated checks.</dd>
+        <dt>Draft PR</dt><dd>A PR marked "not ready to merge yet".</dd>
+        <dt>Fork</dt><dd>Your own GitHub copy of someone else's repository.</dd>
+        <dt>Issue</dt><dd>A GitHub item for tracking a bug, task or idea.</dd>
+        <dt>Squash and merge / rebase and merge</dt><dd>GitHub PR merge methods that produce one commit / a linear replay.</dd>
+        <dt>Merge queue</dt><dd>A GitHub feature that tests approved PRs combined with the latest main before merging.</dd>
+        <dt>Branch protection / ruleset</dt><dd>GitHub rules that enforce reviews, checks and restrictions on branches (and, for rulesets, tags and many repos).</dd>
+        <dt>CODEOWNERS</dt><dd>A file mapping paths to people/teams who must review changes there.</dd>
+        <dt>GitHub Actions</dt><dd>GitHub's built-in automation/CI-CD system, defined by YAML workflows.</dd>
+        <dt>Workflow lockfile</dt><dd><code>.github/workflows/actions.lock</code>: records exact commits for a workflow's actions and their dependencies (generally available 28 Oct 2026).</dd>
+        <dt>Dependabot</dt><dd>GitHub's bot that raises PRs to update vulnerable or outdated dependencies.</dd>
+        <dt>Secret scanning / push protection</dt><dd>Detects committed secrets / blocks a push that contains one.</dd>
+        <dt>CodeQL / code scanning</dt><dd>GitHub's code-analysis engine and feature for finding vulnerabilities.</dd>
+        <dt>Codespaces</dt><dd>Cloud-hosted development environments launched from a repo.</dd>
+        <dt>GitHub Pages</dt><dd>Free static-site hosting from a repository.</dd>
+        <dt>Copilot coding agent</dt><dd>An AI agent that takes an assigned issue, works in a sandbox and opens a pull request for review.</dd>
+        <dt><code>gh</code></dt><dd>The GitHub command-line tool.</dd>
+        <dt>GitHub App / fine-grained PAT</dt><dd>A bot-style integration with scoped permissions / a personal token limited to chosen repos and permissions.</dd>
+        <dt>Signed commit</dt><dd>A commit cryptographically signed (SSH or GPG) so GitHub can show it as Verified.</dd>
+        <dt>Jujutsu (jj)</dt><dd>A newer Git-compatible version-control tool with a different workflow.</dd>
+      </dl>
+    </section>
+
+    <!-- 45 -->
+    <section class="block" id="faq-git">
+      <h2><span class="num">45</span> FAQ</h2>
+      <details class="quiz-item"><summary>Q: Is Git the same as GitHub?</summary><p class="answer">No. Git is the open-source version-control tool that runs on your computer. GitHub is a hosting and collaboration service for Git repositories (owned by Microsoft). Alternatives such as GitLab, Bitbucket and Forgejo host Git repos too.</p></details>
+      <details class="quiz-item"><summary>Q: What's the difference between <code>git add</code> and <code>git commit</code>?</summary><p class="answer"><code>add</code> places changes in the staging area (choosing what goes in the next snapshot); <code>commit</code> saves everything staged as a permanent snapshot in the history.</p></details>
+      <details class="quiz-item"><summary>Q: <code>git pull</code> vs <code>git fetch</code>?</summary><p class="answer"><code>fetch</code> only downloads new commits and updates your view of the remote (<code>origin/main</code>) without touching your files. <code>pull</code> is fetch plus merging (or rebasing) into your current branch.</p></details>
+      <details class="quiz-item"><summary>Q: I made a mistake — can I undo it?</summary><p class="answer">Almost always. Unsaved edits: <code>git restore</code>. Last local commit: <code>--amend</code> or <code>reset</code>. Already-shared commit: <code>revert</code>. "Lost" commits: find them in <code>git reflog</code> and reset to them. The only truly unrecoverable thing is uncommitted work destroyed by <code>--hard</code> or <code>restore</code>.</p></details>
+      <details class="quiz-item"><summary>Q: Merge or rebase?</summary><p class="answer">Merge preserves the real branching history and is always safe on shared branches. Rebase makes a straight line by rewriting your commits — great for tidying <em>your own</em> branch before a PR, but never rebase commits others have pulled.</p></details>
+      <details class="quiz-item"><summary>Q: I committed a password. Deleting the file is enough, right?</summary><p class="answer">No — it remains in history and in anyone's clone or fork. Revoke and rotate the secret immediately; optionally rewrite history with <code>git filter-repo</code> and force-push; then add prevention (secret scanning, push protection, a secrets manager).</p></details>
+      <details class="quiz-item"><summary>Q: What's <code>origin</code>, and why is it called that?</summary><p class="answer">It's simply the default nickname for the remote you cloned from. You can have more remotes (like <code>upstream</code> for the original project of a fork) with any names.</p></details>
+      <details class="quiz-item"><summary>Q: Why do people say "main" instead of "master" now?</summary><p class="answer">The industry shifted new repositories' default branch to <code>main</code> around 2020; GitHub and Git both support it, and Git 3.0 is planned to make <code>main</code> the built-in default. Existing repos can rename their default branch.</p></details>
+      <details class="quiz-item"><summary>Q: Will AI make Git/GitHub obsolete?</summary><p class="answer">No — AI agents work <em>through</em> Git and GitHub: they branch, commit and open pull requests, and your reviews, checks and rulesets are how you control them. Knowing Git matters more when much of the code is machine-written and must be reviewed and traced.</p></details>
+    </section>
+
+    <!-- 46 -->
+    <section class="block" id="interview-git">
+      <h2><span class="num">46</span> Interview Questions (With Answers) — The Complete Set</h2>
+      <p>Grouped by category, easy → hard.</p>
+
+      <h3>46.1 — Fundamentals</h3>
+      <details class="quiz-item"><summary>Q: What is Git and why is it called distributed?</summary><p class="answer">A version-control system that records snapshots of a project. Distributed means every clone contains the full history, so most operations work offline and any clone can restore the project if a server is lost.</p></details>
+      <details class="quiz-item"><summary>Q: Git vs GitHub?</summary><p class="answer">Git is the tool; GitHub is a hosting platform adding collaboration (pull requests, issues, Actions, security, Copilot).</p></details>
+      <details class="quiz-item"><summary>Q: Explain the three areas of Git.</summary><p class="answer">Working directory (files you edit), staging area/index (changes selected for the next commit), and the repository (committed history). <code>add</code> moves changes to staging; <code>commit</code> moves them to history.</p></details>
+      <details class="quiz-item"><summary>Q: How does Git store data — snapshots or diffs?</summary><p class="answer">Conceptually snapshots: each commit references a tree of the entire project state, with unchanged files reused by hash. (Packfiles may delta-compress storage, but that's an implementation detail.)</p></details>
+      <details class="quiz-item"><summary>Q: What is a commit hash and why does it matter?</summary><p class="answer">A fingerprint computed from the commit's contents (tree, parents, author, message). Any change produces a different hash, which makes history tamper-evident and lets Git deduplicate identical content.</p></details>
+      <details class="quiz-item"><summary>Q: What is HEAD?</summary><p class="answer">A pointer to the currently checked-out commit, usually via a branch. "Detached HEAD" means it points directly at a commit instead of a branch.</p></details>
+
+      <h3>46.2 — Everyday Commands &amp; Branching</h3>
+      <details class="quiz-item"><summary>Q: What does <code>git status</code> show?</summary><p class="answer">Which files are untracked, modified, or staged, which branch you're on, and how it compares to its remote counterpart.</p></details>
+      <details class="quiz-item"><summary>Q: What is a branch, and why is creating one cheap?</summary><p class="answer">A branch is just a small file holding a commit id (a movable pointer). Creating one doesn't copy any files, so it's instant.</p></details>
+      <details class="quiz-item"><summary>Q: Fast-forward vs three-way merge?</summary><p class="answer">Fast-forward: the target hasn't diverged, so Git just moves the pointer. Three-way: both sides have new commits, so Git creates a merge commit with two parents using the common ancestor.</p></details>
+      <details class="quiz-item"><summary>Q: How do you resolve a merge conflict?</summary><p class="answer">Open the conflicted files, choose/combine the correct content and remove the conflict markers (&lt;&lt;&lt;&lt;&lt;&lt;&lt;, =======, &gt;&gt;&gt;&gt;&gt;&gt;&gt;), <code>git add</code> the files, then commit (or <code>git merge --continue</code>); <code>git merge --abort</code> cancels.</p></details>
+      <details class="quiz-item"><summary>Q: <code>git switch</code> / <code>restore</code> vs <code>checkout</code>?</summary><p class="answer"><code>checkout</code> did two jobs (change branches, restore files). <code>switch</code> (branches) and <code>restore</code> (files) split them for clarity (since Git 2.23). <code>checkout</code> still works and isn't being removed.</p></details>
+      <details class="quiz-item"><summary>Q: What is <code>.gitignore</code> and what doesn't it do?</summary><p class="answer">It lists patterns of untracked files Git should ignore. It doesn't affect files already tracked or remove anything already committed.</p></details>
+
+      <h3>46.3 — Undoing &amp; Rewriting History</h3>
+      <details class="quiz-item"><summary>Q: Reset (soft/mixed/hard) vs revert?</summary><p class="answer">Reset moves the branch pointer back: soft keeps changes staged, mixed keeps them unstaged, hard discards them. Revert creates a new commit that inverts an earlier one without rewriting history — the right tool for shared branches.</p></details>
+      <details class="quiz-item"><summary>Q: How do you recover commits after a bad <code>reset --hard</code>?</summary><p class="answer">Run <code>git reflog</code>, find the commit id from before the reset, then <code>git reset --hard &lt;id&gt;</code> (or create a branch there). Reflog entries expire (default 90 days; 30 for unreachable commits).</p></details>
+      <details class="quiz-item"><summary>Q: How would you change the last commit's message or add a forgotten file?</summary><p class="answer"><code>git add file</code> then <code>git commit --amend</code> (optionally <code>-m</code>). It creates a new commit id, so don't amend commits that have already been pushed and shared.</p></details>
+      <details class="quiz-item"><summary>Q: What does interactive rebase let you do?</summary><p class="answer">Reorder, reword, squash/fixup, edit or drop commits in a range (<code>git rebase -i HEAD~N</code>) to tidy local history before sharing.</p></details>
+      <details class="quiz-item"><summary>Q: Why is force-pushing dangerous and what's safer?</summary><p class="answer">It overwrites remote history and can destroy teammates' commits. Use <code>--force-with-lease</code>, which fails if the remote moved unexpectedly; never force-push shared protected branches (ruleset them).</p></details>
+      <details class="quiz-item"><summary>Q: How do you remove a secret that was committed?</summary><p class="answer">Rotate/revoke it first. Then optionally purge history with <code>git filter-repo</code> or BFG, force-push, and have everyone re-clone; enable secret scanning and push protection to prevent repeats. Deleting it in a new commit isn't enough.</p></details>
+
+      <h3>46.4 — Collaboration &amp; Remotes</h3>
+      <details class="quiz-item"><summary>Q: fetch vs pull?</summary><p class="answer">Fetch downloads remote commits and updates remote-tracking branches without altering your working files; pull = fetch + merge (or rebase).</p></details>
+      <details class="quiz-item"><summary>Q: Why was your push rejected and what do you do?</summary><p class="answer">The remote branch has commits you lack (non-fast-forward). Fetch, integrate with merge or <code>pull --rebase</code>, resolve conflicts, then push.</p></details>
+      <details class="quiz-item"><summary>Q: Fork vs clone vs branch?</summary><p class="answer">Clone copies a repo to your machine. Branch is a parallel line within a repo you can write to. Fork is your own server-side copy of someone else's repo, used when you lack write access; you PR back from the fork.</p></details>
+      <details class="quiz-item"><summary>Q: How do you keep a fork up to date?</summary><p class="answer">Add the original as <code>upstream</code>, <code>git fetch upstream</code>, merge or rebase <code>upstream/main</code> into your main, and push to your fork (or use GitHub's "Sync fork").</p></details>
+      <details class="quiz-item"><summary>Q: What is rebase's "golden rule"?</summary><p class="answer">Never rebase commits that others may have based work on (shared/public history); rebase only your own local or personal-branch commits.</p></details>
+      <details class="quiz-item"><summary>Q: How do you work on two branches at once without stashing?</summary><p class="answer">Use <code>git worktree add</code> to check out the second branch in another folder sharing the same repository.</p></details>
+
+      <h3>46.5 — GitHub Workflow</h3>
+      <details class="quiz-item"><summary>Q: What makes a good pull request?</summary><p class="answer">Small and focused, clear description (what/why/how tested), linked issue, passing checks, screenshots for UI, and responsive handling of review comments; use draft PRs for early feedback.</p></details>
+      <details class="quiz-item"><summary>Q: Merge commit vs squash vs rebase-and-merge on GitHub?</summary><p class="answer">Merge commit keeps all commits plus a merge commit; squash collapses the PR into one commit (clean main, popular); rebase-and-merge replays commits linearly without a merge commit. Teams choose one default.</p></details>
+      <details class="quiz-item"><summary>Q: What is a merge queue?</summary><p class="answer">A GitHub feature that serialises approved PRs, testing each combined with the latest main (and earlier queued PRs) so that individually passing PRs can't break main together.</p></details>
+      <details class="quiz-item"><summary>Q: Branch protection rules vs rulesets?</summary><p class="answer">Both enforce policies (PRs required, approvals, status checks, no force-push). Rulesets are newer: layered, can target tags and many repos at the organization level, have bypass lists and an evaluate mode.</p></details>
+      <details class="quiz-item"><summary>Q: What is CODEOWNERS?</summary><p class="answer">A file mapping path patterns to users/teams; with the right rule enabled, PRs touching those paths need their review.</p></details>
+      <details class="quiz-item"><summary>Q: How do issues and PRs link?</summary><p class="answer">Closing keywords in a PR description or commit (<code>Fixes #123</code>) auto-close the issue when the PR merges into the default branch; references (<code>#123</code>) create cross-links.</p></details>
+
+      <h3>46.6 — Branching Strategy &amp; Release</h3>
+      <details class="quiz-item"><summary>Q: Compare GitHub Flow, trunk-based development and GitFlow.</summary><p class="answer">GitHub Flow: main + short feature branches + PRs. Trunk-based: even shorter integration (daily) with feature flags. GitFlow: develop/release/hotfix long-lived branches for scheduled versioned releases — more ceremony and bigger merges. Research favours short-lived branches for delivery performance.</p></details>
+      <details class="quiz-item"><summary>Q: How do you ship a hotfix to an older release?</summary><p class="answer">Fix on main (or a hotfix branch), then <code>cherry-pick</code> the commit onto the release branch, tag a patch version, and release; ensure the fix exists on both lines.</p></details>
+      <details class="quiz-item"><summary>Q: Lightweight vs annotated tags, and SemVer?</summary><p class="answer">Lightweight is a bare pointer; annotated stores tagger, date and message (and can be signed) — preferred for releases. SemVer: MAJOR for breaking changes, MINOR for compatible features, PATCH for fixes. Tags must be pushed explicitly.</p></details>
+      <details class="quiz-item"><summary>Q: Monorepo vs polyrepo trade-offs?</summary><p class="answer">Monorepo: easy cross-project changes and consistency, but needs tooling for scale, partial builds and permissions. Polyrepo: clear boundaries and simple pipelines, but dependency versioning and cross-repo changes are harder.</p></details>
+
+      <h3>46.7 — Internals &amp; Performance</h3>
+      <details class="quiz-item"><summary>Q: Name Git's object types and how they relate.</summary><p class="answer">Blob (file contents), tree (directory listing of blobs/trees), commit (points to a tree and parent commits, with metadata), tag (annotated pointer). Refs (branches/tags) are names pointing to commits; HEAD points to a ref.</p></details>
+      <details class="quiz-item"><summary>Q: Why do identical files share storage?</summary><p class="answer">Objects are stored by the hash of their content (content-addressable), so identical content has the identical id and is stored once.</p></details>
+      <details class="quiz-item"><summary>Q: What's changing with SHA-256 and Git 3.0?</summary><p class="answer">Git supports SHA-256 repositories now (<code>git init --object-format=sha256</code>). Git 3.0 is planned to make SHA-256, reftable ref storage and <code>main</code> the defaults for new repos and to require Rust to build — but there's no release date, and ecosystem support is a prerequisite. Existing SHA-1 repos continue to work.</p></details>
+      <details class="quiz-item"><summary>Q: How do you work with a huge repository?</summary><p class="answer">Shallow clone (<code>--depth</code>), partial clone (<code>--filter=blob:none</code>), sparse checkout, Git LFS for big binaries, background maintenance, and tools like Scalar; in CI fetch only what's needed.</p></details>
+      <details class="quiz-item"><summary>Q: How do you find which commit introduced a bug?</summary><p class="answer"><code>git bisect</code>: mark a known good and bad commit; Git binary-searches, and with <code>git bisect run &lt;test&gt;</code> automates it, finding the culprit in about log₂(N) steps.</p></details>
+
+      <h3>46.8 — Security, Actions &amp; AI</h3>
+      <details class="quiz-item"><summary>Q: How do you prove a commit's author?</summary><p class="answer">Sign commits with GPG or an SSH key (<code>gpg.format ssh</code>, <code>commit.gpgsign true</code>) and register the public key on GitHub as a signing key to get the Verified badge; rulesets can require signed commits.</p></details>
+      <details class="quiz-item"><summary>Q: How would you secure GitHub Actions workflows?</summary><p class="answer">Read-only <code>GITHUB_TOKEN</code> by default; pin third-party actions to commit SHAs or use workflow lockfiles (<code>.github/workflows/actions.lock</code>, GA Oct 2026); OIDC for cloud access; avoid script injection and risky triggers like <code>pull_request_target</code> with untrusted code; require CODEOWNERS review for workflow changes; use environments with approvals; ephemeral runners.</p></details>
+      <details class="quiz-item"><summary>Q: What do secret scanning and push protection do?</summary><p class="answer">Secret scanning detects known credential formats in repos; push protection blocks a push that contains a detected secret before it lands. Both are on by default for supported patterns, including free public repos; GitHub keeps adding detectors.</p></details>
+      <details class="quiz-item"><summary>Q: What does Dependabot do?</summary><p class="answer">Alerts about vulnerable dependencies and opens PRs to update them (security and version updates), including GitHub Actions versions; configured via <code>.github/dependabot.yml</code>.</p></details>
+      <details class="quiz-item"><summary>Q: How should you integrate AI coding agents with GitHub safely?</summary><p class="answer">Treat the agent as another contributor: it works on a branch and opens a PR; enforce required checks, CODEOWNERS and rulesets; review every line; give it minimal permissions; keep secrets out of prompts; and beware prompt injection through issue text or web pages it reads.</p></details>
+      <details class="quiz-item"><summary>Q: GitHub App vs personal access token?</summary><p class="answer">A GitHub App acts as its own identity with fine-grained, installable permissions and short-lived tokens — best for automation. A fine-grained PAT is scoped to repos/permissions for personal scripts; classic PATs are broad and long-lived and best avoided.</p></details>
+    </section>
+
+    <!-- 47 -->
+    <section class="block" id="pitfalls-git">
+      <h2><span class="num">47</span> Common Problems &amp; Checklist</h2>
+      <div class="grid">
+        <div class="card"><h4>🔓 Secrets in history</h4><p>Committing keys or <code>.env</code> files. Ignore them, scan, and rotate immediately if leaked.</p></div>
+        <div class="card"><h4>💥 Force-pushing shared branches</h4><p>Overwrites teammates' work. Use <code>--force-with-lease</code> on your own branches only; protect <code>main</code>.</p></div>
+        <div class="card"><h4>🐘 Giant commits &amp; PRs</h4><p>Impossible to review. Commit and open PRs in small, focused pieces.</p></div>
+        <div class="card"><h4>📦 Committing big binaries or dependencies</h4><p>Bloats history forever. Use <code>.gitignore</code>, LFS or an artifact store.</p></div>
+        <div class="card"><h4>🌳 Long-lived branches</h4><p>Painful merges. Integrate often; hide unfinished work with feature flags.</p></div>
+        <div class="card"><h4>🔀 Rebasing shared history</h4><p>Makes teammates' clones diverge. Rebase only your own unpushed commits.</p></div>
+        <div class="card"><h4>↩️ <code>reset --hard</code> with unsaved work</h4><p>Uncommitted changes can't be recovered. Commit or stash first.</p></div>
+        <div class="card"><h4>⚙️ Unpinned CI actions</h4><p>A moved tag can run malicious code. Pin to SHAs or use a workflow lockfile; read-only tokens.</p></div>
+      </div>
+      <div class="callout tip">
+        <strong>Repo health checklist:</strong>
+        <ul>
+          <li>☐ README, LICENSE, CONTRIBUTING, CODE_OF_CONDUCT and SECURITY.md exist</li>
+          <li>☐ <code>.gitignore</code> and <code>.gitattributes</code> committed; no secrets or big binaries in history</li>
+          <li>☐ <code>main</code> protected by a ruleset: PR + review + passing checks + no force-push/delete</li>
+          <li>☐ CODEOWNERS for sensitive paths (especially <code>.github/workflows</code>)</li>
+          <li>☐ CI runs on every PR; workflows use read-only token permissions and pinned/locked actions</li>
+          <li>☐ Dependabot, secret scanning + push protection, and code scanning enabled</li>
+          <li>☐ 2FA/passkeys on all accounts; signed commits where required; fine-grained tokens with expiry</li>
+          <li>☐ Conventions written down: branch names, commit style, merge method, release/tag process</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 48 -->
+    <section class="block" id="quiz-git">
+      <h2><span class="num">48</span> Quick Quiz 🎯</h2>
+      <p>Click each question to reveal the answer.</p>
+      <details class="quiz-item"><summary>Q1: What's the difference between Git and GitHub?</summary><p class="answer">Git is the version-control tool on your computer; GitHub is an online service that hosts Git repositories and adds collaboration features.</p></details>
+      <details class="quiz-item"><summary>Q2: In what order do changes travel locally?</summary><p class="answer">Working directory → (<code>git add</code>) staging area → (<code>git commit</code>) repository.</p></details>
+      <details class="quiz-item"><summary>Q3: Which command downloads new commits but changes none of your files?</summary><p class="answer"><code>git fetch</code>.</p></details>
+      <details class="quiz-item"><summary>Q4: You pushed a bad commit to a shared branch. Safest undo?</summary><p class="answer"><code>git revert</code> — it adds a new commit that reverses the bad one without rewriting shared history.</p></details>
+      <details class="quiz-item"><summary>Q5: Where can you find a commit you "lost" after <code>reset --hard</code>?</summary><p class="answer">In <code>git reflog</code>; then reset or branch from its id.</p></details>
+      <details class="quiz-item"><summary>Q6: What is the golden rule of rebase?</summary><p class="answer">Never rebase commits that other people have already pulled — only your own local/personal-branch commits.</p></details>
+      <details class="quiz-item"><summary>Q7: Which GitHub feature tests approved PRs combined with the latest main before merging?</summary><p class="answer">The merge queue.</p></details>
+      <details class="quiz-item"><summary>Q8: You accidentally committed an API key. First action?</summary><p class="answer">Revoke/rotate the key immediately; then clean history if needed and add prevention (secret scanning, push protection, ignore rules).</p></details>
+    </section>
+
+    <!-- 49 -->
+    <section class="block" id="resources-git">
+      <h2><span class="num">49</span> Learn More — Resources</h2>
+      <p>Official docs first. Git and GitHub both change often — check dates.</p>
+
+      <h3>Git</h3>
+      <ul class="resources">
+        <li><span class="tag docs">Docs</span> <a href="https://git-scm.com/" target="_blank" rel="noopener">git-scm.com</a> · <a href="https://git-scm.com/docs" target="_blank" rel="noopener">Reference manual</a> · <a href="https://git-scm.com/downloads" target="_blank" rel="noopener">Downloads</a></li>
+        <li><span class="tag article">Book</span> <a href="https://git-scm.com/book" target="_blank" rel="noopener">Pro Git (free online book)</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://git-scm.com/docs/BreakingChanges" target="_blank" rel="noopener">Planned Git 3.0 breaking changes</a> · <a href="https://git-scm.com/docs/gitworkflows" target="_blank" rel="noopener">gitworkflows</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://github.com/newren/git-filter-repo" target="_blank" rel="noopener">git-filter-repo</a> · <a href="https://git-lfs.com/" target="_blank" rel="noopener">Git LFS</a></li>
+        <li><span class="tag article">Wiki</span> <a href="https://en.wikipedia.org/wiki/Git" target="_blank" rel="noopener">Git</a> · <a href="https://en.wikipedia.org/wiki/GitHub" target="_blank" rel="noopener">GitHub</a></li>
+      </ul>
+
+      <h3>GitHub</h3>
+      <ul class="resources">
+        <li><span class="tag docs">Docs</span> <a href="https://docs.github.com/" target="_blank" rel="noopener">GitHub Docs</a> · <a href="https://docs.github.com/en/get-started" target="_blank" rel="noopener">Get started</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://docs.github.com/en/pull-requests" target="_blank" rel="noopener">Pull requests</a> · <a href="https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository" target="_blank" rel="noopener">Branches &amp; rulesets</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://docs.github.com/en/actions" target="_blank" rel="noopener">GitHub Actions</a> · <a href="https://docs.github.com/en/actions/reference/security/secure-use" target="_blank" rel="noopener">Secure use of Actions</a> · <a href="https://github.blog/changelog/2026-10-28-github-actions-workflow-lockfiles-are-generally-available/" target="_blank" rel="noopener">Workflow lockfiles (GA)</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://docs.github.com/en/code-security" target="_blank" rel="noopener">Code security (Dependabot, secret scanning, CodeQL)</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://docs.github.com/en/copilot" target="_blank" rel="noopener">GitHub Copilot</a> · <a href="https://github.blog/changelog/" target="_blank" rel="noopener">GitHub Changelog</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://cli.github.com/" target="_blank" rel="noopener">GitHub CLI</a> · <a href="https://docs.github.com/en/rest" target="_blank" rel="noopener">REST API</a> · <a href="https://docs.github.com/en/pages" target="_blank" rel="noopener">Pages</a> · <a href="https://docs.github.com/en/codespaces" target="_blank" rel="noopener">Codespaces</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://opensource.guide/" target="_blank" rel="noopener">Open Source Guides</a> · <a href="https://choosealicense.com/" target="_blank" rel="noopener">Choose a License</a> · <a href="https://semver.org/" target="_blank" rel="noopener">Semantic Versioning</a> · <a href="https://www.conventionalcommits.org/" target="_blank" rel="noopener">Conventional Commits</a></li>
+      </ul>
+
+      <h3>Practice &amp; alternatives</h3>
+      <ul class="resources">
+        <li><span class="tag docs">Docs</span> <a href="https://learngitbranching.js.org/" target="_blank" rel="noopener">Learn Git Branching (interactive)</a> · <a href="https://ohshitgit.com/" target="_blank" rel="noopener">Oh Shit, Git!?! (fixing mistakes)</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://about.gitlab.com/" target="_blank" rel="noopener">GitLab</a> · <a href="https://forgejo.org/" target="_blank" rel="noopener">Forgejo</a> · <a href="https://codeberg.org/" target="_blank" rel="noopener">Codeberg</a> · <a href="https://github.com/jj-vcs/jj" target="_blank" rel="noopener">Jujutsu (jj)</a></li>
+      </ul>
+
+      <h3>Video explainers</h3>
+      <ul class="resources">
+        <li><span class="tag video">Video</span> <a href="https://www.youtube.com/results?search_query=git+and+github+for+beginners" target="_blank" rel="noopener">Search: "git and github for beginners"</a></li>
+        <li><span class="tag video">Video</span> <a href="https://www.youtube.com/results?search_query=git+rebase+vs+merge+explained" target="_blank" rel="noopener">Search: "git rebase vs merge explained"</a></li>
+        <li><span class="tag video">Video</span> <a href="https://www.youtube.com/results?search_query=git+internals+explained" target="_blank" rel="noopener">Search: "git internals explained"</a></li>
+        <li><span class="tag video">Video</span> <a href="https://www.youtube.com/results?search_query=github+pull+request+tutorial" target="_blank" rel="noopener">Search: "github pull request tutorial"</a></li>
+      </ul>
+
+      <p>Related guides in this roadmap: <a href="devops.html">DevOps</a>, <a href="ai-agents.html">AI Agents</a>, <a href="mcp.html">MCP</a> and <a href="llm.html">LLMs</a>.</p>
+    </section>
+
+  </main>
+</div>
+
+<div class="page-nav">
+  <a href="index.html">⬅ Back to Roadmap Home</a>
+  <a href="devops.html">Related: DevOps ➜</a>
+</div>
+
+</body>
+</html>

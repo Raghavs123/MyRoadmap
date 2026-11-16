@@ -1,0 +1,19 @@
+/* extra styles for the LeetCode practice pages (the rest comes from ../assets/style.css) */
+.lang-tabs { display: flex; gap: 6px; margin: 14px 0 0; flex-wrap: wrap; align-items: center; }
+.lang-tabs button { background: var(--bg-soft); color: var(--text-dim); border: 1px solid var(--card-border); border-bottom: none; border-radius: 10px 10px 0 0; padding: 8px 18px; font: inherit; font-weight: 700; cursor: pointer; }
+.lang-tabs button.active { background: var(--code-bg); color: var(--accent-4); border-color: var(--accent-4); }
+.lang-tabs .copy { margin-left: auto; border-radius: 8px; border-bottom: 1px solid var(--card-border); padding: 4px 12px; font-size: 0.85rem; }
+.lang-code { display: none; margin-top: 0; border-top-left-radius: 0; }
+.lang-code.active { display: block; }
+.diff { display: inline-block; padding: 2px 12px; border-radius: 999px; font-weight: 700; border: 1px solid; }
+.diff.Easy { color: var(--accent-3); border-color: var(--accent-3); } .diff.Medium { color: var(--accent-4); border-color: var(--accent-4); } .diff.Hard { color: var(--danger); border-color: var(--danger); }
+.level { display: inline-block; padding: 1px 10px; border: 1px solid var(--card-border); border-radius: 999px; color: var(--accent); font-size: 0.85rem; margin-left: 8px; vertical-align: middle; }
+.statement { border-left: 4px solid var(--accent); padding: 4px 18px; background: var(--bg-soft); border-radius: 0 10px 10px 0; }
+.example { background: var(--code-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px 16px; margin: 10px 0; }
+.example .label { color: var(--text-dim); font-size: 0.85rem; text-transform: uppercase; letter-spacing: .05em; }
+.trace-table td, .trace-table th { font-size: 0.88rem; white-space: nowrap; }
+.pass { color: var(--accent-3); font-weight: 700; } .skip { color: var(--text-dim); }
+.lc-button { display: inline-block; padding: 8px 18px; border-radius: 999px; background: var(--accent); color: #0f1221 !important; font-weight: 800; text-decoration: none !important; border: 1px solid var(--accent); }
+.lc-button:hover { background: var(--accent-4); border-color: var(--accent-4); }
+.lc-button.small { padding: 2px 10px; font-size: 0.8rem; }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }

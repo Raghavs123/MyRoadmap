@@ -1,0 +1,1990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevOps — The Complete A-Z Guide</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♾️</text></svg>">
+</head>
+<body>
+
+<header class="hero">
+  <div class="breadcrumb"><a href="index.html">🏠 Roadmap Home</a> / DevOps</div>
+  <h1>♾️ DevOps — Building, Shipping &amp; Running Software</h1>
+  <p class="subtitle">
+    The complete A-to-Z guide: what DevOps really is (it's a way of working, not a job title), Git, CI/CD,
+    containers &amp; Kubernetes, infrastructure as code, monitoring &amp; SLOs, security (DevSecOps), platform
+    engineering, GitOps, and how AI is changing all of it — in plain words, with daily-life examples,
+    diagrams and runnable code. <strong>Last reviewed: 29 October 2026</strong> (tools and versions change
+    fast — dated notes mark what to re-check).
+  </p>
+  <div class="badge-row">
+    <span class="badge beginner">Beginner friendly</span>
+    <span class="badge intermediate">Intermediate concepts</span>
+    <span class="badge advanced">Advanced / Production-level</span>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- ============ SIDEBAR TOC ============ -->
+  <nav class="toc">
+    <h3>On this page (54 sections)</h3>
+    <ol>
+      <li class="toc-part">Part A — Foundations</li>
+      <li><a href="#what-is-devops">What is DevOps?</a></li>
+      <li><a href="#why-devops">Why do we need it? (the wall)</a></li>
+      <li><a href="#prereq-devops">Prerequisite crash course</a></li>
+      <li><a href="#devops-lifecycle">The DevOps loop (lifecycle)</a></li>
+      <li><a href="#history-devops">History & timeline</a></li>
+
+      <li class="toc-part">Part B — Culture, Teams & Metrics</li>
+      <li><a href="#culture-devops">Culture first (CALMS)</a></li>
+      <li><a href="#devops-vs-others">DevOps vs Agile, SRE, Platform…</a></li>
+      <li><a href="#dora-metrics">Measuring: the DORA five</a></li>
+
+      <li class="toc-part">Part C — Code, Build & Test</li>
+      <li><a href="#git-vcs">Git & version control</a></li>
+      <li><a href="#code-review-prs">Code review & pull requests</a></li>
+      <li><a href="#build-artifacts">Building & artifacts</a></li>
+      <li><a href="#testing-devops">Testing: the pyramid</a></li>
+      <li><a href="#ci-devops">Continuous Integration</a></li>
+
+      <li class="toc-part">Part D — Deliver & Release</li>
+      <li><a href="#cd-devops">Continuous Delivery vs Deployment</a></li>
+      <li><a href="#deploy-strategies">Safe rollouts: rolling, blue-green, canary</a></li>
+      <li><a href="#feature-flags-release">Feature flags</a></li>
+      <li><a href="#gitops-devops">GitOps</a></li>
+      <li><a href="#ci-tools-compare">CI/CD tools compared</a></li>
+
+      <li class="toc-part">Part E — Containers & Kubernetes</li>
+      <li><a href="#containers-devops">Containers</a></li>
+      <li><a href="#docker-practices">Docker & good images</a></li>
+      <li><a href="#k8s-concepts">Kubernetes: the big picture</a></li>
+      <li><a href="#k8s-objects">Kubernetes objects</a></li>
+      <li><a href="#helm-kustomize">Helm & Kustomize</a></li>
+      <li><a href="#k8s-versions-ops">Versions & upgrades</a></li>
+      <li><a href="#serverless-paas">Serverless & PaaS</a></li>
+
+      <li class="toc-part">Part F — Infrastructure</li>
+      <li><a href="#cloud-basics">Cloud basics</a></li>
+      <li><a href="#iac-devops">Infrastructure as Code</a></li>
+      <li><a href="#iac-tools-compare">IaC tools compared</a></li>
+      <li><a href="#config-mgmt-policy">Config mgmt, drift & policy</a></li>
+
+      <li class="toc-part">Part G — Operate & Reliability</li>
+      <li><a href="#observability">Observability</a></li>
+      <li><a href="#monitoring-alerting">Monitoring & alerting</a></li>
+      <li><a href="#slo-sre">SLIs, SLOs & error budgets</a></li>
+      <li><a href="#incident-mgmt">Incidents & postmortems</a></li>
+      <li><a href="#resilience-dr">Resilience, backups & DR</a></li>
+      <li><a href="#finops-devops">Cost & FinOps</a></li>
+
+      <li class="toc-part">Part H — Security</li>
+      <li><a href="#devsecops">DevSecOps: shift left</a></li>
+      <li><a href="#supply-chain">Software supply chain</a></li>
+      <li><a href="#secrets-iam">Secrets & least privilege</a></li>
+
+      <li class="toc-part">Part I — Platform & AI</li>
+      <li><a href="#platform-eng">Platform engineering</a></li>
+      <li><a href="#ai-devops">AI in DevOps</a></li>
+      <li><a href="#learning-path">Learning path & careers</a></li>
+
+      <li class="toc-part">Part J — Hands-On Code</li>
+      <li><a href="#git-code">Level 0 — a Git workflow</a></li>
+      <li><a href="#docker-code">Level 1 — a Dockerfile</a></li>
+      <li><a href="#ci-yaml-code">Level 2 — a CI pipeline</a></li>
+      <li><a href="#k8s-yaml-code">Level 3 — Kubernetes manifests</a></li>
+      <li><a href="#iac-code">Level 4 — infrastructure as code</a></li>
+      <li><a href="#slo-code">Level 5 — error-budget math</a></li>
+      <li><a href="#deploy-script-code">Level 6 — deploy + auto-rollback</a></li>
+
+      <li class="toc-part">Part K — Reference</li>
+      <li><a href="#glossary-devops">Mini glossary</a></li>
+      <li><a href="#faq-devops">FAQ</a></li>
+      <li><a href="#interview-devops">Interview questions (with answers)</a></li>
+      <li><a href="#pitfalls-devops">Common problems & checklist</a></li>
+      <li><a href="#quiz-devops">Quick quiz</a></li>
+      <li><a href="#resources-devops">Learn more — resources</a></li>
+    </ol>
+  </nav>
+
+  <!-- ============ MAIN CONTENT ============ -->
+  <main>
+
+    <div class="part-divider"><h2>Part A — Foundations</h2></div>
+
+    <!-- 1 -->
+    <section class="block" id="what-is-devops">
+      <h2><span class="num">1</span> What is DevOps? (the 10-second answer)</h2>
+      <div class="callout def">
+        <strong>DevOps</strong> is a way of working where the people who <em>build</em> software (<strong>Dev</strong>elopers) and the people who <em>run</em> it (<strong>Op</strong>erations)
+        work as one team, using automation and constant feedback so that good changes reach users <strong>quickly, safely and repeatedly</strong>.
+      </div>
+      <div class="callout life">
+        Think of a restaurant. In the old way, the <em>chefs</em> invent dishes and shove them through a hatch, and the <em>waiters</em> (who never saw the recipe) have to serve them and deal with angry customers.
+        In the DevOps way, chefs and waiters work in one kitchen: they test dishes together, agree on how to serve them, and when a customer complains they fix the recipe the same day — with checklists (automation) so
+        nothing gets forgotten.
+      </div>
+      <p>DevOps is <strong>not</strong> a single tool, and it's not just a job title. It's three things together:</p>
+      <table>
+        <tr><th>Part</th><th>What it means</th><th>Everyday example</th></tr>
+        <tr><td>🤝 Culture</td><td>Shared ownership, no blame, learning from mistakes</td><td>"We built it, we run it, we fix it — together"</td></tr>
+        <tr><td>🔁 Practices</td><td>Small changes, version control, automated tests, frequent releases, monitoring</td><td>Shipping ten tiny updates a week instead of one giant yearly release</td></tr>
+        <tr><td>🛠️ Tools</td><td>Git, CI/CD pipelines, containers, Kubernetes, infrastructure as code, monitoring</td><td>A robot that tests and deploys every change automatically</td></tr>
+      </table>
+      <div class="callout tip">
+        If you remember one sentence: <strong>DevOps = make the road from "an idea in a developer's head" to "working in front of users" short, safe and boring.</strong>
+      </div>
+    </section>
+
+    <!-- 2 -->
+    <section class="block" id="why-devops">
+      <h2><span class="num">2</span> Why do we need it? The "wall of confusion"</h2>
+      <p>Imagine two teams with opposite goals sitting on either side of a wall:</p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 250" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrDo1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+          </defs>
+          <text x="165" y="22" text-anchor="middle" class="phase-label">Before DevOps</text>
+          <rect class="box-hl" x="10" y="40" width="130" height="90" rx="8"/><text x="75" y="70" text-anchor="middle">👩‍💻 Developers</text><text x="75" y="90" text-anchor="middle" class="edge-label">goal: ship NEW features</text><text x="75" y="106" text-anchor="middle" class="edge-label">fast!</text>
+          <rect class="box" x="148" y="30" width="18" height="110" rx="3" fill="var(--accent-3)"/><text x="157" y="160" text-anchor="middle" class="edge-label">wall</text>
+          <rect class="box-final" x="174" y="40" width="130" height="90" rx="8"/><text x="239" y="70" text-anchor="middle">🧑‍🔧 Operations</text><text x="239" y="90" text-anchor="middle" class="edge-label">goal: keep it STABLE</text><text x="239" y="106" text-anchor="middle" class="edge-label">don't change!</text>
+          <path class="loop" d="M75,40 Q165,0 239,40" marker-end="url(#arrDo1)"/><text x="165" y="14" text-anchor="middle" class="edge-label">"here's the code, good luck"</text>
+          <text x="165" y="195" text-anchor="middle" class="edge-label">Slow releases · finger-pointing · "works on my machine"</text>
+
+          <text x="545" y="22" text-anchor="middle" class="phase-label">With DevOps</text>
+          <rect x="390" y="35" width="310" height="110" rx="12" fill="none" stroke="var(--accent)" stroke-dasharray="6 4"/>
+          <rect class="box-hl" x="405" y="55" width="130" height="70" rx="8"/><text x="470" y="85" text-anchor="middle">👩‍💻 Dev</text><text x="470" y="103" text-anchor="middle" class="edge-label">+ tests + on-call</text>
+          <rect class="box-final" x="555" y="55" width="130" height="70" rx="8"/><text x="620" y="85" text-anchor="middle">🧑‍🔧 Ops</text><text x="620" y="103" text-anchor="middle" class="edge-label">+ code + automation</text>
+          <line class="edge" x1="535" y1="90" x2="553" y2="90" marker-end="url(#arrDo1)"/>
+          <text x="545" y="195" text-anchor="middle" class="edge-label">One team · shared goals · small safe changes · fast feedback</text>
+        </svg>
+        <div class="diagram-caption">Fig 1 — Old way: developers throw code over a wall to operations. DevOps way: one team shares the whole journey, from idea to running in production.</div>
+      </div>
+      <table>
+        <tr><th>Old problem</th><th>What it looked like</th><th>DevOps answer</th></tr>
+        <tr><td>"It works on my machine!"</td><td>Code runs for the developer but breaks on the server</td><td>Containers and infrastructure as code make environments identical</td></tr>
+        <tr><td>Giant, scary releases</td><td>Months of changes shipped at once, weekend all-nighters</td><td>Small changes shipped often through automated pipelines</td></tr>
+        <tr><td>Slow feedback</td><td>Learn about a bug weeks after writing it</td><td>Tests run on every change in minutes; monitoring shows live behaviour</td></tr>
+        <tr><td>Blame games</td><td>"Dev's fault" vs "Ops' fault"</td><td>Shared ownership and blameless postmortems</td></tr>
+        <tr><td>Manual toil</td><td>People clicking through servers, forgetting steps</td><td>Automate anything done more than twice</td></tr>
+      </table>
+    </section>
+
+    <!-- 3 -->
+    <section class="block" id="prereq-devops">
+      <h2><span class="num">3</span> Prerequisite Crash Course</h2>
+      <p>You don't need to be an expert in any of these — just know what they are:</p>
+      <table>
+        <tr><th>Thing</th><th>Plain meaning</th><th>Why DevOps cares</th></tr>
+        <tr><td>Command line (shell)</td><td>Typing instructions to the computer instead of clicking</td><td>Automation = commands you can save and re-run</td></tr>
+        <tr><td>Linux basics</td><td>The operating system most servers run (files, permissions, processes)</td><td>Servers and containers are almost all Linux</td></tr>
+        <tr><td>Networking basics</td><td>IP addresses, ports, DNS (phone book for websites), HTTP, firewalls</td><td>"Why can't service A reach service B?" is the #1 question</td></tr>
+        <tr><td>A programming language</td><td>Python, Go, JavaScript, Bash…</td><td>Scripts, tools and automation are code</td></tr>
+        <tr><td>Git</td><td>A tool that records every change to code, with history</td><td>The single source of truth for everything (<a href="#git-vcs">Section 9</a>; full guide: <a href="git-github.html">Git &amp; GitHub</a>)</td></tr>
+        <tr><td>Cloud computing</td><td>Renting computers, storage and services over the internet</td><td>Where most software runs today (<a href="#cloud-basics">Section 26</a>)</td></tr>
+        <tr><td>Client / server &amp; APIs</td><td>One program asks, another answers over the network</td><td>Almost every system is services talking to each other</td></tr>
+      </table>
+      <div class="callout tip">
+        Related guides here: <a href="llm.html">LLMs</a> and <a href="ai-agents.html">AI Agents</a> (we'll meet AI in DevOps in <a href="#ai-devops">Section 40</a>), and <a href="mcp.html">MCP</a> for how AI tools connect to your systems.
+      </div>
+    </section>
+
+    <!-- 4 -->
+    <section class="block" id="devops-lifecycle">
+      <h2><span class="num">4</span> The DevOps Loop — Eight Steps That Repeat Forever</h2>
+      <p>DevOps is drawn as an "infinity loop" because it never stops: what you learn from running the software feeds the next plan.</p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrDo2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+            <marker id="arrDo2b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent-3)"/></marker>
+          </defs>
+          <text x="180" y="22" text-anchor="middle" class="phase-label">DEV side (build)</text>
+          <text x="540" y="22" text-anchor="middle" class="phase-label">OPS side (run)</text>
+          <rect class="box" x="20" y="40" width="130" height="48" rx="8"/><text x="85" y="68" text-anchor="middle">1. Plan</text>
+          <rect class="box" x="200" y="40" width="130" height="48" rx="8"/><text x="265" y="68" text-anchor="middle">2. Code</text>
+          <rect class="box-hl" x="380" y="40" width="130" height="48" rx="8"/><text x="445" y="68" text-anchor="middle">3. Build</text>
+          <rect class="box-hl" x="560" y="40" width="130" height="48" rx="8"/><text x="625" y="68" text-anchor="middle">4. Test</text>
+          <rect class="box-final" x="560" y="200" width="130" height="48" rx="8"/><text x="625" y="228" text-anchor="middle">5. Release</text>
+          <rect class="box-final" x="380" y="200" width="130" height="48" rx="8"/><text x="445" y="228" text-anchor="middle">6. Deploy</text>
+          <rect class="box" x="200" y="200" width="130" height="48" rx="8"/><text x="265" y="228" text-anchor="middle">7. Operate</text>
+          <rect class="box" x="20" y="200" width="130" height="48" rx="8"/><text x="85" y="228" text-anchor="middle">8. Monitor</text>
+          <line class="edge" x1="150" y1="64" x2="198" y2="64" marker-end="url(#arrDo2)"/>
+          <line class="edge" x1="330" y1="64" x2="378" y2="64" marker-end="url(#arrDo2)"/>
+          <line class="edge" x1="510" y1="64" x2="558" y2="64" marker-end="url(#arrDo2)"/>
+          <line class="edge" x1="625" y1="88" x2="625" y2="198" marker-end="url(#arrDo2)"/>
+          <line class="edge" x1="560" y1="224" x2="512" y2="224" marker-end="url(#arrDo2)"/>
+          <line class="edge" x1="380" y1="224" x2="332" y2="224" marker-end="url(#arrDo2)"/>
+          <line class="edge" x1="200" y1="224" x2="152" y2="224" marker-end="url(#arrDo2)"/>
+          <path class="loop" d="M85,200 L85,92" marker-end="url(#arrDo2b)"/>
+          <text x="95" y="150" class="edge-label">feedback → next plan</text>
+          <text x="360" y="150" text-anchor="middle">Plan → Code → Build → Test → Release → Deploy → Operate → Monitor → Plan …</text>
+        </svg>
+        <div class="diagram-caption">Fig 2 — The DevOps loop. Automation connects the steps (CI/CD); monitoring feeds learning back into planning.</div>
+      </div>
+      <table>
+        <tr><th>Step</th><th>What happens</th><th>Typical tools</th><th>Section</th></tr>
+        <tr><td>1. Plan</td><td>Decide what to build; split into small tasks</td><td>Issue trackers, boards</td><td>—</td></tr>
+        <tr><td>2. Code</td><td>Write it; keep every change in version control</td><td>Git, GitHub/GitLab</td><td><a href="#git-vcs">9</a>, <a href="#code-review-prs">10</a></td></tr>
+        <tr><td>3. Build</td><td>Turn code into something runnable (a package or container image)</td><td>Build tools, Docker</td><td><a href="#build-artifacts">11</a></td></tr>
+        <tr><td>4. Test</td><td>Automatically check it works</td><td>Unit/integration/e2e test frameworks</td><td><a href="#testing-devops">12</a>, <a href="#ci-devops">13</a></td></tr>
+        <tr><td>5. Release</td><td>Package and approve the change for users</td><td>Registries, feature flags</td><td><a href="#cd-devops">14</a>, <a href="#feature-flags-release">16</a></td></tr>
+        <tr><td>6. Deploy</td><td>Put it onto servers safely</td><td>Kubernetes, Argo CD, Helm</td><td><a href="#deploy-strategies">15</a>, <a href="#gitops-devops">17</a>, <a href="#k8s-concepts">21</a></td></tr>
+        <tr><td>7. Operate</td><td>Keep it running; scale; fix; manage infrastructure</td><td>Terraform/OpenTofu, cloud, on-call</td><td><a href="#iac-devops">27</a>, <a href="#incident-mgmt">33</a></td></tr>
+        <tr><td>8. Monitor</td><td>Watch behaviour and users; learn</td><td>Metrics, logs, traces, alerts</td><td><a href="#observability">30</a>–<a href="#slo-sre">32</a></td></tr>
+      </table>
+      <div class="callout life">
+        Like a bakery that bakes, sells, watches which loaves sell out or go stale, and adjusts tomorrow's recipe — every single day, in small batches.
+      </div>
+    </section>
+
+    <!-- 5 -->
+    <section class="block" id="history-devops">
+      <h2><span class="num">5</span> A Short History &amp; Timeline</h2>
+      <table>
+        <tr><th>When</th><th>What happened</th></tr>
+        <tr><td>1990s–2000s</td><td>"Waterfall" projects: plan for months, build for months, hand to operations; releases are rare and risky. Agile (2001) speeds up <em>development</em> but operations is left behind.</td></tr>
+        <tr><td>2003–2008</td><td>Google formalizes <strong>Site Reliability Engineering (SRE)</strong> — treating operations as a software problem. Virtualization and early cloud (AWS, 2006) make servers rentable.</td></tr>
+        <tr><td>2009</td><td>The term <strong>"DevOps"</strong> is born around the first DevOpsDays conference in Belgium, after the talk "10+ deploys per day" from Flickr.</td></tr>
+        <tr><td>2010s</td><td>Jenkins, Chef/Puppet/Ansible, Git(Hub), Docker (2013) and Kubernetes (2014, open-sourced by Google) arrive. Infrastructure-as-code (Terraform, 2014) and CI/CD pipelines become standard.</td></tr>
+        <tr><td>2016–2019</td><td><strong>DevSecOps</strong> adds security into the loop; the book <em>Accelerate</em> and the DORA research show which practices make teams fast <em>and</em> stable; <strong>GitOps</strong> is named (2017).</td></tr>
+        <tr><td>2020–2023</td><td>Supply-chain attacks (SolarWinds, Log4Shell) push SBOMs, signing and SLSA; the HashiCorp license change (2023) leads to the <strong>OpenTofu</strong> fork; platform engineering rises.</td></tr>
+        <tr><td>2024–2025</td><td><strong>Platform engineering</strong> and internal developer platforms go mainstream; AI coding assistants spread; DORA's 2025 report is retitled <em>State of AI-assisted Software Development</em> and updates its metrics to five.</td></tr>
+        <tr><td>2026</td><td>Kubernetes 1.37 ships (Aug); IBM owns HashiCorp (Terraform stays under the BSL license; OpenTofu is the open alternative); AI agents for coding and incident response reach general availability from cloud vendors; a wave of CI/CD supply-chain attacks makes workflow hardening a top priority. Details in Parts H and I.</td></tr>
+      </table>
+      <div class="callout tip">
+        Pattern: each decade the "unit" got smaller and faster — servers → virtual machines → containers → functions — and each time automation had to catch up. The principles (small changes, fast feedback, shared ownership) stayed the same.
+      </div>
+    </section>
+
+    <div class="part-divider"><h2>Part B — Culture, Teams &amp; Metrics</h2></div>
+
+    <!-- 6 -->
+    <section class="block" id="culture-devops">
+      <h2><span class="num">6</span> Culture First — CALMS</h2>
+      <p>Tools are the easy part. A popular memory aid for what DevOps really needs is <strong>CALMS</strong>:</p>
+      <table>
+        <tr><th>Letter</th><th>Means</th><th>In practice</th><th>Daily-life version</th></tr>
+        <tr><td><strong>C</strong>ulture</td><td>Trust, shared ownership, no blame</td><td>"You build it, you run it"; blameless postmortems</td><td>A family that fixes the leak together instead of arguing who left the tap on</td></tr>
+        <tr><td><strong>A</strong>utomation</td><td>Machines do repeatable work</td><td>Pipelines, infrastructure as code, auto-tests</td><td>A dishwasher instead of washing by hand every time</td></tr>
+        <tr><td><strong>L</strong>ean</td><td>Small batches, remove waste, limit work in progress</td><td>Many tiny releases instead of one huge one</td><td>Cooking one dish at a time instead of ten half-done ones</td></tr>
+        <tr><td><strong>M</strong>easurement</td><td>Decide with data</td><td>DORA metrics, SLOs, dashboards</td><td>A thermometer instead of "it feels warm"</td></tr>
+        <tr><td><strong>S</strong>haring</td><td>Knowledge flows openly</td><td>Docs, runbooks, demos, shared dashboards</td><td>A shared recipe book</td></tr>
+      </table>
+      <h3>The habits that matter most</h3>
+      <div class="grid">
+        <div class="card"><h4>📦 Small batches</h4><p>Small changes are easier to review, test, and undo. A bug in a 20-line change is found in minutes; in a 20,000-line change, in days.</p></div>
+        <div class="card"><h4>🧯 Blameless postmortems</h4><p>After an incident, ask "what in our system let this happen?" not "who messed up?" People hide mistakes when punished; systems get fixed when mistakes are shared.</p></div>
+        <div class="card"><h4>🔁 Fast feedback</h4><p>Know in minutes if a change broke something — from tests before release and monitoring after.</p></div>
+        <div class="card"><h4>🤖 Automate the boring</h4><p>If a human does it the same way every time, a script should. Humans are for judgement.</p></div>
+      </div>
+      <div class="callout warn">
+        A common mistake: renaming the "sysadmin team" to "DevOps team" and buying tools. Without shared ownership you've just built a new wall with a trendier label.
+      </div>
+    </section>
+
+    <!-- 7 -->
+    <section class="block" id="devops-vs-others">
+      <h2><span class="num">7</span> DevOps vs Agile, SRE, DevSecOps, Platform Engineering, GitOps…</h2>
+      <p>These words overlap. Here is how they relate:</p>
+      <table>
+        <tr><th>Term</th><th>One-line meaning</th><th>Relationship to DevOps</th></tr>
+        <tr><td><strong>Agile</strong></td><td>Build software in short cycles with constant customer feedback</td><td>Agile speeds up <em>building</em>; DevOps extends the speed through <em>release and running</em></td></tr>
+        <tr><td><strong>SRE</strong> (Site Reliability Engineering)</td><td>Apply software engineering to operations; manage reliability with SLOs and error budgets</td><td>"A specific, opinionated way to do DevOps" — more math about reliability (<a href="#slo-sre">Section 32</a>)</td></tr>
+        <tr><td><strong>DevSecOps</strong></td><td>Build security into every step instead of bolting it on at the end</td><td>DevOps + security as everyone's job (<a href="#devsecops">Section 36</a>)</td></tr>
+        <tr><td><strong>Platform engineering</strong></td><td>A team builds an internal "paved road" (self-service tools) for other developers</td><td>An evolution that reduces the load DevOps puts on every team (<a href="#platform-eng">Section 39</a>)</td></tr>
+        <tr><td><strong>GitOps</strong></td><td>Git is the single source of truth; software syncs the real system to match Git</td><td>A way to do continuous deployment (<a href="#gitops-devops">Section 17</a>)</td></tr>
+        <tr><td><strong>MLOps / LLMOps</strong></td><td>DevOps ideas applied to machine-learning models (data, training, evaluation, serving)</td><td>Same loop, with models and data as extra "code"</td></tr>
+        <tr><td><strong>FinOps</strong></td><td>Treat cloud cost as an engineering concern</td><td>Adds "money" to the things we measure (<a href="#finops-devops">Section 35</a>)</td></tr>
+      </table>
+      <div class="callout life">
+        DevOps is the idea "cooks and waiters work as one team". SRE is a precise rulebook for keeping the restaurant open. Platform engineering is the shared professional kitchen so each new chef doesn't have to build their own stove.
+      </div>
+    </section>
+
+    <!-- 8 -->
+    <section class="block" id="dora-metrics">
+      <h2><span class="num">8</span> Measuring Success — The DORA Five</h2>
+      <p>
+        How do you know if DevOps is working? The <a href="https://dora.dev/guides/dora-metrics/" target="_blank" rel="noopener">DORA research programme</a> (years of studies of thousands of teams) found five delivery measures that predict how a team and its organisation do.
+        The 2025 report grouped them as <strong>throughput</strong> (how fast) and <strong>instability</strong> (how bumpy):
+      </p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 230" xmlns="http://www.w3.org/2000/svg">
+          <rect class="box-hl" x="20" y="25" width="330" height="170" rx="10"/>
+          <text x="185" y="50" text-anchor="middle" class="phase-label">Throughput — "how fast?"</text>
+          <text x="185" y="80" text-anchor="middle">⏱️ Change lead time</text><text x="185" y="97" text-anchor="middle" class="edge-label">commit → running in production</text>
+          <text x="185" y="124" text-anchor="middle">🚀 Deployment frequency</text><text x="185" y="141" text-anchor="middle" class="edge-label">how often we ship</text>
+          <text x="185" y="168" text-anchor="middle">🩹 Failed-deployment recovery time</text><text x="185" y="185" text-anchor="middle" class="edge-label">how fast we fix a bad release</text>
+          <rect class="box-final" x="370" y="25" width="330" height="170" rx="10"/>
+          <text x="535" y="50" text-anchor="middle" class="phase-label">Instability — "how bumpy?"</text>
+          <text x="535" y="90" text-anchor="middle">💥 Change fail rate</text><text x="535" y="107" text-anchor="middle" class="edge-label">% of releases needing urgent action</text>
+          <text x="535" y="145" text-anchor="middle">🔁 Deployment rework rate</text><text x="535" y="162" text-anchor="middle" class="edge-label">% of unplanned releases made to fix incidents</text>
+        </svg>
+        <div class="diagram-caption">Fig 3 — DORA's five delivery metrics. Top teams are good at <em>both</em> columns: speed and stability are not a trade-off.</div>
+      </div>
+      <table>
+        <tr><th>Metric</th><th>Plain meaning</th><th>Example</th></tr>
+        <tr><td>Change lead time</td><td>Time from a change being committed until it is live for users</td><td>Merged Monday 10:00, live 10:25 → 25 min</td></tr>
+        <tr><td>Deployment frequency</td><td>How often you deploy to production</td><td>12 deploys this week</td></tr>
+        <tr><td>Failed-deployment recovery time</td><td>How long to recover after a release goes wrong</td><td>Rolled back in 8 minutes</td></tr>
+        <tr><td>Change fail rate</td><td>Share of deployments that need a rollback or hotfix</td><td>2 of 40 deploys → 5%</td></tr>
+        <tr><td>Deployment rework rate</td><td>Share of deployments that were unplanned fixes for production problems</td><td>3 of 40 → 7.5%</td></tr>
+      </table>
+      <div class="callout tip">
+        DORA's own advice: measure <em>per service</em>, don't use the numbers as targets to compete on (Goodhart's law: "when a measure becomes a target, it stops being a good measure"), and use them as a way to find the next thing to improve. The old "elite/high/medium/low" labels were replaced in 2025 by team profiles.
+      </div>
+      <div class="callout life">
+        It's like checking a delivery service: how fast does the parcel arrive (lead time), how often do trucks leave (frequency), how often is a parcel damaged (fail rate), and how fast do you send a replacement (recovery time)?
+      </div>
+      <p>
+        <strong>AI's effect (DORA 2025):</strong> from a survey of nearly 5,000 professionals, using AI assistants was linked with <em>higher throughput</em> but also with <em>more instability</em> — faster shipping without matching safety nets (tests, reviews, small batches) makes things bumpier.
+        More in <a href="#ai-devops">Section 40</a>.
+      </p>
+    </section>
+
+    <div class="part-divider"><h2>Part C — Code, Build &amp; Test</h2></div>
+
+    <!-- 9 -->
+    <section class="block" id="git-vcs">
+      <h2><span class="num">9</span> Git &amp; Version Control — The Time Machine for Code</h2>
+      <p>
+        <a href="https://git-scm.com/" target="_blank" rel="noopener">Git</a> records every change to your files, who made it, and why. Everything in DevOps starts from it: code, pipeline definitions, infrastructure files — all live in Git.
+      </p>
+      <div class="callout life">
+        Like the "version history" of a shared document, but for a whole project: you can see any past version, compare two, work on a copy without disturbing others, and merge your copy back in.
+      </div>
+      <table>
+        <tr><th>Word</th><th>Meaning</th></tr>
+        <tr><td>Repository (repo)</td><td>The project folder plus its full history</td></tr>
+        <tr><td>Commit</td><td>A saved snapshot with a message ("Fix login bug")</td></tr>
+        <tr><td>Branch</td><td>A separate line of work, like a parallel copy</td></tr>
+        <tr><td>Merge</td><td>Bring one branch's changes into another</td></tr>
+        <tr><td>Pull request (PR) / merge request (MR)</td><td>A proposal to merge, where teammates review and automated checks run</td></tr>
+        <tr><td>Tag</td><td>A permanent label on a commit, like <code>v1.0.0</code></td></tr>
+        <tr><td>Revert</td><td>Create a new commit that undoes an earlier one (safe for shared history)</td></tr>
+      </table>
+      <h3>Branching strategies</h3>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 260" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrDo4" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+          </defs>
+          <text x="180" y="20" text-anchor="middle" class="phase-label">Trunk-based (small, frequent)</text>
+          <line class="edge" x1="20" y1="70" x2="340" y2="70"/>
+          <circle cx="50" cy="70" r="7" fill="var(--accent)"/><circle cx="110" cy="70" r="7" fill="var(--accent)"/><circle cx="170" cy="70" r="7" fill="var(--accent)"/><circle cx="230" cy="70" r="7" fill="var(--accent)"/><circle cx="290" cy="70" r="7" fill="var(--accent)"/>
+          <text x="20" y="55" class="edge-label">main</text>
+          <path class="loop" d="M110,70 Q130,110 150,110 L170,110 Q190,110 170,70" />
+          <text x="160" y="128" text-anchor="middle" class="edge-label">tiny branch, lives hours</text>
+          <text x="180" y="160" text-anchor="middle" class="edge-label">everyone merges into main daily; unfinished work hidden by feature flags</text>
+
+          <text x="540" y="20" text-anchor="middle" class="phase-label">Long-lived branches (GitFlow-style)</text>
+          <line class="edge" x1="380" y1="50" x2="700" y2="50"/><text x="380" y="40" class="edge-label">main</text>
+          <line class="edge" x1="380" y1="100" x2="700" y2="100"/><text x="380" y="90" class="edge-label">develop</text>
+          <line class="edge" x1="440" y1="150" x2="640" y2="150"/><text x="440" y="140" class="edge-label">feature (weeks!)</text>
+          <circle cx="400" cy="50" r="6" fill="var(--accent)"/><circle cx="680" cy="50" r="6" fill="var(--accent)"/>
+          <circle cx="400" cy="100" r="6" fill="var(--accent)"/><circle cx="520" cy="100" r="6" fill="var(--accent)"/><circle cx="690" cy="100" r="6" fill="var(--accent)"/>
+          <circle cx="460" cy="150" r="6" fill="var(--accent)"/><circle cx="560" cy="150" r="6" fill="var(--accent)"/><circle cx="640" cy="150" r="6" fill="var(--accent)"/>
+          <text x="540" y="190" text-anchor="middle" class="edge-label">big merges later = more conflicts, slower feedback</text>
+          <text x="360" y="235" text-anchor="middle">DORA research links short-lived branches and frequent integration with better delivery performance.</text>
+        </svg>
+        <div class="diagram-caption">Fig 4 — Trunk-based development keeps changes small and merged daily. Long-lived branches delay integration, so conflicts and surprises pile up.</div>
+      </div>
+      <div class="callout tip">
+        Rule of thumb for most teams today: <strong>short-lived branches + pull requests + automated checks + merge to <code>main</code> often</strong>. You'll run a real Git workflow in <a href="#git-code">Level 0</a>.
+      </div>
+    </section>
+
+    <!-- 10 -->
+    <section class="block" id="code-review-prs">
+      <h2><span class="num">10</span> Code Review &amp; Pull Requests</h2>
+      <p>Before a change joins <code>main</code>, a teammate looks at it — a second pair of eyes catches bugs, shares knowledge and keeps style consistent.</p>
+      <table>
+        <tr><th>Good habit</th><th>Why</th></tr>
+        <tr><td>Keep PRs small (a few hundred lines at most)</td><td>Small PRs get faster, better reviews</td></tr>
+        <tr><td>Write what and why in the description</td><td>Reviewers shouldn't have to guess</td></tr>
+        <tr><td>Let automation do the boring checks</td><td>Linters, formatters and tests run on every PR so humans focus on design and logic</td></tr>
+        <tr><td>Require approvals on <code>main</code> ("branch protection")</td><td>No one pushes straight to production code, including by accident</td></tr>
+        <tr><td>Use <code>CODEOWNERS</code></td><td>Sensitive files (like pipeline definitions) must be reviewed by the right people</td></tr>
+        <tr><td>Be kind and specific</td><td>Review the code, not the person</td></tr>
+      </table>
+      <div class="callout life">
+        A PR is like handing a draft to a friend before posting it: "Does this make sense? Did I miss anything?" — except a robot also checks the spelling instantly.
+      </div>
+      <div class="callout warn">
+        AI-written code needs <em>more</em> careful review, not less: it can look confident and be wrong, or add insecure patterns. Treat it like code from a fast new teammate (<a href="#ai-devops">Section 40</a>).
+      </div>
+    </section>
+
+    <!-- 11 -->
+    <section class="block" id="build-artifacts">
+      <h2><span class="num">11</span> Building &amp; Artifacts</h2>
+      <p>
+        A <strong>build</strong> turns source code into something that can run: compile it, bundle it, run package managers, and produce an <strong>artifact</strong> — a file or image you can deploy (a <code>.jar</code>, a Python wheel, a container image, a binary).
+      </p>
+      <table>
+        <tr><th>Idea</th><th>Plain meaning</th><th>Why it matters</th></tr>
+        <tr><td>Build once, deploy many</td><td>Make one artifact and promote the <em>same</em> artifact through test → staging → production</td><td>What you tested is exactly what you ship</td></tr>
+        <tr><td>Reproducible builds</td><td>Same inputs give the same output</td><td>Trust and debugging</td></tr>
+        <tr><td>Versioning</td><td>Label each artifact (<code>1.4.2</code>, or a commit id)</td><td>Know what's running; roll back precisely</td></tr>
+        <tr><td>Artifact registry</td><td>A storage shop for artifacts and images</td><td>Single trusted source for deployments</td></tr>
+        <tr><td>Dependency pinning &amp; lockfiles</td><td>Record the exact versions of every library used</td><td>Stops "it built yesterday, fails today" — and supply-chain surprises (<a href="#supply-chain">Section 37</a>)</td></tr>
+        <tr><td>Caching</td><td>Reuse unchanged parts of previous builds</td><td>Fast pipelines</td></tr>
+      </table>
+      <div class="callout life">
+        A factory builds a car once, labels it with a serial number, and ships that exact car — it doesn't rebuild a slightly different one at each showroom.
+      </div>
+    </section>
+
+    <!-- 12 -->
+    <section class="block" id="testing-devops">
+      <h2><span class="num">12</span> Testing — The Pyramid</h2>
+      <p>Automated tests are the safety net that lets you ship often without fear. Different kinds of tests trade speed for realism:</p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 270" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="360,20 460,110 260,110" fill="var(--card)" stroke="var(--accent-4)" stroke-width="3"/>
+          <text x="360" y="85" text-anchor="middle">End-to-end</text>
+          <polygon points="260,110 460,110 520,190 200,190" fill="var(--card)" stroke="var(--accent-3)" stroke-width="3"/>
+          <text x="360" y="155" text-anchor="middle">Integration (parts working together)</text>
+          <polygon points="200,190 520,190 580,260 140,260" fill="var(--card)" stroke="var(--accent)" stroke-width="3"/>
+          <text x="360" y="232" text-anchor="middle">Unit tests (one small piece) — MANY, fast, cheap</text>
+          <text x="610" y="70" class="edge-label">few · slow · realistic</text>
+          <text x="610" y="240" class="edge-label">many · fast · focused</text>
+        </svg>
+        <div class="diagram-caption">Fig 5 — The testing pyramid: lots of fast unit tests at the bottom, fewer integration tests, and only a handful of slow end-to-end tests at the top.</div>
+      </div>
+      <table>
+        <tr><th>Test type</th><th>Checks…</th><th>Speed</th><th>Example</th></tr>
+        <tr><td>Static checks (lint, types, format)</td><td>Style and obvious mistakes without running code</td><td>Seconds</td><td>"Unused variable", "wrong type"</td></tr>
+        <tr><td>Unit</td><td>One function/class in isolation</td><td>Milliseconds</td><td><code>add(2,3) == 5</code></td></tr>
+        <tr><td>Integration</td><td>Several pieces together (code + database)</td><td>Seconds</td><td>Saving an order really stores it</td></tr>
+        <tr><td>End-to-end (E2E)</td><td>The whole app like a user</td><td>Minutes</td><td>Browser logs in and buys something</td></tr>
+        <tr><td>Contract</td><td>Services agree on how they talk</td><td>Seconds</td><td>API shape didn't change unexpectedly</td></tr>
+        <tr><td>Performance / load</td><td>Speed under heavy use</td><td>Minutes+</td><td>1,000 users at once</td></tr>
+        <tr><td>Security (SAST/DAST/SCA)</td><td>Vulnerabilities in code, running app, dependencies</td><td>Varies</td><td>Known-bad library version (<a href="#devsecops">Section 36</a>)</td></tr>
+        <tr><td>Smoke tests</td><td>"Is it basically alive?" right after deploy</td><td>Seconds</td><td><code>/healthz</code> returns OK</td></tr>
+      </table>
+      <div class="callout warn">
+        <strong>Flaky tests</strong> (pass sometimes, fail sometimes) are poison: people learn to ignore red builds. Fix or quarantine them quickly.
+      </div>
+      <div class="callout life">
+        Checking a bicycle: tighten each bolt (unit), check the brakes work with the wheels (integration), then take a short ride (end-to-end). You do the bolt-checks constantly and the ride only occasionally.
+      </div>
+    </section>
+
+    <!-- 13 -->
+    <section class="block" id="ci-devops">
+      <h2><span class="num">13</span> Continuous Integration (CI)</h2>
+      <div class="callout def">
+        <strong>Continuous Integration</strong> means every developer merges small changes into the shared code <em>many times a day</em>, and every merge automatically triggers a build and tests — so integration problems appear in minutes, not months.
+      </div>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 190" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrDo6" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+            <marker id="arrDo6b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent-3)"/></marker>
+          </defs>
+          <rect class="box" x="6" y="40" width="96" height="56" rx="8"/><text x="54" y="64" text-anchor="middle">git push /</text><text x="54" y="82" text-anchor="middle">open PR</text>
+          <rect class="box-hl" x="124" y="40" width="96" height="56" rx="8"/><text x="172" y="64" text-anchor="middle">Checkout</text><text x="172" y="82" text-anchor="middle" class="edge-label">get the code</text>
+          <rect class="box-hl" x="242" y="40" width="96" height="56" rx="8"/><text x="290" y="64" text-anchor="middle">Lint &amp; scan</text><text x="290" y="82" text-anchor="middle" class="edge-label">style, secrets</text>
+          <rect class="box-hl" x="360" y="40" width="96" height="56" rx="8"/><text x="408" y="64" text-anchor="middle">Build</text><text x="408" y="82" text-anchor="middle" class="edge-label">compile/package</text>
+          <rect class="box-hl" x="478" y="40" width="96" height="56" rx="8"/><text x="526" y="64" text-anchor="middle">Test</text><text x="526" y="82" text-anchor="middle" class="edge-label">unit + integration</text>
+          <rect class="box-final" x="596" y="40" width="112" height="56" rx="8"/><text x="652" y="64" text-anchor="middle">Publish</text><text x="652" y="82" text-anchor="middle" class="edge-label">artifact / image</text>
+          <line class="edge" x1="102" y1="68" x2="122" y2="68" marker-end="url(#arrDo6)"/><line class="edge" x1="220" y1="68" x2="240" y2="68" marker-end="url(#arrDo6)"/><line class="edge" x1="338" y1="68" x2="358" y2="68" marker-end="url(#arrDo6)"/><line class="edge" x1="456" y1="68" x2="476" y2="68" marker-end="url(#arrDo6)"/><line class="edge" x1="574" y1="68" x2="594" y2="68" marker-end="url(#arrDo6)"/>
+          <path class="loop" d="M526,96 Q526,150 54,150 L54,98" marker-end="url(#arrDo6b)"/>
+          <text x="300" y="168" text-anchor="middle" class="edge-label">❌ any step fails → red build → the author is told within minutes</text>
+        </svg>
+        <div class="diagram-caption">Fig 6 — A CI pipeline: every change flows through checkout, checks, build, test and publish; any failure stops the line and notifies the author.</div>
+      </div>
+      <table>
+        <tr><th>CI rule</th><th>Meaning</th></tr>
+        <tr><td>Keep the build green</td><td>If <code>main</code> is red, fixing it is everyone's top priority</td></tr>
+        <tr><td>Fast feedback</td><td>Aim for a pipeline of minutes (≈10 or less) so people actually wait for it</td></tr>
+        <tr><td>Same pipeline for everyone</td><td>The server's checks are the ones that count, not "it passed on my laptop"</td></tr>
+        <tr><td>Fail loudly, early</td><td>Cheap checks (lint, unit) first; slow ones later</td></tr>
+        <tr><td>Pipeline as code</td><td>The pipeline definition (YAML) lives in the repo and is reviewed like any code (<a href="#ci-yaml-code">Level 2</a>)</td></tr>
+      </table>
+      <div class="callout life">
+        A bouncer who checks every guest at the door as they arrive, not one who waits until the party is over and then finds out half the guests were trouble.
+      </div>
+    </section>
+
+    <div class="part-divider"><h2>Part D — Deliver &amp; Release</h2></div>
+
+    <!-- 14 -->
+    <section class="block" id="cd-devops">
+      <h2><span class="num">14</span> Continuous Delivery vs Continuous Deployment</h2>
+      <p>"CD" means two slightly different things. Both start where CI ends: you have a tested artifact.</p>
+      <table>
+        <tr><th></th><th>Continuous <strong>Delivery</strong></th><th>Continuous <strong>Deployment</strong></th></tr>
+        <tr><td>Idea</td><td>Every change is <em>always ready</em> to release</td><td>Every change that passes the checks is released <em>automatically</em></td></tr>
+        <tr><td>Last step to production</td><td>A human presses the button (or approves)</td><td>No human step — the pipeline does it</td></tr>
+        <tr><td>Needs</td><td>Good automated tests, repeatable deploys</td><td>All of that + excellent monitoring, safe rollouts and fast rollback</td></tr>
+        <tr><td>Good for</td><td>Regulated or high-stakes systems; business-timed launches</td><td>Web services where small changes ship many times a day</td></tr>
+      </table>
+      <h3>A typical path to production</h3>
+      <table>
+        <tr><th>Environment</th><th>Purpose</th><th>Who sees it</th></tr>
+        <tr><td>Local / dev</td><td>Developers try things</td><td>Developers</td></tr>
+        <tr><td>CI / test</td><td>Automated tests run on a clean machine</td><td>The pipeline</td></tr>
+        <tr><td>Staging (pre-production)</td><td>A close copy of production for final checks</td><td>Team, testers</td></tr>
+        <tr><td>Production</td><td>The real thing</td><td>Users</td></tr>
+      </table>
+      <div class="callout life">
+        Delivery is a parcel packed, labelled and sitting at the door, ready whenever you say go. Deployment is the parcel automatically loaded onto the truck as soon as it passes inspection.
+      </div>
+      <div class="callout tip">
+        You don't have to jump to full automation: many successful teams start with continuous <em>delivery</em> and push the button themselves while trust in the tests and rollbacks grows.
+      </div>
+    </section>
+
+    <!-- 15 -->
+    <section class="block" id="deploy-strategies">
+      <h2><span class="num">15</span> Safe Rollouts — Rolling, Blue-Green, Canary</h2>
+      <p>How do you put a new version live without breaking things for everybody at once?</p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrDo7" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+          </defs>
+          <text x="10" y="18" class="phase-label">Rolling update — replace one copy at a time</text>
+          <rect class="box" x="20" y="30" width="70" height="32" rx="5"/><text x="55" y="51" text-anchor="middle">v1</text>
+          <rect class="box" x="100" y="30" width="70" height="32" rx="5"/><text x="135" y="51" text-anchor="middle">v1</text>
+          <rect class="box" x="180" y="30" width="70" height="32" rx="5"/><text x="215" y="51" text-anchor="middle">v1</text>
+          <text x="262" y="51" class="edge-label">→</text>
+          <rect class="box-final" x="290" y="30" width="70" height="32" rx="5"/><text x="325" y="51" text-anchor="middle">v2</text>
+          <rect class="box" x="370" y="30" width="70" height="32" rx="5"/><text x="405" y="51" text-anchor="middle">v1</text>
+          <rect class="box" x="450" y="30" width="70" height="32" rx="5"/><text x="485" y="51" text-anchor="middle">v1</text>
+          <text x="532" y="51" class="edge-label">→ … → all v2</text>
+
+          <text x="10" y="102" class="phase-label">Blue-green — two full environments, flip the switch</text>
+          <rect class="box" x="20" y="116" width="140" height="44" rx="6"/><text x="90" y="143" text-anchor="middle">🔵 Blue = v1 (live)</text>
+          <rect class="box-final" x="20" y="170" width="140" height="44" rx="6"/><text x="90" y="197" text-anchor="middle">🟢 Green = v2 (ready)</text>
+          <rect class="box-hl" x="230" y="140" width="110" height="50" rx="6"/><text x="285" y="162" text-anchor="middle">Router</text><text x="285" y="178" text-anchor="middle" class="edge-label">flip → green</text>
+          <line class="edge" x1="228" y1="165" x2="162" y2="138" marker-end="url(#arrDo7)"/>
+          <line class="edge" x1="228" y1="170" x2="162" y2="192" marker-end="url(#arrDo7)"/>
+          <text x="380" y="165" class="edge-label">instant switch; instant rollback by flipping back (costs double capacity for a while)</text>
+
+          <text x="10" y="242" class="phase-label">Canary — send a small slice of users to v2 first</text>
+          <rect class="box" x="20" y="256" width="200" height="34" rx="5"/><text x="120" y="278" text-anchor="middle">v1 gets 95% of traffic</text>
+          <rect class="box-final" x="20" y="296" width="40" height="34" rx="5"/><text x="40" y="318" text-anchor="middle">5%</text>
+          <text x="70" y="318" class="edge-label">v2 (the "canary") — watch errors &amp; speed, then 25% → 50% → 100%</text>
+          <text x="560" y="278" class="edge-label">problems? send 0% to v2</text>
+        </svg>
+        <div class="diagram-caption">Fig 7 — Three ways to release safely. All of them let you limit the damage if the new version is bad.</div>
+      </div>
+      <table>
+        <tr><th>Strategy</th><th>How</th><th>Pros</th><th>Cons</th><th>Picture</th></tr>
+        <tr><td>Rolling</td><td>Replace instances gradually</td><td>No extra capacity; the Kubernetes default</td><td>Old and new versions run side by side for a while; slower rollback</td><td>Changing the tyres on a moving convoy one car at a time</td></tr>
+        <tr><td>Blue-green</td><td>Run old and new fully; switch traffic at once</td><td>Instant cutover and instant rollback</td><td>Double the capacity; database changes need care</td><td>A stage with two identical sets — swap them between acts</td></tr>
+        <tr><td>Canary</td><td>Give a small share of users the new version first</td><td>Real-user testing with a tiny blast radius</td><td>Needs good monitoring and traffic control</td><td>A canary in a coal mine — if it chirps trouble, everyone else is spared</td></tr>
+        <tr><td>Recreate</td><td>Stop old, start new</td><td>Simplest</td><td>Downtime</td><td>Closing the shop to repaint it</td></tr>
+        <tr><td>Shadow (mirror)</td><td>Copy real traffic to v2 but ignore its answers</td><td>Test with real load, zero user risk</td><td>Extra cost; careful with side effects</td><td>A trainee shadowing a pro without touching anything</td></tr>
+      </table>
+      <div class="callout tip">
+        Tools such as Argo Rollouts, Flagger and service meshes automate canaries: they shift traffic in steps and roll back by themselves if error rate or latency crosses a limit (see the idea in <a href="#deploy-script-code">Level 6</a>).
+      </div>
+    </section>
+
+    <!-- 16 -->
+    <section class="block" id="feature-flags-release">
+      <h2><span class="num">16</span> Feature Flags — Deploy Is Not Release</h2>
+      <p>
+        A <strong>feature flag</strong> is an on/off switch in the code: <code>if flag("new-checkout"): …</code>. You can <em>deploy</em> the code to production switched off, then <em>release</em> it (turn it on) later — for 1% of users, then 10%, then everyone — without a new deployment.
+      </p>
+      <table>
+        <tr><th>Use</th><th>Example</th></tr>
+        <tr><td>Hide unfinished work (keeps branches short — trunk-based)</td><td>Merge half-built search every day, invisible until ready</td></tr>
+        <tr><td>Gradual rollout</td><td>1% → 10% → 50% → 100% of users</td></tr>
+        <tr><td>Kill switch</td><td>Turn a misbehaving feature off in seconds, no rollback</td></tr>
+        <tr><td>Targeting / experiments</td><td>Show the new design to one country; A/B test two versions</td></tr>
+        <tr><td>Permissions &amp; plans</td><td>Premium features on for paying customers</td></tr>
+      </table>
+      <div class="callout life">
+        A light switch you install in every room before the party: wiring (deployment) happens quietly beforehand; flipping the switch (release) happens at exactly the moment you choose.
+      </div>
+      <div class="callout warn">
+        Flags are debt: remove them once a feature is fully launched, or the code fills with old branches nobody dares delete. Name an owner and an expiry for each flag.
+      </div>
+    </section>
+
+    <!-- 17 -->
+    <section class="block" id="gitops-devops">
+      <h2><span class="num">17</span> GitOps — Git as the Single Source of Truth</h2>
+      <p>
+        <strong>GitOps</strong> means: you describe what you <em>want</em> running (the "desired state") in files in Git, and a tool inside the cluster continuously compares reality to Git and fixes any difference. Four principles (from the OpenGitOps project):
+        the system is <strong>declarative</strong>, <strong>versioned and immutable</strong> in Git, changes are <strong>pulled automatically</strong>, and the system is <strong>continuously reconciled</strong>.
+      </p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 270" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrDo8" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+            <marker id="arrDo8b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent-3)"/></marker>
+          </defs>
+          <text x="170" y="18" text-anchor="middle" class="phase-label">Push-based CD (older)</text>
+          <rect class="box" x="10" y="40" width="100" height="50" rx="8"/><text x="60" y="70" text-anchor="middle">CI pipeline</text>
+          <rect class="box-final" x="230" y="40" width="130" height="50" rx="8"/><text x="295" y="70" text-anchor="middle">☸ Cluster</text>
+          <line class="edge" x1="110" y1="65" x2="228" y2="65" marker-end="url(#arrDo8)"/>
+          <text x="170" y="58" text-anchor="middle" class="edge-label">pushes with cluster password</text>
+          <text x="190" y="115" text-anchor="middle" class="edge-label">pipeline needs powerful credentials; drift goes unnoticed</text>
+
+          <text x="545" y="18" text-anchor="middle" class="phase-label">GitOps — the cluster pulls</text>
+          <rect class="box" x="390" y="40" width="100" height="50" rx="8"/><text x="440" y="62" text-anchor="middle">Git repo</text><text x="440" y="78" text-anchor="middle" class="edge-label">desired state</text>
+          <rect class="box-hl" x="540" y="40" width="130" height="50" rx="8"/><text x="605" y="62" text-anchor="middle">Argo CD / Flux</text><text x="605" y="78" text-anchor="middle" class="edge-label">runs inside cluster</text>
+          <rect class="box-final" x="540" y="140" width="130" height="50" rx="8"/><text x="605" y="170" text-anchor="middle">☸ Cluster</text>
+          <line class="edge" x1="538" y1="65" x2="492" y2="65" marker-end="url(#arrDo8)"/><text x="515" y="35" text-anchor="middle" class="edge-label">pulls</text>
+          <line class="edge" x1="605" y1="90" x2="605" y2="138" marker-end="url(#arrDo8)"/><text x="660" y="118" class="edge-label">applies</text>
+          <path class="loop" d="M672,165 Q710,100 672,70" marker-end="url(#arrDo8b)"/><text x="690" y="130" class="edge-label">compares</text>
+          <text x="545" y="225" text-anchor="middle" class="edge-label">someone edits the cluster by hand? the tool notices and puts it back to match Git</text>
+          <text x="360" y="258" text-anchor="middle">Deploying = merging a pull request that changes a file. Rollback = reverting the commit.</text>
+        </svg>
+        <div class="diagram-caption">Fig 8 — Push-based deployment vs GitOps: instead of the pipeline pushing into the cluster, an agent in the cluster pulls from Git and keeps reality equal to it.</div>
+      </div>
+      <table>
+        <tr><th>Benefit</th><th>Why</th></tr>
+        <tr><td>Audit trail</td><td>Every change is a reviewed commit: who, what, when, why</td></tr>
+        <tr><td>Easy rollback</td><td>Revert the commit; the tool restores the old state</td></tr>
+        <tr><td>Drift correction</td><td>Hand-made changes are detected and reversed (or flagged)</td></tr>
+        <tr><td>Safer credentials</td><td>The cluster reaches out to Git; CI doesn't need keys to production</td></tr>
+        <tr><td>Disaster recovery</td><td>Rebuild a cluster by pointing a new one at the same repo</td></tr>
+      </table>
+      <p>
+        The two best-known GitOps tools, <a href="https://argo-cd.readthedocs.io/" target="_blank" rel="noopener">Argo CD</a> and <a href="https://fluxcd.io/" target="_blank" rel="noopener">Flux</a>, are both CNCF graduated projects.
+        In the CNCF/SlashData Q1 2026 technology radar, Argo CD sits in the "Adopt" ring for workflow automation.
+      </p>
+      <div class="callout life">
+        A thermostat: you set the temperature you want (Git); the thermostat keeps checking the room and turns the heating on or off to match, without you walking over each time.
+      </div>
+    </section>
+
+    <!-- 18 -->
+    <section class="block" id="ci-tools-compare">
+      <h2><span class="num">18</span> CI/CD Tools Compared</h2>
+      <table>
+        <tr><th>Tool</th><th>How it's offered</th><th>Pipeline style</th><th>Good fit</th></tr>
+        <tr><td><a href="https://docs.github.com/en/actions" target="_blank" rel="noopener">GitHub Actions</a></td><td>Built into GitHub (hosted or self-hosted runners)</td><td>YAML workflows in <code>.github/workflows</code>; huge marketplace of reusable actions</td><td>Projects already on GitHub; the most common default</td></tr>
+        <tr><td><a href="https://docs.gitlab.com/ci/" target="_blank" rel="noopener">GitLab CI/CD</a></td><td>Built into GitLab (SaaS or self-managed)</td><td>One <code>.gitlab-ci.yml</code>; strong all-in-one platform</td><td>Teams wanting one tool for code, CI, security and registry</td></tr>
+        <tr><td><a href="https://www.jenkins.io/" target="_blank" rel="noopener">Jenkins</a></td><td>Self-hosted open source</td><td><code>Jenkinsfile</code> (Groovy); thousands of plugins</td><td>Legacy or heavily customised setups; you maintain it</td></tr>
+        <tr><td>CircleCI, Buildkite, Azure Pipelines</td><td>SaaS / hybrid</td><td>YAML pipelines</td><td>Speed, scale, or Microsoft ecosystems</td></tr>
+        <tr><td>Tekton, Argo Workflows</td><td>Kubernetes-native</td><td>Pipelines as Kubernetes resources</td><td>Platform teams building their own CI on Kubernetes</td></tr>
+        <tr><td>Argo CD, Flux</td><td>In-cluster GitOps agents</td><td>Git repo of manifests</td><td>The "CD" half for Kubernetes (Section 17)</td></tr>
+      </table>
+      <div class="callout tip">
+        The concepts (stages, jobs, caching, secrets, approvals) are the same everywhere; learn one tool well and the others take days, not months. Whatever you pick, <strong>harden it</strong> — CI systems are a favourite attack target (<a href="#supply-chain">Section 37</a>).
+      </div>
+    </section>
+
+    <div class="part-divider"><h2>Part E — Containers &amp; Kubernetes</h2></div>
+
+    <!-- 19 -->
+    <section class="block" id="containers-devops">
+      <h2><span class="num">19</span> Containers — A Lunchbox for Software</h2>
+      <p>
+        A <strong>container</strong> packs an application together with everything it needs to run (libraries, settings) into one portable unit that behaves the same on your laptop, a test server or the cloud — ending "works on my machine".
+      </p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 270" xmlns="http://www.w3.org/2000/svg">
+          <text x="170" y="18" text-anchor="middle" class="phase-label">Virtual machines</text>
+          <rect class="box" x="30" y="30" width="80" height="150" rx="6"/><text x="70" y="55" text-anchor="middle">App A</text><text x="70" y="80" text-anchor="middle" class="edge-label">libs</text><text x="70" y="105" text-anchor="middle" class="edge-label">guest OS</text>
+          <rect class="box" x="125" y="30" width="80" height="150" rx="6"/><text x="165" y="55" text-anchor="middle">App B</text><text x="165" y="80" text-anchor="middle" class="edge-label">libs</text><text x="165" y="105" text-anchor="middle" class="edge-label">guest OS</text>
+          <rect class="box" x="220" y="30" width="80" height="150" rx="6"/><text x="260" y="55" text-anchor="middle">App C</text><text x="260" y="80" text-anchor="middle" class="edge-label">libs</text><text x="260" y="105" text-anchor="middle" class="edge-label">guest OS</text>
+          <rect class="box-hl" x="30" y="188" width="270" height="30" rx="6"/><text x="165" y="208" text-anchor="middle">Hypervisor</text>
+          <rect class="box-final" x="30" y="224" width="270" height="30" rx="6"/><text x="165" y="244" text-anchor="middle">Hardware + host OS</text>
+
+          <text x="545" y="18" text-anchor="middle" class="phase-label">Containers</text>
+          <rect class="box" x="400" y="30" width="80" height="110" rx="6"/><text x="440" y="55" text-anchor="middle">App A</text><text x="440" y="80" text-anchor="middle" class="edge-label">libs</text>
+          <rect class="box" x="495" y="30" width="80" height="110" rx="6"/><text x="535" y="55" text-anchor="middle">App B</text><text x="535" y="80" text-anchor="middle" class="edge-label">libs</text>
+          <rect class="box" x="590" y="30" width="80" height="110" rx="6"/><text x="630" y="55" text-anchor="middle">App C</text><text x="630" y="80" text-anchor="middle" class="edge-label">libs</text>
+          <rect class="box-hl" x="400" y="148" width="270" height="30" rx="6"/><text x="535" y="168" text-anchor="middle">Container runtime</text>
+          <rect class="box-final" x="400" y="184" width="270" height="70" rx="6"/><text x="535" y="214" text-anchor="middle">Host OS (shared kernel)</text><text x="535" y="234" text-anchor="middle" class="edge-label">+ hardware</text>
+        </svg>
+        <div class="diagram-caption">Fig 9 — A virtual machine carries a whole guest operating system; containers share the host's kernel, so they're far smaller and start in seconds.</div>
+      </div>
+      <table>
+        <tr><th></th><th>Virtual machine</th><th>Container</th></tr>
+        <tr><td>Includes</td><td>Full operating system</td><td>Just the app and its libraries</td></tr>
+        <tr><td>Size</td><td>Gigabytes</td><td>Megabytes to a few hundred MB</td></tr>
+        <tr><td>Start time</td><td>Minutes</td><td>Seconds or less</td></tr>
+        <tr><td>Isolation</td><td>Strong (separate kernels)</td><td>Good, but a shared kernel — security needs care</td></tr>
+        <tr><td>Best for</td><td>Different operating systems; strong isolation</td><td>Packaging and scaling application services</td></tr>
+      </table>
+      <div class="callout life">
+        Shipping goods in standard steel shipping containers: the crane, ship and lorry don't care what's inside; they handle every box the same way. A software container is the standard box for programs.
+      </div>
+      <ul>
+        <li><strong>Image vs container:</strong> an <em>image</em> is the frozen recipe/package; a <em>container</em> is a running copy made from it (like a class vs an object, or a cake recipe vs a baked cake).</li>
+        <li><strong>OCI</strong> (Open Container Initiative) standardises image and runtime formats so Docker, Podman, containerd and Kubernetes all understand each other.</li>
+        <li>Under the hood, Linux features (namespaces for isolation, cgroups for resource limits) make containers possible.</li>
+      </ul>
+    </section>
+
+    <!-- 20 -->
+    <section class="block" id="docker-practices">
+      <h2><span class="num">20</span> Docker &amp; Good Images</h2>
+      <p>
+        <a href="https://docs.docker.com/" target="_blank" rel="noopener">Docker</a> popularised containers. You describe an image in a <strong>Dockerfile</strong> (a recipe, one instruction per layer), build it, push it to a <strong>registry</strong>, and run it anywhere. A tiny Dockerfile is in <a href="#docker-code">Level 1</a>.
+      </p>
+      <table>
+        <tr><th>Good practice</th><th>Why</th></tr>
+        <tr><td>Start from a small, trusted base image (e.g., "slim" or distroless)</td><td>Less to download, less to attack</td></tr>
+        <tr><td>Multi-stage builds</td><td>Build with heavy tools in one stage; copy only the result into a tiny final image</td></tr>
+        <tr><td>Run as a non-root user</td><td>If the app is hacked, damage is limited</td></tr>
+        <tr><td>Pin versions (even the base image digest)</td><td>Same build every time; avoids surprise updates</td></tr>
+        <tr><td>Order layers by how often they change</td><td>Install dependencies first, copy code last, so rebuilds reuse cached layers</td></tr>
+        <tr><td>Use a <code>.dockerignore</code></td><td>Keeps secrets, <code>.git</code> and junk out of the image</td></tr>
+        <tr><td>One main process per container; log to stdout</td><td>Plays well with orchestrators and log collectors</td></tr>
+        <tr><td>Never bake secrets into images</td><td>Anyone who can pull the image can read them (<a href="#secrets-iam">Section 38</a>)</td></tr>
+        <tr><td>Scan images and generate an SBOM</td><td>Find known-vulnerable packages before shipping (<a href="#supply-chain">Section 37</a>)</td></tr>
+      </table>
+      <table>
+        <tr><th>Tool</th><th>What it is</th></tr>
+        <tr><td>Docker Engine / Docker Desktop</td><td>The classic build-and-run toolset</td></tr>
+        <tr><td>Podman, containerd, CRI-O</td><td>Alternative runtimes/engines; Kubernetes talks to runtimes like containerd and CRI-O directly</td></tr>
+        <tr><td>BuildKit / buildx</td><td>Modern, faster image builders (multi-platform images)</td></tr>
+        <tr><td>Docker Compose</td><td>Run several containers together on one machine from one YAML file — great for local development</td></tr>
+        <tr><td>Registries</td><td>Docker Hub, GitHub Container Registry, cloud registries (ECR, ACR, Artifact Registry), Harbor (self-hosted)</td></tr>
+      </table>
+    </section>
+
+    <!-- 21 -->
+    <section class="block" id="k8s-concepts">
+      <h2><span class="num">21</span> Kubernetes — The Big Picture</h2>
+      <p>
+        One container is easy. Hundreds across many machines — restarting crashed ones, spreading load, rolling out updates — is not.
+        <strong><a href="https://kubernetes.io/" target="_blank" rel="noopener">Kubernetes</a></strong> ("K8s") is the system that does this: you tell it <em>what you want</em> ("run 3 copies of this image"), and it keeps making reality match.
+      </p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 310" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrDo10" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+          </defs>
+          <rect x="10" y="10" width="330" height="290" rx="12" fill="none" stroke="var(--accent-3)" stroke-width="2" stroke-dasharray="6 4"/>
+          <text x="175" y="32" text-anchor="middle" class="phase-label">Control plane — the "brain"</text>
+          <rect class="box-final" x="30" y="48" width="130" height="50" rx="6"/><text x="95" y="70" text-anchor="middle">API server</text><text x="95" y="86" text-anchor="middle" class="edge-label">the front door</text>
+          <rect class="box" x="180" y="48" width="140" height="50" rx="6"/><text x="250" y="70" text-anchor="middle">etcd</text><text x="250" y="86" text-anchor="middle" class="edge-label">the memory (state)</text>
+          <rect class="box-hl" x="30" y="118" width="130" height="50" rx="6"/><text x="95" y="140" text-anchor="middle">Scheduler</text><text x="95" y="156" text-anchor="middle" class="edge-label">picks a node</text>
+          <rect class="box-hl" x="180" y="118" width="140" height="50" rx="6"/><text x="250" y="140" text-anchor="middle">Controllers</text><text x="250" y="156" text-anchor="middle" class="edge-label">make reality = wish</text>
+          <text x="175" y="205" text-anchor="middle" class="edge-label">You (kubectl / GitOps tool) talk ONLY to the API server</text>
+          <text x="175" y="235" text-anchor="middle" class="edge-label">"Desired state: 3 copies of web v1.4.2"</text>
+          <text x="175" y="262" text-anchor="middle" class="edge-label">Controllers loop: compare → fix → compare → fix …</text>
+
+          <rect x="370" y="10" width="340" height="290" rx="12" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="6 4"/>
+          <text x="540" y="32" text-anchor="middle" class="phase-label">Worker nodes — the "muscle"</text>
+          <rect class="box" x="385" y="48" width="150" height="120" rx="8"/><text x="460" y="68" text-anchor="middle">Node 1</text>
+          <rect class="box-hl" x="395" y="78" width="60" height="30" rx="4"/><text x="425" y="98" text-anchor="middle" class="edge-label">Pod</text>
+          <rect class="box-hl" x="465" y="78" width="60" height="30" rx="4"/><text x="495" y="98" text-anchor="middle" class="edge-label">Pod</text>
+          <text x="460" y="132" text-anchor="middle" class="edge-label">kubelet · runtime</text><text x="460" y="150" text-anchor="middle" class="edge-label">kube-proxy</text>
+          <rect class="box" x="550" y="48" width="150" height="120" rx="8"/><text x="625" y="68" text-anchor="middle">Node 2</text>
+          <rect class="box-hl" x="560" y="78" width="60" height="30" rx="4"/><text x="590" y="98" text-anchor="middle" class="edge-label">Pod</text>
+          <rect class="box-hl" x="630" y="78" width="60" height="30" rx="4"/><text x="660" y="98" text-anchor="middle" class="edge-label">Pod</text>
+          <text x="625" y="132" text-anchor="middle" class="edge-label">kubelet · runtime</text><text x="625" y="150" text-anchor="middle" class="edge-label">kube-proxy</text>
+          <text x="540" y="205" text-anchor="middle" class="edge-label">A Pod = one or more containers sharing a network address</text>
+          <text x="540" y="235" text-anchor="middle" class="edge-label">kubelet: "I run what the brain assigned to my machine"</text>
+          <line class="edge" x1="340" y1="120" x2="383" y2="110" marker-end="url(#arrDo10)"/>
+        </svg>
+        <div class="diagram-caption">Fig 10 — Kubernetes architecture: the control plane stores the desired state and decides; worker nodes (via the kubelet) actually run the Pods.</div>
+      </div>
+      <div class="callout life">
+        An airport: the control tower (control plane) knows the plan — which plane lands where. The runways and gates (nodes) do the physical work. If a plane (Pod) breaks down, the tower reroutes another to keep the schedule.
+      </div>
+      <h3>The core idea: declarative + reconciliation</h3>
+      <ul>
+        <li><strong>Declarative:</strong> you write <em>what</em> you want in YAML, not <em>how</em> to get there.</li>
+        <li><strong>Reconciliation loop:</strong> controllers constantly compare "desired" with "actual" and act — a crashed Pod is replaced without anyone being paged.</li>
+        <li><strong>Everything goes through the API server</strong>, so access control (RBAC), auditing and GitOps all plug into one place.</li>
+      </ul>
+    </section>
+
+    <!-- 22 -->
+    <section class="block" id="k8s-objects">
+      <h2><span class="num">22</span> Kubernetes Objects You'll Meet</h2>
+      <table>
+        <tr><th>Object</th><th>What it is</th><th>Everyday picture</th></tr>
+        <tr><td><strong>Pod</strong></td><td>Smallest runnable unit: one or more containers sharing network/storage</td><td>One shared apartment for tightly-linked roommates</td></tr>
+        <tr><td><strong>Deployment</strong></td><td>Keeps N identical Pods running; handles rolling updates and rollbacks</td><td>A manager ensuring exactly 3 cashiers on shift</td></tr>
+        <tr><td>StatefulSet</td><td>Like a Deployment but Pods keep stable names and storage (databases)</td><td>Reserved seats with name tags</td></tr>
+        <tr><td>DaemonSet</td><td>One Pod on every node (log collectors, agents)</td><td>A security guard on every floor</td></tr>
+        <tr><td>Job / CronJob</td><td>Run to completion once / on a schedule</td><td>A one-off errand / a weekly chore</td></tr>
+        <tr><td><strong>Service</strong></td><td>A stable address and load balancer in front of changing Pods</td><td>A company's reception number that routes to whoever is available</td></tr>
+        <tr><td>Ingress / <strong>Gateway API</strong></td><td>Rules to bring outside web traffic in (hostnames, paths, TLS)</td><td>The building's front door and directory</td></tr>
+        <tr><td>ConfigMap</td><td>Non-secret settings</td><td>A settings sheet</td></tr>
+        <tr><td>Secret</td><td>Sensitive values (note: only <em>base64-encoded</em> by default, not encrypted — protect it properly)</td><td>A locked drawer (if you remember to lock it)</td></tr>
+        <tr><td>PersistentVolume / Claim</td><td>Storage that outlives a Pod</td><td>A storage unit you rent</td></tr>
+        <tr><td>Namespace</td><td>A named partition of the cluster</td><td>Departments with their own rooms</td></tr>
+        <tr><td>HorizontalPodAutoscaler</td><td>Adds/removes Pods based on load</td><td>Opening more checkout lanes when the queue grows</td></tr>
+        <tr><td>Probes (readiness / liveness)</td><td>Checks that tell K8s if a Pod is ready for traffic or needs a restart</td><td>"Are you ready to serve?" / "Are you still alive?"</td></tr>
+        <tr><td>RBAC, NetworkPolicy</td><td>Who may do what; which Pods may talk to which</td><td>Key cards and door rules</td></tr>
+      </table>
+      <div class="callout warn">
+        <strong>Heads-up on ingress:</strong> the popular <em>ingress-nginx</em> controller was retired by the Kubernetes project in March 2026 (no more fixes, including security fixes). The Ingress API itself still works, and the newer
+        <strong>Gateway API</strong> is the recommended direction; teams moved to Gateway API controllers or other maintained Ingress controllers (migration tool: <em>ingress2gateway</em>). If your cluster still runs ingress-nginx, plan a migration.
+      </div>
+      <h3>kubectl cheat sheet</h3>
+      <table>
+        <tr><th>Command</th><th>Does</th></tr>
+        <tr><td><code>kubectl get pods</code></td><td>List Pods (add <code>-A</code> for all namespaces)</td></tr>
+        <tr><td><code>kubectl describe pod NAME</code></td><td>Details and recent events (first stop when something is wrong)</td></tr>
+        <tr><td><code>kubectl logs NAME</code></td><td>Show a container's logs (<code>-f</code> to follow)</td></tr>
+        <tr><td><code>kubectl apply -f file.yaml</code></td><td>Create/update things to match the file</td></tr>
+        <tr><td><code>kubectl rollout status deploy/NAME</code></td><td>Watch an update progress</td></tr>
+        <tr><td><code>kubectl rollout undo deploy/NAME</code></td><td>Roll back to the previous version</td></tr>
+        <tr><td><code>kubectl scale deploy/NAME --replicas=5</code></td><td>Change the number of copies</td></tr>
+        <tr><td><code>kubectl exec -it NAME -- sh</code></td><td>Open a shell inside a container (debugging)</td></tr>
+      </table>
+    </section>
+
+    <!-- 23 -->
+    <section class="block" id="helm-kustomize">
+      <h2><span class="num">23</span> Helm &amp; Kustomize — Packaging Kubernetes YAML</h2>
+      <p>Raw Kubernetes YAML gets repetitive (same app, different settings for dev/staging/prod). Two popular answers:</p>
+      <table>
+        <tr><th></th><th>Helm</th><th>Kustomize</th></tr>
+        <tr><td>Idea</td><td>A <strong>chart</strong> = templated YAML + a <code>values.yaml</code> of settings; "package manager for Kubernetes"</td><td>Start with plain YAML and apply <strong>overlays</strong> (patches) per environment — no templating</td></tr>
+        <tr><td>Strengths</td><td>Huge ecosystem of ready-made charts; versioned releases; easy install/upgrade/rollback</td><td>Simple, built into <code>kubectl</code>; plain YAML stays readable</td></tr>
+        <tr><td>Watch out</td><td>Templates can become hard to read</td><td>Less reuse for complex software</td></tr>
+        <tr><td>Used with GitOps</td><td>Argo CD and Flux both understand Helm charts and Kustomize overlays</td><td>—</td></tr>
+      </table>
+      <h3>Extending Kubernetes</h3>
+      <ul>
+        <li><strong>Custom Resource Definitions (CRDs)</strong> teach Kubernetes new object types (like <code>Database</code> or <code>Certificate</code>).</li>
+        <li><strong>Operators</strong> are controllers that use CRDs to run complex software for you (create a database, back it up, upgrade it) — automation by people who know the software.</li>
+      </ul>
+      <div class="callout life">
+        Helm is a cake mix with a box of options (values). Kustomize is a plain recipe with sticky-note edits for each kitchen.
+      </div>
+    </section>
+
+    <!-- 24 -->
+    <section class="block" id="k8s-versions-ops">
+      <h2><span class="num">24</span> Versions &amp; Upgrades — Keeping Kubernetes Current</h2>
+      <p>
+        Kubernetes ships about <strong>three minor versions a year</strong>, and each gets roughly <strong>a year of patch support</strong> (security and bug fixes), with no long-term-support release. Falling behind means running unpatched software.
+        As listed on the official <a href="https://kubernetes.io/releases/" target="_blank" rel="noopener">Releases page</a> (checked 29 Oct 2026):
+      </p>
+      <table>
+        <tr><th>Minor version</th><th>Latest patch</th><th>End of life</th><th>Status</th></tr>
+        <tr><td><strong>1.37</strong> (released 26 Aug 2026 per release trackers)</td><td>1.37.1</td><td>28 Oct 2027</td><td>Newest</td></tr>
+        <tr><td>1.36</td><td>1.36.5</td><td>28 Jun 2027</td><td>Supported</td></tr>
+        <tr><td>1.35</td><td>1.35.9</td><td>28 Feb 2027</td><td>Supported</td></tr>
+        <tr><td>1.34</td><td>1.34.12</td><td><strong>27 Oct 2026</strong></td><td>Reached end of life this week — upgrade</td></tr>
+        <tr><td>1.33 and older</td><td>—</td><td>1.33 ended 28 Jun 2026</td><td>Unsupported</td></tr>
+      </table>
+      <div class="callout warn">
+        Managed services (EKS, AKS, GKE) set their own calendars — some offer paid "extended support" past upstream's date — so check your provider's table too. Version numbers move monthly; always verify on the official page.
+      </div>
+      <h3>A safe upgrade routine</h3>
+      <table>
+        <tr><th>Step</th><th>Why</th></tr>
+        <tr><td>1. Read the release notes and the list of removed/deprecated APIs</td><td>Old API versions get removed; manifests using them stop working</td></tr>
+        <tr><td>2. Upgrade <strong>one minor version at a time</strong> (don't skip)</td><td>The supported path; skipping risks incompatibilities</td></tr>
+        <tr><td>3. Upgrade the control plane first, then the nodes</td><td>Nodes can lag slightly behind the control plane, not ahead</td></tr>
+        <tr><td>4. Try it on staging; run smoke tests</td><td>Find surprises before users do</td></tr>
+        <tr><td>5. Use PodDisruptionBudgets and readiness probes</td><td>Keeps the app available while nodes are replaced one by one</td></tr>
+        <tr><td>6. Update add-ons (ingress/gateway, CNI, GitOps tool) too</td><td>They have their own compatibility ranges</td></tr>
+      </table>
+    </section>
+
+    <!-- 25 -->
+    <section class="block" id="serverless-paas">
+      <h2><span class="num">25</span> Serverless &amp; PaaS — You Don't Always Need Kubernetes</h2>
+      <p>Kubernetes is powerful but is also a lot to operate. There's a spectrum of "how much do I manage?":</p>
+      <table>
+        <tr><th>Option</th><th>You manage…</th><th>Provider manages…</th><th>Good for</th></tr>
+        <tr><td>Virtual machines (IaaS)</td><td>OS, runtime, app, scaling</td><td>Hardware, virtualisation</td><td>Full control; lift-and-shift</td></tr>
+        <tr><td>Managed Kubernetes</td><td>Workloads, config, add-ons, upgrades of nodes (partly)</td><td>Control plane</td><td>Many services, portability, complex needs</td></tr>
+        <tr><td>Container platforms (Cloud Run, ECS/Fargate, Azure Container Apps…)</td><td>The container image and settings</td><td>Servers, scaling, networking</td><td>Most web apps and APIs — "containers without the cluster"</td></tr>
+        <tr><td>PaaS (Heroku-style, App Service, App Engine…)</td><td>Just the code</td><td>Almost everything</td><td>Small teams, fast start</td></tr>
+        <tr><td>Functions (FaaS — Lambda, Cloud Functions…)</td><td>Single functions</td><td>Everything else; billed per run</td><td>Event-driven glue, spiky workloads</td></tr>
+      </table>
+      <div class="callout tip">
+        A good question to ask before choosing Kubernetes: <em>"Do we need what it uniquely gives us?"</em> Many teams are happier on a container platform until their needs (many services, custom networking, multi-cloud) justify the extra work.
+      </div>
+      <div class="callout life">
+        Getting around town: owning a car (VM) gives freedom but you do maintenance; a leased fleet with a manager (Kubernetes) is flexible but complicated; a taxi (functions/PaaS) means you just say where to go.
+      </div>
+    </section>
+
+    <div class="part-divider"><h2>Part F — Infrastructure</h2></div>
+
+    <!-- 26 -->
+    <section class="block" id="cloud-basics">
+      <h2><span class="num">26</span> Cloud Basics — Renting Computers by the Hour</h2>
+      <p>
+        "The cloud" just means someone else's data centres that you rent over the internet, paying for what you use. You can get servers in minutes, throw them away when done, and spread across the world.
+      </p>
+      <table>
+        <tr><th>Layer</th><th>You rent…</th><th>Examples</th><th>Pizza analogy</th></tr>
+        <tr><td><strong>IaaS</strong> (Infrastructure)</td><td>Virtual machines, disks, networks</td><td>EC2, Compute Engine, Azure VMs</td><td>Buy dough and toppings, bake at home</td></tr>
+        <tr><td><strong>PaaS</strong> (Platform)</td><td>A place to run your code; the platform handles servers</td><td>App Engine, App Service, Cloud Run</td><td>Take-and-bake pizza</td></tr>
+        <tr><td><strong>SaaS</strong> (Software)</td><td>Finished software</td><td>Gmail, Slack, Salesforce</td><td>Order a delivered pizza</td></tr>
+        <tr><td>Serverless / FaaS</td><td>Functions that run on demand</td><td>Lambda, Cloud Functions</td><td>A slice, paid per bite</td></tr>
+      </table>
+      <h3>Words you'll hear</h3>
+      <table>
+        <tr><th>Word</th><th>Meaning</th></tr>
+        <tr><td>Region</td><td>A geographic area with data centres (e.g., "Mumbai"). Pick near your users.</td></tr>
+        <tr><td>Availability zone (AZ)</td><td>An isolated data centre (or group) inside a region; spread across zones so one failing doesn't take you down</td></tr>
+        <tr><td>VPC / virtual network</td><td>Your private network in the cloud, with subnets, routes and firewalls</td></tr>
+        <tr><td>IAM</td><td>Identity and Access Management: who (people, services) may do what</td></tr>
+        <tr><td>Object storage</td><td>Cheap, durable file storage (S3-style buckets)</td></tr>
+        <tr><td>Load balancer</td><td>Spreads requests across several servers and skips unhealthy ones</td></tr>
+        <tr><td>Managed service</td><td>The provider runs it for you (databases, queues, Kubernetes control planes)</td></tr>
+        <tr><td>Shared responsibility</td><td>The provider secures the cloud itself; <em>you</em> secure what you put in it (configuration, data, access)</td></tr>
+      </table>
+      <div class="callout warn">
+        Most cloud security incidents are <strong>misconfigurations</strong> — a public storage bucket, an over-powerful key — not break-ins to the provider. That's one big reason to define infrastructure as reviewed code (next section).
+      </div>
+    </section>
+
+    <!-- 27 -->
+    <section class="block" id="iac-devops">
+      <h2><span class="num">27</span> Infrastructure as Code (IaC)</h2>
+      <div class="callout def">
+        <strong>Infrastructure as Code</strong> means describing servers, networks, databases and permissions in text files, keeping those files in Git, and letting a tool create and update the real thing from them — instead of clicking around a web console.
+      </div>
+      <div class="callout life">
+        An architect's blueprint instead of a builder's memory: anyone can read it, review it, copy it to build the same house again, and see exactly what changed between version 3 and version 4.
+      </div>
+      <table>
+        <tr><th>Without IaC (click-ops)</th><th>With IaC</th></tr>
+        <tr><td>Hand-built, nobody remembers how</td><td>Every setting is written down and versioned</td></tr>
+        <tr><td>Dev, test and prod drift apart</td><td>Same code builds all environments</td></tr>
+        <tr><td>Rebuilding after a disaster takes weeks</td><td>Rebuild in minutes by re-running the code</td></tr>
+        <tr><td>Changes are unreviewed</td><td>Changes go through pull requests and a "plan" preview</td></tr>
+        <tr><td>"Who changed that firewall rule?"</td><td>Git history answers it</td></tr>
+      </table>
+      <h3>Declarative vs imperative</h3>
+      <ul>
+        <li><strong>Declarative</strong> (Terraform/OpenTofu, CloudFormation, Kubernetes YAML): describe the <em>end result</em> ("I want 3 servers"); the tool works out the steps. Safe to re-run.</li>
+        <li><strong>Imperative</strong> (shell scripts): list the <em>steps</em> ("create server, then…"). Running twice might create six servers.</li>
+      </ul>
+      <h3>The everyday workflow</h3>
+      <table>
+        <tr><th>Command (Terraform / OpenTofu)</th><th>What it does</th></tr>
+        <tr><td><code>init</code></td><td>Download the providers (plugins that talk to a cloud) and set up storage for state</td></tr>
+        <tr><td><code>fmt</code> / <code>validate</code></td><td>Tidy and syntax-check the files</td></tr>
+        <tr><td><code>plan</code></td><td>Compare code with reality and show exactly what <em>would</em> change — review it like a diff</td></tr>
+        <tr><td><code>apply</code></td><td>Make the changes (after approval)</td></tr>
+        <tr><td><code>destroy</code></td><td>Tear everything down (great for temporary environments; dangerous in production!)</td></tr>
+      </table>
+      <div class="callout tip">
+        Key concept: <strong>state</strong>. The tool keeps a record ("state file") of what it created so it knows what to update. Store it remotely with locking (so two people can't apply at once) and protect it — it can contain sensitive values. See <a href="#config-mgmt-policy">Section 29</a>. Real code in <a href="#iac-code">Level 4</a>.
+      </div>
+    </section>
+
+    <!-- 28 -->
+    <section class="block" id="iac-tools-compare">
+      <h2><span class="num">28</span> IaC Tools Compared (Oct 2026)</h2>
+      <table>
+        <tr><th>Tool</th><th>Language / style</th><th>License &amp; status (as reported)</th><th>Good fit</th></tr>
+        <tr><td><strong>Terraform</strong> (HashiCorp, now owned by IBM)</td><td>HCL (declarative)</td><td>Business Source License since 2023; IBM completed its HashiCorp acquisition in Feb 2025 and the license had not reverted to open source; HCP Terraform's old free plan ended Mar 2026 (new free tier capped at 500 resources); CDK for Terraform reported deprecated</td><td>The most widely used; huge provider/module ecosystem</td></tr>
+        <tr><td><strong><a href="https://opentofu.org/" target="_blank" rel="noopener">OpenTofu</a></strong></td><td>HCL (a Terraform-compatible fork)</td><td>Open source under the Linux Foundation's stewardship ("drop-in replacement"); its site announces 1.13 (late Oct 2026)</td><td>Teams wanting open governance with Terraform-style code; many 2026 guides suggest it for new projects</td></tr>
+        <tr><td><strong><a href="https://www.pulumi.com/" target="_blank" rel="noopener">Pulumi</a></strong></td><td>Real languages: Python, TypeScript, Go, C#, Java</td><td>Open source (Apache 2.0) core plus a hosted service; adds an AI assistant</td><td>Developers who prefer loops, functions and tests in a normal language</td></tr>
+        <tr><td>AWS CloudFormation / CDK; Azure Bicep; Google Cloud tooling</td><td>JSON/YAML; TypeScript/Python (CDK); Bicep DSL</td><td>Provider-owned</td><td>All-in on one cloud</td></tr>
+        <tr><td><a href="https://www.crossplane.io/" target="_blank" rel="noopener">Crossplane</a></td><td>Kubernetes YAML (CRDs)</td><td>CNCF project</td><td>Managing cloud resources through Kubernetes and GitOps</td></tr>
+        <tr><td>Ansible</td><td>YAML playbooks (mostly configuration of machines)</td><td>Open source (Red Hat)</td><td>Configuring servers, network devices, one-off orchestration</td></tr>
+      </table>
+      <div class="callout warn">
+        Licenses and prices are moving targets (this table is a snapshot from news and the project sites). Check each project's current terms; and keep your IaC modular so a tool switch isn't a rewrite.
+      </div>
+      <div class="callout life">
+        Same blueprint idea, different drawing styles: Terraform and OpenTofu use one shared blueprint language; Pulumi lets you draw it with a programming language you already know; cloud-native tools only draw for one landlord.
+      </div>
+    </section>
+
+    <!-- 29 -->
+    <section class="block" id="config-mgmt-policy">
+      <h2><span class="num">29</span> Config Management, Drift &amp; Policy as Code</h2>
+      <table>
+        <tr><th>Idea</th><th>Plain meaning</th><th>Why it matters</th></tr>
+        <tr><td>Configuration management</td><td>Tools (Ansible, Chef, Puppet) that bring existing machines to a described state</td><td>Consistent servers without hand-edits</td></tr>
+        <tr><td>Immutable infrastructure</td><td>Never patch a running server — build a new image and replace it</td><td>No "snowflake" servers nobody understands</td></tr>
+        <tr><td>Drift</td><td>Reality no longer matches the code (someone clicked in the console)</td><td>Surprises during the next apply; detect with <code>plan</code> or GitOps tools</td></tr>
+        <tr><td>Remote state + locking</td><td>Keep IaC state in shared, encrypted storage with a lock</td><td>No two people applying at once; no state on laptops</td></tr>
+        <tr><td>Modules</td><td>Reusable, versioned building blocks ("a standard web service")</td><td>Fewer mistakes, faster work</td></tr>
+        <tr><td>Environments</td><td>Same code, different inputs for dev/staging/prod</td><td>Production is a known copy of what you tested</td></tr>
+        <tr><td><strong>Policy as code</strong></td><td>Rules written as code and checked automatically (e.g., "no public buckets", "all resources tagged")</td><td>Guardrails that scale — tools like OPA/Rego, Kyverno (Kubernetes), Checkov</td></tr>
+        <tr><td>Static analysis of IaC</td><td>Linters/scanners that review plans for insecure settings before apply</td><td>Catches misconfigurations in the pull request</td></tr>
+      </table>
+      <div class="callout life">
+        Building codes for a city: you don't inspect every house by hand; you write the rules once ("fire exits required") and an inspector checks every plan automatically.
+      </div>
+      <div class="callout warn">
+        Treat <code>destroy</code> and anything that deletes data with special care — require approvals, protect critical resources with "prevent destroy" settings, and keep backups. Autonomous AI agents with write access to infrastructure have caused real outages; give them read-only or narrowly scoped access first (<a href="#ai-devops">Section 40</a>).
+      </div>
+    </section>
+
+    <div class="part-divider"><h2>Part G — Operate &amp; Reliability</h2></div>
+
+    <!-- 30 -->
+    <section class="block" id="observability">
+      <h2><span class="num">30</span> Observability — Seeing Inside a Running System</h2>
+      <p>
+        Monitoring tells you <em>that</em> something is wrong; <strong>observability</strong> lets you ask <em>why</em>, even about problems you didn't predict. It rests on three kinds of signals:
+      </p>
+      <table>
+        <tr><th>Signal</th><th>What it is</th><th>Answers</th><th>Example</th><th>Analogy</th></tr>
+        <tr><td><strong>Metrics</strong></td><td>Numbers over time</td><td>"How much? How fast? Is it getting worse?"</td><td>Requests/sec, error rate, CPU %</td><td>The car's dashboard gauges</td></tr>
+        <tr><td><strong>Logs</strong></td><td>Time-stamped event messages</td><td>"What exactly happened?"</td><td><code>ERROR payment failed for order 8841</code></td><td>The ship's logbook</td></tr>
+        <tr><td><strong>Traces</strong></td><td>The path of one request through many services</td><td>"Where was the time spent?"</td><td>checkout → payments (800 ms) → database</td><td>A parcel's tracking history</td></tr>
+      </table>
+      <div class="grid">
+        <div class="card"><h4>📏 Metrics tools</h4><p>Prometheus (collects and stores), Grafana (dashboards), cloud monitors, Datadog, New Relic…</p></div>
+        <div class="card"><h4>📜 Log tools</h4><p>Loki, Elasticsearch/OpenSearch, cloud logging. Log as structured JSON so you can search fields.</p></div>
+        <div class="card"><h4>🧭 Trace tools</h4><p>Jaeger, Tempo, Zipkin and commercial APMs; you need to pass a trace ID between services.</p></div>
+        <div class="card"><h4>🔌 OpenTelemetry</h4><p>The open standard (CNCF) for creating and shipping all three signals, so you can switch back-ends without re-instrumenting. It also has conventions for tracing AI/LLM calls.</p></div>
+      </div>
+      <div class="callout tip">
+        Good logs and metrics need <strong>context</strong>: attach request IDs, version numbers, and user/tenant identifiers (never passwords or personal secrets) so you can follow a story across services. Also log which <em>release</em> is running — most incidents begin right after a change.
+      </div>
+    </section>
+
+    <!-- 31 -->
+    <section class="block" id="monitoring-alerting">
+      <h2><span class="num">31</span> Monitoring &amp; Alerting — Wake Me Only When It Matters</h2>
+      <h3>The four golden signals (from the Google SRE book)</h3>
+      <table>
+        <tr><th>Signal</th><th>Question</th><th>Example</th></tr>
+        <tr><td>Latency</td><td>How long do requests take?</td><td>95% of requests under 300 ms</td></tr>
+        <tr><td>Traffic</td><td>How much demand?</td><td>2,000 requests/second</td></tr>
+        <tr><td>Errors</td><td>How many requests fail?</td><td>0.2% return 5xx</td></tr>
+        <tr><td>Saturation</td><td>How full is the most limited resource?</td><td>Disk 92% full; connection pool 95% used</td></tr>
+      </table>
+      <p>Two handy shortcuts: <strong>RED</strong> for services (Rate, Errors, Duration) and <strong>USE</strong> for resources (Utilisation, Saturation, Errors).</p>
+      <h3>Alerting rules of thumb</h3>
+      <table>
+        <tr><th>Do</th><th>Don't</th></tr>
+        <tr><td>Alert on <strong>symptoms users feel</strong> (errors, slowness) — "checkout is failing"</td><td>Alert on every internal cause ("CPU 81%") that may not hurt anyone</td></tr>
+        <tr><td>Make every page <strong>actionable</strong> with a runbook link</td><td>Page someone for something that can wait until morning</td></tr>
+        <tr><td>Use severities: page now / ticket tomorrow / dashboard only</td><td>Send everything to the same noisy channel</td></tr>
+        <tr><td>Review and delete noisy alerts regularly</td><td>Ignore alert fatigue — people stop reacting to cry-wolf alarms</td></tr>
+        <tr><td>Alert on <strong>error-budget burn</strong> (Section 32)</td><td>Use fixed thresholds that don't match your promises</td></tr>
+      </table>
+      <div class="callout life">
+        A smoke alarm should ring when there's smoke, not every time you make toast. If it rings for toast, you'll pull the battery out — and then miss the real fire.
+      </div>
+      <p>Sample alert rule: <a href="#slo-code">Level 5</a> and <a href="#deploy-script-code">Level 6</a> show the maths and the automation behind this.</p>
+    </section>
+
+    <!-- 32 -->
+    <section class="block" id="slo-sre">
+      <h2><span class="num">32</span> SLIs, SLOs &amp; Error Budgets — How Reliable Is Reliable Enough?</h2>
+      <p>100% reliability is impossible and absurdly expensive. SRE replaces "never fail" with an agreed target:</p>
+      <table>
+        <tr><th>Term</th><th>Stands for</th><th>Meaning</th><th>Example</th></tr>
+        <tr><td><strong>SLI</strong></td><td>Service Level Indicator</td><td>A measurement of how well it's working</td><td>% of requests that succeed in under 300 ms</td></tr>
+        <tr><td><strong>SLO</strong></td><td>Service Level Objective</td><td>The internal target for the SLI</td><td>99.9% of requests good over 30 days</td></tr>
+        <tr><td><strong>SLA</strong></td><td>Service Level Agreement</td><td>A contract with consequences (refunds) if you miss; usually looser than the SLO</td><td>"99.5% or we credit your bill"</td></tr>
+        <tr><td><strong>Error budget</strong></td><td>—</td><td>1 − SLO: the amount of failure you are <em>allowed</em></td><td>0.1% ≈ 43 minutes of full outage per 30 days</td></tr>
+      </table>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg">
+          <text x="10" y="20" class="phase-label">Error budget for the month (SLO 99.9%)</text>
+          <rect class="box" x="20" y="40" width="680" height="40" rx="6"/>
+          <rect class="box-final" x="20" y="40" width="442" height="40" rx="6"/>
+          <text x="240" y="66" text-anchor="middle">65% of budget used</text>
+          <text x="580" y="66" text-anchor="middle" class="edge-label">35% left to "spend"</text>
+          <text x="20" y="108" class="edge-label">day 1</text><text x="670" y="108" class="edge-label">day 30</text>
+          <rect class="box-hl" x="20" y="125" width="320" height="70" rx="8"/><text x="180" y="150" text-anchor="middle">Budget left → ship faster</text><text x="180" y="170" text-anchor="middle" class="edge-label">take risks, release features, run experiments</text>
+          <rect class="box-final" x="380" y="125" width="320" height="70" rx="8"/><text x="540" y="150" text-anchor="middle">Budget gone → slow down</text><text x="540" y="170" text-anchor="middle" class="edge-label">freeze risky launches, fix reliability first</text>
+        </svg>
+        <div class="diagram-caption">Fig 11 — The error budget turns "speed vs stability" into a shared, measurable rule: spend the budget on change while you have some; protect it when it's nearly gone.</div>
+      </div>
+      <div class="callout life">
+        A monthly data plan: you're allowed a certain amount of "badness" (like gigabytes). Use it freely while you have plenty; when it's nearly gone, stop streaming and wait for next month.
+      </div>
+      <h3>Burn rate — how fast are we spending?</h3>
+      <p>
+        A <strong>burn rate</strong> of 1× means you'd use exactly your whole budget by the end of the period. 10× means you'd empty it in a tenth of the time. Teams alert on fast burns (page), and slower burns (ticket).
+        A commonly used example from Google's SRE Workbook: a <strong>14.4× burn sustained for 1 hour</strong> uses about 2% of a 30-day budget — worth a page. The numbers in <a href="#slo-code">Level 5</a> show how it works.
+      </p>
+      <div class="callout tip">
+        Pick SLOs from what <em>users</em> care about (fast, correct, available), start with one or two per service, and revisit them. "Reliability" is a feature with a price: each extra "nine" costs far more than the last.
+      </div>
+    </section>
+
+    <!-- 33 -->
+    <section class="block" id="incident-mgmt">
+      <h2><span class="num">33</span> Incidents &amp; Postmortems — When Things Break (They Will)</h2>
+      <table>
+        <tr><th>Phase</th><th>What happens</th><th>Key idea</th></tr>
+        <tr><td>1. Detect</td><td>Alert fires or a user reports</td><td>Find out before customers tell you</td></tr>
+        <tr><td>2. Triage</td><td>How bad? Who's affected? Assign a severity</td><td>Severity decides who gets woken up</td></tr>
+        <tr><td>3. Mitigate</td><td>Stop the bleeding: roll back, turn off a flag, add capacity, fail over</td><td><strong>Restore service first, find the root cause later</strong></td></tr>
+        <tr><td>4. Resolve</td><td>Confirm normal operation; close the incident</td><td>Verify with the same metrics that detected it</td></tr>
+        <tr><td>5. Learn</td><td>Blameless postmortem with follow-up actions</td><td>Fix the <em>system</em>, not the person</td></tr>
+      </table>
+      <h3>Roles in a serious incident</h3>
+      <table>
+        <tr><th>Role</th><th>Job</th></tr>
+        <tr><td>Incident commander</td><td>Coordinates; makes decisions; doesn't debug</td></tr>
+        <tr><td>Operations / responders</td><td>Investigate and apply fixes</td></tr>
+        <tr><td>Communications lead</td><td>Updates stakeholders and the status page regularly</td></tr>
+        <tr><td>Scribe</td><td>Keeps a timeline of what was tried and when</td></tr>
+      </table>
+      <h3>A blameless postmortem answers</h3>
+      <ul>
+        <li>What happened (timeline), and what was the impact (who, how long)?</li>
+        <li>How did we detect it — and could we have detected it sooner?</li>
+        <li>What made it possible (contributing factors, not "someone's mistake")?</li>
+        <li>What went well? What was lucky?</li>
+        <li>Which concrete, owned, dated actions will prevent or shrink the next one?</li>
+      </ul>
+      <div class="callout life">
+        After a kitchen fire, a good team asks "why was the grease trap blocked and why didn't the alarm warn us sooner?" — not "who was cooking?". Next week the kitchen is safer for everyone.
+      </div>
+    </section>
+
+    <!-- 34 -->
+    <section class="block" id="resilience-dr">
+      <h2><span class="num">34</span> Resilience, Backups &amp; Disaster Recovery</h2>
+      <table>
+        <tr><th>Concept</th><th>Plain meaning</th><th>Example</th></tr>
+        <tr><td>RPO (Recovery Point Objective)</td><td>How much recent data you can afford to lose</td><td>"At most 15 minutes of orders" → back up/replicate at least that often</td></tr>
+        <tr><td>RTO (Recovery Time Objective)</td><td>How long you can be down</td><td>"Back within 1 hour"</td></tr>
+        <tr><td>Backups: the 3-2-1 rule</td><td>3 copies, on 2 kinds of storage, 1 off-site (and ideally immutable)</td><td>Protects against deletion, corruption and ransomware</td></tr>
+        <tr><td>Test restores</td><td>A backup you've never restored is a hope, not a backup</td><td>Quarterly restore drills</td></tr>
+        <tr><td>Redundancy</td><td>Spread across servers, zones, and (if needed) regions</td><td>One zone fails; service continues</td></tr>
+        <tr><td>Health checks &amp; auto-healing</td><td>Detect and replace bad instances automatically</td><td>Kubernetes probes, load-balancer checks</td></tr>
+        <tr><td>Timeouts, retries with backoff, circuit breakers</td><td>Stop one slow dependency from dragging everything down</td><td>Wait a bit longer each retry; stop calling a failing service for a while</td></tr>
+        <tr><td>Graceful degradation</td><td>Keep the important parts working when parts fail</td><td>Shop works without the recommendations widget</td></tr>
+        <tr><td>Chaos engineering</td><td>Deliberately break things (in a controlled way) to find weaknesses</td><td>Kill a Pod and confirm users don't notice</td></tr>
+        <tr><td>Load testing</td><td>Check behaviour under heavy traffic before real users create it</td><td>Simulate sale-day traffic</td></tr>
+      </table>
+      <div class="callout life">
+        Spare tyres and fire drills: you hope you never need them, but you check they work <em>before</em> the emergency.
+      </div>
+    </section>
+
+    <!-- 35 -->
+    <section class="block" id="finops-devops">
+      <h2><span class="num">35</span> Cost &amp; FinOps — The Bill Is Part of Reliability</h2>
+      <p>
+        Cloud makes it easy to spend money by accident: a forgotten test cluster, oversized servers, logs kept forever. <strong>FinOps</strong> adds cost awareness to engineering decisions.
+      </p>
+      <table>
+        <tr><th>Lever</th><th>What to do</th></tr>
+        <tr><td>Tag everything</td><td>Label resources with team/project/environment so you can see who spends what</td></tr>
+        <tr><td>Rightsizing</td><td>Match server size to real use (check actual CPU/memory)</td></tr>
+        <tr><td>Autoscaling &amp; scheduled shutdown</td><td>Scale down at night; turn dev environments off when unused</td></tr>
+        <tr><td>Discount models</td><td>Commitments/reserved capacity for steady loads; spot/preemptible for interruptible jobs</td></tr>
+        <tr><td>Storage lifecycle</td><td>Move old data to cheaper tiers; expire old logs and snapshots</td></tr>
+        <tr><td>Budgets &amp; alerts</td><td>Get warned at 50/80/100% of a budget, not after the invoice</td></tr>
+        <tr><td>Unit economics</td><td>Track cost per customer/request, not just the total</td></tr>
+        <tr><td>Guardrails in IaC</td><td>Policy checks block absurdly big instance types before they're created</td></tr>
+      </table>
+      <div class="callout tip">
+        Cost is also a signal: a sudden jump often means a bug (an infinite loop of retries) or an attack. Watch it like any other metric. The same applies to AI usage — token bills can balloon (see the <a href="llm.html#cost-latency">LLM cost section</a>).
+      </div>
+    </section>
+
+    <div class="part-divider"><h2>Part H — Security</h2></div>
+
+    <!-- 36 -->
+    <section class="block" id="devsecops">
+      <h2><span class="num">36</span> DevSecOps — Move Security Left</h2>
+      <p>
+        Old style: security reviews happen at the very end, find big problems, and everyone is angry. <strong>DevSecOps</strong> builds security checks into every step of the pipeline — "shifting left" on the timeline, so problems are found when they're cheap to fix.
+      </p>
+      <table>
+        <tr><th>Check</th><th>Looks at…</th><th>Finds…</th><th>When</th></tr>
+        <tr><td><strong>Secret scanning</strong></td><td>Code and history</td><td>Passwords, API keys committed by accident</td><td>Pre-commit and on every push</td></tr>
+        <tr><td><strong>SAST</strong> (static analysis)</td><td>Your source code</td><td>Injection bugs, unsafe patterns</td><td>On every PR</td></tr>
+        <tr><td><strong>SCA</strong> (software composition analysis)</td><td>Your dependencies</td><td>Libraries with known vulnerabilities or bad licenses</td><td>On every PR and nightly</td></tr>
+        <tr><td><strong>IaC scanning</strong></td><td>Terraform/Kubernetes files</td><td>Public buckets, over-open firewalls, root containers</td><td>On every PR</td></tr>
+        <tr><td><strong>Container image scanning</strong></td><td>Built images</td><td>Vulnerable OS packages</td><td>After build, and continuously in the registry</td></tr>
+        <tr><td><strong>DAST</strong> (dynamic testing)</td><td>The running app</td><td>Issues visible only when running (misconfigured headers, auth gaps)</td><td>Against staging</td></tr>
+        <tr><td><strong>SBOM</strong> generation</td><td>What's inside each build</td><td>—, but lets you answer "are we affected?" fast</td><td>Every release</td></tr>
+        <tr><td>Runtime protection &amp; audit logs</td><td>Production behaviour</td><td>Unusual activity, intrusions</td><td>Always</td></tr>
+      </table>
+      <div class="callout life">
+        Instead of one inspector arriving after the house is built, a safety checker walks the site every day — laying a wrong pipe is fixed on Tuesday, not discovered after the walls are painted.
+      </div>
+      <div class="callout tip">
+        Make the secure path the <em>easy</em> path: secure templates, pre-approved base images, and findings that appear in the pull request with clear fixes. Teams ignore scanners that dump thousands of unranked alerts — prioritise what's reachable and exploitable. A good starting reading list: the <a href="https://owasp.org/www-project-top-ten/" target="_blank" rel="noopener">OWASP Top 10</a>.
+      </div>
+    </section>
+
+    <!-- 37 -->
+    <section class="block" id="supply-chain">
+      <h2><span class="num">37</span> The Software Supply Chain — Trust What You Ship</h2>
+      <p>
+        Modern software is mostly <em>other people's code</em> (libraries, base images, build tools, CI actions). The <strong>supply chain</strong> is every link between a developer's keyboard and a running service. Attackers go after the weakest link, because one poisoned package can reach thousands of companies.
+      </p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 230" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrDo12" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+          </defs>
+          <rect class="box" x="6" y="50" width="104" height="56" rx="8"/><text x="58" y="74" text-anchor="middle">Source code</text><text x="58" y="92" text-anchor="middle" class="edge-label">+ dependencies</text>
+          <rect class="box-hl" x="136" y="50" width="104" height="56" rx="8"/><text x="188" y="74" text-anchor="middle">CI / build</text><text x="188" y="92" text-anchor="middle" class="edge-label">actions, runners</text>
+          <rect class="box-hl" x="266" y="50" width="104" height="56" rx="8"/><text x="318" y="74" text-anchor="middle">Artifact</text><text x="318" y="92" text-anchor="middle" class="edge-label">signed + SBOM</text>
+          <rect class="box-hl" x="396" y="50" width="104" height="56" rx="8"/><text x="448" y="74" text-anchor="middle">Registry</text><text x="448" y="92" text-anchor="middle" class="edge-label">stores images</text>
+          <rect class="box-final" x="526" y="50" width="104" height="56" rx="8"/><text x="578" y="74" text-anchor="middle">Deploy</text><text x="578" y="92" text-anchor="middle" class="edge-label">verify first</text>
+          <line class="edge" x1="110" y1="78" x2="134" y2="78" marker-end="url(#arrDo12)"/><line class="edge" x1="240" y1="78" x2="264" y2="78" marker-end="url(#arrDo12)"/><line class="edge" x1="370" y1="78" x2="394" y2="78" marker-end="url(#arrDo12)"/><line class="edge" x1="500" y1="78" x2="524" y2="78" marker-end="url(#arrDo12)"/>
+          <text x="58" y="135" text-anchor="middle" class="edge-label">⚠ malicious package</text>
+          <text x="188" y="135" text-anchor="middle" class="edge-label">⚠ stolen CI token</text>
+          <text x="318" y="135" text-anchor="middle" class="edge-label">⚠ tampered build</text>
+          <text x="448" y="135" text-anchor="middle" class="edge-label">⚠ swapped image</text>
+          <text x="578" y="135" text-anchor="middle" class="edge-label">⚠ unverified deploy</text>
+          <text x="360" y="190" text-anchor="middle">Defence: pin &amp; verify at every link — lockfiles, pinned actions, least-privilege tokens, signing, SBOMs, verified deploys.</text>
+        </svg>
+        <div class="diagram-caption">Fig 12 — Every link in the chain has its own attack. Good practice puts a lock (and a verification step) on each one.</div>
+      </div>
+      <h3>What's been happening (as reported by security researchers, 2026)</h3>
+      <p>
+        Reports from vendors and researchers describe a series of attacks that abused <strong>CI/CD pipelines</strong> — for example, compromised build workflows used to steal publishing tokens and push trojanised packages to npm and PyPI, and at least one case where a malicious package carried <em>valid</em> build-provenance because the trust rule was too broad (covering a whole repository instead of one protected workflow).
+        Names and details vary between reports and are still being investigated, so treat the specifics cautiously — but the lessons are consistent: <strong>CI is a prime target, and "provenance" only helps if the trust policy is tight.</strong>
+      </p>
+      <h3>Controls that matter</h3>
+      <table>
+        <tr><th>Control</th><th>What it means</th><th>Why</th></tr>
+        <tr><td><strong>Pin CI actions</strong></td><td>Reference third-party actions by full commit SHA (or, on GitHub, use workflow lockfiles — generally available since 28 Oct 2026, see <a href="git-github.html#github-actions">Git &amp; GitHub</a>), not a movable tag</td><td>Tags can be moved to malicious code; GitHub's docs say SHA pinning is the safest option without a lockfile. One survey cited by reports found most organisations pin none</td></tr>
+        <tr><td><strong>Read-only tokens by default</strong></td><td>Give <code>GITHUB_TOKEN</code> only <code>contents: read</code>; raise per job when needed</td><td>A compromised step then can't write to your repo</td></tr>
+        <tr><td><strong>OIDC instead of stored cloud keys</strong></td><td>CI proves its identity to the cloud and gets a short-lived token</td><td>No long-lived secrets to steal</td></tr>
+        <tr><td><strong>Trusted publishing, scoped tightly</strong></td><td>Releases come from a specific workflow on a protected branch/environment (PyPI Trusted Publishing, npm provenance)</td><td>No publish tokens lying around; tight scope stops "any workflow in the repo"</td></tr>
+        <tr><td><strong>Avoid script injection</strong></td><td>Never paste untrusted text (PR titles, issue bodies) straight into shell scripts; pass via environment variables; avoid <code>pull_request_target</code> with untrusted checkouts</td><td>Attackers send malicious PR titles that run commands</td></tr>
+        <tr><td><strong>Lockfiles &amp; delayed updates</strong></td><td>Commit exact dependency versions; consider waiting a few days for non-security updates; disable install scripts where possible</td><td>Most malicious versions are caught within days</td></tr>
+        <tr><td><strong>SBOM</strong></td><td>A machine-readable "ingredients list" (CycloneDX or SPDX format; tools like Syft)</td><td>When a bad library is announced, search your SBOMs to see who's affected within minutes</td></tr>
+        <tr><td><strong>Signing &amp; verification</strong></td><td>Sign artifacts (e.g., with Sigstore/cosign) and verify before deploying; admission policies reject unsigned images</td><td>Tampered images don't run</td></tr>
+        <tr><td><strong>SLSA levels</strong></td><td>A framework (Supply-chain Levels for Software Artifacts) grading how trustworthy a build is</td><td>A roadmap, not a guarantee — reports show provenance alone isn't proof</td></tr>
+        <tr><td><strong>Hardware keys on maintainer accounts</strong></td><td>FIDO2/WebAuthn security keys for people who can publish</td><td>Phishing-resistant logins</td></tr>
+      </table>
+      <div class="callout life">
+        A food company checks every supplier, labels each batch, seals the jars, and checks the seal before opening — so one bad ingredient can be traced to its batch and recalled quickly.
+      </div>
+      <p>Read GitHub's own <a href="https://docs.github.com/en/actions/reference/security/secure-use" target="_blank" rel="noopener">secure-use guide for Actions</a> and the <a href="https://slsa.dev/" target="_blank" rel="noopener">SLSA</a> and <a href="https://www.sigstore.dev/" target="_blank" rel="noopener">Sigstore</a> sites.</p>
+    </section>
+
+    <!-- 38 -->
+    <section class="block" id="secrets-iam">
+      <h2><span class="num">38</span> Secrets &amp; Least Privilege</h2>
+      <p>A <strong>secret</strong> is anything that proves identity or unlocks something: passwords, API keys, tokens, certificates, private keys.</p>
+      <table>
+        <tr><th>Rule</th><th>How</th></tr>
+        <tr><td>Never put secrets in Git, images or logs</td><td>Use secret scanners (pre-commit + server-side). Attackers search public code constantly</td></tr>
+        <tr><td>Use a secrets manager</td><td>Cloud secret managers, HashiCorp Vault–style tools, or sealed/encrypted secrets in GitOps (SOPS, External Secrets) injecting values at run time</td></tr>
+        <tr><td>Prefer short-lived credentials</td><td>OIDC / workload identity / temporary tokens beat long-lived keys</td></tr>
+        <tr><td>Rotate</td><td>Change secrets regularly and instantly after exposure</td></tr>
+        <tr><td><strong>Least privilege</strong></td><td>Every person and service gets only the access it needs — and only for as long as needed</td></tr>
+        <tr><td>Separate identities</td><td>One service account per service; no shared "admin" key</td></tr>
+        <tr><td>MFA / hardware keys</td><td>Especially for source control, CI, cloud consoles and registries</td></tr>
+        <tr><td>Audit access</td><td>Log who read or changed what; alert on odd behaviour</td></tr>
+      </table>
+      <div class="callout warn">
+        <strong>If a secret leaks:</strong> (1) <em>revoke/rotate it immediately</em> — deleting the commit is not enough because copies exist; (2) check logs for misuse; (3) find out how it leaked and close that hole.
+      </div>
+      <div class="callout life">
+        Hotel key cards: each guest gets a card that opens only their room, works only for their stay, and can be cancelled instantly. Nobody hands out the master key.
+      </div>
+    </section>
+
+    <div class="part-divider"><h2>Part I — Platform &amp; AI</h2></div>
+
+    <!-- 39 -->
+    <section class="block" id="platform-eng">
+      <h2><span class="num">39</span> Platform Engineering — A Paved Road for Developers</h2>
+      <p>
+        When every team must master Kubernetes, pipelines, security and cloud on its own, developers drown ("cognitive load"). <strong>Platform engineering</strong> has a dedicated team build an <strong>internal developer platform (IDP)</strong>:
+        self-service tools and templates that make the right way the easy way, treated like a product whose customers are the other developers.
+      </p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrDo13" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+          </defs>
+          <rect class="box" x="6" y="55" width="104" height="60" rx="8"/><text x="58" y="82" text-anchor="middle">👩‍💻 Developer</text><text x="58" y="100" text-anchor="middle" class="edge-label">"I need a new service"</text>
+          <rect class="box-hl" x="140" y="55" width="130" height="60" rx="8"/><text x="205" y="80" text-anchor="middle">Portal / CLI</text><text x="205" y="98" text-anchor="middle" class="edge-label">(e.g. Backstage)</text>
+          <rect class="box-hl" x="300" y="55" width="130" height="60" rx="8"/><text x="365" y="80" text-anchor="middle">Golden-path</text><text x="365" y="98" text-anchor="middle" class="edge-label">template</text>
+          <rect class="box-hl" x="460" y="55" width="110" height="60" rx="8"/><text x="515" y="80" text-anchor="middle">Pipeline +</text><text x="515" y="98" text-anchor="middle" class="edge-label">GitOps</text>
+          <rect class="box-final" x="600" y="55" width="110" height="60" rx="8"/><text x="655" y="80" text-anchor="middle">☸ Running</text><text x="655" y="98" text-anchor="middle" class="edge-label">monitored, secure</text>
+          <line class="edge" x1="110" y1="85" x2="138" y2="85" marker-end="url(#arrDo13)"/><line class="edge" x1="270" y1="85" x2="298" y2="85" marker-end="url(#arrDo13)"/><line class="edge" x1="430" y1="85" x2="458" y2="85" marker-end="url(#arrDo13)"/><line class="edge" x1="570" y1="85" x2="598" y2="85" marker-end="url(#arrDo13)"/>
+          <text x="360" y="165" text-anchor="middle">One click creates: repo + CI pipeline + Kubernetes config + dashboards + alerts + security checks, all preconfigured.</text>
+        </svg>
+        <div class="diagram-caption">Fig 13 — A "golden path": the platform turns a request into a fully wired, monitored, secure service without the developer assembling ten tools.</div>
+      </div>
+      <table>
+        <tr><th>Piece</th><th>Meaning</th></tr>
+        <tr><td>Golden paths / templates</td><td>Recommended, supported ways to build and ship (not mandatory cages)</td></tr>
+        <tr><td>Developer portal</td><td>One place to find services, docs, owners and create new things — <a href="https://backstage.io/" target="_blank" rel="noopener">Backstage</a> (a CNCF project) is the best-known; Port and others compete</td></tr>
+        <tr><td>Self-service infrastructure</td><td>Get a database or environment via a form/PR, no ticket queue</td></tr>
+        <tr><td>Guardrails</td><td>Security, cost and policy checks baked in</td></tr>
+        <tr><td>Platform as a product</td><td>Interview users, measure adoption and satisfaction, iterate</td></tr>
+      </table>
+      <div class="callout tip">
+        2026 survey signals (treat with care — surveys differ): CNCF/SlashData's Q1 2026 radar reported only ~28% of surveyed organisations with a dedicated platform team, while DORA reports far higher figures for internal platforms; a Frontiers literature review warns that headline Backstage adoption numbers are often overstated and that running it needs real engineering investment.
+        Moral: a platform that developers don't want to use is just another burden.
+      </div>
+      <div class="callout life">
+        A city builds roads, water and electricity once, so each new house doesn't have to dig its own well. Developers are the residents; the platform team is the city.
+      </div>
+    </section>
+
+    <!-- 40 -->
+    <section class="block" id="ai-devops">
+      <h2><span class="num">40</span> AI in DevOps — Helpers, Agents, and New Risks</h2>
+      <p>AI is now part of nearly every step of the loop. Here's what is real (as of Oct 2026), and where to be careful.</p>
+      <table>
+        <tr><th>Where</th><th>What AI does</th><th>Examples</th><th>Maturity / caution</th></tr>
+        <tr><td>Writing code</td><td>Autocomplete, chat, and <em>coding agents</em> that make multi-file changes and open pull requests</td><td>Copilot coding agent (GA Sept 2025), GitLab Duo Agent Platform (Jan 2026), Claude Code, Codex</td><td>Mainstream; needs strong review and tests (<a href="ai-agents.html#case-studies">AI Agents guide</a>)</td></tr>
+        <tr><td>Code review &amp; CI</td><td>Summarise PRs, suggest fixes, repair failing pipelines</td><td>Agents run through CI and open draft PRs</td><td>Useful for first drafts; humans approve</td></tr>
+        <tr><td>Writing IaC &amp; configs</td><td>Draft Terraform, Kubernetes YAML, pipelines</td><td>Chat assistants, Pulumi's AI assistant</td><td>Always run <code>plan</code> and policy checks; never auto-apply to production</td></tr>
+        <tr><td>Incident response ("AI SRE")</td><td>Gather telemetry, correlate with recent deploys, propose causes and fixes</td><td>AWS DevOps Agent and Microsoft's Azure SRE Agent (both reported GA in Mar 2026), PagerDuty, Datadog and other vendors' agents</td><td>Good at summarising and investigating; autonomous remediation still faces trust limits. Gartner began treating "AI SRE" as its own category in early 2026</td></tr>
+        <tr><td>Observability &amp; AIOps</td><td>Anomaly detection, alert grouping, log summarisation</td><td>Built into major monitoring vendors</td><td>Reduces noise when tuned; can hide problems if trusted blindly</td></tr>
+        <tr><td>Connecting AI to your tools</td><td><a href="mcp.html">MCP</a> servers expose Kubernetes, Terraform, monitoring and ticketing to agents</td><td>Many vendors ship MCP servers</td><td>Great power → apply least privilege and approval gates (<a href="mcp.html#security-threats">MCP security</a>)</td></tr>
+        <tr><td>Running AI itself</td><td>"LLMOps": evaluation, prompt/model versioning, tracing, cost control</td><td>OpenTelemetry has conventions for tracing AI/LLM calls</td><td>Same discipline as DevOps — tests, canaries, monitoring (<a href="llm.html#observability-llm">LLM observability</a>)</td></tr>
+      </table>
+      <h3>What the evidence says</h3>
+      <ul>
+        <li><strong>DORA 2025</strong> (nearly 5,000 respondents): AI adoption was associated with <em>higher throughput</em> but also <em>higher instability</em> — shipping faster without matching safety nets makes releases bumpier. AI amplifies the strengths <em>and</em> weaknesses of the engineering system around it.</li>
+        <li>One reported benchmark found current models resolved only a small fraction (around 14%) of production-style failure scenarios — a reminder that "demo" and "your messy production" differ. Vendor speed-up claims (e.g., "50% faster resolution") are self-reported.</li>
+        <li>An industry write-up described an AI agent that ran <code>terraform destroy</code> against real infrastructure — a vivid example of why autonomy needs boundaries.</li>
+      </ul>
+      <h3>Guardrails that work</h3>
+      <div class="grid">
+        <div class="card"><h4>🔍 Read-only first</h4><p>Start agents on triage and investigation; add write access later, narrowly scoped.</p></div>
+        <div class="card"><h4>✅ Human approval gates</h4><p>Require a person to approve destructive or production changes — shown the exact plan/diff.</p></div>
+        <div class="card"><h4>🔑 Least privilege</h4><p>Give agents their own limited identity with short-lived credentials, not an admin key.</p></div>
+        <div class="card"><h4>🧪 Sandbox &amp; test</h4><p>Let agents try changes in ephemeral environments and run the full test/policy pipeline.</p></div>
+        <div class="card"><h4>📜 Audit everything</h4><p>Log prompts, tool calls and results so incidents involving an agent can be reconstructed.</p></div>
+        <div class="card"><h4>💉 Treat inputs as untrusted</h4><p>Ticket text, logs and web pages can contain hidden instructions (prompt injection). Never let them directly trigger privileged actions.</p></div>
+      </div>
+      <div class="callout life">
+        AI is an extremely fast junior engineer: great at drafts, searching, and summarising; excellent when someone checks the work; hazardous when handed the keys to production on day one.
+      </div>
+    </section>
+
+    <!-- 41 -->
+    <section class="block" id="learning-path">
+      <h2><span class="num">41</span> Learning Path &amp; Careers</h2>
+      <h3>A sensible order to learn</h3>
+      <table>
+        <tr><th>Step</th><th>Learn</th><th>Build to prove it</th></tr>
+        <tr><td>1</td><td>Linux command line, files, permissions, processes; basic networking (IP, DNS, HTTP, TLS)</td><td>Set up a small web server by hand; break it; fix it</td></tr>
+        <tr><td>2</td><td>One scripting language (Bash + Python)</td><td>A script that checks site health and reports</td></tr>
+        <tr><td>3</td><td>Git and pull-request workflow</td><td>Contribute a small change to an open-source repo</td></tr>
+        <tr><td>4</td><td>CI/CD with GitHub Actions or GitLab CI</td><td>Pipeline that tests and builds on every PR</td></tr>
+        <tr><td>5</td><td>Docker, then Kubernetes basics</td><td>Containerise an app; run it on a local cluster</td></tr>
+        <tr><td>6</td><td>One cloud (AWS, Azure or Google Cloud) fundamentals</td><td>Deploy the container to a managed service</td></tr>
+        <tr><td>7</td><td>Infrastructure as Code (Terraform/OpenTofu or Pulumi)</td><td>Recreate step 6's setup from code with one command</td></tr>
+        <tr><td>8</td><td>Observability and SLOs (Prometheus, Grafana, OpenTelemetry)</td><td>Dashboard + an SLO + an alert for your app</td></tr>
+        <tr><td>9</td><td>Security basics: secrets, scanning, supply chain, least privilege</td><td>Add scanning, signing and pinned dependencies to the pipeline</td></tr>
+        <tr><td>10</td><td>GitOps and platform thinking; AI-assisted workflows with guardrails</td><td>Argo CD deploying from Git; a template that creates a new service</td></tr>
+      </table>
+      <h3>Roles you'll see</h3>
+      <table>
+        <tr><th>Role</th><th>Focus</th></tr>
+        <tr><td>DevOps engineer</td><td>Pipelines, automation, deployments, glue between teams</td></tr>
+        <tr><td>Site Reliability Engineer (SRE)</td><td>Reliability, SLOs, incident response, capacity</td></tr>
+        <tr><td>Platform engineer</td><td>Internal developer platform, golden paths</td></tr>
+        <tr><td>Cloud / infrastructure engineer</td><td>Cloud architecture, networks, IaC</td></tr>
+        <tr><td>DevSecOps / security engineer</td><td>Pipeline security, supply chain, compliance as code</td></tr>
+      </table>
+      <div class="callout tip">
+        Certifications (cloud provider associate-level exams, Kubernetes CKA/CKAD, Terraform associate) can structure your learning, but a public portfolio — a repo with a real pipeline, IaC and dashboards — usually speaks louder. Check each programme's current syllabus; they update often.
+      </div>
+    </section>
+
+    <div class="part-divider"><h2>Part J — Hands-On Code (7 Progressive Levels)</h2></div>
+
+    <div class="callout tip">
+      <strong>How these levels work:</strong> Levels 0, 5 and 6 are plain commands and Python that were actually run (outputs shown). Levels 1–4 (Docker, CI, Kubernetes, Terraform/OpenTofu) need those tools and accounts; the YAML files were syntax-checked but the tools themselves
+      were <em>not</em> run for this page. Replace placeholder names and commit SHAs with your own.
+    </div>
+
+    <!-- 42 -->
+    <section class="block" id="git-code">
+      <h2><span class="num">42</span> Level 0 — A Complete Git Workflow</h2>
+      <p>Branch, change, merge, tag, and undo — the loop you'll do every day.</p>
+      <details class="deepdive" open>
+        <summary>Commands (all run for real)</summary>
+        <pre><code>git init -b main                      # start a repo with a branch called main
+echo "print('hello')" > app.py
+git add app.py
+git commit -m "Add first version of app"
+
+git switch -c feature/greeting        # make a new branch to work on
+echo "print('hello, friend')" > app.py
+git commit -am "Make greeting friendlier"
+
+git switch main
+git merge --no-ff feature/greeting -m "Merge feature/greeting"   # bring the work in
+git log --oneline --graph             # see the history as a picture
+git tag v1.0.0                        # label this exact release
+
+# Oops, the release is bad: undo the merge safely (creates a NEW commit, history is kept)
+git revert -m 1 HEAD
+
+# Output of git log --oneline --graph:
+# *   be94c65 Merge feature/greeting
+# |\
+# | * 9e4a7d6 Make greeting friendlier
+# |/
+# * 30d5030 Add first version of app
+#
+# After the revert, app.py is back to: print('hello')</code></pre>
+        <p>
+          In a real team the middle part happens on GitHub/GitLab: you push the branch, open a pull request, wait for the CI checks and a review, then merge. <code>git revert</code> is the safe undo for shared branches; it adds a new commit instead of rewriting history that others have already pulled.
+        </p>
+      </details>
+    </section>
+
+    <!-- 43 -->
+    <section class="block" id="docker-code">
+      <h2><span class="num">43</span> Level 1 — A Dockerfile for a Python Web App</h2>
+      <details class="deepdive" open>
+        <summary>Dockerfile (illustrative; not built for this page)</summary>
+        <pre><code># Small, trusted base image (pin a specific version; in production also pin the digest)
+FROM python:3.12-slim
+
+WORKDIR /app
+
+# Dependencies first: this layer is cached until requirements.txt changes
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Application code last
+COPY . .
+
+# Don't run as root
+RUN useradd --create-home appuser
+USER appuser
+
+EXPOSE 8000
+CMD ["python", "-m", "uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]</code></pre>
+        <pre><code>docker build -t hello-web:1.0.0 .              # build the image
+docker run --rm -p 8000:8000 hello-web:1.0.0   # run it, reachable at http://localhost:8000
+docker tag hello-web:1.0.0 registry.example.com/hello-web:1.0.0
+docker push registry.example.com/hello-web:1.0.0   # publish to a registry</code></pre>
+        <p>
+          Why this order? Docker caches each instruction as a layer. Because the slow <code>pip install</code> comes <em>before</em> the code is copied, editing your code doesn't re-install every library. (Also add a <code>.dockerignore</code> and scan the image — Section 20.)
+        </p>
+      </details>
+    </section>
+
+    <!-- 44 -->
+    <section class="block" id="ci-yaml-code">
+      <h2><span class="num">44</span> Level 2 — A CI Pipeline (GitHub Actions)</h2>
+      <details class="deepdive" open>
+        <summary>.github/workflows/ci.yml (YAML syntax-checked; not run on GitHub for this page)</summary>
+        <pre><code>name: CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read              # least privilege: the job's token can only READ the code
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@0000000000000000000000000000000000000000   # use the real full commit SHA of the release you trust (e.g. v5)
+      - uses: actions/setup-python@0000000000000000000000000000000000000000 # pin this one the same way
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python -m pytest -q</code></pre>
+        <p>
+          Read it like a recipe: <em>when</em> a pull request is opened or <code>main</code> changes → on a fresh Linux machine → get the code → set up Python (with a dependency cache) → install → run the tests. Any failing step turns the check red and blocks the merge if you enabled branch protection.
+        </p>
+        <p>
+          Note the two security habits baked in: <strong>read-only token permissions</strong>, and <strong>actions pinned to a full commit SHA</strong> (the zeros are a placeholder — look up the real SHA of the version you trust and add the version as a comment so Dependabot can update it).
+        </p>
+      </details>
+    </section>
+
+    <!-- 45 -->
+    <section class="block" id="k8s-yaml-code">
+      <h2><span class="num">45</span> Level 3 — Kubernetes Manifests (Deployment + Service)</h2>
+      <details class="deepdive" open>
+        <summary>k8s.yaml (YAML syntax-checked; not applied to a cluster for this page)</summary>
+        <pre><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-web
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hello-web
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0        # never drop below 3 healthy copies during an update
+      maxSurge: 1              # add one extra copy at a time
+  template:
+    metadata:
+      labels:
+        app: hello-web
+    spec:
+      containers:
+        - name: web
+          image: registry.example.com/hello-web:1.4.2
+          ports:
+            - containerPort: 8000
+          readinessProbe:      # only send traffic once this check passes
+            httpGet:
+              path: /healthz
+              port: 8000
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          resources:
+            requests: {cpu: "100m", memory: "128Mi"}
+            limits: {memory: "256Mi"}
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-web
+spec:
+  selector:
+    app: hello-web
+  ports:
+    - port: 80
+      targetPort: 8000</code></pre>
+        <pre><code>kubectl apply -f k8s.yaml
+kubectl rollout status deploy/hello-web
+kubectl get pods
+kubectl rollout undo deploy/hello-web      # if the new version misbehaves</code></pre>
+        <p>
+          You asked for 3 copies; Kubernetes keeps 3 running, replaces them one at a time on updates (<em>rolling update</em>), only routes traffic to Pods that pass the readiness check, and the <code>Service</code> gives them one stable address.
+          In GitOps (Section 17) this file lives in Git and Argo CD or Flux applies it for you.
+        </p>
+      </details>
+    </section>
+
+    <!-- 46 -->
+    <section class="block" id="iac-code">
+      <h2><span class="num">46</span> Level 4 — Infrastructure as Code (Terraform / OpenTofu)</h2>
+      <details class="deepdive" open>
+        <summary>main.tf (illustrative; not run for this page)</summary>
+        <pre><code>terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~&gt; 6.0"        # check the provider's current major version
+    }
+  }
+}
+
+provider "aws" {
+  region = "ap-south-1"
+}
+
+resource "aws_s3_bucket" "notes" {
+  bucket = "my-team-notes-bucket-12345"     # bucket names are global: choose a unique one
+}
+
+resource "aws_s3_bucket_versioning" "notes" {
+  bucket = aws_s3_bucket.notes.id
+  versioning_configuration {
+    status = "Enabled"                      # keep old versions: protects against accidental deletes
+  }
+}</code></pre>
+        <pre><code>tofu init       # (or: terraform init)   download the provider
+tofu plan       # show exactly what WOULD be created — review this like a diff
+tofu apply      # create it (after you confirm)
+tofu destroy    # remove it again when you're done experimenting</code></pre>
+        <p>
+          The same <code>.tf</code> files work with either Terraform or OpenTofu (use <code>tofu</code> or <code>terraform</code> as the command). The second resource <em>refers</em> to the first (<code>aws_s3_bucket.notes.id</code>), which is how the tool knows the order: bucket first, then versioning.
+          In real projects: keep state in a remote, locked, encrypted backend; run <code>plan</code> in pull requests; run policy scanners; and never hard-code secrets.
+        </p>
+      </details>
+    </section>
+
+    <!-- 47 -->
+    <section class="block" id="slo-code">
+      <h2><span class="num">47</span> Level 5 — Error-Budget &amp; Burn-Rate Math</h2>
+      <details class="deepdive" open>
+        <summary>slo.py — plain Python (run for real)</summary>
+        <pre><code># slo.py -- how much "badness" are we allowed? (error budget math)
+SLO = 0.999                      # promise: 99.9% of requests succeed this month
+DAYS = 30
+minutes_in_month = DAYS * 24 * 60
+
+allowed_bad_fraction = 1 - SLO                       # 0.1% may fail
+budget_minutes = minutes_in_month * allowed_bad_fraction
+print(f"SLO {SLO:.3%} over {DAYS} days -> {budget_minutes:.1f} minutes of full outage allowed")
+
+# Request-based view: how much of the budget is left?
+total_requests = 10_000_000
+failed_requests = 6_500
+budget_requests = total_requests * allowed_bad_fraction   # 10,000 failures allowed
+used = failed_requests / budget_requests
+print(f"Failures so far: {failed_requests} of {budget_requests:.0f} allowed -> {used:.0%} of budget used")
+
+# Burn rate: how fast are we eating the budget compared with 'exactly on pace'?
+def burn_rate(error_rate_now, slo=SLO):
+    return error_rate_now / (1 - slo)
+
+for rate in (0.0005, 0.001, 0.01, 0.0144):
+    br = burn_rate(rate)
+    hours_to_empty = (DAYS * 24) / br
+    print(f"error rate {rate:.2%} -> burn rate {br:5.1f}x -> budget gone in {hours_to_empty:7.1f} hours")
+
+# Output from a real run:
+#   SLO 99.900% over 30 days -> 43.2 minutes of full outage allowed
+#   Failures so far: 6500 of 10000 allowed -> 65% of budget used
+#   error rate 0.05% -> burn rate   0.5x -> budget gone in  1440.0 hours
+#   error rate 0.10% -> burn rate   1.0x -> budget gone in   720.0 hours
+#   error rate 1.00% -> burn rate  10.0x -> budget gone in    72.0 hours
+#   error rate 1.44% -> burn rate  14.4x -> budget gone in    50.0 hours</code></pre>
+        <p>
+          Read the table: at 1× you'd spend the whole month's budget in exactly a month (720 hours) — fine. At 10× it's gone in 3 days — worth a ticket. Much faster burns (like 14.4× held for an hour) are worth a <em>page</em>.
+          The matching alert rule for Prometheus (YAML syntax-checked, not run):
+        </p>
+        <pre><code>groups:
+  - name: slo-alerts
+    rules:
+      - alert: ErrorBudgetBurningFast
+        expr: |
+          (sum(rate(http_requests_total{status=~"5.."}[1h]))
+           / sum(rate(http_requests_total[1h]))) &gt; (14.4 * 0.001)
+        for: 5m
+        labels:
+          severity: page
+        annotations:
+          summary: "Error budget is burning about 14x faster than allowed"</code></pre>
+      </details>
+    </section>
+
+    <!-- 48 -->
+    <section class="block" id="deploy-script-code">
+      <h2><span class="num">48</span> Level 6 — Deploy, Check Health, Roll Back Automatically</h2>
+      <p>The heart of safe delivery in 25 lines: ship, look, and undo yourself if it looks bad (what Argo Rollouts, Flagger and similar tools do at scale).</p>
+      <details class="deepdive" open>
+        <summary>deploy.py — plain Python simulation (run for real)</summary>
+        <pre><code># deploy.py -- deploy, check health, roll back automatically if it looks bad
+import random
+
+def deploy(version):
+    print(f"  deploying {version} ...")
+
+def healthy(version, samples=20):
+    """Pretend health check: v2 is secretly buggy and fails ~40% of requests."""
+    fail_rate = 0.4 if version == "v2" else 0.01
+    failures = sum(random.random() &lt; fail_rate for _ in range(samples))
+    print(f"  health check for {version}: {failures}/{samples} requests failed")
+    return failures / samples &lt;= 0.05          # allow up to 5% errors
+
+def release(new, old):
+    deploy(new)
+    if healthy(new):
+        print(f"  OK: {new} is live")
+        return new
+    print(f"  BAD: rolling back to {old}")
+    deploy(old)
+    return old
+
+random.seed(1)
+print("release 1:"); live = release("v1", "v0")
+print("release 2:"); live = release("v2", live)
+print("live version is now:", live)
+
+# Output from a real run:
+# release 1:
+#   deploying v1 ...
+#   health check for v1: 1/20 requests failed
+#   OK: v1 is live
+# release 2:
+#   deploying v2 ...
+#   health check for v2: 11/20 requests failed
+#   BAD: rolling back to v1
+#   deploying v1 ...
+# live version is now: v1</code></pre>
+        <p>
+          Release 2 was secretly broken; the automatic check noticed 11 of 20 requests failing and put v1 back — no human paged, and users only saw a short bump. Real systems use real metrics (error rate, latency) instead of random numbers, and shift traffic gradually (a canary, <a href="#deploy-strategies">Section 15</a>).
+        </p>
+      </details>
+    </section>
+
+    <div class="part-divider"><h2>Part K — Reference</h2></div>
+
+    <!-- 49 -->
+    <section class="block" id="glossary-devops">
+      <h2><span class="num">49</span> Mini Glossary</h2>
+      <dl class="glossary">
+        <dt>DevOps</dt><dd>A culture, set of practices and tools where development and operations share ownership to deliver software quickly and safely.</dd>
+        <dt>CALMS</dt><dd>Culture, Automation, Lean, Measurement, Sharing — a checklist for DevOps.</dd>
+        <dt>CI (Continuous Integration)</dt><dd>Merging small changes often, with an automatic build and test on every change.</dd>
+        <dt>CD</dt><dd>Continuous Delivery (always releasable, human approves) or Continuous Deployment (released automatically).</dd>
+        <dt>Pipeline</dt><dd>The automated sequence (checkout, test, build, scan, deploy) a change passes through.</dd>
+        <dt>Artifact</dt><dd>A built, versioned output you deploy (package, binary, container image).</dd>
+        <dt>Registry</dt><dd>A store for artifacts and container images.</dd>
+        <dt>Repository / commit / branch / merge / tag</dt><dd>Git's project store, saved snapshot, parallel line of work, combining of work, and permanent label.</dd>
+        <dt>Pull request (PR) / merge request (MR)</dt><dd>A proposal to merge a branch, reviewed by people and checked by automation.</dd>
+        <dt>Trunk-based development</dt><dd>Everyone merges small changes to the main branch at least daily, using short-lived branches.</dd>
+        <dt>Feature flag</dt><dd>A runtime switch that turns a feature on or off without redeploying.</dd>
+        <dt>Rolling / blue-green / canary</dt><dd>Release strategies: replace gradually / switch between two full environments / expose a small slice of users first.</dd>
+        <dt>Rollback</dt><dd>Returning to the previous known-good version.</dd>
+        <dt>GitOps</dt><dd>Operating systems by declaring desired state in Git and letting an agent continuously reconcile reality to it.</dd>
+        <dt><a href="https://argo-cd.readthedocs.io/" target="_blank" rel="noopener">Argo CD</a> / <a href="https://fluxcd.io/" target="_blank" rel="noopener">Flux</a></dt><dd>Leading GitOps controllers for Kubernetes (both CNCF graduated).</dd>
+        <dt>Container / image</dt><dd>A packaged, isolated app environment / the frozen template it's started from.</dd>
+        <dt>Dockerfile</dt><dd>The recipe for building a container image.</dd>
+        <dt>OCI</dt><dd>Open Container Initiative: standards for container images and runtimes.</dd>
+        <dt><a href="https://kubernetes.io/" target="_blank" rel="noopener">Kubernetes (K8s)</a></dt><dd>An open-source system that runs and manages containers across many machines.</dd>
+        <dt>Control plane / node</dt><dd>Kubernetes' decision-making components / the machines that run workloads.</dd>
+        <dt>Pod / Deployment / Service</dt><dd>Smallest unit of containers / keeper of N copies with rolling updates / stable address in front of Pods.</dd>
+        <dt>Ingress / Gateway API</dt><dd>Ways to route external traffic into a cluster; ingress-nginx was retired in March 2026 and Gateway API is the recommended direction.</dd>
+        <dt>ConfigMap / Secret</dt><dd>Non-sensitive / sensitive settings for Pods (Secrets are base64-encoded, not encrypted, by default).</dd>
+        <dt>Namespace</dt><dd>A named partition inside a cluster.</dd>
+        <dt>HPA</dt><dd>Horizontal Pod Autoscaler: adds or removes Pods based on load.</dd>
+        <dt>Readiness / liveness probe</dt><dd>Checks that say whether a Pod can take traffic / needs a restart.</dd>
+        <dt>Helm / Kustomize</dt><dd>Packaging (templated charts) / overlay-based customisation of Kubernetes YAML.</dd>
+        <dt>CRD / Operator</dt><dd>A new Kubernetes object type / a controller that automates running complex software.</dd>
+        <dt>Serverless / FaaS</dt><dd>Running functions on demand without managing servers, billed per use.</dd>
+        <dt>IaaS / PaaS / SaaS</dt><dd>Rent infrastructure / a platform / finished software.</dd>
+        <dt>Region / availability zone</dt><dd>A geographic area / an isolated data centre inside it.</dd>
+        <dt>IaC (Infrastructure as Code)</dt><dd>Defining infrastructure in version-controlled files that tools apply.</dd>
+        <dt>Terraform / <a href="https://opentofu.org/" target="_blank" rel="noopener">OpenTofu</a> / Pulumi</dt><dd>IaC tools: Terraform (BSL-licensed, IBM-owned HashiCorp), its open fork OpenTofu (Linux Foundation), and Pulumi (real programming languages).</dd>
+        <dt>State (IaC)</dt><dd>The record of what an IaC tool has created; store it remotely, locked and protected.</dd>
+        <dt>Drift</dt><dd>When real infrastructure no longer matches its code.</dd>
+        <dt>Immutable infrastructure</dt><dd>Replace servers with fresh builds instead of modifying them.</dd>
+        <dt>Policy as code</dt><dd>Rules expressed as code and enforced automatically (e.g., OPA, Kyverno).</dd>
+        <dt>Observability</dt><dd>Being able to understand a system's inner state from its outputs: metrics, logs and traces.</dd>
+        <dt><a href="https://opentelemetry.io/" target="_blank" rel="noopener">OpenTelemetry</a></dt><dd>The open standard for generating and exporting telemetry data.</dd>
+        <dt>Golden signals</dt><dd>Latency, traffic, errors and saturation.</dd>
+        <dt>SLI / SLO / SLA</dt><dd>A measurement / the internal target for it / a contractual promise with consequences.</dd>
+        <dt>Error budget / burn rate</dt><dd>The allowed amount of failure (1 − SLO) / how fast it is being used up.</dd>
+        <dt>SRE</dt><dd>Site Reliability Engineering: applying software engineering to operations and reliability.</dd>
+        <dt>MTTR / recovery time</dt><dd>How long it takes to restore service after a failure (DORA calls it failed-deployment recovery time).</dd>
+        <dt>DORA metrics</dt><dd>Five delivery measures: change lead time, deployment frequency, failed-deployment recovery time, change fail rate, deployment rework rate.</dd>
+        <dt>Postmortem (blameless)</dt><dd>A write-up after an incident focused on system causes and follow-up actions, not blame.</dd>
+        <dt>RPO / RTO</dt><dd>Recovery Point Objective (acceptable data loss) / Recovery Time Objective (acceptable downtime).</dd>
+        <dt>Chaos engineering</dt><dd>Deliberately injecting failures to find weaknesses.</dd>
+        <dt>FinOps</dt><dd>Managing cloud cost as an engineering discipline.</dd>
+        <dt>DevSecOps / shift left</dt><dd>Building security checks into every stage, as early as possible.</dd>
+        <dt>SAST / DAST / SCA</dt><dd>Scanning source code / the running app / third-party dependencies for vulnerabilities.</dd>
+        <dt>SBOM</dt><dd>Software Bill of Materials: a machine-readable list of what's inside a build (CycloneDX, SPDX).</dd>
+        <dt><a href="https://slsa.dev/" target="_blank" rel="noopener">SLSA</a></dt><dd>Supply-chain Levels for Software Artifacts: a framework for build integrity.</dd>
+        <dt><a href="https://www.sigstore.dev/" target="_blank" rel="noopener">Sigstore</a> / cosign</dt><dd>Tooling for signing and verifying software artifacts.</dd>
+        <dt>Provenance</dt><dd>Verifiable information about how and where an artifact was built.</dd>
+        <dt>OIDC (in CI)</dt><dd>A way for pipelines to get short-lived cloud credentials by proving their identity, instead of storing long-lived keys.</dd>
+        <dt>Least privilege</dt><dd>Granting only the minimum access needed.</dd>
+        <dt>Secrets manager</dt><dd>A service that stores, controls and rotates secrets.</dd>
+        <dt>Internal developer platform (IDP)</dt><dd>Self-service tooling built by a platform team for other developers.</dd>
+        <dt>Golden path</dt><dd>The recommended, well-supported way to build and ship something.</dd>
+        <dt><a href="https://backstage.io/" target="_blank" rel="noopener">Backstage</a></dt><dd>A CNCF developer-portal framework for building IDPs.</dd>
+        <dt>AIOps / AI SRE</dt><dd>Using AI to analyse telemetry, reduce alert noise, and investigate or remediate incidents.</dd>
+        <dt>MCP</dt><dd>Model Context Protocol: a standard for connecting AI agents to tools like Kubernetes, Terraform and monitoring (<a href="mcp.html">MCP guide</a>).</dd>
+        <dt>LLMOps</dt><dd>DevOps practices applied to LLM applications: evaluation, versioning, tracing, cost control.</dd>
+      </dl>
+    </section>
+
+    <!-- 50 -->
+    <section class="block" id="faq-devops">
+      <h2><span class="num">50</span> FAQ</h2>
+      <details class="quiz-item"><summary>Q: Is DevOps a job, a team, or a culture?</summary><p class="answer">Primarily a culture and set of practices. Companies do hire "DevOps engineers", but if development and operations stay in separate silos with a new job title in between, you haven't adopted DevOps — you've renamed the wall.</p></details>
+      <details class="quiz-item"><summary>Q: Do we need Kubernetes?</summary><p class="answer">Not necessarily. It's excellent for many services, portability and complex needs, but it's heavy to operate. Many teams do well on container platforms (Cloud Run, ECS/Fargate, Azure Container Apps) or PaaS until they genuinely need what Kubernetes uniquely offers.</p></details>
+      <details class="quiz-item"><summary>Q: What's the difference between CI and CD?</summary><p class="answer">CI automatically builds and tests every change merged to the shared code. CD takes the tested artifact and delivers it — to a "ready to release" state (delivery) or all the way to production automatically (deployment).</p></details>
+      <details class="quiz-item"><summary>Q: Terraform or OpenTofu?</summary><p class="answer">They share the same language and workflow. Terraform is under the Business Source License (HashiCorp is owned by IBM); OpenTofu is an open-source fork under the Linux Foundation. Many 2026 guides suggest OpenTofu for new projects that value open governance, while Terraform remains the most widely used. Check current licenses, features and provider support before deciding; keeping code modular makes switching easier.</p></details>
+      <details class="quiz-item"><summary>Q: How often should we deploy?</summary><p class="answer">As often as you can do it safely. DORA finds speed and stability go together: teams with small, frequent, automated releases tend to have fewer failures and faster recovery. Start by shrinking batch size and automating tests and rollback.</p></details>
+      <details class="quiz-item"><summary>Q: What's the difference between monitoring and observability?</summary><p class="answer">Monitoring watches known signals and alerts on known problems. Observability means your telemetry (metrics, logs, traces) is rich enough to investigate <em>unknown</em> problems and ask new questions without shipping new code.</p></details>
+      <details class="quiz-item"><summary>Q: Will AI replace DevOps engineers?</summary><p class="answer">It's changing the work rather than removing the need: AI speeds up writing code, configs and incident investigation, while humans are still needed for design, safety, judgement and accountability. DORA 2025 found AI tends to raise both throughput and instability, which makes strong pipelines, tests and guardrails more important, not less.</p></details>
+      <details class="quiz-item"><summary>Q: What's the first security step for a small team?</summary><p class="answer">Turn on MFA/hardware keys, stop committing secrets (add secret scanning), keep dependencies locked and updated, give CI tokens read-only permissions by default, pin third-party actions, and use short-lived cloud credentials. Those cover a large share of real-world incidents.</p></details>
+      <details class="quiz-item"><summary>Q: How do I get hands-on experience without a company cluster?</summary><p class="answer">Use a local cluster (kind, minikube, k3d), free tiers of cloud providers (watch the billing alerts!), and a personal GitHub repo with Actions. Build the loop end-to-end: app → container → pipeline → deploy → dashboard → alert.</p></details>
+    </section>
+
+    <!-- 51 -->
+    <section class="block" id="interview-devops">
+      <h2><span class="num">51</span> Interview Questions (With Answers) — The Complete Set</h2>
+      <p>Grouped by category, easy → hard.</p>
+
+      <h3>51.1 — Fundamentals</h3>
+      <details class="quiz-item"><summary>Q: What is DevOps?</summary><p class="answer">A culture and set of practices that unify development and operations through shared ownership, automation, small frequent changes and fast feedback, so software is delivered quickly, safely and reliably.</p></details>
+      <details class="quiz-item"><summary>Q: Describe the DevOps lifecycle.</summary><p class="answer">A continuous loop: plan, code, build, test, release, deploy, operate, monitor — with monitoring and incident learnings feeding back into planning.</p></details>
+      <details class="quiz-item"><summary>Q: DevOps vs Agile vs SRE?</summary><p class="answer">Agile is about iterative development with customer feedback; DevOps extends that speed and collaboration through release and operation; SRE is a specific engineering approach to reliability using SLOs, error budgets and automation — often described as one concrete way of implementing DevOps.</p></details>
+      <details class="quiz-item"><summary>Q: What does CALMS stand for?</summary><p class="answer">Culture, Automation, Lean, Measurement, Sharing.</p></details>
+      <details class="quiz-item"><summary>Q: What are the DORA metrics?</summary><p class="answer">Five: change lead time, deployment frequency, failed-deployment recovery time (throughput), and change fail rate and deployment rework rate (instability). They're used per service as improvement signals, not targets.</p></details>
+      <details class="quiz-item"><summary>Q: What is platform engineering and why did it emerge?</summary><p class="answer">A team builds an internal developer platform of self-service golden paths so product teams don't each have to master pipelines, Kubernetes, security and cloud — reducing cognitive load and inconsistency.</p></details>
+
+      <h3>51.2 — Git, CI &amp; Testing</h3>
+      <details class="quiz-item"><summary>Q: Trunk-based development vs GitFlow?</summary><p class="answer">Trunk-based: short-lived branches merged to main at least daily, with feature flags hiding unfinished work — fast feedback, fewer conflicts. GitFlow: long-lived develop/release branches — more ceremony and later integration. Research associates short-lived branches with better delivery performance.</p></details>
+      <details class="quiz-item"><summary>Q: <code>git merge</code> vs <code>rebase</code> vs <code>revert</code>?</summary><p class="answer">Merge joins histories with a merge commit; rebase replays your commits on top of another base for a linear history (rewrites your branch — avoid on shared branches); revert adds a new commit that undoes a previous one, safe for published history.</p></details>
+      <details class="quiz-item"><summary>Q: What makes a good CI pipeline?</summary><p class="answer">Fast (minutes), reliable (no flaky tests), runs on every change, cheap checks first, defined as code, produces a versioned artifact once, and keeps the main branch green with quick fixes when it breaks.</p></details>
+      <details class="quiz-item"><summary>Q: Explain the testing pyramid.</summary><p class="answer">Many fast, focused unit tests; fewer integration tests; very few slow end-to-end tests. It balances speed, cost and confidence; inverting it (mostly E2E) gives slow, flaky pipelines.</p></details>
+      <details class="quiz-item"><summary>Q: How do you handle flaky tests?</summary><p class="answer">Detect them (track pass/fail history), quarantine so they don't block everyone, find the root cause (timing, shared state, external dependencies), fix or delete, and never normalise re-running until green.</p></details>
+      <details class="quiz-item"><summary>Q: What does "build once, deploy many" mean?</summary><p class="answer">Create one immutable artifact and promote that same artifact through environments, injecting environment-specific configuration at deploy time — so what you tested is exactly what you run.</p></details>
+
+      <h3>51.3 — Delivery &amp; Release</h3>
+      <details class="quiz-item"><summary>Q: Continuous delivery vs continuous deployment?</summary><p class="answer">Delivery keeps every change releasable with a human approval for production; deployment releases every passing change automatically. Deployment needs stronger tests, monitoring and rollback.</p></details>
+      <details class="quiz-item"><summary>Q: Compare rolling, blue-green and canary deployments.</summary><p class="answer">Rolling replaces instances gradually (no extra capacity, mixed versions during rollout). Blue-green runs two full environments and switches traffic (instant rollback, double capacity). Canary routes a small percentage of traffic to the new version and expands as metrics stay healthy (smallest blast radius, needs good observability).</p></details>
+      <details class="quiz-item"><summary>Q: Why use feature flags?</summary><p class="answer">They decouple deploy from release: hide unfinished work, roll out gradually, run experiments and flip a kill switch instantly. Manage their lifecycle — remove stale flags.</p></details>
+      <details class="quiz-item"><summary>Q: What is GitOps and how does it differ from push-based CD?</summary><p class="answer">Desired state is declared in Git and an in-cluster controller (Argo CD, Flux) continuously pulls and reconciles. Versus a pipeline pushing with cluster credentials, GitOps gives an audit trail, easy rollback by revert, drift correction and no production credentials in CI.</p></details>
+      <details class="quiz-item"><summary>Q: How do you do database changes safely with continuous deployment?</summary><p class="answer">Use backward-compatible migrations (expand/contract): add new columns/tables first, deploy code that works with both, backfill, then remove old structures later. Version migrations in code, test them, and avoid destructive changes in the same release as the code that needs them.</p></details>
+      <details class="quiz-item"><summary>Q: A deployment is causing errors in production. What do you do first?</summary><p class="answer">Mitigate before diagnosing: roll back or disable the feature flag, confirm recovery with the same metrics that alerted, then investigate with the preserved evidence and write a blameless postmortem.</p></details>
+
+      <h3>51.4 — Containers &amp; Kubernetes</h3>
+      <details class="quiz-item"><summary>Q: Container vs virtual machine?</summary><p class="answer">A VM virtualises hardware and carries a whole guest OS; a container shares the host kernel and isolates processes, so it's lighter and starts faster, with weaker isolation than a VM.</p></details>
+      <details class="quiz-item"><summary>Q: How do you make a Docker image small and safe?</summary><p class="answer">Small trusted base (slim/distroless), multi-stage builds, only needed files via .dockerignore, non-root user, pinned versions/digests, no secrets in layers, order layers for caching, scan images and generate an SBOM.</p></details>
+      <details class="quiz-item"><summary>Q: Explain Kubernetes architecture.</summary><p class="answer">A control plane (API server, etcd, scheduler, controller manager) stores desired state and decides; worker nodes run the kubelet, a container runtime and kube-proxy to execute Pods. Controllers run reconciliation loops to make actual state match desired state.</p></details>
+      <details class="quiz-item"><summary>Q: Pod vs Deployment vs StatefulSet vs DaemonSet?</summary><p class="answer">Pod: smallest unit. Deployment: manages replicas and rolling updates of stateless Pods. StatefulSet: stable identity and storage for stateful apps. DaemonSet: one Pod per node (agents).</p></details>
+      <details class="quiz-item"><summary>Q: How does a Service differ from an Ingress/Gateway?</summary><p class="answer">A Service gives a stable virtual address and load balancing to a set of Pods inside the cluster. Ingress/Gateway API define how external HTTP(S) traffic is routed to Services (hostnames, paths, TLS). Note ingress-nginx was retired in March 2026; Gateway API is the recommended direction.</p></details>
+      <details class="quiz-item"><summary>Q: What are readiness and liveness probes?</summary><p class="answer">Readiness decides whether a Pod receives traffic; liveness decides whether it should be restarted. Misconfigured liveness probes can cause restart loops, so keep them cheap and tolerant.</p></details>
+      <details class="quiz-item"><summary>Q: How would you upgrade a Kubernetes cluster safely?</summary><p class="answer">Read release notes and removed APIs; upgrade one minor version at a time; control plane first, then nodes; rehearse in staging; use PodDisruptionBudgets and readiness probes for availability; update add-ons; have a rollback/backup plan. Check support status, since each minor gets about a year of patches (e.g., 1.34 reached end of life on 27 Oct 2026).</p></details>
+      <details class="quiz-item"><summary>Q: Are Kubernetes Secrets secure?</summary><p class="answer">By default they are only base64-encoded and stored in etcd. Enable encryption at rest, restrict access with RBAC, avoid committing them to Git unencrypted (use sealed secrets/SOPS/External Secrets or a manager like Vault), and prefer short-lived credentials.</p></details>
+
+      <h3>51.5 — Infrastructure as Code &amp; Cloud</h3>
+      <details class="quiz-item"><summary>Q: Why Infrastructure as Code?</summary><p class="answer">Repeatability, review via pull requests, version history, consistent environments, fast disaster recovery and the ability to apply policy checks automatically.</p></details>
+      <details class="quiz-item"><summary>Q: Declarative vs imperative?</summary><p class="answer">Declarative describes the desired end state and lets the tool compute the steps (idempotent, safe to re-run). Imperative scripts specify steps and may behave differently on re-run.</p></details>
+      <details class="quiz-item"><summary>Q: What is Terraform state and how do you manage it?</summary><p class="answer">The mapping between your code and real resources. Store it in a remote, encrypted backend with locking, restrict access (it may hold sensitive values), split state per environment/component, and never edit by hand.</p></details>
+      <details class="quiz-item"><summary>Q: What is configuration drift and how do you handle it?</summary><p class="answer">Reality diverging from code due to manual changes. Detect via plan/drift detection or GitOps reconciliation, restrict console write access, and either revert the change or codify it.</p></details>
+      <details class="quiz-item"><summary>Q: Terraform vs OpenTofu vs Pulumi?</summary><p class="answer">Terraform and OpenTofu use HCL with the same workflow; Terraform is BSL-licensed (IBM-owned), OpenTofu is the Linux Foundation open-source fork. Pulumi uses general-purpose languages (loops, tests, libraries). Choice depends on licensing comfort, team skills and ecosystem.</p></details>
+      <details class="quiz-item"><summary>Q: What does "shared responsibility" mean in cloud?</summary><p class="answer">The provider secures the underlying infrastructure; the customer secures configuration, identities, data and applications. Most breaches stem from customer-side misconfiguration.</p></details>
+
+      <h3>51.6 — Observability, SRE &amp; Incidents</h3>
+      <details class="quiz-item"><summary>Q: Metrics vs logs vs traces?</summary><p class="answer">Metrics are numeric time series (trends and alerting); logs are detailed event records (what happened); traces follow a request across services (where time went). Together, correlated by IDs, they enable investigation.</p></details>
+      <details class="quiz-item"><summary>Q: What are the four golden signals?</summary><p class="answer">Latency, traffic, errors and saturation.</p></details>
+      <details class="quiz-item"><summary>Q: Explain SLI, SLO, SLA and error budget.</summary><p class="answer">SLI: measured indicator; SLO: internal target; SLA: contractual promise with penalties; error budget: 1 − SLO, the permitted unreliability that can be spent on change. When budget is exhausted, prioritise reliability over features.</p></details>
+      <details class="quiz-item"><summary>Q: What does a 99.9% SLO allow over 30 days?</summary><p class="answer">0.1% failure — about 43.2 minutes of complete downtime (or the equivalent in failed requests).</p></details>
+      <details class="quiz-item"><summary>Q: What is a burn rate and how is it used in alerting?</summary><p class="answer">How quickly the budget is consumed relative to an even spend (1× = exactly on pace). Multi-window alerts page on fast burns (e.g., ~14.4× over an hour ≈ 2% of a 30-day budget) and ticket on slower ones, aligning alerts with user impact.</p></details>
+      <details class="quiz-item"><summary>Q: How do you reduce alert fatigue?</summary><p class="answer">Alert on user-visible symptoms and SLO burn, make every page actionable with a runbook, tune or delete noisy alerts, use severities and routing, and review alert quality after incidents.</p></details>
+      <details class="quiz-item"><summary>Q: Walk through incident response.</summary><p class="answer">Detect, triage (severity, impact), assign roles (commander, responders, comms, scribe), mitigate first (rollback/flag/failover), resolve and verify, then run a blameless postmortem with owned follow-up actions.</p></details>
+      <details class="quiz-item"><summary>Q: RPO vs RTO?</summary><p class="answer">RPO is the maximum tolerable data loss (drives backup/replication frequency); RTO is the maximum tolerable downtime (drives recovery design). Test restores regularly.</p></details>
+
+      <h3>51.7 — Security</h3>
+      <details class="quiz-item"><summary>Q: What is DevSecOps / "shift left"?</summary><p class="answer">Embedding security checks (secret scanning, SAST, SCA, IaC and image scanning, DAST) in the pipeline from the start so issues are found early and cheaply, with security as a shared responsibility.</p></details>
+      <details class="quiz-item"><summary>Q: How do you secure a CI/CD pipeline?</summary><p class="answer">Least-privilege read-only tokens by default; OIDC instead of stored cloud keys; pin third-party actions to commit SHAs; avoid script injection and risky triggers like pull_request_target with untrusted code; protect branches and workflow files with CODEOWNERS; ephemeral runners; scoped trusted publishing; audit workflows with scanners.</p></details>
+      <details class="quiz-item"><summary>Q: What is an SBOM and why do you want one?</summary><p class="answer">A machine-readable inventory of components in an artifact (CycloneDX/SPDX). When a vulnerability is disclosed you can instantly find affected builds; it also supports licence and compliance checks.</p></details>
+      <details class="quiz-item"><summary>Q: What is SLSA, and why isn't provenance enough?</summary><p class="answer">SLSA is a framework for build integrity levels. Provenance says how an artifact was built, but if the build workflow itself is compromised or the trust policy is too broad, malicious artifacts can still carry valid provenance — so scope trust tightly and harden the build.</p></details>
+      <details class="quiz-item"><summary>Q: A secret was pushed to a public repo. What do you do?</summary><p class="answer">Revoke/rotate immediately (removing the commit isn't enough), review audit logs for misuse, purge history if appropriate, and add prevention: pre-commit/server-side secret scanning, short-lived credentials, and a secrets manager.</p></details>
+      <details class="quiz-item"><summary>Q: Principle of least privilege in practice?</summary><p class="answer">Separate identities per service/person, minimal scoped permissions, time-bound access, regular reviews, and logged access — so a compromise exposes as little as possible.</p></details>
+
+      <h3>51.8 — Platform, AI &amp; Scenarios</h3>
+      <details class="quiz-item"><summary>Q: How would you design a golden path for new services?</summary><p class="answer">Offer a template that creates repo, CI pipeline with tests and scans, container build, Kubernetes/GitOps config, dashboards, alerts, SLO scaffolding and ownership metadata in one step; measure adoption and developer satisfaction; keep it optional but easier than the alternative.</p></details>
+      <details class="quiz-item"><summary>Q: How would you safely introduce AI agents into DevOps workflows?</summary><p class="answer">Start read-only (triage and summarising), connect via least-privilege identities (e.g., through MCP servers with scoped tools), require human approval for destructive or production actions, run changes through the same pipeline and policy checks, sandbox first, log all agent actions, and treat tickets/logs as untrusted input to avoid prompt injection.</p></details>
+      <details class="quiz-item"><summary>Q: What did DORA 2025 conclude about AI?</summary><p class="answer">AI adoption was associated with higher delivery throughput but also with higher instability — so teams need strong foundations (small batches, tests, review, observability) to benefit safely. DORA also moved to five metrics and replaced the old performance tiers with team profiles.</p></details>
+      <details class="quiz-item"><summary>Q: Your pipeline takes 45 minutes and developers avoid it. How do you fix it?</summary><p class="answer">Profile stages; parallelise; cache dependencies and build layers; run cheap checks first and slow ones later or on merge; shard tests and remove or quarantine flaky ones; use larger/ephemeral runners; only run what changed (path filters); aim for ≈10 minutes for PR feedback.</p></details>
+      <details class="quiz-item"><summary>Q: Your cloud bill doubled this month. How do you investigate?</summary><p class="answer">Break costs down by tag/team/service; look for new or forgotten resources, retry storms, data egress, log volume, over-provisioned instances or autoscaler misconfiguration; correlate with deploys; add budgets/alerts and policy guardrails; and track unit cost per request/customer.</p></details>
+      <details class="quiz-item"><summary>Q: How would you migrate from ingress-nginx?</summary><p class="answer">Inventory Ingress resources and annotations; choose a maintained controller or Gateway API implementation; use ingress2gateway (or equivalent) to translate what maps cleanly and hand-port the rest; run both in parallel with traffic shifting; test; then decommission ingress-nginx. The upstream project stopped releases and security fixes after March 2026.</p></details>
+    </section>
+
+    <!-- 52 -->
+    <section class="block" id="pitfalls-devops">
+      <h2><span class="num">52</span> Common Problems &amp; Production Checklist</h2>
+      <div class="grid">
+        <div class="card"><h4>🧱 A new wall with a new name</h4><p>Creating a separate "DevOps team" that everyone throws work at. Aim for shared ownership.</p></div>
+        <div class="card"><h4>🐘 Big-bang releases</h4><p>Batching months of changes. Ship small and often with fast rollback.</p></div>
+        <div class="card"><h4>🔴 Ignored red builds</h4><p>Flaky tests and slow pipelines teach people to ignore failures. Keep CI fast and trustworthy.</p></div>
+        <div class="card"><h4>🖱️ Click-ops in production</h4><p>Manual console changes cause drift and mystery outages. Change via code and reviews.</p></div>
+        <div class="card"><h4>🔑 Secrets in the wrong places</h4><p>Keys in Git, images, logs or long-lived CI variables. Use a manager and short-lived credentials.</p></div>
+        <div class="card"><h4>📣 Alert fatigue</h4><p>Hundreds of noisy alerts. Alert on user pain and error-budget burn; delete the rest.</p></div>
+        <div class="card"><h4>🧰 Tool-first thinking</h4><p>Adopting Kubernetes or a platform because it's trendy. Start from the problem and the team's needs.</p></div>
+        <div class="card"><h4>⏳ Falling behind on versions</h4><p>Running unsupported Kubernetes, dependencies or controllers (like retired ingress-nginx). Track end-of-life dates.</p></div>
+      </div>
+      <div class="callout tip">
+        <strong>Production-readiness checklist for a service:</strong>
+        <ul>
+          <li>☐ Code, pipeline and infrastructure all in Git; main branch protected; reviews required</li>
+          <li>☐ CI runs lint, tests and security scans in minutes; builds one versioned artifact</li>
+          <li>☐ Safe rollout (rolling/canary), health checks, and a tested, one-command rollback</li>
+          <li>☐ Infrastructure as code with remote locked state; policy checks in PRs</li>
+          <li>☐ Dashboards for golden signals; at least one SLO; alerts tied to user impact with runbooks</li>
+          <li>☐ Centralised structured logs and traces with request IDs and version info</li>
+          <li>☐ Secrets in a manager; least-privilege identities; CI actions pinned; read-only tokens by default</li>
+          <li>☐ Backups with tested restores; RPO/RTO defined; on-call and incident process documented</li>
+          <li>☐ Cost tags and budgets; dependency/image scanning and SBOMs; end-of-life dates tracked</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 53 -->
+    <section class="block" id="quiz-devops">
+      <h2><span class="num">53</span> Quick Quiz 🎯</h2>
+      <p>Click each question to reveal the answer.</p>
+      <details class="quiz-item"><summary>Q1: In one sentence, what is DevOps?</summary><p class="answer">Developers and operations sharing ownership, using automation and fast feedback to deliver software quickly, safely and repeatedly.</p></details>
+      <details class="quiz-item"><summary>Q2: What are the two groups of DORA metrics?</summary><p class="answer">Throughput (change lead time, deployment frequency, failed-deployment recovery time) and instability (change fail rate, deployment rework rate).</p></details>
+      <details class="quiz-item"><summary>Q3: Which strategy sends a small slice of users to the new version first?</summary><p class="answer">A canary release.</p></details>
+      <details class="quiz-item"><summary>Q4: What does GitOps change about deployment?</summary><p class="answer">Git holds the desired state and an agent in the cluster pulls and reconciles — deploy by merging, roll back by reverting, and drift is corrected automatically.</p></details>
+      <details class="quiz-item"><summary>Q5: A 99.9% SLO over 30 days allows roughly how much downtime?</summary><p class="answer">About 43 minutes.</p></details>
+      <details class="quiz-item"><summary>Q6: Why pin GitHub Actions to a commit SHA?</summary><p class="answer">Tags can be moved to malicious code; a full commit SHA is immutable, so you run exactly what you reviewed.</p></details>
+      <details class="quiz-item"><summary>Q7: Which Kubernetes object keeps N identical Pods running and handles rolling updates?</summary><p class="answer">A Deployment.</p></details>
+      <details class="quiz-item"><summary>Q8: What is the safest first role for an AI agent in operations?</summary><p class="answer">Read-only investigation and summarising, with human approval and least-privilege access before any write or destructive actions.</p></details>
+    </section>
+
+    <!-- 54 -->
+    <section class="block" id="resources-devops">
+      <h2><span class="num">54</span> Learn More — Resources</h2>
+      <p>Official docs first, then research and background. Tool versions and licenses change — check dates.</p>
+
+      <h3>Research &amp; practices</h3>
+      <ul class="resources">
+        <li><span class="tag docs">Docs</span> <a href="https://dora.dev/guides/dora-metrics/" target="_blank" rel="noopener">DORA — the software delivery metrics</a> · <a href="https://dora.dev/" target="_blank" rel="noopener">dora.dev</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://services.google.com/fh/files/misc/2025_state_of_ai_assisted_software_development.pdf" target="_blank" rel="noopener">DORA 2025 — State of AI-assisted Software Development (PDF)</a></li>
+        <li><span class="tag article">Book</span> <a href="https://sre.google/books/" target="_blank" rel="noopener">Google SRE books (free online)</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://opengitops.dev/" target="_blank" rel="noopener">OpenGitOps — the four principles</a></li>
+        <li><span class="tag article">Wiki</span> <a href="https://en.wikipedia.org/wiki/DevOps" target="_blank" rel="noopener">DevOps</a> · <a href="https://en.wikipedia.org/wiki/Site_reliability_engineering" target="_blank" rel="noopener">Site reliability engineering</a> · <a href="https://en.wikipedia.org/wiki/GitOps" target="_blank" rel="noopener">GitOps</a></li>
+      </ul>
+
+      <h3>Version control, CI/CD &amp; delivery</h3>
+      <ul class="resources">
+        <li><span class="tag docs">Docs</span> <a href="https://git-scm.com/doc" target="_blank" rel="noopener">Git documentation</a> · <a href="https://git-scm.com/book" target="_blank" rel="noopener">Pro Git (free book)</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://docs.github.com/en/actions" target="_blank" rel="noopener">GitHub Actions</a> · <a href="https://docs.github.com/en/actions/reference/security/secure-use" target="_blank" rel="noopener">Secure use of Actions</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://docs.gitlab.com/ci/" target="_blank" rel="noopener">GitLab CI/CD</a> · <a href="https://www.jenkins.io/doc/" target="_blank" rel="noopener">Jenkins</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://argo-cd.readthedocs.io/" target="_blank" rel="noopener">Argo CD</a> · <a href="https://fluxcd.io/docs/" target="_blank" rel="noopener">Flux</a></li>
+      </ul>
+
+      <h3>Containers &amp; Kubernetes</h3>
+      <ul class="resources">
+        <li><span class="tag docs">Docs</span> <a href="https://docs.docker.com/" target="_blank" rel="noopener">Docker documentation</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://kubernetes.io/docs/home/" target="_blank" rel="noopener">Kubernetes documentation</a> · <a href="https://kubernetes.io/releases/" target="_blank" rel="noopener">Releases &amp; support dates</a></li>
+        <li><span class="tag docs">Docs</span> <a href="https://gateway-api.sigs.k8s.io/" target="_blank" rel="noopener">Gateway API</a> · <a href="https://helm.sh/docs/" target="_blank" rel="noopener">Helm</a> · <a href="https://kustomize.io/" target="_blank" rel="noopener">Kustomize</a></li>
+      </ul>
+
+      <h3>Infrastructure as code</h3>
+      <ul class="resources">
+        <li><span class="tag docs">Docs</span> <a href="https://opentofu.org/docs/" target="_blank" rel="noopener">OpenTofu</a> · <a href="https://developer.hashicorp.com/terraform/docs" target="_blank" rel="noopener">Terraform</a> · <a href="https://www.pulumi.com/docs/" target="_blank" rel="noopener">Pulumi</a> · <a href="https://www.crossplane.io/" target="_blank" rel="noopener">Crossplane</a> · <a href="https://docs.ansible.com/" target="_blank" rel="noopener">Ansible</a></li>
+      </ul>
+
+      <h3>Observability &amp; reliability</h3>
+      <ul class="resources">
+        <li><span class="tag docs">Docs</span> <a href="https://opentelemetry.io/docs/" target="_blank" rel="noopener">OpenTelemetry</a> · <a href="https://prometheus.io/docs/" target="_blank" rel="noopener">Prometheus</a> · <a href="https://grafana.com/docs/" target="_blank" rel="noopener">Grafana</a></li>
+      </ul>
+
+      <h3>Security &amp; supply chain</h3>
+      <ul class="resources">
+        <li><span class="tag docs">Docs</span> <a href="https://slsa.dev/" target="_blank" rel="noopener">SLSA</a> · <a href="https://www.sigstore.dev/" target="_blank" rel="noopener">Sigstore</a> · <a href="https://owasp.org/www-project-top-ten/" target="_blank" rel="noopener">OWASP Top 10</a> · <a href="https://cyclonedx.org/" target="_blank" rel="noopener">CycloneDX (SBOM)</a> · <a href="https://spdx.dev/" target="_blank" rel="noopener">SPDX (SBOM)</a></li>
+      </ul>
+
+      <h3>Platform engineering</h3>
+      <ul class="resources">
+        <li><span class="tag docs">Docs</span> <a href="https://backstage.io/docs/overview/what-is-backstage" target="_blank" rel="noopener">Backstage</a> · <a href="https://www.cncf.io/" target="_blank" rel="noopener">CNCF (Cloud Native Computing Foundation)</a></li>
+      </ul>
+
+      <h3>AI &amp; DevOps</h3>
+      <ul class="resources">
+        <li><span class="tag docs">Docs</span> <a href="mcp.html">MCP guide (this roadmap)</a> · <a href="ai-agents.html">AI Agents guide</a> · <a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener">modelcontextprotocol.io</a></li>
+      </ul>
+
+      <h3>Video explainers</h3>
+      <ul class="resources">
+        <li><span class="tag video">Video</span> <a href="https://www.youtube.com/results?search_query=DevOps+explained+for+beginners" target="_blank" rel="noopener">Search: "DevOps explained for beginners"</a></li>
+        <li><span class="tag video">Video</span> <a href="https://www.youtube.com/results?search_query=Kubernetes+explained+simply" target="_blank" rel="noopener">Search: "Kubernetes explained simply"</a></li>
+        <li><span class="tag video">Video</span> <a href="https://www.youtube.com/results?search_query=GitOps+Argo+CD+tutorial" target="_blank" rel="noopener">Search: "GitOps Argo CD tutorial"</a></li>
+        <li><span class="tag video">Video</span> <a href="https://www.youtube.com/results?search_query=CI+CD+pipeline+GitHub+Actions+tutorial" target="_blank" rel="noopener">Search: "CI CD pipeline GitHub Actions tutorial"</a></li>
+      </ul>
+
+      <p>Related guides in this roadmap: <a href="ai-agents.html">AI Agents</a>, <a href="mcp.html">MCP</a>, <a href="llm.html">LLMs</a>, <a href="rag.html">RAG</a> and <a href="genai.html">Generative AI</a>.</p>
+    </section>
+
+  </main>
+</div>
+
+<div class="page-nav">
+  <a href="index.html">⬅ Back to Roadmap Home</a>
+  <a href="mcp.html">Related: MCP (Model Context Protocol) ➜</a>
+</div>
+
+</body>
+</html>
