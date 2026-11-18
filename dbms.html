@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Database Management Systems — The Complete A-Z Guide</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗄️</text></svg>">
+</head>
+<body>
+
+<header class="hero">
+  <div class="breadcrumb"><a href="index.html">🏠 Roadmap Home</a> / DBMS</div>
+  <h1>🗄️ DBMS — How Databases Store, Find and Protect Data</h1>
+  <p class="subtitle">
+    The complete A-to-Z guide in very easy words: data models, ER modelling, the relational model and algebra, SQL from scratch to advanced (joins, subqueries, window functions, CTEs), constraints, views, triggers, normalization (functional dependencies, 1NF to BCNF), storage and indexing (B+ trees, hashing), query processing and optimization, transactions and ACID, concurrency control (serializability, 2PL, timestamps, MVCC), recovery (logs, ARIES ideas), distributed databases, NoSQL, and interview prep. Real runs: SQLite through Python for every SQL example, plus Python implementations of FD closure, B+ tree, join algorithms, serializability tests and recovery.
+    Every picture has a daily-life story; outputs shown are from programs that were really run; anything not run is labelled.
+    <strong>Last reviewed: 18 November 2026</strong> (dated facts are marked and hedged).
+  </p>
+  <div class="badge-row">
+    <span class="badge beginner">Beginner friendly</span>
+    <span class="badge intermediate">Intermediate concepts</span>
+    <span class="badge advanced">Advanced / Interview</span>
+  </div>
+</header>
+
+<div class="layout">
+
+  <nav class="toc">
+    <h3>On this page (45 sections)</h3>
+    <ol>
+      <li class="toc-part">Part A — Database Foundations</li>
+      <li><a href="#what-is-dbms">What Is a Database and a DBMS?</a></li>
+      <li><a href="#dbms-architecture">Three-Schema Architecture and Data Independence</a></li>
+      <li><a href="#data-models">Data Models: Relational, Document, Key-Value, Graph...</a></li>
+      <li class="toc-part">Part B — Modelling Data: ER and the Relational Model</li>
+      <li><a href="#er-model">The Entity-Relationship (ER) Model</a></li>
+      <li><a href="#er-to-tables">From ER Diagram to Tables</a></li>
+      <li><a href="#relational-model">The Relational Model: Relations, Keys, Constraints</a></li>
+      <li><a href="#relational-algebra">Relational Algebra</a></li>
+      <li class="toc-part">Part C — SQL From Scratch to Advanced</li>
+      <li><a href="#sql-overview">SQL: The Language of Relational Databases</a></li>
+      <li><a href="#sql-basics">SELECT, WHERE, NULL and Constraints</a></li>
+      <li><a href="#sql-joins">Joins: Combining Tables</a></li>
+      <li><a href="#sql-aggregation">Aggregation: GROUP BY and HAVING</a></li>
+      <li><a href="#sql-subqueries">Subqueries and the NOT IN Trap</a></li>
+      <li><a href="#sql-window">Window Functions</a></li>
+      <li><a href="#sql-cte">Common Table Expressions and Recursive Queries</a></li>
+      <li><a href="#views-triggers">Views, Triggers, Stored Procedures</a></li>
+      <li><a href="#sql-json">Semi-Structured Data: JSON Inside SQL</a></li>
+      <li><a href="#sql-injection">SQL Injection and Safe Queries</a></li>
+      <li class="toc-part">Part D — Database Design and Normalization</li>
+      <li><a href="#anomalies">Why Normalize? Update, Insert and Delete Anomalies</a></li>
+      <li><a href="#functional-dependencies">Functional Dependencies, Closures and Keys</a></li>
+      <li><a href="#normal-forms">Normal Forms: 1NF to BCNF (and Beyond)</a></li>
+      <li class="toc-part">Part E — Storage and Indexing</li>
+      <li><a href="#storage">How Data Is Stored: Pages, Records, Buffer Pool</a></li>
+      <li><a href="#indexing">Indexes: Finding Rows Without Reading Everything (Measured)</a></li>
+      <li><a href="#bplus-tree">B+ Trees: The Index Behind Most Databases</a></li>
+      <li><a href="#hashing">Hashing: Static, Extendible and Linear</a></li>
+      <li class="toc-part">Part F — Query Processing and Optimization</li>
+      <li><a href="#query-processing">How a Query Is Executed</a></li>
+      <li><a href="#join-algorithms">Join Algorithms (Measured)</a></li>
+      <li><a href="#query-optimization">Query Optimization: Statistics, Costs and EXPLAIN</a></li>
+      <li class="toc-part">Part G — Transactions, Concurrency and Recovery</li>
+      <li><a href="#acid">Transactions and ACID</a></li>
+      <li><a href="#serializability">Schedules and Serializability</a></li>
+      <li><a href="#isolation-levels">Isolation Levels and Anomalies (Real Runs)</a></li>
+      <li><a href="#locking-2pl">Locking and Two-Phase Locking</a></li>
+      <li><a href="#mvcc">Timestamps, MVCC and Snapshot Isolation</a></li>
+      <li><a href="#recovery">Crash Recovery: Logs, Checkpoints, ARIES</a></li>
+      <li class="toc-part">Part H — Distributed Databases, NoSQL and Choosing a Database</li>
+      <li><a href="#distributed-db">Replication, Partitioning (Sharding) and CAP</a></li>
+      <li><a href="#nosql">NoSQL Families in Practice</a></li>
+      <li><a href="#orm-apps">Databases in Applications: Drivers, ORMs, Pools, Migrations</a></li>
+      <li><a href="#choosing-db">Choosing a Database</a></li>
+      <li class="toc-part">Part I — Practice and Reference</li>
+      <li><a href="#dbms-cheatsheet">SQL and DBMS Cheat Sheet</a></li>
+      <li><a href="#interview-dbms">Interview Questions (With Answers)</a></li>
+      <li><a href="#glossary-dbms">Mini Glossary</a></li>
+      <li><a href="#faq-dbms">FAQ</a></li>
+      <li><a href="#pitfalls-dbms">Common Mistakes and Checklist</a></li>
+      <li><a href="#quiz-dbms">Quick Quiz 🎯</a></li>
+      <li><a href="#learning-path-dbms">Learning Path</a></li>
+      <li><a href="#resources-dbms">Learn More — Resources</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <div class="part-divider"><h2>Part A — Database Foundations</h2></div>
+
+    <!-- 1 -->
+    <section class="block" id="what-is-dbms">
+      <h2><span class="num">1</span> What Is a Database and a DBMS?</h2>
+<div class="callout life"><strong>Picture:</strong> A school office. Loose papers in drawers (plain files) get lost, copied wrongly, and two clerks can scribble on the same page. A well-run register with rules, an index, a lock on the cupboard and a backup copy is a <strong>database</strong>; the office staff who manage it are the <strong>DBMS</strong>.</div><table><tr><th>Problem with plain files</th><th>How a DBMS solves it</th></tr><tr><td>Same data copied in many files (redundancy) and copies disagree (inconsistency)</td><td>One shared, normalised store with constraints</td></tr><tr><td>Hard to ask new questions</td><td>A query language (SQL)</td></tr><tr><td>Two people editing at once corrupt data</td><td>Concurrency control (locks, MVCC)</td></tr><tr><td>A crash halfway through leaves a mess</td><td>Transactions and recovery (all or nothing)</td></tr><tr><td>Anyone can read everything</td><td>Users, roles and permissions</td></tr><tr><td>Slow searching in big files</td><td>Indexes and a query optimizer</td></tr><tr><td>Program breaks when the file layout changes</td><td>Data independence (programs see a logical schema)</td></tr></table><h3>Good to know</h3><ul><li><strong>Database</strong> = the organised data. <strong>DBMS</strong> = the software that stores, queries and protects it (PostgreSQL, MySQL, SQLite, Oracle, SQL Server, MongoDB...).</li><li>Related guides: <a href="system-design.html">System Design</a> (scaling databases), <a href="operating-systems.html">Operating Systems</a> (files, fsync, locks), <a href="python.html">Python</a>, <a href="java.html">Java</a> (JDBC, JPA), <a href="rag.html">RAG</a> (vector databases).</li></ul><div class="callout tip">Honest note: every SQL example on this page was <strong>really run</strong> in SQLite 3.50.4 through Python 3.14 (18 Nov 2026), and the internals (B+ tree, join algorithms, serializability test, 2PL, MVCC, recovery) are Python implementations that ran. PostgreSQL, MongoDB, Redis and ORM code are templates (no such servers on this machine). SQL dialects differ slightly between systems.</div>
+    </section>
+
+    <!-- 2 -->
+    <section class="block" id="dbms-architecture">
+      <h2><span class="num">2</span> Three-Schema Architecture and Data Independence</h2>
+<div class="callout life"><strong>Picture:</strong> A restaurant: customers see a menu (external view), the kitchen keeps a recipe book of every dish (conceptual schema), and the storeroom has shelves and fridges (internal schema). The storeroom can be reorganised without reprinting the menu.</div><div class="diagram-wrap"><svg viewBox="0 0 760 274" style="width:100%;max-width:760px" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrSc1_arrow" markerWidth="10" markerHeight="10" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8" fill="none" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc1_tri" markerWidth="12" markerHeight="12" refX="11" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc1_dia" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--accent)" stroke="var(--accent)"/></marker><marker id="arrSc1_diah" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker></defs><line x1="210" y1="46" x2="326" y2="100" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc1_arrow)"/><line x1="380" y1="46" x2="380" y2="100" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc1_arrow)"/><line x1="550" y1="46" x2="434" y2="100" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc1_arrow)"/><text class="edge-label" x="492" y="68" text-anchor="middle">logical independence</text><line x1="380" y1="150" x2="380" y2="200" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc1_arrow)"/><text class="edge-label" x="380" y="170" text-anchor="middle">physical independence</text><rect class="box" x="80" y="0" width="160" height="46" rx="9"/><text x="160" y="20" text-anchor="middle" font-size="12">View 1</text><text x="160" y="34" text-anchor="middle" font-size="10" class="edge-label">(students app)</text><rect class="box" x="300" y="0" width="160" height="46" rx="9"/><text x="380" y="20" text-anchor="middle" font-size="12">View 2</text><text x="380" y="34" text-anchor="middle" font-size="10" class="edge-label">(accounts app)</text><rect class="box" x="520" y="0" width="160" height="46" rx="9"/><text x="600" y="20" text-anchor="middle" font-size="12">View 3</text><text x="600" y="34" text-anchor="middle" font-size="10" class="edge-label">(reports)</text><rect class="box-final" x="200" y="100" width="360" height="50" rx="9"/><text x="380" y="122" text-anchor="middle" font-size="12">Conceptual / logical schema</text><text x="380" y="136" text-anchor="middle" font-size="10" class="edge-label">tables, columns, keys, constraints</text><rect class="box-hl" x="200" y="200" width="360" height="50" rx="9"/><text x="380" y="222" text-anchor="middle" font-size="12">Internal / physical schema</text><text x="380" y="236" text-anchor="middle" font-size="10" class="edge-label">files, pages, indexes, compression</text></svg><div class="diagram-caption">Fig S1 — Three levels of a DBMS and the two kinds of independence.</div></div><table><tr><th>Component</th><th>Job</th></tr><tr><td>Query processor</td><td>Parses SQL, checks it, optimises it into a plan, runs the plan</td></tr><tr><td>Storage manager</td><td>Files, pages, buffer pool (cache of pages in RAM), indexes</td></tr><tr><td>Transaction manager</td><td>Concurrency control and recovery (ACID)</td></tr><tr><td>Catalog / data dictionary</td><td>Metadata: which tables, columns, indexes, users exist</td></tr></table><h3>Good to know</h3><ul><li><strong>Physical data independence</strong>: add an index or move files without changing applications. <strong>Logical data independence</strong>: change the logical schema (add a column) without breaking views.</li><li>Architectures: embedded (SQLite inside the app), client-server (PostgreSQL), distributed (many nodes), serverless/cloud-managed.</li></ul>
+    </section>
+
+    <!-- 3 -->
+    <section class="block" id="data-models">
+      <h2><span class="num">3</span> Data Models: Relational, Document, Key-Value, Graph...</h2>
+<div class="callout life"><strong>Picture:</strong> Different storage boxes: a spreadsheet with neat rows (relational), a folder of letters each written differently (document), numbered lockers (key-value), and a map of friends connected by lines (graph).</div><table><tr><th>Model</th><th>Data looks like</th><th>Good at</th><th>Examples</th></tr><tr><td>Relational</td><td>Tables of rows and columns, linked by keys</td><td>Consistency, ad-hoc queries, joins, transactions</td><td>PostgreSQL, MySQL, SQLite, Oracle, SQL Server</td></tr><tr><td>Document</td><td>JSON-like documents</td><td>Flexible fields, objects that are read together</td><td>MongoDB, Couchbase, Firestore</td></tr><tr><td>Key-value</td><td>key → value</td><td>Very fast simple lookups, caches, sessions</td><td>Redis, DynamoDB, etcd</td></tr><tr><td>Wide-column</td><td>Rows with many sparse columns, partitioned</td><td>Huge write-heavy datasets</td><td>Cassandra, HBase, Bigtable</td></tr><tr><td>Graph</td><td>Nodes and edges</td><td>Relationships many hops deep</td><td>Neo4j, Amazon Neptune</td></tr><tr><td>Time-series</td><td>Timestamped measurements</td><td>Metrics, IoT</td><td>TimescaleDB, InfluxDB</td></tr><tr><td>Vector</td><td>Embedding vectors + metadata</td><td>Similarity search (AI, RAG)</td><td>pgvector, Milvus, Qdrant</td></tr><tr><td>Older: hierarchical, network</td><td>Trees / record sets with pointers</td><td>Historic (IBM IMS, CODASYL)</td><td>-</td></tr></table><h3>Good to know</h3><ul><li>Many systems are now 'multi-model': PostgreSQL stores JSON and vectors; SQLite has JSON functions (shown in Part C).</li><li>Rule of thumb: start relational unless you have a clear reason not to.</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part B — Modelling Data: ER and the Relational Model</h2></div>
+
+    <!-- 4 -->
+    <section class="block" id="er-model">
+      <h2><span class="num">4</span> The Entity-Relationship (ER) Model</h2>
+<div class="callout life"><strong>Picture:</strong> Before building a house you draw a plan. An ER diagram is the plan of your data: the <em>things</em> (entities), their <em>details</em> (attributes) and how they are <em>connected</em> (relationships).</div><div class="diagram-wrap"><svg viewBox="0 0 740 244" style="width:100%;max-width:740px" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrSc2_arrow" markerWidth="10" markerHeight="10" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8" fill="none" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc2_tri" markerWidth="12" markerHeight="12" refX="11" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc2_dia" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--accent)" stroke="var(--accent)"/></marker><marker id="arrSc2_diah" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker></defs><line x1="191" y1="90" x2="294" y2="60" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc2_arrow)"/><text class="edge-label" x="242" y="70" text-anchor="middle">1 : N  has</text><line x1="191" y1="140" x2="294" y2="170" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc2_arrow)"/><text class="edge-label" x="242" y="150" text-anchor="middle">1 : N  offers</text><line x1="458" y1="60" x2="560" y2="93" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc2_arrow)"/><text class="edge-label" x="509" y="71" text-anchor="middle">M</text><line x1="458" y1="170" x2="560" y2="137" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc2_arrow)"/><text class="edge-label" x="509" y="149" text-anchor="middle">N</text><rect class="box-hl" x="10" y="90" width="190" height="50" rx="9"/><text x="105" y="112" text-anchor="middle" font-size="12">DEPT</text><text x="105" y="126" text-anchor="middle" font-size="10" class="edge-label">dept_id (PK), name, building</text><rect class="box-final" x="280" y="10" width="200" height="50" rx="9"/><text x="380" y="32" text-anchor="middle" font-size="12">STUDENT</text><text x="380" y="46" text-anchor="middle" font-size="10" class="edge-label">roll (PK), name, year, cgpa</text><rect class="box-final" x="280" y="170" width="200" height="50" rx="9"/><text x="380" y="192" text-anchor="middle" font-size="12">COURSE</text><text x="380" y="206" text-anchor="middle" font-size="10" class="edge-label">code (PK), title, credits</text><rect class="box-dim" x="560" y="90" width="140" height="50" rx="9"/><text x="630" y="112" text-anchor="middle" font-size="12">ENROLLS</text><text x="630" y="126" text-anchor="middle" font-size="10" class="edge-label">marks</text></svg><div class="diagram-caption">Fig S2 — ER diagram of the school database used on this page (cardinalities on the links).</div></div><table><tr><th>Concept</th><th>Meaning</th><th>Example</th></tr><tr><td>Entity / entity set</td><td>A thing / all things of one type</td><td>Student Asha / all students</td></tr><tr><td>Attribute</td><td>A property</td><td>name, cgpa</td></tr><tr><td>Key attribute</td><td>Identifies an entity</td><td>roll</td></tr><tr><td>Composite / multivalued / derived</td><td>Made of parts / many values / computed</td><td>address (street, city) / phone numbers / age from birth date</td></tr><tr><td>Relationship</td><td>Association between entities</td><td>Student ENROLLS in Course</td></tr><tr><td>Cardinality</td><td>1:1, 1:N, M:N</td><td>Dept 1:N Students; Students M:N Courses</td></tr><tr><td>Participation</td><td>Total (every entity must take part) or partial</td><td>Every course must belong to a dept?</td></tr><tr><td>Weak entity</td><td>Identified only together with an owner</td><td>Dependent of an Employee</td></tr><tr><td>Specialisation / generalisation</td><td>IS-A hierarchies</td><td>Person → Student, Teacher</td></tr></table><h3>Good to know</h3><ul><li>Notations differ (Chen diamonds, crow's foot, UML); the ideas are the same.</li></ul>
+    </section>
+
+    <!-- 5 -->
+    <section class="block" id="er-to-tables">
+      <h2><span class="num">5</span> From ER Diagram to Tables</h2>
+<div class="callout life"><strong>Picture:</strong> Turning a house plan into actual rooms: each kind of thing gets a table; links become columns that point to other tables, or tables of their own.</div><table><tr><th>ER element</th><th>Becomes</th></tr><tr><td>Strong entity</td><td>A table; key attribute → primary key</td></tr><tr><td>Weak entity</td><td>A table whose primary key = owner's key + partial key; foreign key to the owner</td></tr><tr><td>1:N relationship</td><td>Foreign key on the N side (student.dept_id → dept)</td></tr><tr><td>1:1 relationship</td><td>Foreign key on either side (prefer the total-participation side), or merge tables</td></tr><tr><td>M:N relationship</td><td>A separate table with both keys as a composite primary key (enroll(roll, code)) plus relationship attributes (marks)</td></tr><tr><td>Multivalued attribute</td><td>A separate table (student_phone(roll, phone))</td></tr><tr><td>Composite attribute</td><td>Its parts become columns</td></tr><tr><td>Specialisation</td><td>One table per class, one table for all (with a type column), or one table per subclass only</td></tr></table><h3>Good to know</h3><ul><li>The school schema used in every SQL demo: <code>dept</code>, <code>student</code>, <code>course</code>, <code>enroll</code>; <code>enroll</code> is the M:N table.</li></ul>
+    </section>
+
+    <!-- 6 -->
+    <section class="block" id="relational-model">
+      <h2><span class="num">6</span> The Relational Model: Relations, Keys, Constraints</h2>
+<div class="callout life"><strong>Picture:</strong> A table is like a class register: each row is one student, each column one fact, and the roll number never repeats.</div><table><tr><th>Term</th><th>Meaning</th></tr><tr><td>Relation</td><td>A table (a set of tuples)</td></tr><tr><td>Tuple / attribute</td><td>A row / a column</td></tr><tr><td>Domain</td><td>Allowed values of a column</td></tr><tr><td>Degree / cardinality</td><td>Number of columns / number of rows</td></tr><tr><td>Super key</td><td>Any set of columns that uniquely identifies rows</td></tr><tr><td>Candidate key</td><td>A minimal super key</td></tr><tr><td>Primary key</td><td>The chosen candidate key (unique, not null)</td></tr><tr><td>Alternate key</td><td>Other candidate keys (often UNIQUE constraints)</td></tr><tr><td>Foreign key</td><td>Columns that must match a key in another table (referential integrity)</td></tr><tr><td>Composite key</td><td>A key made of several columns (roll, code)</td></tr><tr><td>Surrogate key</td><td>An artificial id (auto-increment, UUID) instead of a natural one</td></tr></table><table><tr><th>Integrity constraint</th><th>Example</th></tr><tr><td>Domain / type / CHECK</td><td>year BETWEEN 1 AND 4</td></tr><tr><td>NOT NULL</td><td>name NOT NULL</td></tr><tr><td>Entity integrity</td><td>Primary key is unique and not null</td></tr><tr><td>Referential integrity</td><td>student.dept_id must exist in dept (ON DELETE CASCADE / SET NULL / RESTRICT)</td></tr><tr><td>UNIQUE</td><td>dept.name UNIQUE</td></tr></table><h3>Good to know</h3><ul><li>Codd's relational model (1970) is the theory behind SQL databases. In theory relations are <em>sets</em> (no duplicate rows, no order); SQL tables are <em>bags</em> unless you add keys or DISTINCT.</li></ul>
+    </section>
+
+    <!-- 7 -->
+    <section class="block" id="relational-algebra">
+      <h2><span class="num">7</span> Relational Algebra</h2>
+<div class="callout life"><strong>Picture:</strong> A small set of Lego moves for tables: pick rows (select), pick columns (project), glue tables (join), combine (union), subtract (difference). Every SQL query is built from these moves.</div><details class="deepdive" open><summary>Relational algebra operators on Python sets (run for real)</summary><pre><code># Relational algebra with Python sets: each operator returns a new relation (a set of tuples).
+Student = {(101, &quot;Asha&quot;, &quot;CSE&quot;), (102, &quot;Ravi&quot;, &quot;CSE&quot;), (103, &quot;Meena&quot;, &quot;ECE&quot;), (104, &quot;John&quot;, &quot;ECE&quot;)}
+Enroll = {(101, &quot;DBMS&quot;), (101, &quot;OS&quot;), (102, &quot;DBMS&quot;), (103, &quot;OS&quot;), (104, &quot;CN&quot;)}
+select = lambda R, p: {t for t in R if p(t)}                               # sigma
+project = lambda R, idx: {tuple(t[i] for i in idx) for t in R}           # pi (removes duplicates!)
+join = lambda R, S, i, j: {r + s for r in R for s in S if r[i] == s[j]}   # theta/natural join on one column
+print(&quot;sigma dept=&#x27;CSE&#x27; (Student)          :&quot;, sorted(select(Student, lambda t: t[2] == &quot;CSE&quot;)))
+print(&quot;pi dept (Student)                   :&quot;, sorted(project(Student, [2])), &quot;&lt;- 2 rows, not 4&quot;)
+SE = join(Student, Enroll, 0, 0)
+print(&quot;Student join Enroll (on roll)       :&quot;, len(SE), &quot;rows&quot;)
+dbms = project(select(SE, lambda t: t[4] == &quot;DBMS&quot;), [1]); os_ = project(select(SE, lambda t: t[4] == &quot;OS&quot;), [1])
+print(&quot;names taking DBMS                   :&quot;, sorted(dbms))
+print(&quot;DBMS UNION OS                       :&quot;, sorted(dbms | os_))
+print(&quot;DBMS INTERSECT OS                   :&quot;, sorted(dbms &amp; os_))
+print(&quot;DBMS MINUS OS                       :&quot;, sorted(dbms - os_))
+courses = project(select(Enroll, lambda t: t[1] in (&quot;DBMS&quot;, &quot;OS&quot;)), [1])
+div = {r for (r,) in project(Enroll, [0]) if all((r, c) in Enroll for (c,) in courses)}
+print(&quot;DIVISION: rolls enrolled in ALL of {DBMS, OS}:&quot;, div)
+print(&quot;SQL equivalent of the first line: SELECT * FROM student WHERE dept = &#x27;CSE&#x27;&quot;)
+
+# ----- Output (real run) -----
+# sigma dept=&#x27;CSE&#x27; (Student)          : [(101, &#x27;Asha&#x27;, &#x27;CSE&#x27;), (102, &#x27;Ravi&#x27;, &#x27;CSE&#x27;)]
+# pi dept (Student)                   : [(&#x27;CSE&#x27;,), (&#x27;ECE&#x27;,)] &lt;- 2 rows, not 4
+# Student join Enroll (on roll)       : 5 rows
+# names taking DBMS                   : [(&#x27;Asha&#x27;,), (&#x27;Ravi&#x27;,)]
+# DBMS UNION OS                       : [(&#x27;Asha&#x27;,), (&#x27;Meena&#x27;,), (&#x27;Ravi&#x27;,)]
+# DBMS INTERSECT OS                   : [(&#x27;Asha&#x27;,)]
+# DBMS MINUS OS                       : [(&#x27;Ravi&#x27;,)]
+# DIVISION: rolls enrolled in ALL of {DBMS, OS}: {101}
+# SQL equivalent of the first line: SELECT * FROM student WHERE dept = &#x27;CSE&#x27;</code></pre><p>Projection removes duplicates (4 students → 2 departments). Division answers 'who takes ALL of these courses?': only roll 101.</p></details><table><tr><th>Operator</th><th>Symbol</th><th>SQL</th></tr><tr><td>Selection</td><td>σ<sub>condition</sub>(R)</td><td>WHERE</td></tr><tr><td>Projection</td><td>π<sub>columns</sub>(R)</td><td>SELECT DISTINCT cols</td></tr><tr><td>Cartesian product</td><td>R × S</td><td>CROSS JOIN</td></tr><tr><td>Join</td><td>R ⋈ S</td><td>JOIN ... ON</td></tr><tr><td>Union / intersection / difference</td><td>∪ ∩ −</td><td>UNION / INTERSECT / EXCEPT</td></tr><tr><td>Rename</td><td>ρ</td><td>AS</td></tr><tr><td>Division</td><td>R ÷ S</td><td>NOT EXISTS ... NOT EXISTS (double negation)</td></tr></table><h3>Good to know</h3><ul><li>Relational calculus (tuple and domain) says <em>what</em> you want declaratively; algebra says <em>how</em> step by step. SQL is based on both; the optimizer turns SQL into an algebra plan.</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part C — SQL From Scratch to Advanced</h2></div>
+
+    <!-- 8 -->
+    <section class="block" id="sql-overview">
+      <h2><span class="num">8</span> SQL: The Language of Relational Databases</h2>
+<div class="callout life"><strong>Picture:</strong> Ordering food by saying <em>what</em> you want ('a vegetable pizza without onions'), not <em>how</em> to cook it. SQL is declarative: the database decides how.</div><table><tr><th>Group</th><th>Commands</th><th>Purpose</th></tr><tr><td>DDL (definition)</td><td>CREATE, ALTER, DROP, TRUNCATE</td><td>Define tables, indexes, views</td></tr><tr><td>DML (manipulation)</td><td>SELECT, INSERT, UPDATE, DELETE, MERGE</td><td>Read and change data</td></tr><tr><td>DCL (control)</td><td>GRANT, REVOKE</td><td>Permissions</td></tr><tr><td>TCL (transactions)</td><td>BEGIN, COMMIT, ROLLBACK, SAVEPOINT</td><td>Group changes into transactions</td></tr></table><h3>Good to know</h3><ul><li>Standard SQL (ISO/IEC 9075, revised over the years, most recently SQL:2023) is implemented with differences by each product: <code>LIMIT</code> vs <code>TOP</code> vs <code>FETCH FIRST</code>, string functions, date types.</li><li>Common types: INTEGER, NUMERIC/DECIMAL (exact money), REAL/DOUBLE, VARCHAR/TEXT, DATE/TIMESTAMP, BOOLEAN, BLOB, JSON.</li></ul>
+    </section>
+
+    <!-- 9 -->
+    <section class="block" id="sql-basics">
+      <h2><span class="num">9</span> SELECT, WHERE, NULL and Constraints</h2>
+<div class="callout life"><strong>Picture:</strong> Asking the register: 'show me the roll numbers and names of second-years and above, best CGPA first, just the top three'.</div><details class="deepdive" open><summary>Basic queries, the NULL trap, and constraints rejecting bad data (run for real)</summary><pre><code>import sqlite3
+db = sqlite3.connect(&quot;:memory:&quot;); db.execute(&quot;PRAGMA foreign_keys = ON&quot;)
+db.executescript(&quot;&quot;&quot;
+CREATE TABLE dept(dept_id INTEGER PRIMARY KEY, name TEXT NOT NULL UNIQUE, building TEXT);
+CREATE TABLE student(roll INTEGER PRIMARY KEY, name TEXT NOT NULL, dept_id INTEGER REFERENCES dept(dept_id), year INTEGER CHECK (year BETWEEN 1 AND 4), cgpa REAL);
+CREATE TABLE course(code TEXT PRIMARY KEY, title TEXT NOT NULL, credits INTEGER, dept_id INTEGER REFERENCES dept(dept_id));
+CREATE TABLE enroll(roll INTEGER REFERENCES student(roll), code TEXT REFERENCES course(code), marks INTEGER, PRIMARY KEY (roll, code));
+INSERT INTO dept VALUES (1,&#x27;CSE&#x27;,&#x27;A&#x27;),(2,&#x27;ECE&#x27;,&#x27;B&#x27;),(3,&#x27;ME&#x27;,&#x27;C&#x27;),(4,&#x27;Civil&#x27;,&#x27;D&#x27;);
+INSERT INTO student VALUES (101,&#x27;Asha&#x27;,1,2,8.9),(102,&#x27;Ravi&#x27;,1,3,7.4),(103,&#x27;Meena&#x27;,2,2,9.1),(104,&#x27;John&#x27;,2,1,6.8),(105,&#x27;Zara&#x27;,3,4,8.2),(106,&#x27;Kabir&#x27;,NULL,1,7.9);
+INSERT INTO course VALUES (&#x27;CS101&#x27;,&#x27;Programming&#x27;,4,1),(&#x27;CS201&#x27;,&#x27;DBMS&#x27;,4,1),(&#x27;EC101&#x27;,&#x27;Circuits&#x27;,3,2),(&#x27;ME101&#x27;,&#x27;Mechanics&#x27;,3,3),(&#x27;MA101&#x27;,&#x27;Maths&#x27;,4,NULL);
+INSERT INTO enroll VALUES (101,&#x27;CS101&#x27;,88),(101,&#x27;CS201&#x27;,92),(101,&#x27;MA101&#x27;,75),(102,&#x27;CS101&#x27;,64),(102,&#x27;CS201&#x27;,71),(103,&#x27;EC101&#x27;,95),(103,&#x27;MA101&#x27;,89),(104,&#x27;EC101&#x27;,58),(105,&#x27;ME101&#x27;,81),(105,&#x27;MA101&#x27;,67);
+&quot;&quot;&quot;)
+def show(sql, params=()):
+    cur = db.execute(sql, params); cols = [d[0] for d in cur.description]; rows = cur.fetchall()
+    w = [max(len(str(c)), *(len(str(r[i])) for r in rows)) if rows else len(str(c)) for i, c in enumerate(cols)]
+    print(&quot;  &quot; + &quot; | &quot;.join(str(c).ljust(w[i]) for i, c in enumerate(cols)))
+    print(&quot;  &quot; + &quot;-+-&quot;.join(&quot;-&quot; * x for x in w))
+    for r in rows: print(&quot;  &quot; + &quot; | &quot;.join((&quot;NULL&quot; if v is None else str(v)).ljust(w[i]) for i, v in enumerate(r)))
+    print(&quot;  (%d row%s)\n&quot; % (len(rows), &quot;&quot; if len(rows) == 1 else &quot;s&quot;))
+
+print(&quot;SQLite version:&quot;, sqlite3.sqlite_version)
+print(&quot;1) SELECT ... WHERE ... ORDER BY ... LIMIT&quot;)
+show(&quot;SELECT roll, name, cgpa FROM student WHERE year &gt;= 2 ORDER BY cgpa DESC LIMIT 3&quot;)
+print(&quot;2) NULL is &#x27;unknown&#x27;: &#x27;= NULL&#x27; finds nothing, &#x27;IS NULL&#x27; works&quot;)
+show(&quot;SELECT count(*) AS with_equals FROM student WHERE dept_id = NULL&quot;)
+show(&quot;SELECT name FROM student WHERE dept_id IS NULL&quot;)
+print(&quot;3) Constraints say NO to bad data:&quot;)
+for sql in [&quot;INSERT INTO student VALUES (101,&#x27;Dup&#x27;,1,1,7.0)&quot;, &quot;INSERT INTO student VALUES (107,&#x27;Ghost&#x27;,99,1,7.0)&quot;, &quot;INSERT INTO student VALUES (108,&#x27;Old&#x27;,1,7,7.0)&quot;, &quot;INSERT INTO dept VALUES (5,&#x27;CSE&#x27;,&#x27;E&#x27;)&quot;]:
+    try: db.execute(sql); print(&quot;   accepted:&quot;, sql)
+    except sqlite3.IntegrityError as e: print(&quot;   REJECTED (%s): %s&quot; % (e, sql))
+print(&quot;\n4) UPDATE and DELETE change rows that match WHERE (forget WHERE = change EVERY row!)&quot;)
+print(&quot;   rows updated:&quot;, db.execute(&quot;UPDATE student SET cgpa = cgpa + 0.1 WHERE roll = 104&quot;).rowcount)
+
+# ----- Output (real run) -----
+# SQLite version: 3.50.4
+# 1) SELECT ... WHERE ... ORDER BY ... LIMIT
+#   roll | name  | cgpa
+#   -----+-------+-----
+#   103  | Meena | 9.1 
+#   101  | Asha  | 8.9 
+#   105  | Zara  | 8.2 
+#   (3 rows)
+#
+# 2) NULL is &#x27;unknown&#x27;: &#x27;= NULL&#x27; finds nothing, &#x27;IS NULL&#x27; works
+#   with_equals
+#   -----------
+#   0          
+#   (1 row)
+#
+#   name 
+#   -----
+#   Kabir
+#   (1 row)
+#
+# 3) Constraints say NO to bad data:
+#    REJECTED (UNIQUE constraint failed: student.roll): INSERT INTO student VALUES (101,&#x27;Dup&#x27;,1,1,7.0)
+#    REJECTED (FOREIGN KEY constraint failed): INSERT INTO student VALUES (107,&#x27;Ghost&#x27;,99,1,7.0)
+#    REJECTED (CHECK constraint failed: year BETWEEN 1 AND 4): INSERT INTO student VALUES (108,&#x27;Old&#x27;,1,7,7.0)
+#    REJECTED (UNIQUE constraint failed: dept.name): INSERT INTO dept VALUES (5,&#x27;CSE&#x27;,&#x27;E&#x27;)
+#
+# 4) UPDATE and DELETE change rows that match WHERE (forget WHERE = change EVERY row!)
+#    rows updated: 1</code></pre><p><code>dept_id = NULL</code> matches nothing (NULL means unknown, so the comparison is unknown); use <code>IS NULL</code>. The duplicate key, the missing department, the impossible year and the duplicate department name were all rejected by constraints before reaching the data.</p></details><h3>Good to know</h3><ul><li>Three-valued logic: TRUE, FALSE, UNKNOWN. WHERE keeps only TRUE rows.</li><li>SQLite only enforces foreign keys after <code>PRAGMA foreign_keys = ON</code> (other databases enforce them always).</li></ul>
+    </section>
+
+    <!-- 10 -->
+    <section class="block" id="sql-joins">
+      <h2><span class="num">10</span> Joins: Combining Tables</h2>
+<div class="callout life"><strong>Picture:</strong> Matching two class lists by roll number. INNER keeps only students on both lists; LEFT keeps everyone from the first list; FULL keeps everyone from both.</div><details class="deepdive" open><summary>INNER, LEFT, RIGHT, FULL OUTER, CROSS and SELF joins (run for real)</summary><pre><code>import sqlite3
+db = sqlite3.connect(&quot;:memory:&quot;); db.execute(&quot;PRAGMA foreign_keys = ON&quot;)
+db.executescript(&quot;&quot;&quot;
+CREATE TABLE dept(dept_id INTEGER PRIMARY KEY, name TEXT NOT NULL UNIQUE, building TEXT);
+CREATE TABLE student(roll INTEGER PRIMARY KEY, name TEXT NOT NULL, dept_id INTEGER REFERENCES dept(dept_id), year INTEGER CHECK (year BETWEEN 1 AND 4), cgpa REAL);
+CREATE TABLE course(code TEXT PRIMARY KEY, title TEXT NOT NULL, credits INTEGER, dept_id INTEGER REFERENCES dept(dept_id));
+CREATE TABLE enroll(roll INTEGER REFERENCES student(roll), code TEXT REFERENCES course(code), marks INTEGER, PRIMARY KEY (roll, code));
+INSERT INTO dept VALUES (1,&#x27;CSE&#x27;,&#x27;A&#x27;),(2,&#x27;ECE&#x27;,&#x27;B&#x27;),(3,&#x27;ME&#x27;,&#x27;C&#x27;),(4,&#x27;Civil&#x27;,&#x27;D&#x27;);
+INSERT INTO student VALUES (101,&#x27;Asha&#x27;,1,2,8.9),(102,&#x27;Ravi&#x27;,1,3,7.4),(103,&#x27;Meena&#x27;,2,2,9.1),(104,&#x27;John&#x27;,2,1,6.8),(105,&#x27;Zara&#x27;,3,4,8.2),(106,&#x27;Kabir&#x27;,NULL,1,7.9);
+INSERT INTO course VALUES (&#x27;CS101&#x27;,&#x27;Programming&#x27;,4,1),(&#x27;CS201&#x27;,&#x27;DBMS&#x27;,4,1),(&#x27;EC101&#x27;,&#x27;Circuits&#x27;,3,2),(&#x27;ME101&#x27;,&#x27;Mechanics&#x27;,3,3),(&#x27;MA101&#x27;,&#x27;Maths&#x27;,4,NULL);
+INSERT INTO enroll VALUES (101,&#x27;CS101&#x27;,88),(101,&#x27;CS201&#x27;,92),(101,&#x27;MA101&#x27;,75),(102,&#x27;CS101&#x27;,64),(102,&#x27;CS201&#x27;,71),(103,&#x27;EC101&#x27;,95),(103,&#x27;MA101&#x27;,89),(104,&#x27;EC101&#x27;,58),(105,&#x27;ME101&#x27;,81),(105,&#x27;MA101&#x27;,67);
+&quot;&quot;&quot;)
+def show(sql, params=()):
+    cur = db.execute(sql, params); cols = [d[0] for d in cur.description]; rows = cur.fetchall()
+    w = [max(len(str(c)), *(len(str(r[i])) for r in rows)) if rows else len(str(c)) for i, c in enumerate(cols)]
+    print(&quot;  &quot; + &quot; | &quot;.join(str(c).ljust(w[i]) for i, c in enumerate(cols)))
+    print(&quot;  &quot; + &quot;-+-&quot;.join(&quot;-&quot; * x for x in w))
+    for r in rows: print(&quot;  &quot; + &quot; | &quot;.join((&quot;NULL&quot; if v is None else str(v)).ljust(w[i]) for i, v in enumerate(r)))
+    print(&quot;  (%d row%s)\n&quot; % (len(rows), &quot;&quot; if len(rows) == 1 else &quot;s&quot;))
+
+print(&quot;INNER JOIN: only students that have a matching department&quot;)
+show(&quot;SELECT s.name, d.name AS dept FROM student s JOIN dept d ON s.dept_id = d.dept_id ORDER BY s.roll&quot;)
+print(&quot;LEFT JOIN: every student, dept is NULL when missing (Kabir)&quot;)
+show(&quot;SELECT s.name, d.name AS dept FROM student s LEFT JOIN dept d ON s.dept_id = d.dept_id ORDER BY s.roll&quot;)
+print(&quot;RIGHT JOIN: every department, even Civil with no students&quot;)
+show(&quot;SELECT s.name, d.name AS dept FROM student s RIGHT JOIN dept d ON s.dept_id = d.dept_id ORDER BY d.dept_id, s.roll&quot;)
+print(&quot;FULL OUTER JOIN: everything from both sides&quot;)
+show(&quot;SELECT s.name, d.name AS dept FROM student s FULL OUTER JOIN dept d ON s.dept_id = d.dept_id ORDER BY d.dept_id, s.roll&quot;)
+print(&quot;Three-table join: who scored what in which course&quot;)
+show(&quot;SELECT s.name, c.title, e.marks FROM enroll e JOIN student s ON s.roll = e.roll JOIN course c ON c.code = e.code WHERE e.marks &gt;= 85 ORDER BY e.marks DESC&quot;)
+print(&quot;CROSS JOIN size = 6 students x 4 depts:&quot;, db.execute(&quot;SELECT count(*) FROM student CROSS JOIN dept&quot;).fetchone()[0])
+print(&quot;SELF JOIN: pairs of students in the same department&quot;)
+show(&quot;SELECT a.name AS s1, b.name AS s2 FROM student a JOIN student b ON a.dept_id = b.dept_id AND a.roll &lt; b.roll&quot;)
+
+# ----- Output (real run) -----
+# INNER JOIN: only students that have a matching department
+#   name  | dept
+#   ------+-----
+#   Asha  | CSE 
+#   Ravi  | CSE 
+#   Meena | ECE 
+#   John  | ECE 
+#   Zara  | ME  
+#   (5 rows)
+#
+# LEFT JOIN: every student, dept is NULL when missing (Kabir)
+#   name  | dept
+#   ------+-----
+#   Asha  | CSE 
+#   Ravi  | CSE 
+#   Meena | ECE 
+#   John  | ECE 
+#   Zara  | ME  
+#   Kabir | NULL
+#   (6 rows)
+#
+# RIGHT JOIN: every department, even Civil with no students
+#   name  | dept 
+#   ------+------
+#   Asha  | CSE  
+#   Ravi  | CSE  
+#   Meena | ECE  
+#   John  | ECE  
+#   Zara  | ME   
+#   NULL  | Civil
+#   (6 rows)
+#
+# FULL OUTER JOIN: everything from both sides
+#   name  | dept 
+#   ------+------
+#   Kabir | NULL 
+#   Asha  | CSE  
+#   Ravi  | CSE  
+#   Meena | ECE  
+#   John  | ECE  
+#   Zara  | ME   
+#   NULL  | Civil
+#   (7 rows)
+#
+# Three-table join: who scored what in which course
+#   name  | title       | marks
+#   ------+-------------+------
+#   Meena | Circuits    | 95   
+#   Asha  | DBMS        | 92   
+#   Meena | Maths       | 89   
+#   Asha  | Programming | 88   
+#   (4 rows)
+#
+# CROSS JOIN size = 6 students x 4 depts: 24
+# SELF JOIN: pairs of students in the same department
+#   s1    | s2  
+#   ------+-----
+#   Asha  | Ravi
+#   Meena | John
+#   (2 rows)</code></pre><p>Kabir (no department) disappears in the INNER join, appears with NULL in the LEFT join; Civil (no students) appears only in RIGHT and FULL joins. A CROSS join multiplies: 6 × 4 = 24 rows. (RIGHT and FULL joins arrived in SQLite 3.39; older SQLite lacks them.)</p></details><table><tr><th>Join</th><th>Keeps</th></tr><tr><td>INNER</td><td>Only matching pairs</td></tr><tr><td>LEFT OUTER</td><td>All left rows (+ matches or NULLs)</td></tr><tr><td>RIGHT OUTER</td><td>All right rows</td></tr><tr><td>FULL OUTER</td><td>All rows from both</td></tr><tr><td>CROSS</td><td>Every combination</td></tr><tr><td>SELF</td><td>A table joined with itself (pairs, hierarchies)</td></tr><tr><td>NATURAL / USING</td><td>Join on same-named columns (fragile: avoid NATURAL)</td></tr><tr><td>Semi / anti join</td><td>EXISTS / NOT EXISTS: rows that have / have no match</td></tr></table><h3>Good to know</h3><ul><li>Join conditions belong in ON; filters in WHERE. For outer joins, putting the condition in WHERE silently turns them into inner joins.</li></ul>
+    </section>
+
+    <!-- 11 -->
+    <section class="block" id="sql-aggregation">
+      <h2><span class="num">11</span> Aggregation: GROUP BY and HAVING</h2>
+<div class="callout life"><strong>Picture:</strong> Sorting a pile of exam papers into heaps by department, then writing on each heap how many papers and the average mark.</div><details class="deepdive" open><summary>Counting, averaging and filtering groups (run for real)</summary><pre><code>import sqlite3
+db = sqlite3.connect(&quot;:memory:&quot;); db.execute(&quot;PRAGMA foreign_keys = ON&quot;)
+db.executescript(&quot;&quot;&quot;
+CREATE TABLE dept(dept_id INTEGER PRIMARY KEY, name TEXT NOT NULL UNIQUE, building TEXT);
+CREATE TABLE student(roll INTEGER PRIMARY KEY, name TEXT NOT NULL, dept_id INTEGER REFERENCES dept(dept_id), year INTEGER CHECK (year BETWEEN 1 AND 4), cgpa REAL);
+CREATE TABLE course(code TEXT PRIMARY KEY, title TEXT NOT NULL, credits INTEGER, dept_id INTEGER REFERENCES dept(dept_id));
+CREATE TABLE enroll(roll INTEGER REFERENCES student(roll), code TEXT REFERENCES course(code), marks INTEGER, PRIMARY KEY (roll, code));
+INSERT INTO dept VALUES (1,&#x27;CSE&#x27;,&#x27;A&#x27;),(2,&#x27;ECE&#x27;,&#x27;B&#x27;),(3,&#x27;ME&#x27;,&#x27;C&#x27;),(4,&#x27;Civil&#x27;,&#x27;D&#x27;);
+INSERT INTO student VALUES (101,&#x27;Asha&#x27;,1,2,8.9),(102,&#x27;Ravi&#x27;,1,3,7.4),(103,&#x27;Meena&#x27;,2,2,9.1),(104,&#x27;John&#x27;,2,1,6.8),(105,&#x27;Zara&#x27;,3,4,8.2),(106,&#x27;Kabir&#x27;,NULL,1,7.9);
+INSERT INTO course VALUES (&#x27;CS101&#x27;,&#x27;Programming&#x27;,4,1),(&#x27;CS201&#x27;,&#x27;DBMS&#x27;,4,1),(&#x27;EC101&#x27;,&#x27;Circuits&#x27;,3,2),(&#x27;ME101&#x27;,&#x27;Mechanics&#x27;,3,3),(&#x27;MA101&#x27;,&#x27;Maths&#x27;,4,NULL);
+INSERT INTO enroll VALUES (101,&#x27;CS101&#x27;,88),(101,&#x27;CS201&#x27;,92),(101,&#x27;MA101&#x27;,75),(102,&#x27;CS101&#x27;,64),(102,&#x27;CS201&#x27;,71),(103,&#x27;EC101&#x27;,95),(103,&#x27;MA101&#x27;,89),(104,&#x27;EC101&#x27;,58),(105,&#x27;ME101&#x27;,81),(105,&#x27;MA101&#x27;,67);
+&quot;&quot;&quot;)
+def show(sql, params=()):
+    cur = db.execute(sql, params); cols = [d[0] for d in cur.description]; rows = cur.fetchall()
+    w = [max(len(str(c)), *(len(str(r[i])) for r in rows)) if rows else len(str(c)) for i, c in enumerate(cols)]
+    print(&quot;  &quot; + &quot; | &quot;.join(str(c).ljust(w[i]) for i, c in enumerate(cols)))
+    print(&quot;  &quot; + &quot;-+-&quot;.join(&quot;-&quot; * x for x in w))
+    for r in rows: print(&quot;  &quot; + &quot; | &quot;.join((&quot;NULL&quot; if v is None else str(v)).ljust(w[i]) for i, v in enumerate(r)))
+    print(&quot;  (%d row%s)\n&quot; % (len(rows), &quot;&quot; if len(rows) == 1 else &quot;s&quot;))
+
+print(&quot;GROUP BY: one row per group; aggregates squeeze each group&quot;)
+show(&quot;SELECT d.name AS dept, count(s.roll) AS students, round(avg(s.cgpa),2) AS avg_cgpa, max(s.cgpa) AS best FROM dept d LEFT JOIN student s ON s.dept_id = d.dept_id GROUP BY d.dept_id ORDER BY d.dept_id&quot;)
+print(&quot;HAVING filters GROUPS (WHERE filters ROWS before grouping)&quot;)
+show(&quot;SELECT e.code, count(*) AS n, avg(e.marks) AS avg_marks FROM enroll e GROUP BY e.code HAVING count(*) &gt;= 2 ORDER BY avg_marks DESC&quot;)
+print(&quot;count(*) vs count(column) vs count(DISTINCT ...)&quot;)
+show(&quot;SELECT count(*) AS all_rows, count(dept_id) AS non_null_dept, count(DISTINCT dept_id) AS distinct_depts FROM student&quot;)
+print(&quot;Logical order of a query: FROM -&gt; WHERE -&gt; GROUP BY -&gt; HAVING -&gt; SELECT -&gt; ORDER BY -&gt; LIMIT&quot;)
+
+# ----- Output (real run) -----
+# GROUP BY: one row per group; aggregates squeeze each group
+#   dept  | students | avg_cgpa | best
+#   ------+----------+----------+-----
+#   CSE   | 2        | 8.15     | 8.9 
+#   ECE   | 2        | 7.95     | 9.1 
+#   ME    | 1        | 8.2      | 8.2 
+#   Civil | 0        | NULL     | NULL
+#   (4 rows)
+#
+# HAVING filters GROUPS (WHERE filters ROWS before grouping)
+#   code  | n | avg_marks
+#   ------+---+----------
+#   CS201 | 2 | 81.5     
+#   MA101 | 3 | 77.0     
+#   EC101 | 2 | 76.5     
+#   CS101 | 2 | 76.0     
+#   (4 rows)
+#
+# count(*) vs count(column) vs count(DISTINCT ...)
+#   all_rows | non_null_dept | distinct_depts
+#   ---------+---------------+---------------
+#   6        | 5             | 3             
+#   (1 row)
+#
+# Logical order of a query: FROM -&gt; WHERE -&gt; GROUP BY -&gt; HAVING -&gt; SELECT -&gt; ORDER BY -&gt; LIMIT</code></pre><p>Civil has 0 students and an empty average (NULL), because the LEFT JOIN kept it. <code>count(*)</code> counts rows (6), <code>count(dept_id)</code> skips NULLs (5), <code>count(DISTINCT dept_id)</code> counts different values (3).</p></details><h3>Good to know</h3><ul><li>Every selected column must be grouped or aggregated (SQLite is lenient; most databases reject it).</li><li>Aggregates: COUNT, SUM, AVG, MIN, MAX; also GROUP_CONCAT / STRING_AGG, GROUPING SETS / ROLLUP / CUBE for subtotals (in many databases).</li></ul>
+    </section>
+
+    <!-- 12 -->
+    <section class="block" id="sql-subqueries">
+      <h2><span class="num">12</span> Subqueries and the NOT IN Trap</h2>
+<div class="callout life"><strong>Picture:</strong> A question inside a question: 'which students scored above <em>(the average of everyone)</em>?'</div><details class="deepdive" open><summary>Scalar, IN, correlated NOT EXISTS, derived tables (run for real)</summary><pre><code>import sqlite3
+db = sqlite3.connect(&quot;:memory:&quot;); db.execute(&quot;PRAGMA foreign_keys = ON&quot;)
+db.executescript(&quot;&quot;&quot;
+CREATE TABLE dept(dept_id INTEGER PRIMARY KEY, name TEXT NOT NULL UNIQUE, building TEXT);
+CREATE TABLE student(roll INTEGER PRIMARY KEY, name TEXT NOT NULL, dept_id INTEGER REFERENCES dept(dept_id), year INTEGER CHECK (year BETWEEN 1 AND 4), cgpa REAL);
+CREATE TABLE course(code TEXT PRIMARY KEY, title TEXT NOT NULL, credits INTEGER, dept_id INTEGER REFERENCES dept(dept_id));
+CREATE TABLE enroll(roll INTEGER REFERENCES student(roll), code TEXT REFERENCES course(code), marks INTEGER, PRIMARY KEY (roll, code));
+INSERT INTO dept VALUES (1,&#x27;CSE&#x27;,&#x27;A&#x27;),(2,&#x27;ECE&#x27;,&#x27;B&#x27;),(3,&#x27;ME&#x27;,&#x27;C&#x27;),(4,&#x27;Civil&#x27;,&#x27;D&#x27;);
+INSERT INTO student VALUES (101,&#x27;Asha&#x27;,1,2,8.9),(102,&#x27;Ravi&#x27;,1,3,7.4),(103,&#x27;Meena&#x27;,2,2,9.1),(104,&#x27;John&#x27;,2,1,6.8),(105,&#x27;Zara&#x27;,3,4,8.2),(106,&#x27;Kabir&#x27;,NULL,1,7.9);
+INSERT INTO course VALUES (&#x27;CS101&#x27;,&#x27;Programming&#x27;,4,1),(&#x27;CS201&#x27;,&#x27;DBMS&#x27;,4,1),(&#x27;EC101&#x27;,&#x27;Circuits&#x27;,3,2),(&#x27;ME101&#x27;,&#x27;Mechanics&#x27;,3,3),(&#x27;MA101&#x27;,&#x27;Maths&#x27;,4,NULL);
+INSERT INTO enroll VALUES (101,&#x27;CS101&#x27;,88),(101,&#x27;CS201&#x27;,92),(101,&#x27;MA101&#x27;,75),(102,&#x27;CS101&#x27;,64),(102,&#x27;CS201&#x27;,71),(103,&#x27;EC101&#x27;,95),(103,&#x27;MA101&#x27;,89),(104,&#x27;EC101&#x27;,58),(105,&#x27;ME101&#x27;,81),(105,&#x27;MA101&#x27;,67);
+&quot;&quot;&quot;)
+def show(sql, params=()):
+    cur = db.execute(sql, params); cols = [d[0] for d in cur.description]; rows = cur.fetchall()
+    w = [max(len(str(c)), *(len(str(r[i])) for r in rows)) if rows else len(str(c)) for i, c in enumerate(cols)]
+    print(&quot;  &quot; + &quot; | &quot;.join(str(c).ljust(w[i]) for i, c in enumerate(cols)))
+    print(&quot;  &quot; + &quot;-+-&quot;.join(&quot;-&quot; * x for x in w))
+    for r in rows: print(&quot;  &quot; + &quot; | &quot;.join((&quot;NULL&quot; if v is None else str(v)).ljust(w[i]) for i, v in enumerate(r)))
+    print(&quot;  (%d row%s)\n&quot; % (len(rows), &quot;&quot; if len(rows) == 1 else &quot;s&quot;))
+
+print(&quot;Scalar subquery: students above the overall average CGPA&quot;)
+show(&quot;SELECT name, cgpa FROM student WHERE cgpa &gt; (SELECT avg(cgpa) FROM student) ORDER BY cgpa DESC&quot;)
+print(&quot;IN: students enrolled in DBMS&quot;)
+show(&quot;SELECT name FROM student WHERE roll IN (SELECT roll FROM enroll WHERE code = &#x27;CS201&#x27;)&quot;)
+print(&quot;NOT EXISTS: students enrolled in NO course from their own department (correlated subquery)&quot;)
+show(&quot;&quot;&quot;SELECT s.name FROM student s WHERE NOT EXISTS (
+          SELECT 1 FROM enroll e JOIN course c ON c.code = e.code WHERE e.roll = s.roll AND c.dept_id = s.dept_id)&quot;&quot;&quot;)
+print(&quot;Derived table: each student&#x27;s best mark, then the top of those&quot;)
+show(&quot;SELECT name, best FROM (SELECT s.name, max(e.marks) AS best FROM student s JOIN enroll e ON e.roll = s.roll GROUP BY s.roll) ORDER BY best DESC LIMIT 3&quot;)
+print(&quot;Trap: NOT IN with a NULL in the list returns NOTHING&quot;)
+show(&quot;SELECT count(*) AS n FROM student WHERE dept_id NOT IN (SELECT dept_id FROM course)&quot;)
+show(&quot;SELECT count(*) AS n FROM student WHERE dept_id NOT IN (SELECT dept_id FROM course WHERE dept_id IS NOT NULL)&quot;)
+
+# ----- Output (real run) -----
+# Scalar subquery: students above the overall average CGPA
+#   name  | cgpa
+#   ------+-----
+#   Meena | 9.1 
+#   Asha  | 8.9 
+#   Zara  | 8.2 
+#   (3 rows)
+#
+# IN: students enrolled in DBMS
+#   name
+#   ----
+#   Asha
+#   Ravi
+#   (2 rows)
+#
+# NOT EXISTS: students enrolled in NO course from their own department (correlated subquery)
+#   name 
+#   -----
+#   Kabir
+#   (1 row)
+#
+# Derived table: each student&#x27;s best mark, then the top of those
+#   name  | best
+#   ------+-----
+#   Meena | 95  
+#   Asha  | 92  
+#   Zara  | 81  
+#   (3 rows)
+#
+# Trap: NOT IN with a NULL in the list returns NOTHING
+#   n
+#   -
+#   0
+#   (1 row)
+#
+#   n
+#   -
+#   0
+#   (1 row)</code></pre><p>The last pair shows a famous trap: <code>NOT IN</code> against a list containing NULL returns no rows, because 'x NOT IN (1, NULL)' is UNKNOWN. Filtering out NULLs (or using NOT EXISTS) gives the expected answer.</p></details><h3>Good to know</h3><ul><li>Correlated subqueries refer to the outer row and logically run once per row; optimizers often rewrite them into joins.</li><li>Prefer EXISTS/NOT EXISTS for 'has any / has none' questions.</li></ul>
+    </section>
+
+    <!-- 13 -->
+    <section class="block" id="sql-window">
+      <h2><span class="num">13</span> Window Functions</h2>
+<div class="callout life"><strong>Picture:</strong> A class photo where each child holds a card with their rank in the class and in their own row, without the photographer removing anybody (GROUP BY would squeeze each row into one).</div><details class="deepdive" open><summary>Ranks, per-department averages, running totals, LAG, top-N per group (run for real)</summary><pre><code>import sqlite3
+db = sqlite3.connect(&quot;:memory:&quot;); db.execute(&quot;PRAGMA foreign_keys = ON&quot;)
+db.executescript(&quot;&quot;&quot;
+CREATE TABLE dept(dept_id INTEGER PRIMARY KEY, name TEXT NOT NULL UNIQUE, building TEXT);
+CREATE TABLE student(roll INTEGER PRIMARY KEY, name TEXT NOT NULL, dept_id INTEGER REFERENCES dept(dept_id), year INTEGER CHECK (year BETWEEN 1 AND 4), cgpa REAL);
+CREATE TABLE course(code TEXT PRIMARY KEY, title TEXT NOT NULL, credits INTEGER, dept_id INTEGER REFERENCES dept(dept_id));
+CREATE TABLE enroll(roll INTEGER REFERENCES student(roll), code TEXT REFERENCES course(code), marks INTEGER, PRIMARY KEY (roll, code));
+INSERT INTO dept VALUES (1,&#x27;CSE&#x27;,&#x27;A&#x27;),(2,&#x27;ECE&#x27;,&#x27;B&#x27;),(3,&#x27;ME&#x27;,&#x27;C&#x27;),(4,&#x27;Civil&#x27;,&#x27;D&#x27;);
+INSERT INTO student VALUES (101,&#x27;Asha&#x27;,1,2,8.9),(102,&#x27;Ravi&#x27;,1,3,7.4),(103,&#x27;Meena&#x27;,2,2,9.1),(104,&#x27;John&#x27;,2,1,6.8),(105,&#x27;Zara&#x27;,3,4,8.2),(106,&#x27;Kabir&#x27;,NULL,1,7.9);
+INSERT INTO course VALUES (&#x27;CS101&#x27;,&#x27;Programming&#x27;,4,1),(&#x27;CS201&#x27;,&#x27;DBMS&#x27;,4,1),(&#x27;EC101&#x27;,&#x27;Circuits&#x27;,3,2),(&#x27;ME101&#x27;,&#x27;Mechanics&#x27;,3,3),(&#x27;MA101&#x27;,&#x27;Maths&#x27;,4,NULL);
+INSERT INTO enroll VALUES (101,&#x27;CS101&#x27;,88),(101,&#x27;CS201&#x27;,92),(101,&#x27;MA101&#x27;,75),(102,&#x27;CS101&#x27;,64),(102,&#x27;CS201&#x27;,71),(103,&#x27;EC101&#x27;,95),(103,&#x27;MA101&#x27;,89),(104,&#x27;EC101&#x27;,58),(105,&#x27;ME101&#x27;,81),(105,&#x27;MA101&#x27;,67);
+&quot;&quot;&quot;)
+def show(sql, params=()):
+    cur = db.execute(sql, params); cols = [d[0] for d in cur.description]; rows = cur.fetchall()
+    w = [max(len(str(c)), *(len(str(r[i])) for r in rows)) if rows else len(str(c)) for i, c in enumerate(cols)]
+    print(&quot;  &quot; + &quot; | &quot;.join(str(c).ljust(w[i]) for i, c in enumerate(cols)))
+    print(&quot;  &quot; + &quot;-+-&quot;.join(&quot;-&quot; * x for x in w))
+    for r in rows: print(&quot;  &quot; + &quot; | &quot;.join((&quot;NULL&quot; if v is None else str(v)).ljust(w[i]) for i, v in enumerate(r)))
+    print(&quot;  (%d row%s)\n&quot; % (len(rows), &quot;&quot; if len(rows) == 1 else &quot;s&quot;))
+
+print(&quot;Window functions keep every row AND add a calculation over a &#x27;window&#x27; of related rows&quot;)
+show(&quot;&quot;&quot;SELECT s.name, d.name AS dept, s.cgpa,
+           rank()       OVER (ORDER BY s.cgpa DESC)                         AS overall_rank,
+           row_number() OVER (PARTITION BY s.dept_id ORDER BY s.cgpa DESC)  AS rank_in_dept,
+           round(s.cgpa - avg(s.cgpa) OVER (PARTITION BY s.dept_id), 2)     AS vs_dept_avg
+    FROM student s JOIN dept d ON d.dept_id = s.dept_id ORDER BY d.dept_id, rank_in_dept&quot;&quot;&quot;)
+print(&quot;Running total and previous value (LAG) of marks for Asha&quot;)
+show(&quot;&quot;&quot;SELECT code, marks, sum(marks) OVER (ORDER BY code) AS running_total, lag(marks) OVER (ORDER BY code) AS previous
+    FROM enroll WHERE roll = 101 ORDER BY code&quot;&quot;&quot;)
+print(&quot;Top student per department (a classic interview question)&quot;)
+show(&quot;&quot;&quot;SELECT dept, name, cgpa FROM (
+          SELECT d.name AS dept, s.name, s.cgpa, dense_rank() OVER (PARTITION BY s.dept_id ORDER BY s.cgpa DESC) AS r
+          FROM student s JOIN dept d ON d.dept_id = s.dept_id) WHERE r = 1 ORDER BY dept&quot;&quot;&quot;)
+
+# ----- Output (real run) -----
+# Window functions keep every row AND add a calculation over a &#x27;window&#x27; of related rows
+#   name  | dept | cgpa | overall_rank | rank_in_dept | vs_dept_avg
+#   ------+------+------+--------------+--------------+------------
+#   Asha  | CSE  | 8.9  | 2            | 1            | 0.75       
+#   Ravi  | CSE  | 7.4  | 4            | 2            | -0.75      
+#   Meena | ECE  | 9.1  | 1            | 1            | 1.15       
+#   John  | ECE  | 6.8  | 5            | 2            | -1.15      
+#   Zara  | ME   | 8.2  | 3            | 1            | 0.0        
+#   (5 rows)
+#
+# Running total and previous value (LAG) of marks for Asha
+#   code  | marks | running_total | previous
+#   ------+-------+---------------+---------
+#   CS101 | 88    | 88            | NULL    
+#   CS201 | 92    | 180           | 88      
+#   MA101 | 75    | 255           | 92      
+#   (3 rows)
+#
+# Top student per department (a classic interview question)
+#   dept | name  | cgpa
+#   -----+-------+-----
+#   CSE  | Asha  | 8.9 
+#   ECE  | Meena | 9.1 
+#   ME   | Zara  | 8.2 
+#   (3 rows)</code></pre><p>Each student keeps their row and gains an overall rank, a rank inside the department, and the difference from the department average. 'Top student per department' is the classic use of <code>dense_rank() OVER (PARTITION BY ...)</code>.</p></details><table><tr><th>Function</th><th>Gives</th></tr><tr><td>ROW_NUMBER</td><td>1, 2, 3, ... (ties broken arbitrarily)</td></tr><tr><td>RANK</td><td>1, 2, 2, 4 (gaps after ties)</td></tr><tr><td>DENSE_RANK</td><td>1, 2, 2, 3</td></tr><tr><td>LAG / LEAD</td><td>Value from the previous / next row</td></tr><tr><td>SUM/AVG ... OVER</td><td>Running or moving totals and averages</td></tr><tr><td>NTILE(n)</td><td>Buckets (quartiles)</td></tr><tr><td>FIRST_VALUE / LAST_VALUE</td><td>Values at the window edges</td></tr></table><h3>Good to know</h3><ul><li>PARTITION BY splits rows into windows; ORDER BY orders inside each; frames (ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) set moving windows.</li></ul>
+    </section>
+
+    <!-- 14 -->
+    <section class="block" id="sql-cte">
+      <h2><span class="num">14</span> Common Table Expressions and Recursive Queries</h2>
+<div class="callout life"><strong>Picture:</strong> Writing helper notes before the final answer. A <em>recursive</em> CTE is a note that refers to itself: 'my team = me + the teams of everyone who reports to me'.</div><details class="deepdive" open><summary>An org chart walked with WITH RECURSIVE (run for real)</summary><pre><code>import sqlite3
+db = sqlite3.connect(&quot;:memory:&quot;)
+db.executescript(&quot;&quot;&quot;CREATE TABLE emp(id INTEGER PRIMARY KEY, name TEXT, manager_id INTEGER);
+INSERT INTO emp VALUES (1,&#x27;CEO Priya&#x27;,NULL),(2,&#x27;CTO Arjun&#x27;,1),(3,&#x27;CFO Leela&#x27;,1),(4,&#x27;Dev lead Sam&#x27;,2),(5,&#x27;Dev Nia&#x27;,4),(6,&#x27;Dev Omar&#x27;,4),(7,&#x27;Accountant Raj&#x27;,3);&quot;&quot;&quot;)
+print(&quot;Recursive CTE: walk the org chart from the top&quot;)
+rows = db.execute(&quot;&quot;&quot;WITH RECURSIVE chain(id, name, depth, path) AS (
+      SELECT id, name, 0, name FROM emp WHERE manager_id IS NULL
+      UNION ALL
+      SELECT e.id, e.name, c.depth + 1, c.path || &#x27; &gt; &#x27; || e.name FROM emp e JOIN chain c ON e.manager_id = c.id)
+    SELECT depth, name, path FROM chain ORDER BY path&quot;&quot;&quot;).fetchall()
+for d, n, p in rows: print(&quot;  &quot; + &quot;    &quot; * d + n)
+print(&quot;\nRecursive CTE as a number generator (1..10) and their squares&#x27; sum:&quot;, db.execute(
+    &quot;WITH RECURSIVE n(x) AS (SELECT 1 UNION ALL SELECT x + 1 FROM n WHERE x &lt; 10) SELECT sum(x * x) FROM n&quot;).fetchone()[0])
+
+# ----- Output (real run) -----
+# Recursive CTE: walk the org chart from the top
+#   CEO Priya
+#       CFO Leela
+#           Accountant Raj
+#       CTO Arjun
+#           Dev lead Sam
+#               Dev Nia
+#               Dev Omar
+#
+# Recursive CTE as a number generator (1..10) and their squares&#x27; sum: 385</code></pre><p>The anchor selects the CEO; the recursive part repeatedly adds direct reports until none are left. The same trick generates number series.</p></details><h3>Good to know</h3><ul><li>Use CTEs to name steps and make long queries readable; use recursive CTEs for trees, graphs (with cycle protection) and series.</li></ul>
+    </section>
+
+    <!-- 15 -->
+    <section class="block" id="views-triggers">
+      <h2><span class="num">15</span> Views, Triggers, Stored Procedures</h2>
+<div class="callout life"><strong>Picture:</strong> A view is a window cut into a wall: it shows a chosen part of the room. A trigger is a doorbell that automatically rings when someone opens a particular door.</div><details class="deepdive" open><summary>A view that stays up to date and a trigger that writes an audit log (run for real)</summary><pre><code>import sqlite3
+db = sqlite3.connect(&quot;:memory:&quot;); db.execute(&quot;PRAGMA foreign_keys = ON&quot;)
+db.executescript(&quot;&quot;&quot;
+CREATE TABLE dept(dept_id INTEGER PRIMARY KEY, name TEXT NOT NULL UNIQUE, building TEXT);
+CREATE TABLE student(roll INTEGER PRIMARY KEY, name TEXT NOT NULL, dept_id INTEGER REFERENCES dept(dept_id), year INTEGER CHECK (year BETWEEN 1 AND 4), cgpa REAL);
+CREATE TABLE course(code TEXT PRIMARY KEY, title TEXT NOT NULL, credits INTEGER, dept_id INTEGER REFERENCES dept(dept_id));
+CREATE TABLE enroll(roll INTEGER REFERENCES student(roll), code TEXT REFERENCES course(code), marks INTEGER, PRIMARY KEY (roll, code));
+INSERT INTO dept VALUES (1,&#x27;CSE&#x27;,&#x27;A&#x27;),(2,&#x27;ECE&#x27;,&#x27;B&#x27;),(3,&#x27;ME&#x27;,&#x27;C&#x27;),(4,&#x27;Civil&#x27;,&#x27;D&#x27;);
+INSERT INTO student VALUES (101,&#x27;Asha&#x27;,1,2,8.9),(102,&#x27;Ravi&#x27;,1,3,7.4),(103,&#x27;Meena&#x27;,2,2,9.1),(104,&#x27;John&#x27;,2,1,6.8),(105,&#x27;Zara&#x27;,3,4,8.2),(106,&#x27;Kabir&#x27;,NULL,1,7.9);
+INSERT INTO course VALUES (&#x27;CS101&#x27;,&#x27;Programming&#x27;,4,1),(&#x27;CS201&#x27;,&#x27;DBMS&#x27;,4,1),(&#x27;EC101&#x27;,&#x27;Circuits&#x27;,3,2),(&#x27;ME101&#x27;,&#x27;Mechanics&#x27;,3,3),(&#x27;MA101&#x27;,&#x27;Maths&#x27;,4,NULL);
+INSERT INTO enroll VALUES (101,&#x27;CS101&#x27;,88),(101,&#x27;CS201&#x27;,92),(101,&#x27;MA101&#x27;,75),(102,&#x27;CS101&#x27;,64),(102,&#x27;CS201&#x27;,71),(103,&#x27;EC101&#x27;,95),(103,&#x27;MA101&#x27;,89),(104,&#x27;EC101&#x27;,58),(105,&#x27;ME101&#x27;,81),(105,&#x27;MA101&#x27;,67);
+&quot;&quot;&quot;)
+def show(sql, params=()):
+    cur = db.execute(sql, params); cols = [d[0] for d in cur.description]; rows = cur.fetchall()
+    w = [max(len(str(c)), *(len(str(r[i])) for r in rows)) if rows else len(str(c)) for i, c in enumerate(cols)]
+    print(&quot;  &quot; + &quot; | &quot;.join(str(c).ljust(w[i]) for i, c in enumerate(cols)))
+    print(&quot;  &quot; + &quot;-+-&quot;.join(&quot;-&quot; * x for x in w))
+    for r in rows: print(&quot;  &quot; + &quot; | &quot;.join((&quot;NULL&quot; if v is None else str(v)).ljust(w[i]) for i, v in enumerate(r)))
+    print(&quot;  (%d row%s)\n&quot; % (len(rows), &quot;&quot; if len(rows) == 1 else &quot;s&quot;))
+
+db.executescript(&quot;&quot;&quot;
+CREATE VIEW toppers AS SELECT s.name, s.cgpa, d.name AS dept FROM student s LEFT JOIN dept d ON d.dept_id = s.dept_id WHERE s.cgpa &gt;= 8.5;
+CREATE TABLE audit(at INTEGER PRIMARY KEY AUTOINCREMENT, roll INTEGER, old_cgpa REAL, new_cgpa REAL);
+CREATE TRIGGER cgpa_audit AFTER UPDATE OF cgpa ON student
+  WHEN old.cgpa &lt;&gt; new.cgpa BEGIN INSERT INTO audit(roll, old_cgpa, new_cgpa) VALUES (old.roll, old.cgpa, new.cgpa); END;
+&quot;&quot;&quot;)
+print(&quot;A VIEW is a saved query that looks like a table:&quot;)
+show(&quot;SELECT * FROM toppers ORDER BY cgpa DESC&quot;)
+db.execute(&quot;UPDATE student SET cgpa = 8.6 WHERE roll = 102&quot;)
+print(&quot;After Ravi&#x27;s CGPA becomes 8.6, the view updates by itself (it stores no data):&quot;)
+show(&quot;SELECT * FROM toppers ORDER BY cgpa DESC&quot;)
+print(&quot;The TRIGGER wrote an audit row automatically:&quot;)
+show(&quot;SELECT roll, old_cgpa, new_cgpa FROM audit&quot;)
+
+# ----- Output (real run) -----
+# A VIEW is a saved query that looks like a table:
+#   name  | cgpa | dept
+#   ------+------+-----
+#   Meena | 9.1  | ECE 
+#   Asha  | 8.9  | CSE 
+#   (2 rows)
+#
+# After Ravi&#x27;s CGPA becomes 8.6, the view updates by itself (it stores no data):
+#   name  | cgpa | dept
+#   ------+------+-----
+#   Meena | 9.1  | ECE 
+#   Asha  | 8.9  | CSE 
+#   Ravi  | 8.6  | CSE 
+#   (3 rows)
+#
+# The TRIGGER wrote an audit row automatically:
+#   roll | old_cgpa | new_cgpa
+#   -----+----------+---------
+#   102  | 7.4      | 8.6     
+#   (1 row)</code></pre><p>The view stores no data: after Ravi's CGPA changed, he appeared in <code>toppers</code> immediately. The trigger recorded the old and new values without any application code.</p></details><table><tr><th>Object</th><th>What</th><th>Watch out</th></tr><tr><td>View</td><td>Saved query</td><td>Can hide complexity and restrict columns for security</td></tr><tr><td>Materialised view</td><td>Saved query RESULT (refreshed)</td><td>Fast reads, stale until refreshed (PostgreSQL, Oracle)</td></tr><tr><td>Trigger</td><td>Code run on INSERT/UPDATE/DELETE</td><td>Hidden side effects; keep them simple</td></tr><tr><td>Stored procedure / function</td><td>Code stored in the database (PL/pgSQL, T-SQL)</td><td>Fewer round trips; harder to version and test</td></tr></table><h3>Good to know</h3><ul><li>SQLite has views and triggers but no stored procedures.</li></ul>
+    </section>
+
+    <!-- 16 -->
+    <section class="block" id="sql-json">
+      <h2><span class="num">16</span> Semi-Structured Data: JSON Inside SQL</h2>
+<div class="callout life"><strong>Picture:</strong> A form with fixed boxes plus a free 'notes' area: most data in columns, the irregular part as JSON.</div><details class="deepdive" open><summary>Querying JSON documents with SQLite's JSON functions (run for real)</summary><pre><code># &#x27;Document&#x27; data inside a relational database: SQLite&#x27;s JSON functions (real), compared with normalised tables.
+import sqlite3, json
+db = sqlite3.connect(&quot;:memory:&quot;)
+db.execute(&quot;CREATE TABLE product(id INTEGER PRIMARY KEY, doc TEXT)&quot;)
+docs = [{&quot;name&quot;: &quot;Phone&quot;, &quot;price&quot;: 15000, &quot;tags&quot;: [&quot;electronics&quot;, &quot;mobile&quot;], &quot;specs&quot;: {&quot;ram_gb&quot;: 8}},
+        {&quot;name&quot;: &quot;Laptop&quot;, &quot;price&quot;: 55000, &quot;tags&quot;: [&quot;electronics&quot;], &quot;specs&quot;: {&quot;ram_gb&quot;: 16, &quot;gpu&quot;: &quot;integrated&quot;}},
+        {&quot;name&quot;: &quot;Pen&quot;, &quot;price&quot;: 20, &quot;tags&quot;: [&quot;stationery&quot;]}]
+db.executemany(&quot;INSERT INTO product(doc) VALUES (?)&quot;, [(json.dumps(d),) for d in docs])
+print(&quot;query inside JSON documents:&quot;)
+for row in db.execute(&quot;SELECT json_extract(doc,&#x27;$.name&#x27;), json_extract(doc,&#x27;$.specs.ram_gb&#x27;) FROM product WHERE json_extract(doc,&#x27;$.price&#x27;) &gt; 1000&quot;): print(&quot;  &quot;, row)
+print(&quot;explode an array (like MongoDB $unwind):&quot;, db.execute(&quot;SELECT group_concat(j.value) FROM product, json_each(product.doc,&#x27;$.tags&#x27;) AS j&quot;).fetchone()[0])
+print(&quot;flexible schema: the Pen simply has no &#x27;specs&#x27; -&gt;&quot;, db.execute(&quot;SELECT json_extract(doc,&#x27;$.specs&#x27;) FROM product WHERE id=3&quot;).fetchone()[0])
+
+# ----- Output (real run) -----
+# query inside JSON documents:
+#    (&#x27;Phone&#x27;, 8)
+#    (&#x27;Laptop&#x27;, 16)
+# explode an array (like MongoDB $unwind): electronics,mobile,electronics,stationery
+# flexible schema: the Pen simply has no &#x27;specs&#x27; -&gt; None</code></pre><p>You can filter on nested fields, expand arrays row by row (like MongoDB's $unwind) and tolerate missing fields. PostgreSQL's JSONB adds indexing (GIN) on such data.</p></details><h3>Good to know</h3><ul><li>Use JSON columns for genuinely variable attributes, not to avoid designing tables.</li></ul>
+    </section>
+
+    <!-- 17 -->
+    <section class="block" id="sql-injection">
+      <h2><span class="num">17</span> SQL Injection and Safe Queries</h2>
+<div class="callout life"><strong>Picture:</strong> A form where someone writes, in the 'name' box, 'and ignore the password check'. If the clerk copies the box into the instructions without thinking, the trick works.</div><details class="deepdive" open><summary>Defensive demo: string-built query vs parameterised query (run for real)</summary><pre><code># SQL injection (defensive demo on a toy login table): never build SQL by pasting user input into a string.
+import sqlite3
+db = sqlite3.connect(&quot;:memory:&quot;)
+db.execute(&quot;CREATE TABLE users(name TEXT, pw_hash TEXT)&quot;); db.execute(&quot;INSERT INTO users VALUES (&#x27;admin&#x27;, &#x27;x9f2...&#x27;)&quot;)
+typed_name, typed_pw = &quot;admin&#x27; --&quot;, &quot;wrong&quot;
+unsafe = &quot;SELECT count(*) FROM users WHERE name = &#x27;%s&#x27; AND pw_hash = &#x27;%s&#x27;&quot; % (typed_name, typed_pw)
+print(&quot;query built by pasting text:&quot;, unsafe)
+print(&quot;   rows matched:&quot;, db.execute(unsafe).fetchone()[0], &quot; &lt;- the -- turned the password check into a comment: logged in without a password!&quot;)
+safe = &quot;SELECT count(*) FROM users WHERE name = ? AND pw_hash = ?&quot;
+print(&quot;parameterised query        :&quot;, safe, &quot; values:&quot;, (typed_name, typed_pw))
+print(&quot;   rows matched:&quot;, db.execute(safe, (typed_name, typed_pw)).fetchone()[0], &quot; &lt;- input is treated as DATA, never as SQL&quot;)
+print(&quot;Also: least-privilege database accounts, hashed passwords (bcrypt/argon2), ORMs that parameterise, input validation.&quot;)
+
+# ----- Output (real run) -----
+# query built by pasting text: SELECT count(*) FROM users WHERE name = &#x27;admin&#x27; --&#x27; AND pw_hash = &#x27;wrong&#x27;
+#    rows matched: 1  &lt;- the -- turned the password check into a comment: logged in without a password!
+# parameterised query        : SELECT count(*) FROM users WHERE name = ? AND pw_hash = ?  values: (&quot;admin&#x27; --&quot;, &#x27;wrong&#x27;)
+#    rows matched: 0  &lt;- input is treated as DATA, never as SQL
+# Also: least-privilege database accounts, hashed passwords (bcrypt/argon2), ORMs that parameterise, input validation.</code></pre><p>Pasting input into SQL let the text <code>admin' --</code> comment out the password check. The parameterised query treated the same text as a plain value and matched nothing.</p></details><h3>Good to know</h3><ul><li>Always use parameters (<code>?</code>, <code>%s</code>, <code>:name</code>) or a good ORM; never string formatting.</li><li>Defence in depth: least-privilege accounts, input validation, web application firewalls, monitoring. Defensive focus only (see <a href="ai-security.html">AI Security</a> for injection in LLM apps).</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part D — Database Design and Normalization</h2></div>
+
+    <!-- 18 -->
+    <section class="block" id="anomalies">
+      <h2><span class="num">18</span> Why Normalize? Update, Insert and Delete Anomalies</h2>
+<div class="callout life"><strong>Picture:</strong> Writing your best friend's phone number on every page of your diary. When the number changes, you must fix every page, and you will miss one.</div><table><tr><th>Roll</th><th>Name</th><th>Dept</th><th>HOD</th><th>Course</th><th>Marks</th></tr><tr><td>101</td><td>Asha</td><td>CSE</td><td>Dr Rao</td><td>CS101</td><td>88</td></tr><tr><td>101</td><td>Asha</td><td>CSE</td><td>Dr Rao</td><td>CS201</td><td>92</td></tr><tr><td>102</td><td>Ravi</td><td>CSE</td><td>Dr Rao</td><td>CS101</td><td>64</td></tr><tr><td>103</td><td>Meena</td><td>ECE</td><td>Dr Iyer</td><td>EC101</td><td>95</td></tr></table><p>Everything in one table causes three problems:</p><h3>Good to know</h3><ul><li><strong>Update anomaly:</strong> the CSE head's name is repeated; changing it in one row but not another makes the data contradict itself.</li><li><strong>Insert anomaly:</strong> a new department with no students cannot be added (no roll/course to fill in).</li><li><strong>Delete anomaly:</strong> deleting Meena's only enrollment also deletes the fact that ECE's head is Dr Iyer.</li><li>Normalization splits the table so each fact is stored once: dept(dept, HOD), student(roll, name, dept), enroll(roll, course, marks).</li></ul>
+    </section>
+
+    <!-- 19 -->
+    <section class="block" id="functional-dependencies">
+      <h2><span class="num">19</span> Functional Dependencies, Closures and Keys</h2>
+<div class="callout life"><strong>Picture:</strong> If you know a student's roll number you can look up their name: roll <em>determines</em> name (roll → name). Functional dependencies are these 'if you know X, you know Y' rules.</div><details class="deepdive" open><summary>Attribute closure, candidate keys and BCNF decomposition (algorithms in Python) (run for real)</summary><pre><code># Functional dependencies: attribute closure, candidate keys, and a BCNF check/decomposition.
+from itertools import combinations
+def closure(attrs, fds):
+    res = set(attrs); changed = True
+    while changed:
+        changed = False
+        for lhs, rhs in fds:
+            if set(lhs) &lt;= res and not set(rhs) &lt;= res: res |= set(rhs); changed = True
+    return res
+def keys(R, fds):
+    found = []
+    for k in range(1, len(R) + 1):
+        for c in combinations(sorted(R), k):
+            if closure(c, fds) == set(R) and not any(set(f) &lt;= set(c) for f in found): found.append(c)
+    return found
+R = set(&quot;ABCDE&quot;); F = [(&quot;A&quot;, &quot;B&quot;), (&quot;B&quot;, &quot;C&quot;), (&quot;CD&quot;, &quot;E&quot;)]
+print(&quot;R(A,B,C,D,E) with FDs  A-&gt;B, B-&gt;C, CD-&gt;E&quot;)
+print(&quot;closure of {A}  =&quot;, &quot;&quot;.join(sorted(closure(&quot;A&quot;, F))))
+print(&quot;closure of {AD} =&quot;, &quot;&quot;.join(sorted(closure(&quot;AD&quot;, F))), &quot;-&gt; AD determines everything&quot;)
+print(&quot;candidate keys  :&quot;, [&quot;&quot;.join(k) for k in keys(R, F)])
+def bcnf_violations(R, fds):
+    return [(l, r) for l, r in fds if set(l) &lt;= R and set(r) &lt;= R and not closure(l, [f for f in fds if set(f[0]) &lt;= R and set(f[1]) &lt;= R]) &gt;= R]
+def decompose(R, fds):
+    v = bcnf_violations(R, fds)
+    if not v: return [R]
+    l, r = v[0]; X = closure(l, fds) &amp; R
+    return decompose(X, fds) + decompose(R - (X - set(l)), fds)
+print(&quot;BCNF violations (LHS is not a superkey):&quot;, [l + &quot;-&gt;&quot; + r for l, r in bcnf_violations(R, F)])
+print(&quot;BCNF decomposition:&quot;, [&quot;&quot;.join(sorted(t)) for t in decompose(R, F)])
+print(&quot;\nA real-world example: Enrollment(roll, course, instructor) with instructor -&gt; course and (roll, course) -&gt; instructor&quot;)
+R2 = {&quot;roll&quot;, &quot;course&quot;, &quot;instructor&quot;}
+F2 = [((&quot;instructor&quot;,), (&quot;course&quot;,)), ((&quot;roll&quot;, &quot;course&quot;), (&quot;instructor&quot;,))]
+def cl(a): return closure(a, [(tuple(l), tuple(r)) for l, r in F2])
+print(&quot;   keys:&quot;, [sorted(k) for k in [c for k in range(1, 4) for c in combinations(sorted(R2), k) if cl(c) == R2 and k == 2]])
+print(&quot;   instructor -&gt; course, but instructor alone is not a key: in 3NF (course is prime) but NOT in BCNF&quot;)
+
+# ----- Output (real run) -----
+# R(A,B,C,D,E) with FDs  A-&gt;B, B-&gt;C, CD-&gt;E
+# closure of {A}  = ABC
+# closure of {AD} = ABCDE -&gt; AD determines everything
+# candidate keys  : [&#x27;AD&#x27;]
+# BCNF violations (LHS is not a superkey): [&#x27;A-&gt;B&#x27;, &#x27;B-&gt;C&#x27;, &#x27;CD-&gt;E&#x27;]
+# BCNF decomposition: [&#x27;BC&#x27;, &#x27;AB&#x27;, &#x27;ADE&#x27;]
+#
+# A real-world example: Enrollment(roll, course, instructor) with instructor -&gt; course and (roll, course) -&gt; instructor
+#    keys: [[&#x27;course&#x27;, &#x27;roll&#x27;], [&#x27;instructor&#x27;, &#x27;roll&#x27;]]
+#    instructor -&gt; course, but instructor alone is not a key: in 3NF (course is prime) but NOT in BCNF</code></pre><p>With A→B, B→C, CD→E the only candidate key is AD (the closure of AD is everything). All three FDs violate BCNF; decomposition produces BC, AB and ADE. The Enrollment example is a classic: it has two keys and is in 3NF but not BCNF.</p></details><table><tr><th>Armstrong's axiom / rule</th><th>Statement</th></tr><tr><td>Reflexivity</td><td>If Y ⊆ X then X → Y</td></tr><tr><td>Augmentation</td><td>If X → Y then XZ → YZ</td></tr><tr><td>Transitivity</td><td>If X → Y and Y → Z then X → Z</td></tr><tr><td>Union / decomposition (derived)</td><td>X → Y and X → Z ⇔ X → YZ</td></tr><tr><td>Pseudo-transitivity (derived)</td><td>X → Y and WY → Z ⇒ WX → Z</td></tr></table><h3>Good to know</h3><ul><li>Closure X<sup>+</sup>: everything X determines. X is a super key if X<sup>+</sup> = all attributes; a candidate key if also minimal.</li><li>Minimal (canonical) cover: simplest equivalent set of FDs, used for 3NF synthesis.</li></ul>
+    </section>
+
+    <!-- 20 -->
+    <section class="block" id="normal-forms">
+      <h2><span class="num">20</span> Normal Forms: 1NF to BCNF (and Beyond)</h2>
+<div class="callout life"><strong>Picture:</strong> Tidying a cupboard in stages: one item per hook (1NF), each shelf about one whole thing (2NF), nothing stored because of something else (3NF), and only the shelf's own label decides its contents (BCNF).</div><table><tr><th>Normal form</th><th>Rule (plain words)</th><th>Removes</th></tr><tr><td>1NF</td><td>Atomic values; no repeating groups or lists in a cell</td><td>Multi-valued cells</td></tr><tr><td>2NF</td><td>1NF + no non-key column depends on PART of a composite key</td><td>Partial dependencies</td></tr><tr><td>3NF</td><td>2NF + no non-key column depends on another non-key column (for X → A: X is a super key or A is prime)</td><td>Transitive dependencies</td></tr><tr><td>BCNF</td><td>For every X → A, X is a super key</td><td>All anomalies from FDs</td></tr><tr><td>4NF</td><td>No non-trivial multivalued dependencies except on keys</td><td>Independent multi-valued facts in one table</td></tr><tr><td>5NF</td><td>No join dependencies except those implied by keys</td><td>Rare decomposition issues</td></tr></table><h3>Good to know</h3><ul><li>3NF decomposition can always be lossless <em>and</em> dependency-preserving; BCNF is always lossless but may lose a dependency (the Enrollment example).</li><li>Lossless-join test for two parts R1, R2: R1 ∩ R2 must be a key of R1 or of R2.</li><li><strong>Denormalization</strong>: deliberately repeating data for read speed (reporting tables, caches). Do it knowingly and keep the copies in sync.</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part E — Storage and Indexing</h2></div>
+
+    <!-- 21 -->
+    <section class="block" id="storage">
+      <h2><span class="num">21</span> How Data Is Stored: Pages, Records, Buffer Pool</h2>
+<div class="callout life"><strong>Picture:</strong> A library stores books on numbered shelves (pages) in a warehouse (disk); the reading room (buffer pool in RAM) keeps the most-used shelves close to the desk.</div><table><tr><th>Concept</th><th>Meaning</th></tr><tr><td>Page / block</td><td>Fixed-size unit of storage and I/O (SQLite default 4 KiB, PostgreSQL 8 KiB, InnoDB 16 KiB)</td></tr><tr><td>Slotted page</td><td>Page header + slot array pointing to variable-length records</td></tr><tr><td>Heap file</td><td>Rows in no particular order</td></tr><tr><td>Clustered / index-organised</td><td>Rows stored in key order (InnoDB primary key, SQLite rowid tables)</td></tr><tr><td>Buffer pool</td><td>Cache of pages in RAM with a replacement policy (LRU-like, clock)</td></tr><tr><td>Row store vs column store</td><td>Rows together (transactions, OLTP) vs each column together (analytics, OLAP, compression)</td></tr><tr><td>WAL</td><td>Write-ahead log of changes (Part G)</td></tr></table><h3>Good to know</h3><ul><li>Disk and SSD access is much slower than RAM, so the goal of storage design is to touch as few pages as possible.</li><li>OLTP (many small transactions) vs OLAP (big analytical scans): different engines and layouts (PostgreSQL vs column stores like DuckDB, ClickHouse, BigQuery).</li></ul>
+    </section>
+
+    <!-- 22 -->
+    <section class="block" id="indexing">
+      <h2><span class="num">22</span> Indexes: Finding Rows Without Reading Everything (Measured)</h2>
+<div class="callout life"><strong>Picture:</strong> The index at the back of a textbook: instead of reading every page to find 'photosynthesis', you look it up and jump to page 212.</div><div class="diagram-wrap"><svg viewBox="0 0 640 300" style="width:100%;max-width:640px" xmlns="http://www.w3.org/2000/svg"><line x1="60" y1="230" x2="620" y2="230" stroke="var(--card-border)"/><text x="54" y="234" text-anchor="end" font-size="11">0</text><line x1="60" y1="178" x2="620" y2="178" stroke="var(--card-border)"/><text x="54" y="182" text-anchor="end" font-size="11">5</text><line x1="60" y1="125" x2="620" y2="125" stroke="var(--card-border)"/><text x="54" y="129" text-anchor="end" font-size="11">10</text><line x1="60" y1="72" x2="620" y2="72" stroke="var(--card-border)"/><text x="54" y="76" text-anchor="end" font-size="11">15</text><line x1="60" y1="20" x2="620" y2="20" stroke="var(--card-border)"/><text x="54" y="24" text-anchor="end" font-size="11">20</text><rect x="116" y="126" width="168" height="104" rx="3" fill="var(--accent-2)" opacity="0.85"/><text x="200" y="121" text-anchor="middle" font-size="11">9.940</text><text x="200" y="246" text-anchor="middle" font-size="10.5">full table scan</text><rect x="396" y="230" width="168" height="0" rx="3" fill="var(--accent-2)" opacity="0.85"/><text x="480" y="225" text-anchor="middle" font-size="11">0.003</text><text x="480" y="246" text-anchor="middle" font-size="10.5">with index</text><text transform="rotate(-90)" x="-125" y="16" text-anchor="middle" font-size="12" class="edge-label">milliseconds per query</text></svg><div class="diagram-caption">Fig S3 — Time for one lookup by customer among 300,000 rows (real SQLite run).</div></div><details class="deepdive" open><summary>The same query with and without an index, and the plans SQLite chose (run for real)</summary><pre><code># Indexes, measured: the same query on 300,000 rows with and without an index, and the query plans SQLite chose.
+import sqlite3, random, time
+random.seed(1)
+db = sqlite3.connect(&quot;:memory:&quot;)
+db.execute(&quot;CREATE TABLE orders(id INTEGER PRIMARY KEY, customer INTEGER, amount REAL, city TEXT)&quot;)
+cities = [&quot;Delhi&quot;, &quot;Mumbai&quot;, &quot;Pune&quot;, &quot;Chennai&quot;, &quot;Kolkata&quot;, &quot;Bhopal&quot;]
+db.executemany(&quot;INSERT INTO orders(customer, amount, city) VALUES (?,?,?)&quot;, ((random.randint(1, 50000), round(random.random() * 1000, 2), random.choice(cities)) for _ in range(300000)))
+q = &quot;SELECT count(*), sum(amount) FROM orders WHERE customer = 4242&quot;
+def timed(sql, reps=50):
+    t = time.perf_counter()
+    for _ in range(reps): db.execute(sql).fetchall()
+    return (time.perf_counter() - t) / reps * 1000
+plan = lambda sql: &quot; / &quot;.join(r[3] for r in db.execute(&quot;EXPLAIN QUERY PLAN &quot; + sql))
+print(&quot;without index: plan =&quot;, plan(q)); t1 = timed(q, 20); print(&quot;   %.2f ms per query&quot; % t1)
+db.execute(&quot;CREATE INDEX idx_orders_customer ON orders(customer)&quot;)
+print(&quot;with index   : plan =&quot;, plan(q)); t2 = timed(q); print(&quot;   %.3f ms per query  (%.0fx faster)&quot; % (t2, t1 / t2))
+print(&quot;range query plan:&quot;, plan(&quot;SELECT * FROM orders WHERE customer BETWEEN 100 AND 120&quot;))
+print(&quot;function on the column defeats the index:&quot;, plan(&quot;SELECT * FROM orders WHERE customer + 0 = 4242&quot;))
+db.execute(&quot;CREATE INDEX idx_city_amount ON orders(city, amount)&quot;)
+print(&quot;composite (city, amount), filter on city      :&quot;, plan(&quot;SELECT amount FROM orders WHERE city = &#x27;Pune&#x27; AND amount &gt; 990&quot;))
+print(&quot;composite (city, amount), filter on amount only:&quot;, plan(&quot;SELECT count(*) FROM orders WHERE amount &gt; 990&quot;))
+t = time.perf_counter(); db.executemany(&quot;INSERT INTO orders(customer, amount, city) VALUES (?,?,?)&quot;, ((1, 1.0, &quot;Pune&quot;) for _ in range(50000))); ti = time.perf_counter() - t
+print(&quot;cost side: 50,000 inserts with two extra indexes took %.2f s (every index must be updated on each write)&quot; % ti)
+
+# ----- Output (real run) -----
+# without index: plan = SCAN orders
+#    9.94 ms per query
+# with index   : plan = SEARCH orders USING INDEX idx_orders_customer (customer=?)
+#    0.003 ms per query  (3266x faster)
+# range query plan: SEARCH orders USING INDEX idx_orders_customer (customer&gt;? AND customer&lt;?)
+# function on the column defeats the index: SCAN orders
+# composite (city, amount), filter on city      : SEARCH orders USING COVERING INDEX idx_city_amount (city=? AND amount&gt;?)
+# composite (city, amount), filter on amount only: SCAN orders USING COVERING INDEX idx_city_amount
+# cost side: 50,000 inserts with two extra indexes took 0.11 s (every index must be updated on each write)</code></pre><p>The plan changed from <code>SCAN</code> to <code>SEARCH ... USING INDEX</code>, and the lookup became thousands of times faster on this machine (exact factor varies by run). But wrapping the column in an expression (<code>customer + 0</code>) brings the scan back, and a composite index (city, amount) can only <em>search</em> when the query filters on its first column; for the second column alone it can still be <em>scanned</em> as a smaller 'covering' index. Indexes also cost time on every insert.</p></details><table><tr><th>Index type</th><th>Idea</th><th>Good for</th></tr><tr><td>Primary / clustered</td><td>Data stored in key order</td><td>Range scans on the key</td></tr><tr><td>Secondary / non-clustered</td><td>Separate structure pointing to rows</td><td>Other lookup columns</td></tr><tr><td>Dense vs sparse</td><td>Entry for every row vs per block</td><td>Sparse needs sorted data</td></tr><tr><td>Composite</td><td>Several columns, ordered left to right</td><td>Queries on a leftmost prefix</td></tr><tr><td>Covering</td><td>Index contains all needed columns</td><td>Answers without touching the table</td></tr><tr><td>Hash</td><td>Hash of the key → bucket</td><td>Equality only</td></tr><tr><td>Bitmap</td><td>One bit per row per value</td><td>Low-cardinality analytics</td></tr><tr><td>Inverted (GIN), full-text</td><td>Word/element → rows</td><td>Search, arrays, JSON</td></tr><tr><td>Vector (HNSW, IVF)</td><td>Approximate nearest neighbours</td><td>Embeddings (RAG)</td></tr></table><h3>Good to know</h3><ul><li>Index columns used in WHERE, JOIN and ORDER BY with good selectivity; avoid indexing everything (slower writes, more storage).</li><li>Use <code>EXPLAIN</code> / <code>EXPLAIN QUERY PLAN</code> to confirm the index is used.</li></ul>
+    </section>
+
+    <!-- 23 -->
+    <section class="block" id="bplus-tree">
+      <h2><span class="num">23</span> B+ Trees: The Index Behind Most Databases</h2>
+<div class="callout life"><strong>Picture:</strong> A phone directory with tabs: the top tab says A–M or N–Z, the next level A–F, G–M ..., and the bottom pages list names in order, each page pointing to the next page.</div><details class="deepdive" open><summary>Building a small B+ tree (max 3 keys per node) and searching it (run for real)</summary><pre><code># A B+ tree (max 3 keys per node): inserts cause splits; leaves are linked for fast range scans.
+class Node:
+    def __init__(s, leaf): s.leaf, s.keys, s.kids, s.next = leaf, [], [], None
+ORDER = 3
+root = Node(True)
+def insert(key):
+    global root
+    split = _ins(root, key)
+    if split:
+        k, right = split; r = Node(False); r.keys = [k]; r.kids = [root, right]; root = r
+def _ins(n, key):
+    if n.leaf:
+        n.keys.append(key); n.keys.sort()
+        if len(n.keys) &lt;= ORDER: return None
+        mid = len(n.keys) // 2; right = Node(True); right.keys = n.keys[mid:]; n.keys = n.keys[:mid]
+        right.next, n.next = n.next, right; return right.keys[0], right            # copy the first right key UP
+    i = sum(key &gt;= k for k in n.keys); split = _ins(n.kids[i], key)
+    if not split: return None
+    k, child = split; n.keys.insert(i, k); n.kids.insert(i + 1, child)
+    if len(n.keys) &lt;= ORDER: return None
+    mid = len(n.keys) // 2; right = Node(False)
+    up = n.keys[mid]; right.keys = n.keys[mid + 1:]; right.kids = n.kids[mid + 1:]; n.keys = n.keys[:mid]; n.kids = n.kids[:mid + 1]
+    return up, right                                                               # internal split MOVES the middle key up
+def levels():
+    out, cur = [], [root]
+    while cur:
+        out.append(&quot;  &quot;.join(str(n.keys) for n in cur)); cur = [k for n in cur for k in n.kids]
+    return out
+for k in [10, 20, 5, 6, 12, 30, 7, 17, 3, 25, 27, 1]:
+    insert(k)
+print(&quot;after inserting 10 20 5 6 12 30 7 17 3 25 27 1:&quot;)
+for i, l in enumerate(levels()): print(&quot;  level %d: %s&quot; % (i, l))
+def search(key):
+    n, path = root, []
+    while not n.leaf: path.append(n.keys); n = n.kids[sum(key &gt;= k for k in n.keys)]
+    return key in n.keys, path + [n.keys]
+print(&quot;search 17 -&gt;&quot;, search(17))
+n = root
+while not n.leaf: n = n.kids[0]
+rng = []
+while n:
+    rng += [k for k in n.keys if 6 &lt;= k &lt;= 25]; n = n.next
+print(&quot;range scan 6..25 by walking linked leaves:&quot;, rng)
+print(&quot;height stays tiny: with ~200 keys per node, 3 levels hold %s keys&quot; % format(200 ** 3, &quot;,&quot;))
+
+# ----- Output (real run) -----
+# after inserting 10 20 5 6 12 30 7 17 3 25 27 1:
+#   level 0: [20]
+#   level 1: [6, 10]  [27]
+#   level 2: [1, 3, 5]  [6, 7]  [10, 12, 17]  [20, 25]  [27, 30]
+# search 17 -&gt; (True, [[20], [6, 10], [10, 12, 17]])
+# range scan 6..25 by walking linked leaves: [6, 7, 10, 12, 17, 20, 25]
+# height stays tiny: with ~200 keys per node, 3 levels hold 8,000,000 keys</code></pre><p>Twelve inserts produced a tree of height 3. Searching 17 visits one node per level; the range scan 6..25 walks along the linked leaves. With ~200 keys per node, 3 levels already index 8 million keys: very few page reads per lookup.</p></details><h3>Good to know</h3><ul><li>All data pointers live in the leaves; internal nodes only guide the search. Leaves are linked for range scans.</li><li>Insert: put the key in its leaf; if the leaf overflows, split it and push a separator key up (splits can reach the root, which is how the tree grows taller). Delete: borrow from or merge with a sibling.</li><li>B-tree vs B+ tree: B-trees also keep data in internal nodes; B+ trees are preferred for databases because internal nodes hold more keys and range scans are easy.</li><li>LSM trees (RocksDB, Cassandra) are the main alternative for write-heavy workloads: buffer writes in memory, flush sorted files, compact in the background.</li></ul>
+    </section>
+
+    <!-- 24 -->
+    <section class="block" id="hashing">
+      <h2><span class="num">24</span> Hashing: Static, Extendible and Linear</h2>
+<div class="callout life"><strong>Picture:</strong> Lockers numbered 0–9: take the last digit of your roll number and use that locker. Fast, but you cannot ask for 'all rolls between 100 and 200' without opening every locker.</div><table><tr><th>Scheme</th><th>Idea</th><th>Note</th></tr><tr><td>Static hashing</td><td>Fixed number of buckets; overflow chains</td><td>Degrades when data grows</td></tr><tr><td>Extendible hashing</td><td>A directory of 2<sup>d</sup> pointers; split one bucket and double the directory when needed</td><td>Grows gracefully</td></tr><tr><td>Linear hashing</td><td>Split buckets one at a time in a fixed order</td><td>No directory</td></tr><tr><td>Hash join / hash aggregation</td><td>Hash tables built during query execution</td><td>Part F</td></tr></table><h3>Good to know</h3><ul><li>Hash indexes support only equality; B+ trees support equality AND ranges AND ordering, which is why they are the default.</li><li>Distributed databases hash keys to choose a partition (Part H).</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part F — Query Processing and Optimization</h2></div>
+
+    <!-- 25 -->
+    <section class="block" id="query-processing">
+      <h2><span class="num">25</span> How a Query Is Executed</h2>
+<div class="callout life"><strong>Picture:</strong> Ordering from a restaurant: the waiter checks the order makes sense (parse), the chef chooses the fastest way to cook it with what is in the kitchen (optimize), and the kitchen cooks it (execute).</div><div class="diagram-wrap"><svg viewBox="0 0 680 240" style="width:100%;max-width:680px" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrSc4_arrow" markerWidth="10" markerHeight="10" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8" fill="none" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc4_tri" markerWidth="12" markerHeight="12" refX="11" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc4_dia" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--accent)" stroke="var(--accent)"/></marker><marker id="arrSc4_diah" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker></defs><line x1="110" y1="79" x2="140" y2="79" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc4_arrow)"/><line x1="280" y1="78" x2="310" y2="78" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc4_arrow)"/><line x1="460" y1="80" x2="490" y2="81" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc4_arrow)"/><line x1="570" y1="116" x2="570" y2="160" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc4_arrow)"/><text class="edge-label" x="570" y="133" text-anchor="middle">plan</text><line x1="490" y1="188" x2="460" y2="188" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc4_arrow)"/><rect class="box" x="10" y="60" width="100" height="40" rx="9"/><text x="60" y="84" text-anchor="middle" font-size="12">SQL text</text><rect class="box-hl" x="140" y="50" width="140" height="56" rx="9"/><text x="210" y="75" text-anchor="middle" font-size="12">Parser</text><text x="210" y="89" text-anchor="middle" font-size="10" class="edge-label">syntax → parse tree</text><rect class="box-hl" x="310" y="50" width="150" height="56" rx="9"/><text x="385" y="75" text-anchor="middle" font-size="12">Binder / rewriter</text><text x="385" y="89" text-anchor="middle" font-size="10" class="edge-label">names, views, simplify</text><rect class="box-final" x="490" y="50" width="160" height="66" rx="9"/><text x="570" y="73" text-anchor="middle" font-size="12">Optimizer</text><text x="570" y="87" text-anchor="middle" font-size="10" class="edge-label">choose join order,</text><text x="570" y="101" text-anchor="middle" font-size="10" class="edge-label">indexes, algorithms (cost)</text><rect class="box-hl" x="490" y="160" width="160" height="56" rx="9"/><text x="570" y="178" text-anchor="middle" font-size="12">Executor</text><text x="570" y="192" text-anchor="middle" font-size="10" class="edge-label">runs the plan</text><text x="570" y="206" text-anchor="middle" font-size="10" class="edge-label">(iterators)</text><rect class="box-dim" x="310" y="160" width="150" height="56" rx="9"/><text x="385" y="185" text-anchor="middle" font-size="12">Storage</text><text x="385" y="199" text-anchor="middle" font-size="10" class="edge-label">pages, indexes</text></svg><div class="diagram-caption">Fig S4 — The life of an SQL query.</div></div><table><tr><th>Plan operator</th><th>Does</th></tr><tr><td>Seq / table scan</td><td>Read every row</td></tr><tr><td>Index scan / seek</td><td>Use an index to find rows</td></tr><tr><td>Filter</td><td>WHERE conditions</td></tr><tr><td>Nested loop / hash / merge join</td><td>Combine inputs</td></tr><tr><td>Sort, hash aggregate</td><td>ORDER BY, GROUP BY</td></tr><tr><td>Limit</td><td>Stop early</td></tr></table><h3>Good to know</h3><ul><li>Executors usually use the iterator ('Volcano') model: each operator pulls rows from its children; analytics engines process vectors of rows at once.</li></ul>
+    </section>
+
+    <!-- 26 -->
+    <section class="block" id="join-algorithms">
+      <h2><span class="num">26</span> Join Algorithms (Measured)</h2>
+<div class="callout life"><strong>Picture:</strong> Matching socks from two baskets: compare every pair (nested loop), sort both baskets and walk them together (sort-merge), or put one basket's socks into labelled bins and look up each sock from the other basket (hash join).</div><details class="deepdive" open><summary>Nested loop vs hash join vs sort-merge on 20,000 × 20,000 rows (pure Python) (run for real)</summary><pre><code># Join algorithms, measured on 20,000 x 20,000 rows: nested loop vs hash join vs sort-merge join.
+import random, time
+random.seed(3)
+R = [(random.randint(1, 30000), &quot;r%d&quot; % i) for i in range(20000)]
+S_ = [(random.randint(1, 30000), &quot;s%d&quot; % i) for i in range(20000)]
+def nested_loop(R, S, limit=2000):                      # only the first 2,000 R rows: the full join would take too long
+    return [(r, s) for r in R[:limit] for s in S if r[0] == s[0]]
+def hash_join(R, S):
+    h = {}
+    for s in S: h.setdefault(s[0], []).append(s)       # build on one side
+    return [(r, s) for r in R for s in h.get(r[0], [])] # probe with the other
+def sort_merge(R, S):
+    R, S = sorted(R), sorted(S); i = j = 0; out = []
+    while i &lt; len(R) and j &lt; len(S):
+        if R[i][0] &lt; S[j][0]: i += 1
+        elif R[i][0] &gt; S[j][0]: j += 1
+        else:
+            k = R[i][0]; i2 = i; j2 = j
+            while i2 &lt; len(R) and R[i2][0] == k: i2 += 1
+            while j2 &lt; len(S) and S[j2][0] == k: j2 += 1
+            out += [(r, s) for r in R[i:i2] for s in S[j:j2]]; i, j = i2, j2
+    return out
+t = time.perf_counter(); nl = nested_loop(R, S_); tnl = time.perf_counter() - t
+t = time.perf_counter(); hj = hash_join(R, S_); thj = time.perf_counter() - t
+t = time.perf_counter(); sm = sort_merge(R, S_); tsm = time.perf_counter() - t
+print(&quot;nested loop, 10%% of R : %7.1f ms  (full join estimate ~%.0f ms)  %d matches&quot; % (tnl * 1000, tnl * 10000, len(nl)))
+print(&quot;hash join, all of R   : %7.1f ms  %d matches&quot; % (thj * 1000, len(hj)))
+print(&quot;sort-merge, all of R  : %7.1f ms  %d matches&quot; % (tsm * 1000, len(sm)))
+print(&quot;same results from hash and sort-merge:&quot;, sorted(hj) == sorted(sm))
+
+# ----- Output (real run) -----
+# nested loop, 10% of R :  1580.1 ms  (full join estimate ~15801 ms)  1317 matches
+# hash join, all of R   :     8.0 ms  13454 matches
+# sort-merge, all of R  :    21.7 ms  13454 matches
+# same results from hash and sort-merge: True</code></pre><p>The plain nested loop needed about 1.6 s for just 10% of the rows (about 16 s estimated for all), while the hash join did the whole job in about 8 ms and sort-merge in about 22 ms on this machine (timings vary slightly between runs). Both produced the same 13,454 matches.</p></details><table><tr><th>Algorithm</th><th>Cost (pages, roughly)</th><th>Best when</th></tr><tr><td>Nested loop</td><td>|R| × |S| comparisons</td><td>Tiny tables, or with an index on the inner table (index nested loop)</td></tr><tr><td>Block nested loop</td><td>Pages(R) + (Pages(R) ÷ buffer) × Pages(S)</td><td>No index, limited memory</td></tr><tr><td>Sort-merge</td><td>Sort both + one pass</td><td>Inputs already sorted, or output must be sorted; inequality joins</td></tr><tr><td>Hash join</td><td>≈ read both once (if the build side fits in memory)</td><td>Large unsorted equality joins</td></tr></table><h3>Good to know</h3><ul><li>Databases choose among these using cost estimates; you can see the choice with EXPLAIN.</li></ul>
+    </section>
+
+    <!-- 27 -->
+    <section class="block" id="query-optimization">
+      <h2><span class="num">27</span> Query Optimization: Statistics, Costs and EXPLAIN</h2>
+<div class="callout life"><strong>Picture:</strong> A GPS chooses a route using maps and traffic data. A database optimizer chooses a plan using table statistics; with an outdated map it chooses badly.</div><table><tr><th>Technique</th><th>Idea</th></tr><tr><td>Push selections down</td><td>Filter rows as early as possible</td></tr><tr><td>Push projections down</td><td>Carry only needed columns</td></tr><tr><td>Join ordering</td><td>Join small/selective inputs first (dynamic programming over orders)</td></tr><tr><td>Access path choice</td><td>Index vs scan based on estimated selectivity</td></tr><tr><td>Statistics</td><td>Row counts, distinct values, histograms (ANALYZE)</td></tr><tr><td>Rewrite rules</td><td>Unnest subqueries, merge views, eliminate redundant joins</td></tr></table><details class="deepdive" open><summary>PostgreSQL: EXPLAIN ANALYZE, special indexes, isolation, VACUUM (template, not run)</summary><pre><code>-- PostgreSQL: the same ideas at production scale (template: not run here)
+EXPLAIN (ANALYZE, BUFFERS) SELECT * FROM orders WHERE customer_id = 4242;   -- real timings and the plan the optimizer chose
+CREATE INDEX CONCURRENTLY idx_orders_customer ON orders (customer_id);     -- build without blocking writes
+CREATE INDEX ON orders (created_at) WHERE status = &#x27;open&#x27;;                 -- partial index
+CREATE INDEX ON products USING gin (tags);                                  -- inverted index for arrays / JSONB / full text
+
+BEGIN ISOLATION LEVEL SERIALIZABLE;                                         -- READ COMMITTED is PostgreSQL&#x27;s default
+SELECT balance FROM account WHERE id = 1 FOR UPDATE;                        -- pessimistic row lock
+UPDATE account SET balance = balance - 100 WHERE id = 1;
+COMMIT;                                                                     -- may fail with a serialization error: retry the transaction
+
+VACUUM (ANALYZE) orders;                                                    -- clean old MVCC versions, refresh statistics
+SELECT * FROM pg_stat_activity WHERE state &lt;&gt; &#x27;idle&#x27;;                       -- what is running now</code></pre></details><h3>Good to know</h3><ul><li>Estimated selectivity of <code>col = value</code> ≈ 1 ÷ (number of distinct values) if data is uniform; histograms fix skew.</li><li>When a query is slow: look at the plan, check estimates vs actual rows, add or fix indexes, refresh statistics, rewrite the query, then consider schema changes.</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part G — Transactions, Concurrency and Recovery</h2></div>
+
+    <!-- 28 -->
+    <section class="block" id="acid">
+      <h2><span class="num">28</span> Transactions and ACID</h2>
+<div class="callout life"><strong>Picture:</strong> A bank transfer is one promise: money leaves one account <em>and</em> arrives in the other, or nothing happens at all. Half a transfer is never allowed.</div><table><tr><th>Property</th><th>Meaning</th><th>Provided by</th></tr><tr><td>Atomicity</td><td>All or nothing</td><td>Undo logs / rollback</td></tr><tr><td>Consistency</td><td>Constraints hold before and after</td><td>Constraints + correct application logic</td></tr><tr><td>Isolation</td><td>Concurrent transactions do not see each other's half-done work</td><td>Locking, MVCC</td></tr><tr><td>Durability</td><td>Once committed, it survives crashes</td><td>WAL flushed to stable storage (fsync), replication</td></tr></table><details class="deepdive" open><summary>A transfer that commits, one that rolls back, and a savepoint (run for real)</summary><pre><code>import sqlite3
+db = sqlite3.connect(&quot;:memory:&quot;, isolation_level=None)        # we write BEGIN / COMMIT / ROLLBACK ourselves
+db.executescript(&quot;CREATE TABLE account(name TEXT PRIMARY KEY, balance INTEGER CHECK (balance &gt;= 0)); INSERT INTO account VALUES (&#x27;Asha&#x27;, 500), (&#x27;Ravi&#x27;, 100);&quot;)
+def balances(): return dict(db.execute(&quot;SELECT name, balance FROM account&quot;))
+def transfer(src, dst, amount):
+    db.execute(&quot;BEGIN&quot;)
+    try:
+        db.execute(&quot;UPDATE account SET balance = balance + ? WHERE name = ?&quot;, (amount, dst))      # credit first ...
+        db.execute(&quot;UPDATE account SET balance = balance - ? WHERE name = ?&quot;, (amount, src))      # ... then debit (may violate CHECK)
+        db.execute(&quot;COMMIT&quot;); return &quot;committed&quot;
+    except sqlite3.IntegrityError as e:
+        db.execute(&quot;ROLLBACK&quot;); return &quot;rolled back (%s)&quot; % e
+print(&quot;start:&quot;, balances())
+print(&quot;transfer 200 Asha-&gt;Ravi:&quot;, transfer(&quot;Asha&quot;, &quot;Ravi&quot;, 200), balances())
+print(&quot;transfer 900 Ravi-&gt;Asha:&quot;, transfer(&quot;Ravi&quot;, &quot;Asha&quot;, 900), balances(), &quot; &lt;- Asha&#x27;s credit was undone too: all or nothing&quot;)
+db.execute(&quot;BEGIN&quot;); db.execute(&quot;UPDATE account SET balance = balance - 50 WHERE name=&#x27;Asha&#x27;&quot;)
+db.execute(&quot;SAVEPOINT bonus&quot;); db.execute(&quot;UPDATE account SET balance = balance + 1000 WHERE name=&#x27;Ravi&#x27;&quot;)
+db.execute(&quot;ROLLBACK TO bonus&quot;); db.execute(&quot;COMMIT&quot;)
+print(&quot;savepoint: kept the -50, undid only the +1000:&quot;, balances())
+
+# ----- Output (real run) -----
+# start: {&#x27;Asha&#x27;: 500, &#x27;Ravi&#x27;: 100}
+# transfer 200 Asha-&gt;Ravi: committed {&#x27;Asha&#x27;: 300, &#x27;Ravi&#x27;: 300}
+# transfer 900 Ravi-&gt;Asha: rolled back (CHECK constraint failed: balance &gt;= 0) {&#x27;Asha&#x27;: 300, &#x27;Ravi&#x27;: 300}  &lt;- Asha&#x27;s credit was undone too: all or nothing
+# savepoint: kept the -50, undid only the +1000: {&#x27;Asha&#x27;: 250, &#x27;Ravi&#x27;: 300}</code></pre><p>The 900 transfer failed on the CHECK (balance ≥ 0) after Asha had already been credited; ROLLBACK removed that credit too. ROLLBACK TO a savepoint undoes only part of a transaction.</p></details><h3>Good to know</h3><ul><li>Transaction states: active → partially committed → committed, or active → failed → aborted.</li><li>Keep transactions short: long ones hold locks or old versions and hurt everyone else.</li></ul>
+    </section>
+
+    <!-- 29 -->
+    <section class="block" id="serializability">
+      <h2><span class="num">29</span> Schedules and Serializability</h2>
+<div class="callout life"><strong>Picture:</strong> Two cooks sharing a kitchen. If the final dishes are the same as when one cook finished completely before the other started, their interleaving was safe ('serializable').</div><details class="deepdive" open><summary>Precedence-graph test for conflict serializability (run for real)</summary><pre><code># Is a schedule conflict-serializable? Build the precedence graph and look for a cycle.
+def precedence(schedule):
+    edges = set()
+    for i, (t1, op1, x1) in enumerate(schedule):
+        for t2, op2, x2 in schedule[i + 1:]:
+            if t1 != t2 and x1 == x2 and &quot;W&quot; in (op1, op2): edges.add((t1, t2))   # conflicting pair: same item, different txns, at least one write
+    return edges
+def has_cycle(edges):
+    nodes = {a for e in edges for a in e}
+    def reach(a, b, seen=()):
+        return any(y == b or (y not in seen and reach(y, b, seen + (y,))) for x, y in edges if x == a)
+    return any(reach(n, n) for n in nodes)
+def topo(edges, txns):
+    order, e = [], set(edges)
+    while txns:
+        t = next(t for t in sorted(txns) if not any(y == t for x, y in e)); order.append(t); txns.remove(t); e = {(x, y) for x, y in e if x != t}
+    return order
+S1 = [(&quot;T1&quot;, &quot;R&quot;, &quot;A&quot;), (&quot;T1&quot;, &quot;W&quot;, &quot;A&quot;), (&quot;T2&quot;, &quot;R&quot;, &quot;A&quot;), (&quot;T2&quot;, &quot;W&quot;, &quot;A&quot;), (&quot;T1&quot;, &quot;R&quot;, &quot;B&quot;), (&quot;T1&quot;, &quot;W&quot;, &quot;B&quot;), (&quot;T2&quot;, &quot;R&quot;, &quot;B&quot;), (&quot;T2&quot;, &quot;W&quot;, &quot;B&quot;)]
+S2 = [(&quot;T1&quot;, &quot;R&quot;, &quot;A&quot;), (&quot;T2&quot;, &quot;R&quot;, &quot;A&quot;), (&quot;T1&quot;, &quot;W&quot;, &quot;A&quot;), (&quot;T2&quot;, &quot;W&quot;, &quot;A&quot;)]
+for name, s in ((&quot;S1&quot;, S1), (&quot;S2&quot;, S2)):
+    e = precedence(s)
+    print(&quot;%s: %s&quot; % (name, &quot; &quot;.join(&quot;%s(%s)%s&quot; % (op, x, t[1]) for t, op, x in s)))
+    print(&quot;    edges %s -&gt; %s&quot; % (sorted(e), &quot;NOT serializable (cycle)&quot; if has_cycle(e) else &quot;serializable, equivalent to &quot; + &quot; -&gt; &quot;.join(topo(e, {t for t, _, _ in s}))))
+print(&quot;S2 is the lost-update pattern: both read A, both write A.&quot;)
+
+# ----- Output (real run) -----
+# S1: R(A)1 W(A)1 R(A)2 W(A)2 R(B)1 W(B)1 R(B)2 W(B)2
+#     edges [(&#x27;T1&#x27;, &#x27;T2&#x27;)] -&gt; serializable, equivalent to T1 -&gt; T2
+# S2: R(A)1 R(A)2 W(A)1 W(A)2
+#     edges [(&#x27;T1&#x27;, &#x27;T2&#x27;), (&#x27;T2&#x27;, &#x27;T1&#x27;)] -&gt; NOT serializable (cycle)
+# S2 is the lost-update pattern: both read A, both write A.</code></pre><p>S1 interleaves operations but every conflict goes T1 → T2, so it equals running T1 then T2. S2 (both read A, then both write A) has edges both ways: a cycle, so it is not serializable: it is exactly the lost-update pattern.</p></details><h3>Good to know</h3><ul><li>Conflicting operations: same item, different transactions, at least one write (R-W, W-R, W-W).</li><li>Conflict-serializable ⇒ view-serializable (not the reverse). Recoverable schedules: a transaction commits only after those it read from commit; cascadeless: read only committed data.</li></ul>
+    </section>
+
+    <!-- 30 -->
+    <section class="block" id="isolation-levels">
+      <h2><span class="num">30</span> Isolation Levels and Anomalies (Real Runs)</h2>
+<div class="callout life"><strong>Picture:</strong> How private is your exam desk? Fully private (serializable), or can you glimpse a neighbour's half-written answer (dirty read), or see their answer change while you look (non-repeatable read)?</div><details class="deepdive" open><summary>Two real connections to one SQLite database in WAL mode (run for real)</summary><pre><code># Two REAL connections to one database file: what does each one see, and when? (SQLite in WAL mode = snapshot reads)
+import sqlite3, os, tempfile
+path = os.path.join(tempfile.mkdtemp(), &quot;bank.db&quot;)
+w = sqlite3.connect(path, isolation_level=None); r = sqlite3.connect(path, isolation_level=None)
+w.execute(&quot;PRAGMA journal_mode=WAL&quot;); w.execute(&quot;CREATE TABLE t(k TEXT PRIMARY KEY, v INTEGER)&quot;); w.execute(&quot;INSERT INTO t VALUES (&#x27;x&#x27;, 1)&quot;)
+w.execute(&quot;BEGIN&quot;); w.execute(&quot;UPDATE t SET v = 2 WHERE k = &#x27;x&#x27;&quot;)
+print(&quot;writer changed x to 2 but has NOT committed; reader sees:&quot;, r.execute(&quot;SELECT v FROM t&quot;).fetchone()[0], &quot;  &lt;- no dirty read&quot;)
+r.execute(&quot;BEGIN&quot;); print(&quot;reader starts a transaction and reads:&quot;, r.execute(&quot;SELECT v FROM t&quot;).fetchone()[0])
+w.execute(&quot;COMMIT&quot;); print(&quot;writer commits x = 2&quot;)
+print(&quot;same reader transaction reads again:&quot;, r.execute(&quot;SELECT v FROM t&quot;).fetchone()[0], &quot;  &lt;- its snapshot is stable (repeatable read)&quot;)
+r.execute(&quot;COMMIT&quot;); print(&quot;after the reader&#x27;s transaction ends, a new read sees:&quot;, r.execute(&quot;SELECT v FROM t&quot;).fetchone()[0])
+w.execute(&quot;BEGIN IMMEDIATE&quot;)                                      # take the write lock
+try:
+    r.execute(&quot;PRAGMA busy_timeout = 200&quot;); r.execute(&quot;BEGIN IMMEDIATE&quot;)
+except sqlite3.OperationalError as e: print(&quot;second writer while the first holds the lock -&gt;&quot;, e, &quot;(SQLite allows ONE writer at a time)&quot;)
+w.execute(&quot;ROLLBACK&quot;)
+
+# ----- Output (real run) -----
+# writer changed x to 2 but has NOT committed; reader sees: 1   &lt;- no dirty read
+# reader starts a transaction and reads: 1
+# writer commits x = 2
+# same reader transaction reads again: 1   &lt;- its snapshot is stable (repeatable read)
+# after the reader&#x27;s transaction ends, a new read sees: 2
+# second writer while the first holds the lock -&gt; database is locked (SQLite allows ONE writer at a time)</code></pre><p>The reader never saw the uncommitted 2 (no dirty read). Inside its transaction it kept seeing 1 even after the writer committed (a stable snapshot), and saw 2 only in a new transaction. A second writer was refused while the first held the write lock: SQLite allows one writer at a time.</p></details><details class="deepdive" open><summary>The lost update anomaly and two fixes (run for real)</summary><pre><code># The LOST UPDATE anomaly, for real: two app instances read, add, and write back. Then two fixes.
+import sqlite3
+db = sqlite3.connect(&quot;:memory:&quot;, isolation_level=None)
+db.execute(&quot;CREATE TABLE stock(item TEXT PRIMARY KEY, qty INTEGER)&quot;); db.execute(&quot;INSERT INTO stock VALUES (&#x27;pen&#x27;, 10)&quot;)
+a = db.execute(&quot;SELECT qty FROM stock WHERE item=&#x27;pen&#x27;&quot;).fetchone()[0]          # app A reads 10
+b = db.execute(&quot;SELECT qty FROM stock WHERE item=&#x27;pen&#x27;&quot;).fetchone()[0]          # app B reads 10
+db.execute(&quot;UPDATE stock SET qty = ? WHERE item=&#x27;pen&#x27;&quot;, (a - 3,))              # A sold 3 -&gt; writes 7
+db.execute(&quot;UPDATE stock SET qty = ? WHERE item=&#x27;pen&#x27;&quot;, (b - 4,))              # B sold 4 -&gt; writes 6 (A&#x27;s sale vanished)
+print(&quot;read-modify-write in the app: qty =&quot;, db.execute(&quot;SELECT qty FROM stock&quot;).fetchone()[0], &quot; (should be 3: an update was LOST)&quot;)
+db.execute(&quot;UPDATE stock SET qty = 10&quot;)
+db.execute(&quot;UPDATE stock SET qty = qty - 3 WHERE item=&#x27;pen&#x27;&quot;); db.execute(&quot;UPDATE stock SET qty = qty - 4 WHERE item=&#x27;pen&#x27;&quot;)
+print(&quot;fix 1, let the database do the arithmetic: qty =&quot;, db.execute(&quot;SELECT qty FROM stock&quot;).fetchone()[0])
+db.execute(&quot;ALTER TABLE stock ADD COLUMN version INTEGER DEFAULT 0&quot;); db.execute(&quot;UPDATE stock SET qty = 10, version = 0&quot;)
+def sell(n, seen_qty, seen_ver):
+    cur = db.execute(&quot;UPDATE stock SET qty = ?, version = version + 1 WHERE item=&#x27;pen&#x27; AND version = ?&quot;, (seen_qty - n, seen_ver))
+    return &quot;ok&quot; if cur.rowcount == 1 else &quot;CONFLICT: someone changed it, re-read and retry&quot;
+qa, va = db.execute(&quot;SELECT qty, version FROM stock&quot;).fetchone(); qb, vb = db.execute(&quot;SELECT qty, version FROM stock&quot;).fetchone()
+print(&quot;fix 2, optimistic locking with a version column: A -&gt;&quot;, sell(3, qa, va), &quot;; B -&gt;&quot;, sell(4, qb, vb))
+qb, vb = db.execute(&quot;SELECT qty, version FROM stock&quot;).fetchone(); print(&quot;   B retries -&gt;&quot;, sell(4, qb, vb), &quot;; qty =&quot;, db.execute(&quot;SELECT qty FROM stock&quot;).fetchone()[0])
+
+# ----- Output (real run) -----
+# read-modify-write in the app: qty = 6  (should be 3: an update was LOST)
+# fix 1, let the database do the arithmetic: qty = 3
+# fix 2, optimistic locking with a version column: A -&gt; ok ; B -&gt; CONFLICT: someone changed it, re-read and retry
+#    B retries -&gt; ok ; qty = 3</code></pre><p>Both 'apps' read 10 and wrote back their own result, so the sale of 3 vanished (6 instead of 3). Letting the database do <code>qty = qty - n</code>, or optimistic locking with a version column, keeps both updates.</p></details><table><tr><th>Level (SQL standard)</th><th>Dirty read</th><th>Non-repeatable read</th><th>Phantom</th></tr><tr><td>READ UNCOMMITTED</td><td>possible</td><td>possible</td><td>possible</td></tr><tr><td>READ COMMITTED</td><td>no</td><td>possible</td><td>possible</td></tr><tr><td>REPEATABLE READ</td><td>no</td><td>no</td><td>possible (standard) / often prevented in practice</td></tr><tr><td>SERIALIZABLE</td><td>no</td><td>no</td><td>no</td></tr></table><h3>Good to know</h3><ul><li>Defaults differ: PostgreSQL and Oracle use READ COMMITTED, MySQL InnoDB REPEATABLE READ; SQLite transactions are serializable in effect (one writer).</li><li>Other anomalies: lost update, write skew (next sections). Higher isolation = fewer anomalies, more waiting or retries.</li></ul>
+    </section>
+
+    <!-- 31 -->
+    <section class="block" id="locking-2pl">
+      <h2><span class="num">31</span> Locking and Two-Phase Locking</h2>
+<div class="callout life"><strong>Picture:</strong> Library rules: many people may read the same book together (shared lock), but someone writing notes in it needs it alone (exclusive lock). And once you start returning books you may not borrow new ones (two-phase rule).</div><details class="deepdive" open><summary>Shared/exclusive locks and a deadlock found with a wait-for graph (simulation) (run for real)</summary><pre><code># Two-phase locking with shared (S) and exclusive (X) locks, and deadlock detection with a wait-for graph (simulation).
+locks, waits, log = {}, {}, []                                   # item -&gt; (mode, set of holders); txn -&gt; item it waits for
+def request(t, mode, item):
+    held = locks.get(item)
+    if held is None: locks[item] = (mode, {t}); log.append(&quot;%s gets %s(%s)&quot; % (t, mode, item)); return True
+    m, holders = held
+    if holders == {t}: locks[item] = (&quot;X&quot; if &quot;X&quot; in (m, mode) else &quot;S&quot;, holders); log.append(&quot;%s upgrades/keeps lock on %s&quot; % (t, item)); return True
+    if m == &quot;S&quot; and mode == &quot;S&quot;: holders.add(t); log.append(&quot;%s shares S(%s)&quot; % (t, item)); return True
+    waits[t] = item; log.append(&quot;%s WAITS for %s(%s) held by %s&quot; % (t, mode, item, sorted(holders))); return False
+def deadlock():
+    g = {t: next(iter(locks[i][1] - {t}), None) for t, i in waits.items()}
+    for start in g:
+        seen, cur = [], start
+        while cur in g and cur not in seen: seen.append(cur); cur = g[cur]
+        if cur == start: return seen
+    return None
+request(&quot;T1&quot;, &quot;S&quot;, &quot;A&quot;); request(&quot;T2&quot;, &quot;S&quot;, &quot;A&quot;)                  # readers share
+request(&quot;T1&quot;, &quot;X&quot;, &quot;B&quot;); request(&quot;T2&quot;, &quot;X&quot;, &quot;B&quot;)                  # T2 waits for T1
+request(&quot;T1&quot;, &quot;X&quot;, &quot;A&quot;)                                           # T1 wants to write A, but T2 also holds S(A): T1 waits for T2
+print(&quot;\n&quot;.join(log))
+cyc = deadlock()
+print(&quot;wait-for cycle:&quot;, &quot; -&gt; &quot;.join(cyc + [cyc[0]]) if cyc else None, &quot;-&gt; DEADLOCK: abort the younger transaction (T2) and restart it&quot;)
+print(&quot;Rules of 2PL: growing phase (only acquire), then shrinking phase (only release). Strict 2PL holds X locks until commit (no cascading aborts).&quot;)
+
+# ----- Output (real run) -----
+# T1 gets S(A)
+# T2 shares S(A)
+# T1 gets X(B)
+# T2 WAITS for X(B) held by [&#x27;T1&#x27;]
+# T1 WAITS for X(A) held by [&#x27;T1&#x27;, &#x27;T2&#x27;]
+# wait-for cycle: T2 -&gt; T1 -&gt; T2 -&gt; DEADLOCK: abort the younger transaction (T2) and restart it
+# Rules of 2PL: growing phase (only acquire), then shrinking phase (only release). Strict 2PL holds X locks until commit (no cascading aborts).</code></pre><p>Both transactions share A for reading; T1 takes B exclusively, so T2 waits; then T1 wants to write A but T2 still reads it, so T1 waits for T2 while T2 waits for T1: deadlock. The system aborts one transaction (the victim) and restarts it.</p></details><table><tr><th>Lock / rule</th><th>Meaning</th></tr><tr><td>S (shared)</td><td>Read; compatible with other S</td></tr><tr><td>X (exclusive)</td><td>Write; incompatible with everything</td></tr><tr><td>Basic 2PL</td><td>Growing phase then shrinking phase: guarantees conflict serializability</td></tr><tr><td>Strict 2PL</td><td>Hold X locks until commit/abort: avoids cascading aborts (used in practice)</td></tr><tr><td>Intention locks (IS, IX)</td><td>Lock a table to say 'I will lock some rows inside'</td></tr><tr><td>Lock granularity</td><td>Database, table, page, row</td></tr><tr><td>Deadlock handling</td><td>Detection (wait-for graph) or prevention (wait-die, wound-wait using timestamps) or timeouts</td></tr></table><h3>Good to know</h3><ul><li>Same deadlock rules as in <a href="operating-systems.html#deadlock">Operating Systems</a>: databases detect and break cycles automatically.</li></ul>
+    </section>
+
+    <!-- 32 -->
+    <section class="block" id="mvcc">
+      <h2><span class="num">32</span> Timestamps, MVCC and Snapshot Isolation</h2>
+<div class="callout life"><strong>Picture:</strong> Instead of making readers wait, the library keeps old editions of each book. Readers get the edition that was current when they arrived; writers publish a new edition.</div><details class="deepdive" open><summary>Versions for readers, and the write-skew anomaly (simulation) (run for real)</summary><pre><code># MVCC and snapshot isolation (simulation): readers see a snapshot; writers create new versions. And the &#x27;write skew&#x27; anomaly.
+versions = {&quot;x&quot;: [(0, 10)], &quot;doctor_A_on_call&quot;: [(0, True)], &quot;doctor_B_on_call&quot;: [(0, True)]}   # key -&gt; list of (commit_ts, value)
+ts = 0
+def read(key, snap): return max((v for v in versions[key] if v[0] &lt;= snap), key=lambda v: v[0])[1]
+def commit(writes):
+    global ts; ts += 1
+    for k, v in writes.items(): versions[k].append((ts, v))
+    return ts
+snap_reader = ts
+commit({&quot;x&quot;: 20})
+print(&quot;long report started at snapshot %d reads x = %d; a new reader sees x = %d&quot; % (snap_reader, read(&quot;x&quot;, snap_reader), read(&quot;x&quot;, ts)))
+print(&quot;versions of x kept for old snapshots:&quot;, versions[&quot;x&quot;], &quot; (garbage collection / VACUUM removes old ones later)&quot;)
+s1 = s2 = ts                                                   # two doctors start &#x27;go off call&#x27; at the same time
+ok1 = read(&quot;doctor_B_on_call&quot;, s1); ok2 = read(&quot;doctor_A_on_call&quot;, s2)   # each checks that the OTHER is still on call
+if ok1: commit({&quot;doctor_A_on_call&quot;: False})
+if ok2: commit({&quot;doctor_B_on_call&quot;: False})
+print(&quot;write skew: A on call =&quot;, read(&quot;doctor_A_on_call&quot;, ts), &quot;, B on call =&quot;, read(&quot;doctor_B_on_call&quot;, ts), &quot; &lt;- nobody on call, though each check passed&quot;)
+print(&quot;They wrote DIFFERENT rows, so snapshot isolation saw no conflict. SERIALIZABLE isolation (e.g. PostgreSQL&#x27;s SSI) or locking the rows read prevents it.&quot;)
+
+# ----- Output (real run) -----
+# long report started at snapshot 0 reads x = 10; a new reader sees x = 20
+# versions of x kept for old snapshots: [(0, 10), (1, 20)]  (garbage collection / VACUUM removes old ones later)
+# write skew: A on call = False , B on call = False  &lt;- nobody on call, though each check passed
+# They wrote DIFFERENT rows, so snapshot isolation saw no conflict. SERIALIZABLE isolation (e.g. PostgreSQL&#x27;s SSI) or locking the rows read prevents it.</code></pre><p>The long report keeps reading x = 10 from its snapshot while new readers see 20. Two doctors each checked that the <em>other</em> was still on call and then went off call: under snapshot isolation both succeed (they wrote different rows) and nobody is on call. That is <strong>write skew</strong>.</p></details><h3>Good to know</h3><ul><li>Timestamp ordering: each transaction gets a timestamp; operations that would violate timestamp order abort (Thomas write rule ignores obsolete writes).</li><li>MVCC is used by PostgreSQL, Oracle, MySQL InnoDB, SQL Server (snapshot), SQLite WAL readers. Old versions need cleanup (VACUUM, purge).</li><li>PostgreSQL's SERIALIZABLE uses Serializable Snapshot Isolation (SSI) to detect write skew and abort one transaction.</li></ul>
+    </section>
+
+    <!-- 33 -->
+    <section class="block" id="recovery">
+      <h2><span class="num">33</span> Crash Recovery: Logs, Checkpoints, ARIES</h2>
+<div class="callout life"><strong>Picture:</strong> A shopkeeper writes every sale in a notebook <em>before</em> moving money. After a power cut, the notebook tells exactly which sales finished (redo them) and which were half-done (undo them).</div><details class="deepdive" open><summary>REDO then UNDO from a write-ahead log (simplified ARIES) (run for real)</summary><pre><code># Crash recovery with a write-ahead log (WAL), simplified ARIES-style REDO then UNDO (simulation).
+disk = {&quot;A&quot;: 100, &quot;B&quot;: 200, &quot;C&quot;: 300}
+log = [(&quot;T1&quot;, &quot;BEGIN&quot;), (&quot;T1&quot;, &quot;UPDATE&quot;, &quot;A&quot;, 100, 50), (&quot;T2&quot;, &quot;BEGIN&quot;), (&quot;T2&quot;, &quot;UPDATE&quot;, &quot;B&quot;, 200, 250), (&quot;T1&quot;, &quot;COMMIT&quot;),
+       (&quot;T2&quot;, &quot;UPDATE&quot;, &quot;C&quot;, 300, 0), (&quot;CHECKPOINT&quot;,), (&quot;T3&quot;, &quot;BEGIN&quot;), (&quot;T3&quot;, &quot;UPDATE&quot;, &quot;A&quot;, 50, 75)]
+# CRASH here: some pages reached disk, some did not (steal / no-force buffer policy)
+disk.update({&quot;A&quot;: 75, &quot;B&quot;: 200, &quot;C&quot;: 0})                       # A has T3&#x27;s uncommitted value; B lost T2&#x27;s change; C has T2&#x27;s change
+print(&quot;disk after crash:&quot;, disk)
+committed = {r[0] for r in log if len(r) &gt; 1 and r[1] == &quot;COMMIT&quot;}
+for r in log:                                                  # REDO: repeat history (every logged update, in order)
+    if len(r) == 5: disk[r[2]] = r[4]
+print(&quot;after REDO (repeat history):&quot;, disk)
+for r in reversed(log):                                        # UNDO: roll back losers (no COMMIT record), newest first
+    if len(r) == 5 and r[0] not in committed: disk[r[2]] = r[3]; print(&quot;   undo %s: %s back to %s&quot; % (r[0], r[2], r[3]))
+print(&quot;after UNDO:&quot;, disk, &quot; committed:&quot;, sorted(committed), &quot; losers:&quot;, sorted({r[0] for r in log if len(r) &gt; 1 and r[0] not in committed}))
+print(&quot;Rule (WAL): a change&#x27;s log record must reach stable storage BEFORE the changed page does, and COMMIT is durable once its log record is flushed.&quot;)
+
+# ----- Output (real run) -----
+# disk after crash: {&#x27;A&#x27;: 75, &#x27;B&#x27;: 200, &#x27;C&#x27;: 0}
+# after REDO (repeat history): {&#x27;A&#x27;: 75, &#x27;B&#x27;: 250, &#x27;C&#x27;: 0}
+#    undo T3: A back to 50
+#    undo T2: C back to 300
+#    undo T2: B back to 200
+# after UNDO: {&#x27;A&#x27;: 50, &#x27;B&#x27;: 200, &#x27;C&#x27;: 300}  committed: [&#x27;T1&#x27;]  losers: [&#x27;T2&#x27;, &#x27;T3&#x27;]
+# Rule (WAL): a change&#x27;s log record must reach stable storage BEFORE the changed page does, and COMMIT is durable once its log record is flushed.</code></pre><p>After the crash the disk held a mix: T3's uncommitted change to A, but not T2's change to B. Redo repeated all logged updates; undo then rolled back the losers T2 and T3 newest-first. Only T1 (committed) survives: A ends at 50, B and C at their original values.</p></details><table><tr><th>Concept</th><th>Meaning</th></tr><tr><td>Write-ahead logging (WAL)</td><td>Log record on stable storage before the data page</td></tr><tr><td>Steal / no-force</td><td>Dirty pages may reach disk before commit; committed pages need not be forced at commit (needs undo and redo)</td></tr><tr><td>Checkpoint</td><td>A marker that limits how far back recovery must read</td></tr><tr><td>ARIES phases</td><td>Analysis → Redo (repeat history) → Undo losers (with compensation log records)</td></tr><tr><td>Shadow paging</td><td>Copy-on-write pages instead of an undo log (used by some systems; SQLite's rollback-journal mode is related)</td></tr><tr><td>Backups</td><td>Full + incremental + log archiving enables point-in-time recovery</td></tr></table><h3>Good to know</h3><ul><li>Durability also needs the disk to really store data on fsync; misconfigured caches can lose 'committed' transactions after a power cut.</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part H — Distributed Databases, NoSQL and Choosing a Database</h2></div>
+
+    <!-- 34 -->
+    <section class="block" id="distributed-db">
+      <h2><span class="num">34</span> Replication, Partitioning (Sharding) and CAP</h2>
+<div class="callout life"><strong>Picture:</strong> One library becomes a chain of branches: copies of popular books in every branch (replication), and the collection split by subject across branches (sharding).</div><details class="deepdive" open><summary>Hash-mod vs consistent hashing when adding a server (run for real)</summary><pre><code># Hash vs range partitioning (sharding) and what happens when you add a server.
+import hashlib
+keys = [&quot;user%d&quot; % i for i in range(10000)]
+h = lambda k: int(hashlib.md5(k.encode()).hexdigest(), 16)
+def mod_assign(n): return {k: h(k) % n for k in keys}
+a4, a5 = mod_assign(4), mod_assign(5)
+print(&quot;hash(key) mod N: going from 4 to 5 servers moves %.0f%% of keys&quot; % (100 * sum(a4[k] != a5[k] for k in keys) / len(keys)))
+import bisect
+def ring(servers, vnodes=100):
+    pts = sorted((h(&quot;%s#%d&quot; % (s, v)), s) for s in servers for v in range(vnodes)); return [p for p, _ in pts], [s for _, s in pts]
+def assign(r, k):
+    pts, owners = r; i = bisect.bisect(pts, h(k)) % len(pts); return owners[i]
+r4, r5 = ring([&quot;s0&quot;, &quot;s1&quot;, &quot;s2&quot;, &quot;s3&quot;]), ring([&quot;s0&quot;, &quot;s1&quot;, &quot;s2&quot;, &quot;s3&quot;, &quot;s4&quot;])
+moved = sum(assign(r4, k) != assign(r5, k) for k in keys)
+print(&quot;consistent hashing (100 virtual nodes each): adding a 5th server moves %.0f%% of keys (ideal 20%%)&quot; % (100 * moved / len(keys)))
+print(&quot;range partitioning (A-F, G-M, ...) keeps ranges together for range scans but can create hot spots.&quot;)
+
+# ----- Output (real run) -----
+# hash(key) mod N: going from 4 to 5 servers moves 80% of keys
+# consistent hashing (100 virtual nodes each): adding a 5th server moves 19% of keys (ideal 20%)
+# range partitioning (A-F, G-M, ...) keeps ranges together for range scans but can create hot spots.</code></pre><p>With 'hash mod N', going from 4 to 5 servers moved 80% of the keys; consistent hashing with virtual nodes moved 19%, close to the ideal 20%.</p></details><table><tr><th>Concept</th><th>Meaning</th></tr><tr><td>Leader-follower replication</td><td>Writes go to a leader; followers copy (sync or async)</td></tr><tr><td>Multi-leader / leaderless</td><td>Writes accepted in several places; conflicts must be resolved (quorums R + W > N)</td></tr><tr><td>Sharding</td><td>Split data by key range or hash across nodes</td></tr><tr><td>CAP theorem</td><td>During a network Partition, choose Consistency or Availability</td></tr><tr><td>PACELC</td><td>Else (no partition) choose Latency or Consistency</td></tr><tr><td>Distributed transactions</td><td>Two-phase commit (2PC); consensus (Raft, Paxos)</td></tr><tr><td>Eventual consistency</td><td>Replicas converge if writes stop</td></tr></table><h3>Good to know</h3><ul><li>Much more (quorums, consensus, real simulations) in <a href="system-design.html">System Design</a>.</li></ul>
+    </section>
+
+    <!-- 35 -->
+    <section class="block" id="nosql">
+      <h2><span class="num">35</span> NoSQL Families in Practice</h2>
+<div class="callout life"><strong>Picture:</strong> Different specialist shops instead of one supermarket: each is excellent for its own kind of item.</div><table><tr><th>Family</th><th>Query style</th><th>Typical use</th><th>Trade-off</th></tr><tr><td>Document (MongoDB)</td><td>Find by fields, aggregation pipelines</td><td>Product catalogues, user profiles</td><td>Joins are limited; design around access patterns</td></tr><tr><td>Key-value (Redis, DynamoDB)</td><td>Get/put by key</td><td>Caches, sessions, counters, leaderboards</td><td>Little querying beyond the key</td></tr><tr><td>Wide-column (Cassandra)</td><td>By partition key + clustering key</td><td>Massive writes, time series</td><td>Query-first modelling, eventual consistency by default</td></tr><tr><td>Graph (Neo4j)</td><td>Pattern matching (Cypher)</td><td>Social graphs, fraud rings, recommendations</td><td>Harder to scale horizontally</td></tr><tr><td>Search (Elasticsearch/OpenSearch)</td><td>Full-text, relevance</td><td>Search boxes, log analytics</td><td>Not a primary source of truth</td></tr></table><details class="deepdive" open><summary>MongoDB queries and an aggregation pipeline (template, not run)</summary><pre><code>// MongoDB (document database) shell examples (template: not run here)
+db.products.insertOne({ name: &quot;Phone&quot;, price: 15000, tags: [&quot;electronics&quot;, &quot;mobile&quot;], specs: { ram_gb: 8 } })
+db.products.find({ price: { $gt: 1000 } }, { name: 1, &quot;specs.ram_gb&quot;: 1 })
+db.products.createIndex({ tags: 1 })                                         // multikey index on an array
+db.orders.aggregate([
+  { $match: { status: &quot;paid&quot; } },
+  { $group: { _id: &quot;$city&quot;, revenue: { $sum: &quot;$amount&quot; } } },
+  { $sort: { revenue: -1 } } ])                                              // like GROUP BY ... ORDER BY</code></pre></details><details class="deepdive" open><summary>Redis data structures (template, not run)</summary><pre><code># Redis (in-memory key-value store) commands (template: not run here)
+SET session:42 &quot;{...}&quot; EX 3600       # key with a 1-hour expiry (cache / sessions)
+INCR page:views                       # atomic counter
+LPUSH queue:emails job1               # list as a simple queue
+ZADD leaderboard 980 asha 870 ravi    # sorted set
+ZREVRANGE leaderboard 0 9 WITHSCORES  # top 10</code></pre></details><h3>Good to know</h3><ul><li>'NoSQL' originally meant 'not only SQL'. Many NoSQL databases now offer transactions and SQL-like languages, and SQL databases offer JSON: the lines have blurred.</li></ul>
+    </section>
+
+    <!-- 36 -->
+    <section class="block" id="orm-apps">
+      <h2><span class="num">36</span> Databases in Applications: Drivers, ORMs, Pools, Migrations</h2>
+<div class="callout life"><strong>Picture:</strong> An interpreter between your program's language (objects) and the database's language (tables).</div><details class="deepdive" open><summary>SQLAlchemy 2.x ORM models and a query (template, not run)</summary><pre><code># An ORM maps tables to classes (SQLAlchemy 2.x style; template: not run here)
+from sqlalchemy import ForeignKey, String, create_engine, select
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, Session
+class Base(DeclarativeBase): pass
+class Dept(Base):
+    __tablename__ = &quot;dept&quot;
+    dept_id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(50), unique=True)
+    students: Mapped[list[&quot;Student&quot;]] = relationship(back_populates=&quot;dept&quot;)
+class Student(Base):
+    __tablename__ = &quot;student&quot;
+    roll: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str]
+    dept_id: Mapped[int | None] = mapped_column(ForeignKey(&quot;dept.dept_id&quot;))
+    dept: Mapped[Dept | None] = relationship(back_populates=&quot;students&quot;)
+engine = create_engine(&quot;sqlite:///school.db&quot;)
+Base.metadata.create_all(engine)
+with Session(engine) as s:
+    for st in s.scalars(select(Student).where(Student.name.like(&quot;A%&quot;))): print(st.name, st.dept.name if st.dept else None)
+# Watch for the N+1 query problem: loading related objects one by one in a loop. Use joins / eager loading.</code></pre></details><h3>Good to know</h3><ul><li>Connection pools reuse connections (opening one is expensive).</li><li>Schema migrations (Alembic, Flyway, Liquibase, Django/Rails migrations) version the schema like code.</li><li>Watch for the N+1 query problem; log slow queries; always parameterise.</li><li>Java side: JDBC, JPA/Hibernate (see <a href="java.html">Java</a>).</li></ul>
+    </section>
+
+    <!-- 37 -->
+    <section class="block" id="choosing-db">
+      <h2><span class="num">37</span> Choosing a Database</h2>
+<div class="callout life"><strong>Picture:</strong> Choosing a vehicle: a family car (PostgreSQL) does almost everything well; a truck, a race car or a boat only when the job truly needs it.</div><table><tr><th>Need</th><th>Good starting choice</th></tr><tr><td>General application data, money, relations</td><td>PostgreSQL or MySQL (managed in the cloud)</td></tr><tr><td>Embedded / mobile / local / tests</td><td>SQLite</td></tr><tr><td>Cache, sessions, rate limits</td><td>Redis or Valkey (open-source fork, as reported after Redis licence changes)</td></tr><tr><td>Flexible documents with simple access patterns</td><td>MongoDB, or PostgreSQL JSONB</td></tr><tr><td>Massive write throughput across regions</td><td>Cassandra, DynamoDB, ScyllaDB</td></tr><tr><td>Analytics on large data</td><td>Column stores: DuckDB (local), ClickHouse, BigQuery, Snowflake, Redshift</td></tr><tr><td>Deep relationship queries</td><td>A graph database (or recursive SQL first)</td></tr><tr><td>Similarity search for AI</td><td>pgvector or a vector database (see <a href="rag.html">RAG</a>)</td></tr><tr><td>Global SQL with strong consistency</td><td>NewSQL: CockroachDB, YugabyteDB, Google Spanner</td></tr></table><h3>Good to know</h3><ul><li>Product, licence and version facts change often; check each project's site (dated facts on this page are marked).</li><li>Pick based on access patterns, consistency needs, team skills and operations cost, not hype.</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part I — Practice and Reference</h2></div>
+
+    <!-- 38 -->
+    <section class="block" id="dbms-cheatsheet">
+      <h2><span class="num">38</span> SQL and DBMS Cheat Sheet</h2>
+<div class="callout life"><strong>Picture:</strong> Pocket card.</div><table><tr><th>Topic</th><th>Remember</th></tr><tr><td>Query order</td><td>FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT</td></tr><tr><td>NULL</td><td>Use IS NULL; NOT IN with NULL returns nothing; COUNT(col) skips NULL</td></tr><tr><td>Keys</td><td>Super ⊇ candidate (minimal) → primary; foreign key references a key</td></tr><tr><td>Normal forms</td><td>1NF atomic; 2NF no partial; 3NF no transitive; BCNF every determinant is a super key</td></tr><tr><td>Closure</td><td>Repeat: if LHS ⊆ result, add RHS</td></tr><tr><td>Lossless join (2 parts)</td><td>R1 ∩ R2 → R1 or R1 ∩ R2 → R2</td></tr><tr><td>ACID</td><td>Atomic, Consistent, Isolated, Durable</td></tr><tr><td>Serializability test</td><td>Precedence graph has no cycle</td></tr><tr><td>2PL</td><td>Growing then shrinking; strict 2PL keeps X locks to commit</td></tr><tr><td>Isolation anomalies</td><td>Dirty read, non-repeatable read, phantom, lost update, write skew</td></tr><tr><td>Index rules</td><td>Leftmost prefix; no functions on the column; selective columns; costs writes</td></tr><tr><td>B+ tree height</td><td>≈ log<sub>fanout</sub>(rows)</td></tr><tr><td>Recovery</td><td>WAL; redo committed, undo losers; checkpoints</td></tr><tr><td>CAP</td><td>Partition → choose C or A</td></tr></table>
+    </section>
+
+    <!-- 39 -->
+    <section class="block" id="interview-dbms">
+      <h2><span class="num">39</span> Interview Questions (With Answers)</h2>
+<div class="callout life"><strong>Picture:</strong> Grouped by theme, easiest first. Click to reveal.</div><h3>A. Basics</h3>
+<details class="quiz-item"><summary>Q1: DBMS vs file system?</summary><p class="answer">DBMS adds a query language, integrity constraints, concurrency control, recovery, security and data independence.</p></details>
+<details class="quiz-item"><summary>Q2: Primary key vs unique key vs foreign key?</summary><p class="answer">Primary: unique + not null, one per table. Unique: no duplicates, may allow NULL. Foreign: must match a key in another table.</p></details>
+<details class="quiz-item"><summary>Q3: Super key vs candidate key?</summary><p class="answer">Super key identifies rows; candidate key is a minimal super key.</p></details>
+<details class="quiz-item"><summary>Q4: DDL vs DML vs DCL vs TCL?</summary><p class="answer">Define structure; manipulate data; control permissions; control transactions.</p></details>
+<details class="quiz-item"><summary>Q5: DELETE vs TRUNCATE vs DROP?</summary><p class="answer">DELETE removes chosen rows (logged, can use WHERE); TRUNCATE removes all rows quickly; DROP removes the table itself.</p></details>
+<h3>B. SQL</h3>
+<details class="quiz-item"><summary>Q6: INNER vs LEFT vs FULL OUTER join?</summary><p class="answer">Matches only; all left rows plus matches; all rows from both sides.</p></details>
+<details class="quiz-item"><summary>Q7: WHERE vs HAVING?</summary><p class="answer">WHERE filters rows before grouping; HAVING filters groups after aggregation.</p></details>
+<details class="quiz-item"><summary>Q8: Find the second-highest salary.</summary><p class="answer"><code>SELECT max(salary) FROM emp WHERE salary &lt; (SELECT max(salary) FROM emp)</code> or DENSE_RANK() = 2.</p></details>
+<details class="quiz-item"><summary>Q9: RANK vs DENSE_RANK vs ROW_NUMBER?</summary><p class="answer">1,2,2,4 / 1,2,2,3 / 1,2,3,4.</p></details>
+<details class="quiz-item"><summary>Q10: Why does NOT IN sometimes return no rows?</summary><p class="answer">If the subquery returns a NULL, every NOT IN comparison is UNKNOWN.</p></details>
+<details class="quiz-item"><summary>Q11: What is a correlated subquery?</summary><p class="answer">A subquery that refers to the outer query's row and is (logically) evaluated per row.</p></details>
+<details class="quiz-item"><summary>Q12: View vs materialized view?</summary><p class="answer">Saved query vs saved result that must be refreshed.</p></details>
+<details class="quiz-item"><summary>Q13: How do you prevent SQL injection?</summary><p class="answer">Parameterised queries, least privilege, validation; never concatenate input into SQL.</p></details>
+<h3>C. Design</h3>
+<details class="quiz-item"><summary>Q14: What is normalization and why?</summary><p class="answer">Organising tables to remove redundancy and update/insert/delete anomalies by following FDs.</p></details>
+<details class="quiz-item"><summary>Q15: 2NF vs 3NF vs BCNF?</summary><p class="answer">2NF: no partial dependency on a composite key. 3NF: no transitive dependency of non-prime attributes. BCNF: every determinant is a super key.</p></details>
+<details class="quiz-item"><summary>Q16: When would you denormalize?</summary><p class="answer">For read performance in reporting or hot paths, accepting duplication and the work to keep it consistent.</p></details>
+<details class="quiz-item"><summary>Q17: Map an M:N relationship to tables.</summary><p class="answer">A junction table with both foreign keys as a composite primary key, plus relationship attributes.</p></details>
+<h3>D. Storage and indexing</h3>
+<details class="quiz-item"><summary>Q18: Why B+ trees for indexes?</summary><p class="answer">Shallow, balanced, high fan-out (few page reads), sorted leaves linked for range scans.</p></details>
+<details class="quiz-item"><summary>Q19: Clustered vs non-clustered index?</summary><p class="answer">Clustered stores rows in key order (one per table); non-clustered is a separate structure pointing to rows.</p></details>
+<details class="quiz-item"><summary>Q20: When is an index not used?</summary><p class="answer">Functions on the column, leading wildcard LIKE '%x', non-leftmost composite columns, low selectivity, type mismatches, outdated statistics.</p></details>
+<details class="quiz-item"><summary>Q21: Hash join vs sort-merge vs nested loop?</summary><p class="answer">Hash: large equality joins; sort-merge: sorted inputs or inequality; nested loop: small inputs or with an inner index.</p></details>
+<h3>E. Transactions</h3>
+<details class="quiz-item"><summary>Q22: Explain ACID.</summary><p class="answer">Atomicity, Consistency, Isolation, Durability (see the transfer demo).</p></details>
+<details class="quiz-item"><summary>Q23: What are dirty read, non-repeatable read and phantom read?</summary><p class="answer">Reading uncommitted data; a re-read row has changed; a re-run query returns new rows.</p></details>
+<details class="quiz-item"><summary>Q24: What is 2PL and strict 2PL?</summary><p class="answer">Acquire locks then release (no acquiring after the first release) → serializable; strict holds X locks until commit → no cascading aborts.</p></details>
+<details class="quiz-item"><summary>Q25: How are deadlocks handled in databases?</summary><p class="answer">Wait-for graph detection and victim abort, or prevention by wait-die/wound-wait, or timeouts.</p></details>
+<details class="quiz-item"><summary>Q26: What is MVCC?</summary><p class="answer">Keeping multiple versions so readers see a snapshot without blocking writers.</p></details>
+<details class="quiz-item"><summary>Q27: What is write skew?</summary><p class="answer">Two transactions read overlapping data and write different rows, breaking an invariant under snapshot isolation.</p></details>
+<details class="quiz-item"><summary>Q28: How does WAL-based recovery work?</summary><p class="answer">Log before data; after a crash redo logged changes, then undo uncommitted transactions; checkpoints limit work.</p></details>
+<h3>F. Distributed</h3>
+<details class="quiz-item"><summary>Q29: State the CAP theorem.</summary><p class="answer">Under a network partition a system must choose consistency or availability.</p></details>
+<details class="quiz-item"><summary>Q30: Sharding vs replication?</summary><p class="answer">Sharding splits data across nodes for scale; replication copies it for availability and read scale.</p></details>
+<details class="quiz-item"><summary>Q31: SQL vs NoSQL?</summary><p class="answer">Relational with schemas, joins, strong transactions vs specialised models (document, key-value, wide-column, graph) chosen for scale or flexibility; choose by access patterns.</p></details>
+    </section>
+
+    <!-- 40 -->
+    <section class="block" id="glossary-dbms">
+      <h2><span class="num">40</span> Mini Glossary</h2>
+<div class="callout life"><strong>Picture:</strong> A pocket dictionary.</div><dl class="glossary">
+<dt>ACID</dt><dd>Atomicity, consistency, isolation, durability.</dd>
+<dt>B+ tree</dt><dd>Balanced tree index with linked leaves.</dd>
+<dt>BCNF</dt><dd>Normal form where every determinant is a super key.</dd>
+<dt>Candidate key</dt><dd>Minimal set of columns that identifies a row.</dd>
+<dt>Cardinality</dt><dd>Number of rows; or 1:1/1:N/M:N in ER.</dd>
+<dt>Checkpoint</dt><dd>Point that limits how much log recovery must read.</dd>
+<dt>CTE</dt><dd>WITH-clause named subquery (can be recursive).</dd>
+<dt>Deadlock</dt><dd>Transactions waiting for each other forever.</dd>
+<dt>Denormalization</dt><dd>Deliberate duplication for speed.</dd>
+<dt>Foreign key</dt><dd>Columns that reference another table's key.</dd>
+<dt>Functional dependency</dt><dd>X → Y: X determines Y.</dd>
+<dt>Index</dt><dd>Structure to find rows without a full scan.</dd>
+<dt>Isolation level</dt><dd>How much concurrent transactions may see of each other.</dd>
+<dt>Join</dt><dd>Combining rows of tables on a condition.</dd>
+<dt>MVCC</dt><dd>Multi-version concurrency control.</dd>
+<dt>Normalization</dt><dd>Splitting tables to remove redundancy.</dd>
+<dt>OLTP / OLAP</dt><dd>Transaction processing / analytical processing.</dd>
+<dt>Query optimizer</dt><dd>Chooses the cheapest execution plan.</dd>
+<dt>Schema</dt><dd>The structure of the database.</dd>
+<dt>Serializable</dt><dd>Equivalent to some one-at-a-time order.</dd>
+<dt>Sharding</dt><dd>Splitting data across servers.</dd>
+<dt>Transaction</dt><dd>A unit of work that is all-or-nothing.</dd>
+<dt>Trigger</dt><dd>Code run automatically on data changes.</dd>
+<dt>View</dt><dd>A saved query used like a table.</dd>
+<dt>WAL</dt><dd>Write-ahead log.</dd>
+</dl>
+    </section>
+
+    <!-- 41 -->
+    <section class="block" id="faq-dbms">
+      <h2><span class="num">41</span> FAQ</h2>
+<div class="callout life"><strong>Picture:</strong> Click a question to reveal the answer.</div><details class="quiz-item"><summary>Q: Which database should a beginner learn?</summary><p class="answer">SQLite to start (no server, used on this page), then PostgreSQL.</p></details>
+<details class="quiz-item"><summary>Q: Are the SQL outputs real?</summary><p class="answer">Yes: every SQL example ran in SQLite 3.50.4 through Python 3.14 and the output is shown. PostgreSQL/MongoDB/Redis/ORM code is a template.</p></details>
+<details class="quiz-item"><summary>Q: Will this SQL work in MySQL/PostgreSQL?</summary><p class="answer">Mostly yes; small differences exist (PRAGMA is SQLite-only, LIMIT vs TOP, some functions).</p></details>
+<details class="quiz-item"><summary>Q: Should I always normalise to BCNF?</summary><p class="answer">Aim for 3NF/BCNF for transactional data; denormalise deliberately for read-heavy reporting.</p></details>
+<details class="quiz-item"><summary>Q: Which books are classic?</summary><p class="answer">Silberschatz, Korth and Sudarshan 'Database System Concepts'; Elmasri and Navathe; Ramakrishnan and Gehrke; Kleppmann 'Designing Data-Intensive Applications' for distributed data.</p></details>
+    </section>
+
+    <!-- 42 -->
+    <section class="block" id="pitfalls-dbms">
+      <h2><span class="num">42</span> Common Mistakes and Checklist</h2>
+<div class="callout life"><strong>Picture:</strong> Traps students and engineers fall into.</div><div class="grid">
+<div class="card"><h4>🕳️ = NULL</h4><p>Use IS NULL.</p></div>
+<div class="card"><h4>🚫 NOT IN with NULLs</h4><p>Use NOT EXISTS.</p></div>
+<div class="card"><h4>💥 UPDATE without WHERE</h4><p>Run the SELECT first; use transactions.</p></div>
+<div class="card"><h4>🧵 Read-modify-write in the app</h4><p>Lost updates; use SET x = x - n or versions.</p></div>
+<div class="card"><h4>🐌 Function on an indexed column</h4><p>Index not used.</p></div>
+<div class="card"><h4>📇 Index everything</h4><p>Writes slow down; index what queries need.</p></div>
+<div class="card"><h4>💉 String-built SQL</h4><p>Use parameters.</p></div>
+<div class="card"><h4>💰 FLOAT for money</h4><p>Use DECIMAL/NUMERIC or integer paise.</p></div>
+<div class="card"><h4>⏳ Long transactions</h4><p>Hold locks/versions; keep them short.</p></div>
+<div class="card"><h4>🔁 N+1 queries in ORMs</h4><p>Join or eager-load.</p></div></div>
+    </section>
+
+    <!-- 43 -->
+    <section class="block" id="quiz-dbms">
+      <h2><span class="num">43</span> Quick Quiz 🎯</h2>
+<div class="callout life"><strong>Picture:</strong> Click each question to reveal the answer.</div><details class="quiz-item"><summary>Q1: Which join keeps Kabir (no department) in our demo?</summary><p class="answer">LEFT (and FULL) join.</p></details>
+<details class="quiz-item"><summary>Q2: What is the candidate key of R(A,B,C,D,E) with A→B, B→C, CD→E?</summary><p class="answer">AD.</p></details>
+<details class="quiz-item"><summary>Q3: What did EXPLAIN QUERY PLAN show after adding the index?</summary><p class="answer">SEARCH orders USING INDEX idx_orders_customer (customer=?).</p></details>
+<details class="quiz-item"><summary>Q4: Which join algorithm was fastest in our run?</summary><p class="answer">Hash join (about 8 ms).</p></details>
+<details class="quiz-item"><summary>Q5: Why was schedule S2 not serializable?</summary><p class="answer">Its precedence graph has a cycle T1 → T2 → T1.</p></details>
+<details class="quiz-item"><summary>Q6: Which transactions were undone in the recovery demo?</summary><p class="answer">T2 and T3 (no COMMIT record).</p></details>
+<details class="quiz-item"><summary>Q7: How many keys moved with consistent hashing when adding a 5th server?</summary><p class="answer">About 19% (vs 80% with hash mod N).</p></details>
+    </section>
+
+    <!-- 44 -->
+    <section class="block" id="learning-path-dbms">
+      <h2><span class="num">44</span> Learning Path</h2>
+<div class="callout life"><strong>Picture:</strong> A staircase from curious to confident.</div><table><tr><th>Step</th><th>Learn</th><th>Do</th></tr><tr><td>1</td><td>Parts A–B: concepts, ER, keys</td><td>Draw an ER diagram for a library or shop; map it to tables</td></tr><tr><td>2</td><td>Part C: SQL</td><td>Re-create the school database in SQLite; write 30 queries (joins, groups, windows)</td></tr><tr><td>3</td><td>Part D: normalization</td><td>Find FDs, keys and BCNF decompositions for textbook relations</td></tr><tr><td>4</td><td>Parts E–F: storage, indexes, plans</td><td>Use EXPLAIN on slow queries; add and remove indexes; measure</td></tr><tr><td>5</td><td>Part G: transactions</td><td>Reproduce anomalies with two connections; try isolation levels in PostgreSQL</td></tr><tr><td>6</td><td>Part H: distributed and NoSQL</td><td>Try MongoDB and Redis locally; read Kleppmann's DDIA</td></tr><tr><td>7</td><td>Practice</td><td>SQL exercises (LeetCode database problems, SQLZoo), CMU 15-445 lectures and projects</td></tr></table><h3>Good to know</h3><ul><li>Related: <a href="system-design.html">System Design</a>, <a href="operating-systems.html">OS</a>, <a href="computer-networks.html">Networks</a>, <a href="computer-organization.html">COA</a>, <a href="leetcode/index.html">LeetCode</a>.</li></ul>
+    </section>
+
+    <!-- 45 -->
+    <section class="block" id="resources-dbms">
+      <h2><span class="num">45</span> Learn More — Resources</h2>
+<div class="callout life"><strong>Picture:</strong> A shelf of primary sources.</div><p>All links below returned HTTP 200 when checked on 18 November 2026. YouTube links are search queries.</p>
+<ul class="resources">
+<li><span class="tag docs">docs</span> <a href="https://www.sqlite.org/docs.html">SQLite documentation</a> · <a href="https://www.sqlite.org/eqp.html">EXPLAIN QUERY PLAN</a> · <a href="https://www.sqlite.org/wal.html">SQLite WAL</a> · <a href="https://www.sqlite.org/windowfunctions.html">Window functions</a> · <a href="https://www.sqlite.org/json1.html">JSON functions</a></li>
+<li><span class="tag docs">docs</span> <a href="https://www.postgresql.org/docs/current/">PostgreSQL documentation</a> · <a href="https://www.postgresql.org/docs/current/transaction-iso.html">PostgreSQL isolation levels</a> · <a href="https://www.postgresql.org/docs/current/using-explain.html">Using EXPLAIN</a> · <a href="https://docs.python.org/3/library/sqlite3.html">Python sqlite3</a></li>
+<li><span class="tag article">article</span> <a href="https://use-the-index-luke.com/">Use The Index, Luke</a> · <a href="https://15445.courses.cs.cmu.edu/">CMU 15-445 Database Systems</a> · <a href="https://sqlzoo.net/">SQLZoo exercises</a></li>
+<li><span class="tag video">video</span> <a href="https://www.youtube.com/results?search_query=dbms+full+course">DBMS full course (search)</a> · <a href="https://www.youtube.com/results?search_query=normalization+1nf+2nf+3nf+bcnf">Normalization explained (search)</a> · <a href="https://www.youtube.com/results?search_query=cmu+15-445+database+systems">CMU database lectures (search)</a></li>
+</ul>
+<p><strong>Dated facts:</strong> SQLite 3.50.4 used for all runs (Python 3.14.2, 18 Nov 2026); RIGHT/FULL OUTER JOIN available since SQLite 3.39; SQL standard latest edition SQL:2023. Product notes (Valkey fork, NewSQL systems) are as reported.</p>
+    </section>
+  </main>
+</div>
+
+<div class="page-nav">
+  <a href="index.html">⬅ Back to Roadmap Home</a>
+  <a href="system-design.html">Related: System Design (HLD) ➜</a>
+</div>
+
+</body>
+</html>

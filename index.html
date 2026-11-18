@@ -19,14 +19,131 @@
 
 <p style="text-align:center;margin:18px 0 0;color:var(--text-dim)">⚡ One-page cheat sheets: <a href="rag-cheatsheet.html">RAG</a> <span style="opacity:.6">(more subjects coming)</span></p>
 
+<nav class="home-nav" aria-label="Sections">
+  <a href="#programming">💻 Programming Languages <span class="count">3</span></a>
+  <a href="#cs-core">🎓 Computer Science Subjects <span class="count">4</span></a>
+  <a href="#dsa">🧩 DSA & Problem Solving <span class="count">2</span></a>
+  <a href="#system-design">🏗️ System Design <span class="count">2</span></a>
+  <a href="#ai-ml">🧠 AI, Machine Learning & Deep Learning <span class="count">4</span></a>
+  <a href="#genai">✨ Generative AI, LLMs & Agents <span class="count">9</span></a>
+  <a href="#web">🌐 Web & Backend Development <span class="count">1</span></a>
+  <a href="#devops">♾️ DevOps, Cloud & MLOps <span class="count">7</span></a>
+</nav>
+
+<div class="home-sections">
+<section class="home-section" id="programming">
+  <h2>💻 Programming Languages <span class="count">3 guides</span></h2>
+  <p class="section-desc">Learn to code: the languages used throughout the other guides.</p>
 <div class="subject-grid">
 
-  <a class="subject-card" href="rag.html">
-    <div class="icon">🔍</div>
-    <h3>RAG</h3>
-    <p>Retrieval-Augmented Generation — how AI looks things up before answering.</p>
+  <a class="subject-card" href="python.html">
+    <div class="icon">🐍</div>
+    <h3>Python</h3>
+    <p>From first print() to Python 3.15: syntax, data structures, OOP, async, typing, uv, testing, data/web/AI, and 7 hands-on projects.</p>
     <span class="status-pill ready">✅ Ready</span>
   </a>
+
+  <a class="subject-card" href="cpp.html">
+    <div class="icon">⚙️</div>
+    <h3>C++ (OOP &amp; STL)</h3>
+    <p>C++ from first program to C++23/26: pointers, memory, move semantics, smart pointers, templates, concepts; detailed OOP (classes, inheritance, virtual functions, vtables, Rule of Five, patterns); detailed STL (every container, iterators, algorithms, ranges, benchmarks); performance, CMake, testing; 99 sections, all code compiled and run.</p>
+    <span class="status-pill ready">✅ Ready</span>
+  </a>
+
+  <a class="subject-card" href="java.html">
+    <div class="icon">☕</div>
+    <h3>Java (OOP, Collections &amp; Enterprise)</h3>
+    <p>Java from the JVM to Java 25; detailed OOP; the Collections Framework side by side with its C++ STL twins; JDBC, Servlets, JSP, Jakarta EE (J2EE), JPA, Spring and Spring Boot; 105 sections, all code compiled and run (embedded Tomcat, H2, a tested Spring Boot REST app).</p>
+    <span class="status-pill ready">✅ Ready</span>
+  </a>
+
+</div>
+</section>
+
+<section class="home-section" id="cs-core">
+  <h2>🎓 Computer Science Subjects <span class="count">4 guides</span></h2>
+  <p class="section-desc">The core university subjects that every software engineer and every exam (GATE, interviews) expects.</p>
+<div class="subject-grid">
+
+  <a class="subject-card" href="operating-systems.html">
+    <div class="icon">💻</div>
+    <h3>Operating Systems</h3>
+    <p>Processes, threads, system calls, CPU scheduling, synchronization and deadlocks, paging and virtual memory, file systems, disks, I/O, security and virtualization; 62 sections with real Linux system calls (fork, pipes, signals, mmap) and simulations (scheduling, page replacement, Banker's, disk scheduling).</p>
+    <span class="status-pill ready">✅ Ready</span>
+  </a>
+
+  <a class="subject-card" href="computer-organization.html">
+    <div class="icon">🧮</div>
+    <h3>Computer Organization &amp; Architecture</h3>
+    <p>Data representation and IEEE 754, logic and arithmetic (Booth, Hamming), the CPU and ISAs (x86, ARM, RISC-V), pipelining and hazards, caches and the memory hierarchy, I/O, parallelism; 51 sections with real measurements (memory latency, false sharing) and real g++ assembly.</p>
+    <span class="status-pill ready">✅ Ready</span>
+  </a>
+
+  <a class="subject-card" href="computer-networks.html">
+    <div class="icon">🌐</div>
+    <h3>Computer Networks</h3>
+    <p>OSI and TCP/IP, link layer, IP and subnetting, routing (Dijkstra, distance vector, BGP), TCP/UDP, congestion control, DNS, HTTP/1.1–3, TLS, security and troubleshooting; 48 sections with real TCP/UDP/HTTP over loopback and simulations.</p>
+    <span class="status-pill ready">✅ Ready</span>
+  </a>
+
+  <a class="subject-card" href="dbms.html">
+    <div class="icon">🗄️</div>
+    <h3>DBMS</h3>
+    <p>ER modelling, relational model and algebra, SQL from basics to window functions and recursive CTEs, normalization, B+ trees and indexing, query optimization, transactions, isolation, locking, MVCC, recovery, NoSQL; 45 sections, every SQL example run in SQLite.</p>
+    <span class="status-pill ready">✅ Ready</span>
+  </a>
+
+</div>
+</section>
+
+<section class="home-section" id="dsa">
+  <h2>🧩 DSA & Problem Solving <span class="count">2 guides, 1 coming soon</span></h2>
+  <p class="section-desc">Data structures, algorithms and practice problems with tested solutions.</p>
+<div class="subject-grid">
+
+  <a class="subject-card disabled" href="#">
+    <div class="icon">🧮</div>
+    <h3>DSA (Data Structures & Algorithms)</h3>
+    <p>The foundations every programmer needs — arrays to graphs to dynamic programming.</p>
+    <span class="status-pill soon">🚧 Coming soon</span>
+  </a>
+
+  <a class="subject-card" href="leetcode/index.html">
+    <div class="icon">🧩</div>
+    <h3>LeetCode: Problems 1–10 (DSA practice)</h3>
+    <p>Two Sum, Add Two Numbers, Longest Substring Without Repeating Characters, Median of Two Sorted Arrays, Longest Palindromic Substring, Zigzag Conversion, Reverse Integer, String to Integer (atoi), Palindrome Number, Regular Expression Matching: each with several approaches from brute force to most optimized in C++, Java and Python (click-to-switch tabs), step-by-step dry runs, and a real test report (hundreds of tests per approach).</p>
+    <span class="status-pill ready">✅ Ready</span>
+  </a>
+
+</div>
+</section>
+
+<section class="home-section" id="system-design">
+  <h2>🏗️ System Design <span class="count">2 guides</span></h2>
+  <p class="section-desc">Designing software at two zoom levels: whole systems and the classes inside them.</p>
+<div class="subject-grid">
+
+  <a class="subject-card" href="system-design.html">
+    <div class="icon">🏗️</div>
+    <h3>System Design (HLD)</h3>
+    <p>Estimation, scaling, caching, databases, queues, consistency, resilience and 15 classic designs (URL shortener, feed, chat, payments…) — with real runnable simulations.</p>
+    <span class="status-pill ready">✅ Ready</span>
+  </a>
+
+  <a class="subject-card" href="low-level-design.html">
+    <div class="icon">🧱</div>
+    <h3>System Design (LLD)</h3>
+    <p>OOP, UML, SOLID, all 23 design patterns, dependency injection, concurrency, testing and 21 classic problems (parking lot, elevator, LRU cache, Splitwise…) — every code sample really run.</p>
+    <span class="status-pill ready">✅ Ready</span>
+  </a>
+
+</div>
+</section>
+
+<section class="home-section" id="ai-ml">
+  <h2>🧠 AI, Machine Learning & Deep Learning <span class="count">4 guides</span></h2>
+  <p class="section-desc">From the ideas of AI to training real models with Python frameworks.</p>
+<div class="subject-grid">
 
   <a class="subject-card" href="artificial-intelligence.html">
     <div class="icon">🧠</div>
@@ -41,6 +158,28 @@
     <p>How machines learn from data: regression, trees, forests, boosting, clustering, evaluation, neural networks with PyTorch, MLOps, and 6 hands-on projects.</p>
     <span class="status-pill ready">✅ Ready</span>
   </a>
+
+  <a class="subject-card" href="deep-learning.html">
+    <div class="icon">🕸️</div>
+    <h3>Deep Learning</h3>
+    <p>Neural networks from tensors and backprop to CNNs, Transformers, GANs, diffusion, LoRA and deployment — with PyTorch and 6 hands-on projects.</p>
+    <span class="status-pill ready">✅ Ready</span>
+  </a>
+
+  <a class="subject-card" href="tensorflow-pytorch.html">
+    <div class="icon">🔥</div>
+    <h3>TensorFlow &amp; PyTorch</h3>
+    <p>Both deep-learning frameworks side by side: tensors, autograd vs GradientTape, eager vs graph, nn.Module and Keras, training loops, DataLoader and tf.data, CNN/LSTM/attention, saving, ONNX/TFLite, Keras 3 backends, an API Rosetta table, identical models and real CPU benchmarks. 81 sections, every example run for real.</p>
+    <span class="status-pill ready">✅ Ready</span>
+  </a>
+
+</div>
+</section>
+
+<section class="home-section" id="genai">
+  <h2>✨ Generative AI, LLMs & Agents <span class="count">9 guides, 2 coming soon</span></h2>
+  <p class="section-desc">Large language models and what is built on them: RAG, agents, tools, frameworks and their security.</p>
+<div class="subject-grid">
 
   <a class="subject-card" href="genai.html">
     <div class="icon">✨</div>
@@ -63,6 +202,13 @@
     <span class="status-pill soon">🚧 Coming soon</span>
   </a>
 
+  <a class="subject-card" href="rag.html">
+    <div class="icon">🔍</div>
+    <h3>RAG</h3>
+    <p>Retrieval-Augmented Generation — how AI looks things up before answering.</p>
+    <span class="status-pill ready">✅ Ready</span>
+  </a>
+
   <a class="subject-card" href="ai-agents.html">
     <div class="icon">🤖</div>
     <h3>AI Agents & Agentic AI</h3>
@@ -77,59 +223,10 @@
     <span class="status-pill ready">✅ Ready</span>
   </a>
 
-  <a class="subject-card" href="git-github.html">
-    <div class="icon">🌿</div>
-    <h3>Git &amp; GitHub</h3>
-    <p>Version control from first commit to pull requests, branching, undoing mistakes, GitHub Actions, security and Copilot.</p>
-    <span class="status-pill ready">✅ Ready</span>
-  </a>
-
-  <a class="subject-card" href="deep-learning.html">
-    <div class="icon">🕸️</div>
-    <h3>Deep Learning</h3>
-    <p>Neural networks from tensors and backprop to CNNs, Transformers, GANs, diffusion, LoRA and deployment — with PyTorch and 6 hands-on projects.</p>
-    <span class="status-pill ready">✅ Ready</span>
-  </a>
-
-  <a class="subject-card" href="python.html">
-    <div class="icon">🐍</div>
-    <h3>Python</h3>
-    <p>From first print() to Python 3.15: syntax, data structures, OOP, async, typing, uv, testing, data/web/AI, and 7 hands-on projects.</p>
-    <span class="status-pill ready">✅ Ready</span>
-  </a>
-
-  <a class="subject-card" href="linux.html">
-    <div class="icon">🐧</div>
-    <h3>Linux</h3>
-    <p>The terminal, filesystem, permissions, processes, grep/sed/awk, shell scripting, systemd, networking, SSH, containers, Ubuntu 26.04 — with 6 hands-on projects.</p>
-    <span class="status-pill ready">✅ Ready</span>
-  </a>
-
-  <a class="subject-card" href="devops.html">
-    <div class="icon">♾️</div>
-    <h3>DevOps</h3>
-    <p>Git, CI/CD, containers, Kubernetes, infrastructure as code, monitoring, security and platform engineering.</p>
-    <span class="status-pill ready">✅ Ready</span>
-  </a>
-
-  <a class="subject-card disabled" href="#">
-    <div class="icon">🧮</div>
-    <h3>DSA (Data Structures & Algorithms)</h3>
-    <p>The foundations every programmer needs — arrays to graphs to dynamic programming.</p>
-    <span class="status-pill soon">🚧 Coming soon</span>
-  </a>
-
-  <a class="subject-card" href="system-design.html">
-    <div class="icon">🏗️</div>
-    <h3>System Design (HLD)</h3>
-    <p>Estimation, scaling, caching, databases, queues, consistency, resilience and 15 classic designs (URL shortener, feed, chat, payments…) — with real runnable simulations.</p>
-    <span class="status-pill ready">✅ Ready</span>
-  </a>
-
-  <a class="subject-card" href="low-level-design.html">
-    <div class="icon">🧱</div>
-    <h3>System Design (LLD)</h3>
-    <p>OOP, UML, SOLID, all 23 design patterns, dependency injection, concurrency, testing and 21 classic problems (parking lot, elevator, LRU cache, Splitwise…) — every code sample really run.</p>
+  <a class="subject-card" href="langchain.html">
+    <div class="icon">🦜</div>
+    <h3>LangChain &amp; LangGraph</h3>
+    <p>Models, messages, prompts, parsers, structured output, LCEL runnables, tools, create_agent, middleware, RAG; LangGraph state graphs, reducers, loops, Send/Command, persistence and time travel, human-in-the-loop, subgraphs, multi-agent, functional API; production, evaluation, security. 80 sections, every example run with scripted stand-in models.</p>
     <span class="status-pill ready">✅ Ready</span>
   </a>
 
@@ -140,10 +237,61 @@
     <span class="status-pill ready">✅ Ready</span>
   </a>
 
-  <a class="subject-card" href="cloud.html">
-    <div class="icon">☁️</div>
-    <h3>Cloud Platforms &amp; Technologies</h3>
-    <p>Cloud basics, regions, compute/storage/network, IAM, serverless, HA &amp; FinOps — plus AWS, Azure, Google Cloud &amp; App Engine, OCI, Alibaba Cloud, Salesforce and Apache Hadoop: architecture and step-by-step workflows.</p>
+  <a class="subject-card disabled" href="#">
+    <div class="icon">🚀</div>
+    <h3>Latest AI Topics</h3>
+    <p>Fine-tuning, RLHF, multimodal models, and whatever's newest after MCP and agents.</p>
+    <span class="status-pill soon">🚧 Coming soon</span>
+  </a>
+
+</div>
+</section>
+
+<section class="home-section" id="web">
+  <h2>🌐 Web & Backend Development <span class="count">1 guide</span></h2>
+  <p class="section-desc">Building the APIs and services that apps talk to.</p>
+<div class="subject-grid">
+
+  <a class="subject-card" href="fastapi.html">
+    <div class="icon">⚡</div>
+    <h3>FastAPI</h3>
+    <p>Web APIs in Python from scratch: HTTP and REST, path/query parameters, Pydantic validation, response models, automatic docs, CRUD, dependency injection, SQLModel database, OAuth2 + JWT login, middleware and CORS, async vs sync (measured), streaming/SSE, WebSockets, testing, Uvicorn, Docker and deployment, LLM endpoints; 39 sections, every FastAPI example really run.</p>
+    <span class="status-pill ready">✅ Ready</span>
+  </a>
+
+</div>
+</section>
+
+<section class="home-section" id="devops">
+  <h2>♾️ DevOps, Cloud & MLOps <span class="count">7 guides</span></h2>
+  <p class="section-desc">Tools and practices to build, ship, run and watch software and AI models.</p>
+<div class="subject-grid">
+
+  <a class="subject-card" href="linux.html">
+    <div class="icon">🐧</div>
+    <h3>Linux</h3>
+    <p>The terminal, filesystem, permissions, processes, grep/sed/awk, shell scripting, systemd, networking, SSH, containers, Ubuntu 26.04 — with 6 hands-on projects.</p>
+    <span class="status-pill ready">✅ Ready</span>
+  </a>
+
+  <a class="subject-card" href="git-github.html">
+    <div class="icon">🌿</div>
+    <h3>Git &amp; GitHub</h3>
+    <p>Version control from first commit to pull requests, branching, undoing mistakes, GitHub Actions, security and Copilot.</p>
+    <span class="status-pill ready">✅ Ready</span>
+  </a>
+
+  <a class="subject-card" href="devops.html">
+    <div class="icon">♾️</div>
+    <h3>DevOps</h3>
+    <p>Git, CI/CD, containers, Kubernetes, infrastructure as code, monitoring, security and platform engineering.</p>
+    <span class="status-pill ready">✅ Ready</span>
+  </a>
+
+  <a class="subject-card" href="docker-kubernetes.html">
+    <div class="icon">🐳</div>
+    <h3>Docker &amp; Kubernetes</h3>
+    <p>Containers from zero: how they really work in Linux (namespaces, cgroups, overlayfs, run for real), images, Dockerfiles, cache, volumes, networking, Compose, security; then Kubernetes: architecture, Pods, Deployments, Services, Ingress/Gateway, storage, scheduling, autoscaling, RBAC, Helm, GitOps, troubleshooting; 82 sections, real kernel demos and simulations (Docker/kubectl commands are labelled templates).</p>
     <span class="status-pill ready">✅ Ready</span>
   </a>
 
@@ -154,50 +302,22 @@
     <span class="status-pill ready">✅ Ready</span>
   </a>
 
-  <a class="subject-card" href="cpp.html">
-    <div class="icon">⚙️</div>
-    <h3>C++ (OOP &amp; STL)</h3>
-    <p>C++ from first program to C++23/26: pointers, memory, move semantics, smart pointers, templates, concepts; detailed OOP (classes, inheritance, virtual functions, vtables, Rule of Five, patterns); detailed STL (every container, iterators, algorithms, ranges, benchmarks); performance, CMake, testing; 99 sections, all code compiled and run.</p>
+  <a class="subject-card" href="cloud.html">
+    <div class="icon">☁️</div>
+    <h3>Cloud Platforms &amp; Technologies</h3>
+    <p>Cloud basics, regions, compute/storage/network, IAM, serverless, HA &amp; FinOps — plus AWS, Azure, Google Cloud &amp; App Engine, OCI, Alibaba Cloud, Salesforce and Apache Hadoop: architecture and step-by-step workflows.</p>
     <span class="status-pill ready">✅ Ready</span>
   </a>
 
-  <a class="subject-card" href="java.html">
-    <div class="icon">☕</div>
-    <h3>Java (OOP, Collections &amp; Enterprise)</h3>
-    <p>Java from the JVM to Java 25; detailed OOP; the Collections Framework side by side with its C++ STL twins; JDBC, Servlets, JSP, Jakarta EE (J2EE), JPA, Spring and Spring Boot; 105 sections, all code compiled and run (embedded Tomcat, H2, a tested Spring Boot REST app).</p>
+  <a class="subject-card" href="mlops-llmops.html">
+    <div class="icon">🏭</div>
+    <h3>MLOps &amp; LLMOps</h3>
+    <p>Running AI in the real world: data versioning and validation, leakage, feature stores, experiment tracking, pipelines, registries, testing, serving, rollouts and A/B tests, drift and retraining; then LLMOps: prompts as code, eval sets and LLM-as-judge, RAG ops, LoRA, vLLM and batching, token cost, caching, routing, guardrails, tracing; 76 sections, real scikit-learn/PyTorch runs (LLMs in demos are labelled stand-ins).</p>
     <span class="status-pill ready">✅ Ready</span>
   </a>
 
-  <a class="subject-card" href="langchain.html">
-    <div class="icon">🦜</div>
-    <h3>LangChain &amp; LangGraph</h3>
-    <p>Models, messages, prompts, parsers, structured output, LCEL runnables, tools, create_agent, middleware, RAG; LangGraph state graphs, reducers, loops, Send/Command, persistence and time travel, human-in-the-loop, subgraphs, multi-agent, functional API; production, evaluation, security. 80 sections, every example run with scripted stand-in models.</p>
-    <span class="status-pill ready">✅ Ready</span>
-  </a>
-
-  <a class="subject-card" href="tensorflow-pytorch.html">
-    <div class="icon">🔥</div>
-    <h3>TensorFlow &amp; PyTorch</h3>
-    <p>Both deep-learning frameworks side by side: tensors, autograd vs GradientTape, eager vs graph, nn.Module and Keras, training loops, DataLoader and tf.data, CNN/LSTM/attention, saving, ONNX/TFLite, Keras 3 backends, an API Rosetta table, identical models and real CPU benchmarks. 81 sections, every example run for real.</p>
-    <span class="status-pill ready">✅ Ready</span>
-  </a>
-
-  <a class="subject-card" href="leetcode/index.html">
-    <div class="icon">🧩</div>
-    <h3>LeetCode: Problems 1–10 (DSA practice)</h3>
-    <p>Two Sum, Add Two Numbers, Longest Substring Without Repeating Characters, Median of Two Sorted Arrays, Longest Palindromic Substring, Zigzag Conversion, Reverse Integer, String to Integer (atoi), Palindrome Number, Regular Expression Matching: each with several approaches from brute force to most optimized in C++, Java and Python (click-to-switch tabs), step-by-step dry runs, and a real test report (hundreds of tests per approach).</p>
-    <span class="status-pill ready">✅ Ready</span>
-  </a>
-
-
-
-
-  <a class="subject-card disabled" href="#">
-    <div class="icon">🚀</div>
-    <h3>Latest AI Topics</h3>
-    <p>Fine-tuning, RLHF, multimodal models, and whatever's newest after MCP and agents.</p>
-    <span class="status-pill soon">🚧 Coming soon</span>
-  </a>
+</div>
+</section>
 
 </div>
 

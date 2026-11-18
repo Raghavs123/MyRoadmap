@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Computer Networks — The Complete A-Z Guide</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌐</text></svg>">
+</head>
+<body>
+
+<header class="hero">
+  <div class="breadcrumb"><a href="index.html">🏠 Roadmap Home</a> / Computer Networks</div>
+  <h1>🌐 Computer Networks — How Computers Talk</h1>
+  <p class="subtitle">
+    The complete A-to-Z guide in very easy words: network basics, OSI and TCP/IP models, physical and data-link layers (framing, error detection, MAC, Ethernet, switching, Wi-Fi), IP addressing and subnetting, IPv6, routing (Dijkstra, Bellman-Ford, OSPF, BGP), NAT, ARP, ICMP, transport (UDP, TCP, flow and congestion control), application protocols (DNS, HTTP/1.1/2/3, TLS, email, DHCP), network security, tools and troubleshooting, SDN and cloud networking. Real runs: real TCP/UDP/HTTP over loopback with Python sockets, CRC and checksums, subnetting, routing and congestion-control simulations, and real Linux networking commands in WSL.
+    Every picture has a daily-life story; outputs shown are from programs that were really run; anything not run is labelled.
+    <strong>Last reviewed: 18 November 2026</strong> (dated facts are marked and hedged).
+  </p>
+  <div class="badge-row">
+    <span class="badge beginner">Beginner friendly</span>
+    <span class="badge intermediate">Intermediate concepts</span>
+    <span class="badge advanced">Advanced / Interview</span>
+  </div>
+</header>
+
+<div class="layout">
+
+  <nav class="toc">
+    <h3>On this page (48 sections)</h3>
+    <ol>
+      <li class="toc-part">Part A — Network Basics</li>
+      <li><a href="#what-is-network">What Is a Computer Network?</a></li>
+      <li><a href="#network-types">Kinds of Networks and Topologies</a></li>
+      <li><a href="#network-devices">Network Devices: Hub, Switch, Router and Friends</a></li>
+      <li><a href="#how-internet-works">How the Internet Is Built</a></li>
+      <li><a href="#osi-model">The OSI Model: Seven Layers</a></li>
+      <li><a href="#tcpip-model">The TCP/IP Model and Encapsulation</a></li>
+      <li><a href="#network-performance">Bandwidth, Latency, Throughput and Delay</a></li>
+      <li class="toc-part">Part B — Physical and Data Link Layers</li>
+      <li><a href="#physical-layer">The Physical Layer: Cables, Fibre, Radio</a></li>
+      <li><a href="#framing-errors">Framing and Error Detection (Checksum, CRC)</a></li>
+      <li><a href="#arq">Reliable Delivery: Stop-and-Wait, Go-Back-N, Selective Repeat</a></li>
+      <li><a href="#mac-protocols">Sharing the Medium: ALOHA, CSMA/CD, CSMA/CA</a></li>
+      <li><a href="#ethernet-switching">Ethernet, MAC Addresses, Switching and VLANs</a></li>
+      <li><a href="#wifi">Wi-Fi and Wireless Networks</a></li>
+      <li class="toc-part">Part C — The Network Layer (IP and Routing)</li>
+      <li><a href="#ip-basics">IP: The Internet's Addressing and Delivery Service</a></li>
+      <li><a href="#subnetting">IPv4 Addresses, Subnets and CIDR</a></li>
+      <li><a href="#ipv6">IPv6</a></li>
+      <li><a href="#arp-icmp-dhcp">ARP, ICMP and DHCP: The Helpers</a></li>
+      <li><a href="#nat">NAT: Sharing One Public Address</a></li>
+      <li><a href="#routing-basics">Routing: How Packets Find Their Way</a></li>
+      <li><a href="#link-state">Link-State Routing and Dijkstra (OSPF)</a></li>
+      <li><a href="#distance-vector">Distance-Vector Routing and Count to Infinity (RIP)</a></li>
+      <li><a href="#bgp">Routing Between Networks: BGP</a></li>
+      <li class="toc-part">Part D — The Transport Layer (TCP and UDP)</li>
+      <li><a href="#ports-sockets">Ports and Sockets</a></li>
+      <li><a href="#udp">UDP: Simple and Fast</a></li>
+      <li><a href="#tcp-basics">TCP: Reliable, Ordered Byte Streams</a></li>
+      <li><a href="#tcp-stream">TCP Is a Stream, Not Messages</a></li>
+      <li><a href="#flow-control">Flow Control and the Sliding Window</a></li>
+      <li><a href="#congestion-control">Congestion Control</a></li>
+      <li><a href="#quic">QUIC: Transport over UDP</a></li>
+      <li class="toc-part">Part E — The Application Layer</li>
+      <li><a href="#dns">DNS: The Internet's Phone Book</a></li>
+      <li><a href="#http">HTTP: How the Web Talks</a></li>
+      <li><a href="#http-versions">HTTP/1.1, HTTP/2 and HTTP/3</a></li>
+      <li><a href="#tls">HTTPS and TLS: Locking the Conversation</a></li>
+      <li><a href="#email">Email: SMTP, IMAP, POP3</a></li>
+      <li><a href="#other-protocols">Other Everyday Protocols</a></li>
+      <li><a href="#cdn-lb">CDNs, Proxies and Load Balancers</a></li>
+      <li class="toc-part">Part F — Security, Tools and Modern Networking</li>
+      <li><a href="#network-security">Network Security Basics</a></li>
+      <li><a href="#socket-programming">Socket Programming</a></li>
+      <li><a href="#troubleshooting">Troubleshooting a Network, Layer by Layer</a></li>
+      <li><a href="#sdn-cloud">SDN, Cloud Networking and 5G</a></li>
+      <li class="toc-part">Part G — Practice and Reference</li>
+      <li><a href="#cn-formulas">Formulas and Numbers Cheat Sheet</a></li>
+      <li><a href="#interview-cn">Interview Questions (With Answers)</a></li>
+      <li><a href="#glossary-cn">Mini Glossary</a></li>
+      <li><a href="#faq-cn">FAQ</a></li>
+      <li><a href="#pitfalls-cn">Common Mistakes and Checklist</a></li>
+      <li><a href="#quiz-cn">Quick Quiz 🎯</a></li>
+      <li><a href="#learning-path-cn">Learning Path</a></li>
+      <li><a href="#resources-cn">Learn More — Resources</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <div class="part-divider"><h2>Part A — Network Basics</h2></div>
+
+    <!-- 1 -->
+    <section class="block" id="what-is-network">
+      <h2><span class="num">1</span> What Is a Computer Network?</h2>
+<div class="callout life"><strong>Picture:</strong> The postal system. Houses (computers) have addresses; letters (packets) carry a sender and a receiver address; post offices (routers) pass letters along until they arrive. Nobody needs a private road to every friend.</div><table><tr><th>Word</th><th>Meaning</th><th>Postal picture</th></tr><tr><td>Node / host</td><td>Any device on the network</td><td>A house</td></tr><tr><td>Link</td><td>A connection (cable, radio, fibre)</td><td>A road</td></tr><tr><td>Packet</td><td>A small piece of data with addresses</td><td>A letter</td></tr><tr><td>Protocol</td><td>Agreed rules for talking</td><td>How to write an address on an envelope</td></tr><tr><td>Router</td><td>Forwards packets between networks</td><td>Post office sorting room</td></tr><tr><td>Switch</td><td>Connects devices inside one local network</td><td>The local postman</td></tr><tr><td>Bandwidth</td><td>How much data per second a link carries</td><td>Number of lanes</td></tr><tr><td>Latency</td><td>How long one bit takes to arrive</td><td>Travel time</td></tr></table><h3>Good to know</h3><ul><li><strong>Packet switching</strong> (the Internet): data is chopped into packets that share links with everyone else. <strong>Circuit switching</strong> (old telephone network): a dedicated path is reserved for the whole call.</li><li>The Internet is a <em>network of networks</em>: tens of thousands of independent networks (ISPs, companies, universities) connected by agreements.</li><li>Related guides: <a href="operating-systems.html">Operating Systems</a> (sockets live in the kernel), <a href="system-design.html">System Design</a>, <a href="cloud.html">Cloud</a>, <a href="docker-kubernetes.html">Docker &amp; Kubernetes</a> (container networking), <a href="ai-security.html">AI Security</a>.</li></ul><div class="callout tip">Honest note: every socket demo on this page is a <strong>real</strong> TCP/UDP/HTTP exchange over this computer's loopback interface (127.0.0.1), run with Python 3.14 on 18 Nov 2026; the Linux commands ran in Ubuntu 26.04 under WSL2 (addresses hidden). Routing, congestion and sliding-window programs are simulations. Commands that depend on your network (dig, traceroute, tcpdump) are templates.</div>
+    </section>
+
+    <!-- 2 -->
+    <section class="block" id="network-types">
+      <h2><span class="num">2</span> Kinds of Networks and Topologies</h2>
+<div class="callout life"><strong>Picture:</strong> A family chat (PAN), a school's own network (LAN), a city's cable network (MAN) and the national highway system (WAN).</div><table><tr><th>Type</th><th>Range</th><th>Examples</th></tr><tr><td>PAN</td><td>A few metres</td><td>Bluetooth headphones, smartwatch</td></tr><tr><td>LAN</td><td>A building or campus</td><td>Home Wi-Fi, office Ethernet</td></tr><tr><td>MAN</td><td>A city</td><td>City fibre rings, cable TV networks</td></tr><tr><td>WAN</td><td>Countries and continents</td><td>The Internet, company networks linking offices</td></tr><tr><td>SAN</td><td>Data centre storage</td><td>Fibre Channel, iSCSI</td></tr></table><table><tr><th>Topology</th><th>Shape</th><th>Good</th><th>Bad</th></tr><tr><td>Bus</td><td>Everyone on one cable</td><td>Cheap</td><td>One break stops all; collisions</td></tr><tr><td>Star</td><td>All to a central switch</td><td>Easy to manage, one cable fault affects one device</td><td>Centre is a single point of failure</td></tr><tr><td>Ring</td><td>Each to two neighbours</td><td>Predictable</td><td>One break can stop the ring (dual rings fix it)</td></tr><tr><td>Mesh</td><td>Many links between nodes</td><td>Very reliable</td><td>Expensive</td></tr><tr><td>Tree / hierarchical</td><td>Stars of stars</td><td>Scales in buildings</td><td>Upper links are bottlenecks</td></tr><tr><td>Hybrid</td><td>Mix</td><td>Real networks</td><td>-</td></tr></table><h3>Good to know</h3><ul><li>Modern Ethernet LANs are physically star-shaped (everyone plugs into a switch). Data-centre networks use 'leaf-spine' meshes.</li></ul>
+    </section>
+
+    <!-- 3 -->
+    <section class="block" id="network-devices">
+      <h2><span class="num">3</span> Network Devices: Hub, Switch, Router and Friends</h2>
+<div class="callout life"><strong>Picture:</strong> A hub is someone shouting every letter to the whole street; a switch hands each letter only to the right house on the street; a router decides which <em>town</em> a letter goes to next.</div><table><tr><th>Device</th><th>Layer</th><th>Job</th></tr><tr><td>Repeater / hub</td><td>1 (physical)</td><td>Repeats bits to every port (obsolete)</td></tr><tr><td>Bridge / switch</td><td>2 (data link)</td><td>Forwards frames by MAC address; learns which device is on which port</td></tr><tr><td>Router</td><td>3 (network)</td><td>Forwards packets between networks by IP address</td></tr><tr><td>Layer-3 switch</td><td>2 + 3</td><td>Switch that can also route between VLANs</td></tr><tr><td>Wireless access point</td><td>1–2</td><td>Bridges Wi-Fi devices to the wired LAN</td></tr><tr><td>Modem / ONT</td><td>1</td><td>Converts signals for the ISP line (DSL, cable, fibre)</td></tr><tr><td>Firewall</td><td>3–7</td><td>Allows or blocks traffic by rules</td></tr><tr><td>Load balancer / proxy</td><td>4–7</td><td>Spreads requests over servers; caches; terminates TLS</td></tr><tr><td>Home 'router'</td><td>Many in one box</td><td>Router + switch + Wi-Fi AP + NAT + DHCP + firewall</td></tr></table><h3>Good to know</h3><ul><li>A NIC (network interface card) gives each device its connection and its MAC address.</li></ul>
+    </section>
+
+    <!-- 4 -->
+    <section class="block" id="how-internet-works">
+      <h2><span class="num">4</span> How the Internet Is Built</h2>
+<div class="callout life"><strong>Picture:</strong> A country's roads: your street joins a local road (your ISP), which joins highways (big backbone providers), which meet at large junctions (Internet exchange points) and cross oceans on bridges (undersea cables).</div><div class="diagram-wrap"><svg viewBox="0 0 780 230" style="width:100%;max-width:780px" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrSc1_arrow" markerWidth="10" markerHeight="10" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8" fill="none" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc1_tri" markerWidth="12" markerHeight="12" refX="11" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc1_dia" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--accent)" stroke="var(--accent)"/></marker><marker id="arrSc1_diah" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker></defs><line x1="120" y1="91" x2="150" y2="92" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc1_arrow)"/><line x1="270" y1="93" x2="300" y2="93" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc1_arrow)"/><line x1="420" y1="93" x2="450" y2="93" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc1_arrow)"/><line x1="590" y1="93" x2="630" y2="93" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc1_arrow)"/><line x1="403" y1="116" x2="487" y2="160" stroke="var(--accent)" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#arrSc1_arrow)"/><text class="edge-label" x="445" y="133" text-anchor="middle">often served here</text><rect class="box" x="10" y="70" width="110" height="40" rx="9"/><text x="65" y="94" text-anchor="middle" font-size="12">Your phone/PC</text><rect class="box-hl" x="150" y="70" width="120" height="46" rx="9"/><text x="210" y="90" text-anchor="middle" font-size="12">Home router</text><text x="210" y="104" text-anchor="middle" font-size="10" class="edge-label">Wi-Fi + NAT</text><rect class="box-dim" x="300" y="70" width="120" height="46" rx="9"/><text x="360" y="90" text-anchor="middle" font-size="12">Local ISP</text><text x="360" y="104" text-anchor="middle" font-size="10" class="edge-label">access network</text><rect class="box-final" x="450" y="70" width="140" height="46" rx="9"/><text x="520" y="90" text-anchor="middle" font-size="12">Internet exchange</text><text x="520" y="104" text-anchor="middle" font-size="10" class="edge-label">point / transit</text><rect class="box-hl" x="450" y="160" width="160" height="46" rx="9"/><text x="530" y="180" text-anchor="middle" font-size="12">CDN edge server</text><text x="530" y="194" text-anchor="middle" font-size="10" class="edge-label">(copy of popular content)</text><rect class="box" x="630" y="70" width="130" height="46" rx="9"/><text x="695" y="97" text-anchor="middle" font-size="12">Website's data centre</text></svg><div class="diagram-caption">Fig S1 — Your packet's journey across the Internet (simplified).</div></div><table><tr><th>Piece</th><th>Role</th></tr><tr><td>Access networks</td><td>DSL, cable, fibre (FTTH), 4G/5G, satellite connect homes and phones</td></tr><tr><td>Tier-1 / transit providers</td><td>Global backbones that sell connectivity</td></tr><tr><td>Peering and IXPs</td><td>Networks exchange traffic directly at exchange points</td></tr><tr><td>Undersea cables</td><td>Carry nearly all intercontinental traffic</td></tr><tr><td>Autonomous systems (AS)</td><td>Each independently run network, connected by BGP</td></tr><tr><td>CDNs</td><td>Copies of content near users (faster, less backbone traffic)</td></tr><tr><td>ICANN / IANA / RIRs</td><td>Coordinate names, numbers (IP blocks, AS numbers), protocol registries</td></tr></table><h3>Good to know</h3><ul><li>Standards come from the IETF (published as RFCs), the IEEE (Ethernet 802.3, Wi-Fi 802.11), the W3C (web) and the ITU (telecom).</li></ul>
+    </section>
+
+    <!-- 5 -->
+    <section class="block" id="osi-model">
+      <h2><span class="num">5</span> The OSI Model: Seven Layers</h2>
+<div class="callout life"><strong>Picture:</strong> Sending a gift abroad: you write a card (application), choose the language (presentation), agree a delivery conversation (session), pick registered post with tracking (transport), write the destination address (network), hand it to the local van (data link), and the van drives on the road (physical).</div><div class="diagram-wrap"><svg viewBox="0 0 760 286" style="width:100%;max-width:760px" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrSc2_arrow" markerWidth="10" markerHeight="10" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8" fill="none" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc2_tri" markerWidth="12" markerHeight="12" refX="11" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc2_dia" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--accent)" stroke="var(--accent)"/></marker><marker id="arrSc2_diah" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker></defs><rect class="box-final" x="260" y="0" width="240" height="34" rx="9"/><text x="380" y="14" text-anchor="middle" font-size="12">7 Application</text><text x="380" y="28" text-anchor="middle" font-size="10" class="edge-label">HTTP, DNS, SMTP</text><rect class="box-hl" x="260" y="38" width="240" height="34" rx="9"/><text x="380" y="52" text-anchor="middle" font-size="12">6 Presentation</text><text x="380" y="66" text-anchor="middle" font-size="10" class="edge-label">encoding, encryption, compression</text><rect class="box-hl" x="260" y="76" width="240" height="34" rx="9"/><text x="380" y="90" text-anchor="middle" font-size="12">5 Session</text><text x="380" y="104" text-anchor="middle" font-size="10" class="edge-label">dialogs, checkpoints</text><rect class="box" x="260" y="114" width="240" height="34" rx="9"/><text x="380" y="128" text-anchor="middle" font-size="12">4 Transport</text><text x="380" y="142" text-anchor="middle" font-size="10" class="edge-label">TCP, UDP: ports, reliability</text><rect class="box" x="260" y="152" width="240" height="34" rx="9"/><text x="380" y="166" text-anchor="middle" font-size="12">3 Network</text><text x="380" y="180" text-anchor="middle" font-size="10" class="edge-label">IP: addresses, routing</text><rect class="box" x="260" y="190" width="240" height="34" rx="9"/><text x="380" y="204" text-anchor="middle" font-size="12">2 Data link</text><text x="380" y="218" text-anchor="middle" font-size="10" class="edge-label">Ethernet, Wi-Fi: frames, MAC</text><rect class="box-dim" x="260" y="228" width="240" height="34" rx="9"/><text x="380" y="242" text-anchor="middle" font-size="12">1 Physical</text><text x="380" y="256" text-anchor="middle" font-size="10" class="edge-label">bits on copper, fibre, radio</text></svg><div class="diagram-caption">Fig S2 — The 7 OSI layers and what each adds.</div></div><table><tr><th>Layer</th><th>Unit of data</th><th>Address</th><th>Devices</th></tr><tr><td>7–5</td><td>Data / message</td><td>Names, URLs</td><td>Hosts, proxies</td></tr><tr><td>4 Transport</td><td>Segment (TCP) / datagram (UDP)</td><td>Port</td><td>Hosts, load balancers</td></tr><tr><td>3 Network</td><td>Packet</td><td>IP address</td><td>Routers</td></tr><tr><td>2 Data link</td><td>Frame</td><td>MAC address</td><td>Switches</td></tr><tr><td>1 Physical</td><td>Bits</td><td>-</td><td>Cables, hubs, radios</td></tr></table><h3>Good to know</h3><ul><li>Memory trick (top to bottom): <em>All People Seem To Need Data Processing</em>.</li><li>OSI is a <strong>teaching model</strong>; the Internet actually uses the simpler TCP/IP model (next).</li></ul>
+    </section>
+
+    <!-- 6 -->
+    <section class="block" id="tcpip-model">
+      <h2><span class="num">6</span> The TCP/IP Model and Encapsulation</h2>
+<div class="callout life"><strong>Picture:</strong> A letter inside an envelope, inside a parcel box, inside a shipping container. Each layer adds its own wrapper (header) on the way down and removes it on the way up.</div><div class="diagram-wrap"><svg viewBox="0 0 760 238" style="width:100%;max-width:760px" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrSc3_arrow" markerWidth="10" markerHeight="10" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8" fill="none" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc3_tri" markerWidth="12" markerHeight="12" refX="11" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc3_dia" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--accent)" stroke="var(--accent)"/></marker><marker id="arrSc3_diah" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker></defs><line x1="380" y1="36" x2="380" y2="46" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc3_arrow)"/><line x1="380" y1="82" x2="380" y2="92" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc3_arrow)"/><line x1="380" y1="128" x2="380" y2="138" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc3_arrow)"/><line x1="380" y1="174" x2="380" y2="184" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc3_arrow)"/><rect class="box-final" x="250" y="0" width="260" height="36" rx="9"/><text x="380" y="15" text-anchor="middle" font-size="12">Application data</text><text x="380" y="29" text-anchor="middle" font-size="10" class="edge-label">e.g. an HTTP request</text><rect class="box-hl" x="220" y="46" width="320" height="36" rx="9"/><text x="380" y="61" text-anchor="middle" font-size="12">TCP header + data</text><text x="380" y="75" text-anchor="middle" font-size="10" class="edge-label">= segment</text><rect class="box" x="190" y="92" width="380" height="36" rx="9"/><text x="380" y="107" text-anchor="middle" font-size="12">IP header + segment</text><text x="380" y="121" text-anchor="middle" font-size="10" class="edge-label">= packet</text><rect class="box-dim" x="160" y="138" width="440" height="36" rx="9"/><text x="380" y="153" text-anchor="middle" font-size="12">Ethernet header + packet + CRC trailer</text><text x="380" y="167" text-anchor="middle" font-size="10" class="edge-label">= frame</text><rect class="box-dim" x="260" y="184" width="240" height="30" rx="9"/><text x="380" y="203" text-anchor="middle" font-size="12">bits on the wire</text></svg><div class="diagram-caption">Fig S3 — Encapsulation: each layer wraps the data from the layer above.</div></div><table><tr><th>TCP/IP layer</th><th>OSI layers</th><th>Protocols</th></tr><tr><td>Application</td><td>7, 6, 5</td><td>HTTP, HTTPS, DNS, SMTP, SSH, DHCP</td></tr><tr><td>Transport</td><td>4</td><td>TCP, UDP, QUIC</td></tr><tr><td>Internet</td><td>3</td><td>IPv4, IPv6, ICMP</td></tr><tr><td>Link</td><td>2, 1</td><td>Ethernet, Wi-Fi, ARP</td></tr></table><h3>Good to know</h3><ul><li>Header overheads (typical): Ethernet 14 bytes + 4-byte CRC, IPv4 20, IPv6 40, TCP 20+, UDP 8.</li><li>Ethernet's usual maximum payload (MTU) is 1500 bytes, so a full-size TCP segment carries about 1460 bytes of data over IPv4.</li></ul>
+    </section>
+
+    <!-- 7 -->
+    <section class="block" id="network-performance">
+      <h2><span class="num">7</span> Bandwidth, Latency, Throughput and Delay</h2>
+<div class="callout life"><strong>Picture:</strong> A highway: bandwidth is the number of lanes, latency is the travel time for one car, throughput is how many cars actually arrive per hour (traffic jams included).</div><p>Total delay of a packet = <strong>transmission</strong> (size ÷ bandwidth) + <strong>propagation</strong> (distance ÷ signal speed) + <strong>queueing</strong> (waiting in router buffers) + <strong>processing</strong>.</p><details class="deepdive" open><summary>Transmission vs propagation, and the bandwidth-delay product (run for real)</summary><pre><code># Delay and throughput arithmetic: transmission vs propagation delay, bandwidth-delay product, and why window size matters.
+def show(name, size_bytes, bw_bps, dist_km):
+    tx = size_bytes * 8 / bw_bps; prop = dist_km * 1000 / 2e8          # signal speed in fibre ~ 2/3 of light speed
+    print(&quot;%-34s transmission %8.3f ms  propagation %7.2f ms&quot; % (name, tx * 1e3, prop * 1e3))
+show(&quot;1500 B packet, 100 Mbit/s, 1 km&quot;, 1500, 100e6, 1)
+show(&quot;1500 B packet, 1 Gbit/s, Delhi-Mumbai ~1400 km&quot;, 1500, 1e9, 1400)
+show(&quot;10 MB file, 100 Mbit/s, 1 km&quot;, 10e6, 100e6, 1)
+rtt = 0.1; bw = 1e9
+print(&quot;\nbandwidth-delay product for 1 Gbit/s and 100 ms RTT = %.1f MB &#x27;in flight&#x27; to keep the pipe full&quot; % (bw * rtt / 8 / 1e6))
+for win in (64 * 1024, 1024 * 1024, 16 * 1024 * 1024):
+    print(&quot;   window %8d bytes -&gt; max throughput %7.1f Mbit/s&quot; % (win, min(bw, win * 8 / rtt) / 1e6))
+print(&quot;This is why TCP has &#x27;window scaling&#x27; (the original 16-bit field allowed only 64 KiB).&quot;)
+
+# ----- Output (real run) -----
+# 1500 B packet, 100 Mbit/s, 1 km    transmission    0.120 ms  propagation    0.01 ms
+# 1500 B packet, 1 Gbit/s, Delhi-Mumbai ~1400 km transmission    0.012 ms  propagation    7.00 ms
+# 10 MB file, 100 Mbit/s, 1 km       transmission  800.000 ms  propagation    0.01 ms
+#
+# bandwidth-delay product for 1 Gbit/s and 100 ms RTT = 12.5 MB &#x27;in flight&#x27; to keep the pipe full
+#    window    65536 bytes -&gt; max throughput     5.2 Mbit/s
+#    window  1048576 bytes -&gt; max throughput    83.9 Mbit/s
+#    window 16777216 bytes -&gt; max throughput  1000.0 Mbit/s
+# This is why TCP has &#x27;window scaling&#x27; (the original 16-bit field allowed only 64 KiB).</code></pre><p>For one packet across India the distance dominates (7 ms of propagation vs 0.012 ms to transmit at 1 Gbit/s); for a 10 MB file on a slow link the size dominates (800 ms). A 1 Gbit/s path with 100 ms RTT needs 12.5 MB in flight; with only a 64 KiB window you get about 5 Mbit/s no matter how fast the link is.</p></details><h3>Good to know</h3><ul><li>Jitter = variation in delay (bad for calls and games). Packet loss = packets that never arrive.</li><li>Units: network speeds use bits per second (Mbit/s); file sizes use bytes. 100 Mbit/s ≈ 12.5 MB/s.</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part B — Physical and Data Link Layers</h2></div>
+
+    <!-- 8 -->
+    <section class="block" id="physical-layer">
+      <h2><span class="num">8</span> The Physical Layer: Cables, Fibre, Radio</h2>
+<div class="callout life"><strong>Picture:</strong> Sending Morse code with a torch, a drum or a wire: the message is the same, the medium decides speed and distance.</div><table><tr><th>Medium</th><th>Typical use</th><th>Note</th></tr><tr><td>Twisted pair (Cat5e, Cat6, Cat6a)</td><td>Office/home Ethernet up to 100 m</td><td>Twisting cancels interference</td></tr><tr><td>Coaxial cable</td><td>Cable TV / internet</td><td>Shielded</td></tr><tr><td>Optical fibre (single-mode, multi-mode)</td><td>Backbones, FTTH, data centres</td><td>Light; huge bandwidth; long distance</td></tr><tr><td>Radio (Wi-Fi, 4G/5G, Bluetooth)</td><td>Mobility</td><td>Shared, noisy, needs licensing for many bands</td></tr><tr><td>Satellite (GEO, LEO constellations)</td><td>Remote areas</td><td>GEO ~600 ms RTT; LEO much lower</td></tr></table><table><tr><th>Concept</th><th>Meaning</th></tr><tr><td>Encoding</td><td>How bits become signals: NRZ, Manchester (old Ethernet), PAM4 (modern high-speed)</td></tr><tr><td>Modulation</td><td>Changing amplitude, frequency or phase of a carrier (ASK, FSK, PSK, QAM)</td></tr><tr><td>Multiplexing</td><td>Sharing a link: FDM (frequencies), TDM (time slots), WDM (colours of light), CDM/OFDM</td></tr><tr><td>Nyquist</td><td>Max bit rate on a noiseless channel = 2 × B × log<sub>2</sub>(levels)</td></tr><tr><td>Shannon</td><td>Capacity C = B × log<sub>2</sub>(1 + S/N): the noise limit</td></tr><tr><td>Duplex</td><td>Simplex (one way), half duplex (one at a time), full duplex (both at once)</td></tr></table><h3>Good to know</h3><ul><li>Example: a 3 kHz phone line with S/N 1000 (30 dB) has Shannon capacity ≈ 3000 × log<sub>2</sub>(1001) ≈ 30 kbit/s.</li></ul>
+    </section>
+
+    <!-- 9 -->
+    <section class="block" id="framing-errors">
+      <h2><span class="num">9</span> Framing and Error Detection (Checksum, CRC)</h2>
+<div class="callout life"><strong>Picture:</strong> When you send a long number by phone, you also send a check digit. If the listener's check does not match, they ask you to repeat.</div><details class="deepdive" open><summary>Internet checksum vs CRC-32, and CRC by hand (run for real)</summary><pre><code># Error detection: the Internet checksum (IP, TCP, UDP) and CRC-32 (Ethernet, ZIP). Real values.
+import zlib
+def inet_checksum(data):
+    if len(data) % 2: data += b&quot;\x00&quot;
+    s = sum(int.from_bytes(data[i:i + 2], &quot;big&quot;) for i in range(0, len(data), 2))
+    while s &gt;&gt; 16: s = (s &amp; 0xFFFF) + (s &gt;&gt; 16)                        # fold carries back in (one&#x27;s complement sum)
+    return ~s &amp; 0xFFFF
+msg = b&quot;HELLO NETWORK!&quot;
+cs = inet_checksum(msg); print(&quot;Internet checksum of %r = 0x%04X&quot; % (msg, cs))
+print(&quot;receiver check (sum including checksum folds to 0):&quot;, inet_checksum(msg + cs.to_bytes(2, &quot;big&quot;)) == 0)
+ws = msg[2:4] + msg[0:2] + msg[4:]
+print(&quot;swap the first two 16-bit words -&gt; checksum unchanged?&quot;, inet_checksum(ws) == cs, &quot; &lt;- the simple sum cannot see reordering&quot;)
+print(&quot;CRC-32 of the original 0x%08X, of the word-swapped 0x%08X (CRC catches it)&quot; % (zlib.crc32(msg), zlib.crc32(ws)))
+def crc_div(bits, gen):                                               # CRC by hand: binary long division with XOR
+    pad = bits + &quot;0&quot; * (len(gen) - 1); r = list(pad)
+    for i in range(len(bits)):
+        if r[i] == &quot;1&quot;:
+            for j, g in enumerate(gen): r[i + j] = str(int(r[i + j]) ^ int(g))
+    return &quot;&quot;.join(r[-(len(gen) - 1):])
+print(&quot;textbook example: data 1101011011, generator 10011 (x^4+x+1) -&gt; remainder&quot;, crc_div(&quot;1101011011&quot;, &quot;10011&quot;), &quot;-&gt; send 1101011011&quot; + crc_div(&quot;1101011011&quot;, &quot;10011&quot;))
+
+# ----- Output (real run) -----
+# Internet checksum of b&#x27;HELLO NETWORK!&#x27; = 0xDF3D
+# receiver check (sum including checksum folds to 0): True
+# swap the first two 16-bit words -&gt; checksum unchanged? True  &lt;- the simple sum cannot see reordering
+# CRC-32 of the original 0xC321FA71, of the word-swapped 0x25537A78 (CRC catches it)
+# textbook example: data 1101011011, generator 10011 (x^4+x+1) -&gt; remainder 1110 -&gt; send 11010110111110</code></pre><p>Swapping two 16-bit words leaves the Internet checksum unchanged (it is just a sum), but CRC-32 changes completely. That is why Ethernet uses CRC-32 for frames while IP/TCP/UDP use the cheaper checksum (and rely on the link CRC too).</p></details><h3>Good to know</h3><ul><li>Framing methods: byte count, flag bytes with byte stuffing (PPP), bit stuffing (HDLC), preamble + length (Ethernet).</li><li>Detection asks for a resend; correction (Hamming, Reed–Solomon, LDPC) fixes errors without one. See <a href="computer-organization.html#error-detection">COA → error correction</a>.</li><li>A CRC with generator degree r detects all burst errors up to r bits long.</li></ul>
+    </section>
+
+    <!-- 10 -->
+    <section class="block" id="arq">
+      <h2><span class="num">10</span> Reliable Delivery: Stop-and-Wait, Go-Back-N, Selective Repeat</h2>
+<div class="callout life"><strong>Picture:</strong> Posting pages of a long letter: wait for a 'got it' after each page (stop-and-wait), send 8 pages and resend from the lost one onwards (go-back-N), or resend only the lost page (selective repeat).</div><div class="diagram-wrap"><svg viewBox="0 0 640 300" style="width:100%;max-width:640px" xmlns="http://www.w3.org/2000/svg"><line x1="60" y1="230" x2="620" y2="230" stroke="var(--card-border)"/><text x="54" y="234" text-anchor="end" font-size="11">0</text><line x1="60" y1="178" x2="620" y2="178" stroke="var(--card-border)"/><text x="54" y="182" text-anchor="end" font-size="11">125</text><line x1="60" y1="125" x2="620" y2="125" stroke="var(--card-border)"/><text x="54" y="129" text-anchor="end" font-size="11">250</text><line x1="60" y1="72" x2="620" y2="72" stroke="var(--card-border)"/><text x="54" y="76" text-anchor="end" font-size="11">375</text><line x1="60" y1="20" x2="620" y2="20" stroke="var(--card-border)"/><text x="54" y="24" text-anchor="end" font-size="11">500</text><rect x="97" y="135" width="112" height="95" rx="3" fill="var(--accent-2)" opacity="0.85"/><text x="153" y="130" text-anchor="middle" font-size="11">226</text><text x="153" y="246" text-anchor="middle" font-size="10.5">stop-and-wait</text><rect x="284" y="212" width="112" height="18" rx="3" fill="var(--accent-2)" opacity="0.85"/><text x="340" y="207" text-anchor="middle" font-size="11">43</text><text x="340" y="246" text-anchor="middle" font-size="10.5">go-back-N</text><rect x="471" y="215" width="112" height="15" rx="3" fill="var(--accent-2)" opacity="0.85"/><text x="527" y="210" text-anchor="middle" font-size="11">36</text><text x="527" y="246" text-anchor="middle" font-size="10.5">selective repeat</text><text transform="rotate(-90)" x="-125" y="16" text-anchor="middle" font-size="12" class="edge-label">round-trip times</text></svg><div class="diagram-caption">Fig S4 — Round trips needed to deliver 200 frames with 10% loss (simulated, window 8).</div></div><details class="deepdive" open><summary>Three ARQ protocols on the same lossy link (run for real)</summary><pre><code># Reliable delivery over a lossy link: Stop-and-Wait vs Go-Back-N vs Selective Repeat (simulation, same random losses).
+import random
+def simulate(protocol, n=200, window=8, loss=0.1, seed=7):
+    rnd = random.Random(seed); sent = 0; delivered = 0; base = 0; acked = set()
+    rounds = 0
+    while base &lt; n:
+        rounds += 1
+        w = 1 if protocol == &quot;stop-and-wait&quot; else window
+        batch = [i for i in range(base, min(base + w, n)) if not (protocol == &quot;selective repeat&quot; and i in acked)]
+        ok = []
+        for i in batch:
+            sent += 1
+            if rnd.random() &gt; loss: ok.append(i)
+        if protocol == &quot;go-back-n&quot;:
+            k = base
+            while k in ok: k += 1                                         # receiver accepts only in-order frames
+            base = k
+        else:
+            acked.update(ok)
+            while base in acked: base += 1
+    return sent, rounds
+print(&quot;200 frames, 10% of frames lost (same random losses for each), window 8; one &#x27;round&#x27; = one round-trip time&quot;)
+print(&quot;protocol            frames sent   round trips   efficiency&quot;)
+for p in (&quot;stop-and-wait&quot;, &quot;go-back-n&quot;, &quot;selective repeat&quot;):
+    s, r = simulate(p); print(&quot;%-18s  %11d   %11d   %9.0f%%&quot; % (p, s, r, 100 * 200 / s))
+print(&quot;Go-Back-N resends every frame after a loss; Selective Repeat resends only the lost one; Stop-and-Wait wastes time waiting.&quot;)
+
+# ----- Output (real run) -----
+# 200 frames, 10% of frames lost (same random losses for each), window 8; one &#x27;round&#x27; = one round-trip time
+# protocol            frames sent   round trips   efficiency
+# stop-and-wait               226           226          88%
+# go-back-n                   330            43          61%
+# selective repeat            226            36          88%
+# Go-Back-N resends every frame after a loss; Selective Repeat resends only the lost one; Stop-and-Wait wastes time waiting.</code></pre><p>Stop-and-wait sends few extra frames but needs 226 round trips. Go-Back-N needs only 43 but sends 330 frames (it resends everything after each loss). Selective repeat gets both: 226 frames sent and 36 round trips.</p></details><h3>Good to know</h3><ul><li>Window limits: Go-Back-N window ≤ 2<sup>k</sup> − 1, selective repeat ≤ 2<sup>k−1</sup> for k-bit sequence numbers (to avoid confusing old and new frames).</li><li>Stop-and-wait efficiency = 1 ÷ (1 + 2a), where a = propagation delay ÷ transmission time. On long links it is terrible.</li><li>TCP uses ideas from both: cumulative ACKs plus selective ACKs (SACK).</li></ul>
+    </section>
+
+    <!-- 11 -->
+    <section class="block" id="mac-protocols">
+      <h2><span class="num">11</span> Sharing the Medium: ALOHA, CSMA/CD, CSMA/CA</h2>
+<div class="callout life"><strong>Picture:</strong> A classroom discussion. Talking whenever you like causes clashes (ALOHA). Listening first and stopping when two talk together is better (CSMA/CD). Raising a hand and waiting for permission avoids clashes (CSMA/CA, token passing).</div><table><tr><th>Protocol</th><th>Idea</th><th>Max efficiency / note</th></tr><tr><td>Pure ALOHA</td><td>Send anytime; if collision, wait random time</td><td>18.4% (= 1/(2e))</td></tr><tr><td>Slotted ALOHA</td><td>Send only at slot starts</td><td>36.8% (= 1/e)</td></tr><tr><td>CSMA</td><td>Listen before talking</td><td>Better, collisions still possible (propagation delay)</td></tr><tr><td>CSMA/CD</td><td>Listen, and stop on detecting a collision; binary exponential backoff</td><td>Classic shared Ethernet; obsolete with full-duplex switches</td></tr><tr><td>CSMA/CA</td><td>Listen, wait a random backoff, optional RTS/CTS</td><td>Wi-Fi (collisions cannot be detected while sending by radio)</td></tr><tr><td>Token passing</td><td>Only the holder of the token sends</td><td>Token Ring, FDDI (historic)</td></tr><tr><td>Scheduled (OFDMA, TDMA)</td><td>A coordinator assigns slots/frequencies</td><td>Wi-Fi 6/7, 4G/5G</td></tr></table><h3>Good to know</h3><ul><li>Minimum Ethernet frame size (64 bytes) exists so a sender is still transmitting when a collision from the far end returns (CSMA/CD rule: frame time ≥ 2 × propagation delay).</li></ul>
+    </section>
+
+    <!-- 12 -->
+    <section class="block" id="ethernet-switching">
+      <h2><span class="num">12</span> Ethernet, MAC Addresses, Switching and VLANs</h2>
+<div class="callout life"><strong>Picture:</strong> A post room that learns: the first time a letter comes from flat 5 through door 2, the clerk notes 'flat 5 is through door 2'. Next time a letter is <em>for</em> flat 5, it goes only through door 2.</div><details class="deepdive" open><summary>A learning switch watching an ARP exchange (run for real)</summary><pre><code># A learning switch: it learns which MAC address lives on which port from SOURCE addresses, floods unknown destinations.
+table = {}
+def frame(src, dst, port):
+    table[src] = port
+    if dst == &quot;ff:ff:ff:ff:ff:ff&quot;: return &quot;broadcast -&gt; flood all ports except %d&quot; % port
+    if dst in table: return &quot;forward to port %d&quot; % table[dst]
+    return &quot;unknown destination -&gt; flood all ports except %d&quot; % port
+steps = [(&quot;aa:aa&quot;, &quot;ff:ff:ff:ff:ff:ff&quot;, 1, &quot;A asks &#x27;who has 10.0.0.2?&#x27; (ARP request, broadcast)&quot;),
+         (&quot;bb:bb&quot;, &quot;aa:aa&quot;, 2, &quot;B replies &#x27;I am 10.0.0.2, MAC bb:bb&#x27; (ARP reply)&quot;),
+         (&quot;aa:aa&quot;, &quot;bb:bb&quot;, 1, &quot;A sends data to B&quot;),
+         (&quot;cc:cc&quot;, &quot;aa:aa&quot;, 3, &quot;C sends to A&quot;)]
+for src, dst, port, what in steps:
+    print(&quot;%-48s port %d: %s&quot; % (what, port, frame(src, dst, port)))
+print(&quot;learned MAC table:&quot;, table)
+
+# ----- Output (real run) -----
+# A asks &#x27;who has 10.0.0.2?&#x27; (ARP request, broadcast) port 1: broadcast -&gt; flood all ports except 1
+# B replies &#x27;I am 10.0.0.2, MAC bb:bb&#x27; (ARP reply) port 2: forward to port 1
+# A sends data to B                                port 1: forward to port 2
+# C sends to A                                     port 3: forward to port 1
+# learned MAC table: {&#x27;aa:aa&#x27;: 1, &#x27;bb:bb&#x27;: 2, &#x27;cc:cc&#x27;: 3}</code></pre><p>The switch learns from <em>source</em> addresses; broadcasts and unknown destinations are flooded; after one exchange it forwards precisely.</p></details><table><tr><th>Term</th><th>Meaning</th></tr><tr><td>MAC address</td><td>48-bit hardware address, e.g. 3c:22:fb:12:34:56; first half identifies the maker (OUI). Phones now randomise it for privacy</td></tr><tr><td>Ethernet frame</td><td>Preamble, destination MAC, source MAC, type (0x0800 IPv4, 0x86DD IPv6, 0x0806 ARP), payload 46–1500 bytes, CRC-32</td></tr><tr><td>VLAN (802.1Q)</td><td>A 4-byte tag splits one physical switch into separate logical LANs (VLAN IDs 1–4094)</td></tr><tr><td>Spanning Tree (STP/RSTP)</td><td>Turns off redundant links so frames do not loop forever</td></tr><tr><td>Link aggregation (LACP)</td><td>Several cables act as one faster, redundant link</td></tr><tr><td>Speeds</td><td>Fast Ethernet 100 Mbit/s, Gigabit, 10G, 25/40/100G, 400G and 800G in data centres</td></tr></table><h3>Good to know</h3><ul><li>Broadcast domain (all devices that receive a broadcast: one VLAN) vs collision domain (one switch port today).</li></ul>
+    </section>
+
+    <!-- 13 -->
+    <section class="block" id="wifi">
+      <h2><span class="num">13</span> Wi-Fi and Wireless Networks</h2>
+<div class="callout life"><strong>Picture:</strong> A crowded room where everyone talks by shouting across the room. Good manners (listen, wait, take turns) and a good host (the access point) keep it working.</div><table><tr><th>Generation</th><th>Standard</th><th>Bands</th><th>Note</th></tr><tr><td>Wi-Fi 4</td><td>802.11n</td><td>2.4 / 5 GHz</td><td>MIMO</td></tr><tr><td>Wi-Fi 5</td><td>802.11ac</td><td>5 GHz</td><td>Wider channels, MU-MIMO (downlink)</td></tr><tr><td>Wi-Fi 6 / 6E</td><td>802.11ax</td><td>2.4 / 5 / 6 GHz (6E)</td><td>OFDMA, better in crowded places</td></tr><tr><td>Wi-Fi 7</td><td>802.11be</td><td>2.4 / 5 / 6 GHz</td><td>320 MHz channels, multi-link operation</td></tr></table><h3>Good to know</h3><ul><li>Security: use WPA3 (or WPA2-AES at least); WEP and WPA-TKIP are broken.</li><li>Hidden-terminal problem: two laptops cannot hear each other but both reach the AP, so they collide; RTS/CTS helps.</li><li>Mobile networks (4G LTE, 5G) use licensed spectrum, scheduled access and cell handover; 5G adds very low-latency and massive-device modes (as specified; real deployments vary).</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part C — The Network Layer (IP and Routing)</h2></div>
+
+    <!-- 14 -->
+    <section class="block" id="ip-basics">
+      <h2><span class="num">14</span> IP: The Internet's Addressing and Delivery Service</h2>
+<div class="callout life"><strong>Picture:</strong> The postal address system for the whole world. IP gives every device an address and tries its best to deliver each letter, but it does not promise anything: letters can be lost, duplicated or arrive out of order.</div><table><tr><th>IPv4 header field</th><th>Meaning</th></tr><tr><td>Version, header length</td><td>4; usually 20 bytes</td></tr><tr><td>Total length</td><td>Packet size, up to 65,535 bytes</td></tr><tr><td>Identification, flags, fragment offset</td><td>For splitting packets bigger than a link's MTU</td></tr><tr><td>TTL (time to live)</td><td>Decremented by every router; at 0 the packet is dropped (stops loops; traceroute uses it)</td></tr><tr><td>Protocol</td><td>6 = TCP, 17 = UDP, 1 = ICMP</td></tr><tr><td>Header checksum</td><td>Detects header corruption</td></tr><tr><td>Source and destination address</td><td>32 bits each</td></tr></table><h3>Good to know</h3><ul><li>IP is <strong>best effort</strong> and <strong>connectionless</strong>: every packet is routed on its own. Reliability is added above, by TCP.</li><li>Fragmentation is avoided today with Path MTU Discovery (IPv6 routers never fragment).</li></ul>
+    </section>
+
+    <!-- 15 -->
+    <section class="block" id="subnetting">
+      <h2><span class="num">15</span> IPv4 Addresses, Subnets and CIDR</h2>
+<div class="callout life"><strong>Picture:</strong> A phone number with an area code: the first part says which network (city), the rest which device (house). The <strong>prefix length</strong> (/24) says how many leading bits are the 'area code'.</div><details class="deepdive" open><summary>Subnets, VLSM and special address ranges (real ipaddress arithmetic) (run for real)</summary><pre><code># Subnetting with real IP arithmetic (ipaddress module).
+import ipaddress
+net = ipaddress.ip_network(&quot;192.168.10.0/24&quot;)
+print(&quot;network %s: mask %s, %d addresses, %d usable hosts, broadcast %s&quot; % (net, net.netmask, net.num_addresses, net.num_addresses - 2, net.broadcast_address))
+print(&quot;split into 4 subnets (/26):&quot;)
+for s in net.subnets(new_prefix=26):
+    h = list(s.hosts()); print(&quot;   %-18s hosts %s - %s  broadcast %s&quot; % (s, h[0], h[-1], s.broadcast_address))
+ip = ipaddress.ip_interface(&quot;10.4.77.200/20&quot;)
+print(&quot;10.4.77.200/20 belongs to network&quot;, ip.network, &quot; (mask&quot;, ip.netmask, &quot;)&quot;)
+need = [100, 50, 25, 10]                                              # VLSM: give each department just enough
+base = ipaddress.ip_network(&quot;172.16.0.0/24&quot;); start = int(base.network_address); print(&quot;VLSM plan inside&quot;, base, &quot;for&quot;, need, &quot;hosts:&quot;)
+for n in sorted(need, reverse=True):
+    size = 1
+    while size - 2 &lt; n: size *= 2
+    sub = ipaddress.ip_network((start, 32 - size.bit_length() + 1)); print(&quot;   %3d hosts -&gt; %s (%d usable)&quot; % (n, sub, sub.num_addresses - 2)); start += size
+for a in (&quot;10.1.2.3&quot;, &quot;172.20.0.1&quot;, &quot;192.168.1.1&quot;, &quot;8.8.8.8&quot;, &quot;127.0.0.1&quot;, &quot;169.254.1.1&quot;):
+    x = ipaddress.ip_address(a); print(&quot;   %-12s private=%-5s loopback=%-5s link-local=%s&quot; % (a, x.is_private, x.is_loopback, x.is_link_local))
+
+# ----- Output (real run) -----
+# network 192.168.10.0/24: mask 255.255.255.0, 256 addresses, 254 usable hosts, broadcast 192.168.10.255
+# split into 4 subnets (/26):
+#    192.168.10.0/26    hosts 192.168.10.1 - 192.168.10.62  broadcast 192.168.10.63
+#    192.168.10.64/26   hosts 192.168.10.65 - 192.168.10.126  broadcast 192.168.10.127
+#    192.168.10.128/26  hosts 192.168.10.129 - 192.168.10.190  broadcast 192.168.10.191
+#    192.168.10.192/26  hosts 192.168.10.193 - 192.168.10.254  broadcast 192.168.10.255
+# 10.4.77.200/20 belongs to network 10.4.64.0/20  (mask 255.255.240.0 )
+# VLSM plan inside 172.16.0.0/24 for [100, 50, 25, 10] hosts:
+#    100 hosts -&gt; 172.16.0.0/25 (126 usable)
+#     50 hosts -&gt; 172.16.0.128/26 (62 usable)
+#     25 hosts -&gt; 172.16.0.192/27 (30 usable)
+#     10 hosts -&gt; 172.16.0.224/28 (14 usable)
+#    10.1.2.3     private=True  loopback=False link-local=False
+#    172.20.0.1   private=True  loopback=False link-local=False
+#    192.168.1.1  private=True  loopback=False link-local=False
+#    8.8.8.8      private=False loopback=False link-local=False
+#    127.0.0.1    private=True  loopback=True  link-local=False
+#    169.254.1.1  private=True  loopback=False link-local=True</code></pre><p>A /24 holds 256 addresses (254 usable: the first is the network, the last the broadcast). Splitting it four ways gives /26 blocks of 62 hosts. VLSM sizes each subnet to its need: 100 hosts get a /25, 10 hosts a /28.</p></details><table><tr><th>Range</th><th>Purpose</th></tr><tr><td>10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16</td><td>Private (RFC 1918): not routed on the Internet, used behind NAT</td></tr><tr><td>127.0.0.0/8</td><td>Loopback (this machine)</td></tr><tr><td>169.254.0.0/16</td><td>Link-local (no DHCP answer)</td></tr><tr><td>100.64.0.0/10</td><td>Carrier-grade NAT shared space</td></tr><tr><td>224.0.0.0/4</td><td>Multicast</td></tr><tr><td>192.0.2.0/24, 198.51.100.0/24, 203.0.113.0/24</td><td>Documentation examples</td></tr></table><h3>Good to know</h3><ul><li>Usable hosts in a /n = 2<sup>32−n</sup> − 2 (except /31 point-to-point and /32 single host).</li><li><strong>Longest prefix match</strong>: a router chooses the most specific matching route (a /24 beats a /16 beats the default 0.0.0.0/0).</li><li>CIDR (classless) replaced the old class A/B/C system and allows route aggregation (summarising many prefixes into one).</li></ul>
+    </section>
+
+    <!-- 16 -->
+    <section class="block" id="ipv6">
+      <h2><span class="num">16</span> IPv6</h2>
+<div class="callout life"><strong>Picture:</strong> The world ran out of phone numbers with the old length, so numbers got much longer: enough for every grain of sand to have several.</div><details class="deepdive" open><summary>IPv6 notation and scale (run for real)</summary><pre><code># IPv6 addresses: 128 bits, written in hex, with shortening rules.
+import ipaddress
+a = ipaddress.ip_address(&quot;2001:0db8:0000:0000:0000:ff00:0042:8329&quot;)
+print(&quot;full    :&quot;, a.exploded); print(&quot;short   :&quot;, a.compressed, &quot;(leading zeros dropped, one run of zero groups -&gt; ::)&quot;)
+print(&quot;loopback ::1 =&quot;, ipaddress.ip_address(&quot;::1&quot;).exploded)
+net = ipaddress.ip_network(&quot;2001:db8:abcd::/48&quot;)
+print(&quot;a /48 site has %s /64 subnets, each with %.1e addresses&quot; % (format(2 ** 16, &quot;,&quot;), 2.0 ** 64))
+print(&quot;documentation prefix 2001:db8::/32 is reserved for examples like these; fe80::/10 = link-local; fc00::/7 = unique local&quot;)
+print(&quot;total IPv6 space: 2^128 = %.2e addresses (IPv4: 2^32 = %s)&quot; % (2.0 ** 128, format(2 ** 32, &quot;,&quot;)))
+
+# ----- Output (real run) -----
+# full    : 2001:0db8:0000:0000:0000:ff00:0042:8329
+# short   : 2001:db8::ff00:42:8329 (leading zeros dropped, one run of zero groups -&gt; ::)
+# loopback ::1 = 0000:0000:0000:0000:0000:0000:0000:0001
+# a /48 site has 65,536 /64 subnets, each with 1.8e+19 addresses
+# documentation prefix 2001:db8::/32 is reserved for examples like these; fe80::/10 = link-local; fc00::/7 = unique local
+# total IPv6 space: 2^128 = 3.40e+38 addresses (IPv4: 2^32 = 4,294,967,296)</code></pre></details><table><tr><th></th><th>IPv4</th><th>IPv6</th></tr><tr><td>Address size</td><td>32 bits</td><td>128 bits</td></tr><tr><td>Notation</td><td>Dotted decimal 192.0.2.1</td><td>Hex groups 2001:db8::1</td></tr><tr><td>Header</td><td>Variable, with checksum</td><td>Fixed 40 bytes, no checksum, extension headers</td></tr><tr><td>Address configuration</td><td>Manual or DHCP</td><td>SLAAC (self-configuration) or DHCPv6</td></tr><tr><td>Broadcast</td><td>Yes</td><td>No (multicast instead)</td></tr><tr><td>NAT</td><td>Widely used</td><td>Not needed in principle</td></tr><tr><td>Fragmentation by routers</td><td>Yes</td><td>No (only the sender)</td></tr></table><h3>Good to know</h3><ul><li>Transition: dual stack (both at once), tunnels, NAT64/DNS64.</li><li>IPv6 adoption keeps growing; measurement sites (e.g. Google's IPv6 statistics) show a large share of users reaching it over IPv6 (as reported; check current numbers).</li></ul>
+    </section>
+
+    <!-- 17 -->
+    <section class="block" id="arp-icmp-dhcp">
+      <h2><span class="num">17</span> ARP, ICMP and DHCP: The Helpers</h2>
+<div class="callout life"><strong>Picture:</strong> ARP asks the room 'who has this address?'; ICMP is the postal service's error note ('address not found'); DHCP is the hotel reception that hands you a room number when you check in.</div><table><tr><th>Protocol</th><th>Job</th><th>How</th></tr><tr><td>ARP (IPv4)</td><td>IP address → MAC address on the local network</td><td>Broadcast request, unicast reply, cached (<code>ip neigh</code>). IPv6 uses Neighbor Discovery instead</td></tr><tr><td>ICMP</td><td>Errors and diagnostics</td><td>Echo request/reply (ping), destination unreachable, time exceeded (traceroute), fragmentation needed</td></tr><tr><td>DHCP</td><td>Give a device an IP, mask, gateway, DNS server</td><td>DORA: Discover (broadcast) → Offer → Request → Acknowledge; leases expire</td></tr></table><details class="deepdive" open><summary>ping over loopback on Linux (ICMP echo) (run for real)</summary><pre><code># ping uses ICMP echo; on loopback it shows the kernel&#x27;s own round-trip time
+ping -c 3 -q 127.0.0.1 2&gt;&amp;1 | tail -2 | sed &#x27;s/^/  /&#x27;
+echo &quot;  (rtt min/avg/max/mdev in milliseconds; a real network adds propagation and queueing delay)&quot;
+getent hosts localhost | head -1 | sed &#x27;s/^/  getent hosts localhost -&gt; /&#x27;
+
+# ----- Output (real run) -----
+#   3 packets transmitted, 3 received, 0% packet loss, time 2027ms
+#   rtt min/avg/max/mdev = 0.018/0.057/0.119/0.044 ms
+#   (rtt min/avg/max/mdev in milliseconds; a real network adds propagation and queueing delay)
+#   getent hosts localhost -&gt; ::1             localhost</code></pre><p>Round-trip times on loopback are tiny (hundredths of a millisecond): the packet never leaves the machine.</p></details><h3>Good to know</h3><ul><li>ARP spoofing (fake replies) enables man-in-the-middle attacks on a LAN; defences include dynamic ARP inspection on switches and encrypted protocols.</li></ul>
+    </section>
+
+    <!-- 18 -->
+    <section class="block" id="nat">
+      <h2><span class="num">18</span> NAT: Sharing One Public Address</h2>
+<div class="callout life"><strong>Picture:</strong> An office building with one street address. The receptionist notes which employee sent each outgoing letter, so replies can be handed to the right desk.</div><details class="deepdive" open><summary>A NAT translation table (simulation) (run for real)</summary><pre><code># NAT: many private devices share one public address. The router keeps a translation table (simulation).
+import itertools
+public = &quot;203.0.113.5&quot;                        # documentation address
+ports = itertools.count(40000); table = {}; reverse = {}
+def outgoing(src, sport, dst, dport):
+    key = (src, sport, dst, dport)
+    if key not in table: p = next(ports); table[key] = p; reverse[p] = (src, sport)
+    return (public, table[key], dst, dport)
+def incoming(dport):
+    return reverse.get(dport, &quot;DROPPED: no entry (unsolicited packet)&quot;)
+for pkt in [(&quot;192.168.1.10&quot;, 51000, &quot;198.51.100.7&quot;, 443), (&quot;192.168.1.11&quot;, 51000, &quot;198.51.100.7&quot;, 443), (&quot;192.168.1.10&quot;, 51001, &quot;198.51.100.9&quot;, 80)]:
+    print(&quot;out %-36s -&gt; %s&quot; % (str(pkt), outgoing(*pkt)))
+print(&quot;reply to port 40001 goes back to&quot;, incoming(40001))
+print(&quot;packet to port 45000 -&gt;&quot;, incoming(45000))
+print(&quot;Side effects: outsiders cannot start connections to devices behind NAT (unless port-forwarded); NAT slowed IPv4 exhaustion.&quot;)
+
+# ----- Output (real run) -----
+# out (&#x27;192.168.1.10&#x27;, 51000, &#x27;198.51.100.7&#x27;, 443) -&gt; (&#x27;203.0.113.5&#x27;, 40000, &#x27;198.51.100.7&#x27;, 443)
+# out (&#x27;192.168.1.11&#x27;, 51000, &#x27;198.51.100.7&#x27;, 443) -&gt; (&#x27;203.0.113.5&#x27;, 40001, &#x27;198.51.100.7&#x27;, 443)
+# out (&#x27;192.168.1.10&#x27;, 51001, &#x27;198.51.100.9&#x27;, 80) -&gt; (&#x27;203.0.113.5&#x27;, 40002, &#x27;198.51.100.9&#x27;, 80)
+# reply to port 40001 goes back to (&#x27;192.168.1.11&#x27;, 51000)
+# packet to port 45000 -&gt; DROPPED: no entry (unsolicited packet)
+# Side effects: outsiders cannot start connections to devices behind NAT (unless port-forwarded); NAT slowed IPv4 exhaustion.</code></pre><p>Two devices using the same source port get different public ports; replies are mapped back; unsolicited packets are dropped because there is no table entry.</p></details><h3>Good to know</h3><ul><li>Port forwarding adds a fixed entry so outsiders can reach a server behind NAT.</li><li>NAT traversal for calls and games: STUN, TURN, ICE (WebRTC).</li><li>Carrier-grade NAT means even your router's 'public' address may be shared with other customers.</li></ul>
+    </section>
+
+    <!-- 19 -->
+    <section class="block" id="routing-basics">
+      <h2><span class="num">19</span> Routing: How Packets Find Their Way</h2>
+<div class="callout life"><strong>Picture:</strong> Road signs at every junction. Each router only decides the <em>next hop</em> using its table; nobody plans the whole trip.</div><details class="deepdive" open><summary>A real routing table, sockets and port numbers on Linux (addresses hidden) (run for real)</summary><pre><code>echo &quot;--- interfaces (ip -brief addr) ---&quot;
+ip -brief addr | awk &#x27;{print &quot;  &quot; $1, $2, ($3 ? &quot;has an IPv4 address&quot; : &quot;&quot;)}&#x27;
+echo &quot;--- routing table: where packets go (addresses hidden) ---&quot;
+ip route | sed -E &#x27;s/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+(\/[0-9]+)?/&lt;addr\1&gt;/g&#x27; | sed &#x27;s/^/  /&#x27;
+echo &quot;--- listening sockets (ss -tuln), first lines ---&quot;
+ss -tuln | awk &#x27;NR==1 || /127\./&#x27; | head -5 | awk &#x27;{print &quot;  &quot; $1, $2, $5}&#x27;
+echo &quot;--- name resolution config ---&quot;
+grep -E &#x27;^nameserver&#x27; /etc/resolv.conf | sed -E &#x27;s/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/&lt;dns-server&gt;/&#x27; | sed &#x27;s/^/  /&#x27;
+echo &quot;--- well-known ports from /etc/services ---&quot;
+grep -wE &#x27;^(ssh|domain|http|https|smtp)&#x27; /etc/services | awk &#x27;{print &quot;  &quot; $1, $2}&#x27; | sort -u -k2
+
+# ----- Output (real run) -----
+# --- interfaces (ip -brief addr) ---
+#   lo UNKNOWN has an IPv4 address
+#   eth0 UP has an IPv4 address
+# --- routing table: where packets go (addresses hidden) ---
+#   default via &lt;addr&gt; dev eth0 proto kernel 
+#   &lt;addr/20&gt; dev eth0 proto kernel scope link src &lt;addr&gt; 
+# --- listening sockets (ss -tuln), first lines ---
+#   Netid State Local
+#   udp UNCONN 127.0.0.54:53
+#   udp UNCONN 127.0.0.53%lo:53
+#   udp UNCONN 127.0.0.1:323
+#   udp UNCONN 127.0.0.1:323
+# --- name resolution config ---
+#   nameserver &lt;dns-server&gt;
+# --- well-known ports from /etc/services ---
+#   ssh 22/tcp
+#   smtp 25/tcp
+#   https 443/tcp
+#   https 443/udp
+#   domain 53/tcp
+#   domain 53/udp
+#   http 80/tcp
+#   http-alt 8080/tcp
+#   domain-s 853/tcp
+#   domain-s 853/udp</code></pre><p>The table has a <strong>default route</strong> ('everything else goes via this gateway') and a directly connected network. The listening sockets include a local DNS stub resolver on port 53.</p></details><table><tr><th>Kind</th><th>Meaning</th><th>Examples</th></tr><tr><td>Static routing</td><td>Routes typed by an administrator</td><td>Small networks, default routes</td></tr><tr><td>Dynamic: link state</td><td>Every router learns the whole map, runs Dijkstra</td><td>OSPF, IS-IS</td></tr><tr><td>Dynamic: distance vector</td><td>Routers swap distance tables with neighbours</td><td>RIP, (EIGRP: advanced DV)</td></tr><tr><td>Path vector (between networks)</td><td>Routes carry the list of networks they pass through, plus policy</td><td>BGP</td></tr></table><h3>Good to know</h3><ul><li>Routing (building the table) vs forwarding (looking up each packet in it, in hardware, billions of times per second).</li></ul>
+    </section>
+
+    <!-- 20 -->
+    <section class="block" id="link-state">
+      <h2><span class="num">20</span> Link-State Routing and Dijkstra (OSPF)</h2>
+<div class="callout life"><strong>Picture:</strong> Every town gets a copy of the full road map and computes its own shortest routes.</div><div class="diagram-wrap"><svg viewBox="0 0 660 214" style="width:100%;max-width:660px" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrSc5_arrow" markerWidth="10" markerHeight="10" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8" fill="none" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc5_tri" markerWidth="12" markerHeight="12" refX="11" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc5_dia" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--accent)" stroke="var(--accent)"/></marker><marker id="arrSc5_diah" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker></defs><line x1="80" y1="88" x2="200" y2="42" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc5_arrow)"/><text class="edge-label" x="140" y="60" text-anchor="middle">4</text><line x1="80" y1="112" x2="200" y2="158" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc5_arrow)"/><text class="edge-label" x="140" y="130" text-anchor="middle">2</text><line x1="230" y1="50" x2="230" y2="150" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc5_arrow)"/><text class="edge-label" x="230" y="95" text-anchor="middle">1</text><line x1="260" y1="30" x2="400" y2="30" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc5_arrow)"/><text class="edge-label" x="330" y="25" text-anchor="middle">5</text><line x1="259" y1="150" x2="401" y2="50" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc5_arrow)"/><text class="edge-label" x="330" y="95" text-anchor="middle">8</text><line x1="260" y1="170" x2="400" y2="170" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc5_arrow)"/><text class="edge-label" x="330" y="165" text-anchor="middle">10</text><line x1="430" y1="50" x2="430" y2="150" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc5_arrow)"/><text class="edge-label" x="430" y="95" text-anchor="middle">2</text><line x1="460" y1="42" x2="580" y2="88" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc5_arrow)"/><text class="edge-label" x="520" y="60" text-anchor="middle">6</text><line x1="460" y1="158" x2="580" y2="112" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc5_arrow)"/><text class="edge-label" x="520" y="130" text-anchor="middle">2</text><rect class="box-final" x="20" y="80" width="60" height="40" rx="9"/><text x="50" y="104" text-anchor="middle" font-size="12">A</text><rect class="box-hl" x="200" y="10" width="60" height="40" rx="9"/><text x="230" y="34" text-anchor="middle" font-size="12">B</text><rect class="box-hl" x="200" y="150" width="60" height="40" rx="9"/><text x="230" y="174" text-anchor="middle" font-size="12">C</text><rect class="box-hl" x="400" y="10" width="60" height="40" rx="9"/><text x="430" y="34" text-anchor="middle" font-size="12">D</text><rect class="box-hl" x="400" y="150" width="60" height="40" rx="9"/><text x="430" y="174" text-anchor="middle" font-size="12">E</text><rect class="box" x="580" y="80" width="60" height="40" rx="9"/><text x="610" y="104" text-anchor="middle" font-size="12">F</text></svg><div class="diagram-caption">Fig S5 — The example network used below (link costs on edges).</div></div><details class="deepdive" open><summary>Router A's routing table from Dijkstra (run for real)</summary><pre><code># Link-state routing (OSPF idea): every router knows the whole map and runs Dijkstra&#x27;s shortest-path algorithm.
+import heapq
+g = {&quot;A&quot;: {&quot;B&quot;: 4, &quot;C&quot;: 2}, &quot;B&quot;: {&quot;A&quot;: 4, &quot;C&quot;: 1, &quot;D&quot;: 5}, &quot;C&quot;: {&quot;A&quot;: 2, &quot;B&quot;: 1, &quot;D&quot;: 8, &quot;E&quot;: 10}, &quot;D&quot;: {&quot;B&quot;: 5, &quot;C&quot;: 8, &quot;E&quot;: 2, &quot;F&quot;: 6}, &quot;E&quot;: {&quot;C&quot;: 10, &quot;D&quot;: 2, &quot;F&quot;: 2}, &quot;F&quot;: {&quot;D&quot;: 6, &quot;E&quot;: 2}}
+def dijkstra(src):
+    dist, prev, pq = {src: 0}, {}, [(0, src)]
+    while pq:
+        d, u = heapq.heappop(pq)
+        if d &gt; dist[u]: continue
+        for v, w in g[u].items():
+            if d + w &lt; dist.get(v, 1e9): dist[v] = d + w; prev[v] = u; heapq.heappush(pq, (d + w, v))
+    return dist, prev
+dist, prev = dijkstra(&quot;A&quot;)
+print(&quot;routing table of router A:&quot;)
+for dst in sorted(g):
+    if dst == &quot;A&quot;: continue
+    path, x = [dst], dst
+    while x != &quot;A&quot;: x = prev[x]; path.append(x)
+    path.reverse(); print(&quot;   to %s: cost %2d, next hop %s, path %s&quot; % (dst, dist[dst], path[1], &quot;-&quot;.join(path)))
+
+# ----- Output (real run) -----
+# routing table of router A:
+#    to B: cost  3, next hop C, path A-C-B
+#    to C: cost  2, next hop C, path A-C
+#    to D: cost  8, next hop C, path A-C-B-D
+#    to E: cost 10, next hop C, path A-C-B-D-E
+#    to F: cost 12, next hop C, path A-C-B-D-E-F</code></pre><p>Even B (directly linked at cost 4) is best reached via C (2 + 1 = 3). Every route from A leaves through C: one next hop for the whole table.</p></details><h3>Good to know</h3><ul><li>OSPF floods link-state advertisements, divides big networks into areas, and recomputes quickly after failures.</li><li>Dijkstra needs non-negative link costs; it runs in O(E log V) with a heap.</li></ul>
+    </section>
+
+    <!-- 21 -->
+    <section class="block" id="distance-vector">
+      <h2><span class="num">21</span> Distance-Vector Routing and Count to Infinity (RIP)</h2>
+<div class="callout life"><strong>Picture:</strong> Towns only talk to neighbours: 'I can reach the capital in 5 hours'. A neighbour adds its own travel time. Simple, but bad news travels slowly.</div><details class="deepdive" open><summary>Bellman-Ford convergence and the count-to-infinity problem (run for real)</summary><pre><code># Distance-vector routing (RIP idea): routers repeatedly tell their neighbours &quot;I can reach X at cost d&quot; (Bellman-Ford).
+INF = 16                                                            # RIP treats 16 hops as &#x27;unreachable&#x27;
+links = {(&quot;A&quot;, &quot;B&quot;): 1, (&quot;B&quot;, &quot;C&quot;): 2, (&quot;A&quot;, &quot;D&quot;): 4, (&quot;C&quot;, &quot;D&quot;): 1}
+nodes = [&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;]
+cost = lambda u, v: links.get((u, v), links.get((v, u)))
+dist = {u: {v: 0 if u == v else INF for v in nodes} for u in nodes}
+for rnd in range(1, 5):
+    changed = False
+    for u in nodes:
+        for v in nodes:
+            if cost(u, v) is None: continue
+            for dst in nodes:
+                if cost(u, v) + dist[v][dst] &lt; dist[u][dst]: dist[u][dst] = cost(u, v) + dist[v][dst]; changed = True
+    print(&quot;round %d: A&#x27;s distances %s&quot; % (rnd, dist[&quot;A&quot;]))
+    if not changed: print(&quot;no changes: converged&quot;); break
+print(&quot;\nThe &#x27;count to infinity&#x27; problem: line A - B - C, every link cost 1. The link B-C breaks.&quot;)
+def after_break(poisoned):
+    a_c, b_c, out = 2, INF, []                                       # A still believes &#x27;C is 2 away (via B)&#x27;
+    for _ in range(8):
+        b_c = INF if poisoned else min(INF, 1 + a_c)                  # B hears A&#x27;s stale route (unless A poisons it, since A&#x27;s route goes via B)
+        a_c = min(INF, 1 + b_c)                                       # A learns from B
+        out.append(&quot;B=%d A=%d&quot; % (b_c, a_c))
+    return out
+print(&quot;plain distance vector :&quot;, &quot;, &quot;.join(after_break(False)), &quot;... counts up to 16&quot;)
+print(&quot;with poisoned reverse :&quot;, &quot;, &quot;.join(after_break(True)[:3]), &quot;... unreachable at once&quot;)
+
+# ----- Output (real run) -----
+# round 1: A&#x27;s distances {&#x27;A&#x27;: 0, &#x27;B&#x27;: 1, &#x27;C&#x27;: 16, &#x27;D&#x27;: 4}
+# round 2: A&#x27;s distances {&#x27;A&#x27;: 0, &#x27;B&#x27;: 1, &#x27;C&#x27;: 3, &#x27;D&#x27;: 4}
+# round 3: A&#x27;s distances {&#x27;A&#x27;: 0, &#x27;B&#x27;: 1, &#x27;C&#x27;: 3, &#x27;D&#x27;: 4}
+# no changes: converged
+#
+# The &#x27;count to infinity&#x27; problem: line A - B - C, every link cost 1. The link B-C breaks.
+# plain distance vector : B=3 A=4, B=5 A=6, B=7 A=8, B=9 A=10, B=11 A=12, B=13 A=14, B=15 A=16, B=16 A=16 ... counts up to 16
+# with poisoned reverse : B=16 A=16, B=16 A=16, B=16 A=16 ... unreachable at once</code></pre><p>The table converges in a few rounds. After a link breaks, A and B keep believing each other's stale routes and count up 3, 4, 5 ... until 16 ('infinity' in RIP). Poisoned reverse (advertise 'infinite' back to the neighbour you route through) stops this loop immediately in this simple case.</p></details><h3>Good to know</h3><ul><li>Other fixes: split horizon, triggered updates, hold-down timers. Distance vector is simple but slow to converge in large networks.</li></ul>
+    </section>
+
+    <!-- 22 -->
+    <section class="block" id="bgp">
+      <h2><span class="num">22</span> Routing Between Networks: BGP</h2>
+<div class="callout life"><strong>Picture:</strong> Countries agreeing which border crossings to use: decisions depend on treaties and prices (policy), not just distance.</div><table><tr><th>Concept</th><th>Meaning</th></tr><tr><td>Autonomous System (AS)</td><td>A network under one administration, with an AS number</td></tr><tr><td>eBGP / iBGP</td><td>BGP between ASes / inside one AS</td></tr><tr><td>Path vector</td><td>Each route lists the ASes it passes (also prevents loops)</td></tr><tr><td>Policy</td><td>Prefer customers over peers over providers; local preference, AS-path length, MED</td></tr><tr><td>Peering vs transit</td><td>Free exchange of each other's traffic vs paying for access to the whole Internet</td></tr></table><h3>Good to know</h3><ul><li>BGP mistakes and hijacks have caused big outages (routes leaked or falsely announced). RPKI (route origin validation) helps defend against them.</li><li>Anycast: the same IP address announced from many places (DNS root servers, CDNs); BGP sends you to a nearby one.</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part D — The Transport Layer (TCP and UDP)</h2></div>
+
+    <!-- 23 -->
+    <section class="block" id="ports-sockets">
+      <h2><span class="num">23</span> Ports and Sockets</h2>
+<div class="callout life"><strong>Picture:</strong> A building address gets the letter to the right building (IP); the flat number gets it to the right person (port). A socket is a person's own letterbox.</div><table><tr><th>Port range</th><th>Name</th><th>Examples</th></tr><tr><td>0–1023</td><td>Well-known</td><td>22 SSH, 25 SMTP, 53 DNS, 80 HTTP, 443 HTTPS</td></tr><tr><td>1024–49151</td><td>Registered</td><td>3306 MySQL, 5432 PostgreSQL, 6379 Redis, 8080 alternate HTTP</td></tr><tr><td>49152–65535</td><td>Dynamic / ephemeral</td><td>Chosen by the OS for the client side of a connection</td></tr></table><h3>Good to know</h3><ul><li>A TCP connection is identified by the 4-tuple (client IP, client port, server IP, server port), plus the protocol: so one server port can serve thousands of clients.</li><li>In code: <code>socket()</code>, <code>bind()</code>, <code>listen()</code>, <code>accept()</code> on the server; <code>connect()</code> on the client; then <code>send</code>/<code>recv</code>. See the C template in Part F.</li></ul>
+    </section>
+
+    <!-- 24 -->
+    <section class="block" id="udp">
+      <h2><span class="num">24</span> UDP: Simple and Fast</h2>
+<div class="callout life"><strong>Picture:</strong> Throwing postcards: no envelope, no tracking, no promise. Cheap and quick, and some may get lost.</div><details class="deepdive" open><summary>Three UDP datagrams over loopback (run for real)</summary><pre><code># UDP: no connection, no guarantee, each send is one datagram (message boundaries are kept).
+import socket
+rx = socket.socket(socket.AF_INET, socket.SOCK_DGRAM); rx.bind((&quot;127.0.0.1&quot;, 0)); port = rx.getsockname()[1]
+tx = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+for msg in (b&quot;one&quot;, b&quot;two&quot;, b&quot;three&quot;): tx.sendto(msg, (&quot;127.0.0.1&quot;, port))   # no handshake at all
+rx.settimeout(1)
+print(&quot;received datagrams:&quot;, [rx.recvfrom(1024)[0] for _ in range(3)])
+print(&quot;UDP header is 8 bytes (TCP&#x27;s is at least 20). Used by DNS, video calls, games, QUIC (HTTP/3).&quot;)
+tx.close(); rx.close()
+
+# ----- Output (real run) -----
+# received datagrams: [b&#x27;one&#x27;, b&#x27;two&#x27;, b&#x27;three&#x27;]
+# UDP header is 8 bytes (TCP&#x27;s is at least 20). Used by DNS, video calls, games, QUIC (HTTP/3).</code></pre><p>No connection set-up; each datagram keeps its boundaries. On a real network some could be lost or reordered and UDP would not notice.</p></details><h3>Good to know</h3><ul><li>Use UDP when timeliness beats completeness (voice, video, games), for tiny request/response exchanges (DNS), or to build your own transport on top (QUIC).</li><li>UDP header: source port, destination port, length, checksum: 8 bytes.</li></ul>
+    </section>
+
+    <!-- 25 -->
+    <section class="block" id="tcp-basics">
+      <h2><span class="num">25</span> TCP: Reliable, Ordered Byte Streams</h2>
+<div class="callout life"><strong>Picture:</strong> Registered post with numbered pages: the receiver confirms what arrived, missing pages are sent again, and pages are put back in order before you read them.</div><div class="diagram-wrap"><svg viewBox="0 0 620 396" style="width:100%;max-width:620px" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrSc6_arrow" markerWidth="10" markerHeight="10" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8" fill="none" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc6_tri" markerWidth="12" markerHeight="12" refX="11" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc6_dia" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--accent)" stroke="var(--accent)"/></marker><marker id="arrSc6_diah" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker></defs><rect class="box-hl" x="58" y="10" width="224" height="30" rx="6"/><text x="170" y="30" text-anchor="middle" font-size="12" font-weight="700">Client</text><line x1="170" y1="40" x2="170" y2="386" stroke="var(--card-border)" stroke-width="2" stroke-dasharray="4 4"/><rect class="box-hl" x="338" y="10" width="224" height="30" rx="6"/><text x="450" y="30" text-anchor="middle" font-size="12" font-weight="700">Server</text><line x1="450" y1="40" x2="450" y2="386" stroke="var(--card-border)" stroke-width="2" stroke-dasharray="4 4"/><line x1="170" y1="72" x2="450" y2="72" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#arrSc6_arrow)"/><text x="310" y="67" text-anchor="middle" font-size="11" class="edge-label">SYN (seq = x)</text><line x1="450" y1="106" x2="170" y2="106" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#arrSc6_arrow)"/><text x="310" y="101" text-anchor="middle" font-size="11" class="edge-label">SYN-ACK (seq = y, ack = x+1)</text><line x1="170" y1="140" x2="450" y2="140" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#arrSc6_arrow)"/><text x="310" y="135" text-anchor="middle" font-size="11" class="edge-label">ACK (ack = y+1)</text><line x1="170" y1="174" x2="450" y2="174" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#arrSc6_arrow)"/><text x="310" y="169" text-anchor="middle" font-size="11" class="edge-label">data (seq x+1 ...)</text><line x1="450" y1="208" x2="170" y2="208" stroke="var(--accent)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arrSc6_arrow)"/><text x="310" y="203" text-anchor="middle" font-size="11" class="edge-label">ACK + data</text><line x1="170" y1="242" x2="450" y2="242" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#arrSc6_arrow)"/><text x="310" y="237" text-anchor="middle" font-size="11" class="edge-label">FIN</text><line x1="450" y1="276" x2="170" y2="276" stroke="var(--accent)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arrSc6_arrow)"/><text x="310" y="271" text-anchor="middle" font-size="11" class="edge-label">ACK</text><line x1="450" y1="310" x2="170" y2="310" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#arrSc6_arrow)"/><text x="310" y="305" text-anchor="middle" font-size="11" class="edge-label">FIN</text><line x1="170" y1="344" x2="450" y2="344" stroke="var(--accent)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arrSc6_arrow)"/><text x="310" y="339" text-anchor="middle" font-size="11" class="edge-label">ACK  (client waits in TIME_WAIT)</text></svg><div class="diagram-caption">Fig S6 — TCP connection lifecycle: 3-way handshake, data, 4-way close.</div></div><details class="deepdive" open><summary>A real TCP echo server and client over loopback (run for real)</summary><pre><code># A REAL TCP server and client talking over the loopback interface (127.0.0.1): connect, send, receive, close.
+import socket, threading
+srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)            # SOCK_STREAM = TCP
+srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+srv.bind((&quot;127.0.0.1&quot;, 0)); srv.listen()                            # port 0 = let the OS pick a free port
+port = srv.getsockname()[1]
+def serve():
+    conn, addr = srv.accept()                                      # waits for the 3-way handshake to complete
+    with conn:
+        data = conn.recv(1024)
+        conn.sendall(b&quot;echo: &quot; + data.upper())
+threading.Thread(target=serve, daemon=True).start()
+c = socket.create_connection((&quot;127.0.0.1&quot;, port))                  # SYN -&gt; SYN/ACK -&gt; ACK happens inside connect()
+print(&quot;client local address is 127.0.0.1 with an OS-chosen ephemeral port:&quot;, 1024 &lt;= c.getsockname()[1] &lt;= 65535)
+c.sendall(b&quot;hello network&quot;)
+print(&quot;client received:&quot;, c.recv(1024))
+c.close(); srv.close()
+print(&quot;a TCP connection is identified by 4 numbers: (client IP, client port, server IP, server port)&quot;)
+
+# ----- Output (real run) -----
+# client local address is 127.0.0.1 with an OS-chosen ephemeral port: True
+# client received: b&#x27;echo: HELLO NETWORK&#x27;
+# a TCP connection is identified by 4 numbers: (client IP, client port, server IP, server port)</code></pre><p>The handshake happened inside <code>connect()</code> and <code>accept()</code>; the program only saw data. The client got an OS-chosen ephemeral port.</p></details><table><tr><th>TCP feature</th><th>How</th></tr><tr><td>Reliability</td><td>Sequence numbers, acknowledgements, retransmission on timeout or duplicate ACKs</td></tr><tr><td>Ordering</td><td>Receiver reorders by sequence number</td></tr><tr><td>Flow control</td><td>Receiver advertises a window: 'I have room for N bytes'</td></tr><tr><td>Congestion control</td><td>Sender limits itself to protect the network (next sections)</td></tr><tr><td>Full duplex</td><td>Both sides send at once</td></tr><tr><td>Connection state</td><td>LISTEN, SYN-SENT, ESTABLISHED, FIN-WAIT, TIME-WAIT, CLOSE-WAIT ...</td></tr></table><h3>Good to know</h3><ul><li>TIME_WAIT (2 × maximum segment lifetime) makes sure late packets from an old connection are not mistaken for a new one.</li><li>A SYN flood attack fills a server's half-open connection table; SYN cookies defend against it.</li></ul>
+    </section>
+
+    <!-- 26 -->
+    <section class="block" id="tcp-stream">
+      <h2><span class="num">26</span> TCP Is a Stream, Not Messages</h2>
+<div class="callout life"><strong>Picture:</strong> Pouring three cups of water into one bucket: the receiver gets water, not three cups.</div><details class="deepdive" open><summary>Three sends, one receive (run for real)</summary><pre><code># TCP is a BYTE STREAM, not messages: three sends may arrive as one recv. Applications must add their own framing.
+import socket, threading, time, struct
+srv = socket.socket(); srv.bind((&quot;127.0.0.1&quot;, 0)); srv.listen(); port = srv.getsockname()[1]
+got = []
+def serve():
+    conn, _ = srv.accept(); time.sleep(0.2)                          # let all three sends pile up first
+    got.append(conn.recv(4096)); conn.close()
+t = threading.Thread(target=serve); t.start()
+c = socket.create_connection((&quot;127.0.0.1&quot;, port))
+for msg in (b&quot;one&quot;, b&quot;two&quot;, b&quot;three&quot;): c.sendall(msg)
+t.join(); c.close(); srv.close()
+print(&quot;sent 3 messages; the receiver&#x27;s first recv() returned:&quot;, got[0])
+def frame(m): return struct.pack(&quot;&gt;H&quot;, len(m)) + m                  # fix: a 2-byte length prefix before each message
+def unframe(buf):
+    out = []
+    while buf: n = struct.unpack(&quot;&gt;H&quot;, buf[:2])[0]; out.append(buf[2:2 + n]); buf = buf[2 + n:]
+    return out
+print(&quot;with length prefixes the receiver can split them again:&quot;, unframe(frame(b&quot;one&quot;) + frame(b&quot;two&quot;) + frame(b&quot;three&quot;)))
+
+# ----- Output (real run) -----
+# sent 3 messages; the receiver&#x27;s first recv() returned: b&#x27;onetwothree&#x27;
+# with length prefixes the receiver can split them again: [b&#x27;one&#x27;, b&#x27;two&#x27;, b&#x27;three&#x27;]</code></pre><p>Three <code>send()</code> calls arrived as one <code>recv()</code>: <code>b'onetwothree'</code>. Protocols built on TCP must add <strong>framing</strong>: a length prefix (shown), a delimiter (HTTP headers end with a blank line), or a fixed size.</p></details><h3>Good to know</h3><ul><li>Nagle's algorithm (TCP_NODELAY turns it off) and delayed ACKs can also merge or delay small writes.</li></ul>
+    </section>
+
+    <!-- 27 -->
+    <section class="block" id="flow-control">
+      <h2><span class="num">27</span> Flow Control and the Sliding Window</h2>
+<div class="callout life"><strong>Picture:</strong> A waiter who brings plates only as fast as the table has space for them.</div><table><tr><th>Concept</th><th>Meaning</th></tr><tr><td>Receive window (rwnd)</td><td>Free buffer space the receiver advertises in every ACK</td></tr><tr><td>Window scaling</td><td>Multiplies the 16-bit window field so windows can exceed 64 KiB (needed on fast, long links: see the bandwidth-delay demo in Part A)</td></tr><tr><td>Zero window</td><td>Receiver is full; sender pauses and probes</td></tr><tr><td>Silly window syndrome</td><td>Sending tiny segments; avoided by waiting for a reasonable window</td></tr></table><h3>Good to know</h3><ul><li>Effective sending limit = min(rwnd, cwnd): the receiver's limit and the network's limit (congestion window).</li></ul>
+    </section>
+
+    <!-- 28 -->
+    <section class="block" id="congestion-control">
+      <h2><span class="num">28</span> Congestion Control</h2>
+<div class="callout life"><strong>Picture:</strong> Merging onto a busy highway: speed up gently while the road is clear, slow down sharply when you see brake lights.</div><div class="diagram-wrap"><svg viewBox="0 0 640 300" style="width:100%;max-width:640px" xmlns="http://www.w3.org/2000/svg"><line x1="60" y1="240" x2="620" y2="240" stroke="var(--card-border)"/><text x="54" y="244" text-anchor="end" font-size="11">0</text><line x1="60" y1="185" x2="620" y2="185" stroke="var(--card-border)"/><text x="54" y="189" text-anchor="end" font-size="11">12.5</text><line x1="60" y1="130" x2="620" y2="130" stroke="var(--card-border)"/><text x="54" y="134" text-anchor="end" font-size="11">25</text><line x1="60" y1="75" x2="620" y2="75" stroke="var(--card-border)"/><text x="54" y="79" text-anchor="end" font-size="11">37.5</text><line x1="60" y1="20" x2="620" y2="20" stroke="var(--card-border)"/><text x="54" y="24" text-anchor="end" font-size="11">50</text><text x="60" y="258" text-anchor="middle" font-size="11">1</text><text x="73" y="258" text-anchor="middle" font-size="11"></text><text x="85" y="258" text-anchor="middle" font-size="11"></text><text x="98" y="258" text-anchor="middle" font-size="11"></text><text x="111" y="258" text-anchor="middle" font-size="11">5</text><text x="124" y="258" text-anchor="middle" font-size="11"></text><text x="136" y="258" text-anchor="middle" font-size="11"></text><text x="149" y="258" text-anchor="middle" font-size="11"></text><text x="162" y="258" text-anchor="middle" font-size="11"></text><text x="175" y="258" text-anchor="middle" font-size="11">10</text><text x="187" y="258" text-anchor="middle" font-size="11"></text><text x="200" y="258" text-anchor="middle" font-size="11"></text><text x="213" y="258" text-anchor="middle" font-size="11"></text><text x="225" y="258" text-anchor="middle" font-size="11"></text><text x="238" y="258" text-anchor="middle" font-size="11">15</text><text x="251" y="258" text-anchor="middle" font-size="11"></text><text x="264" y="258" text-anchor="middle" font-size="11"></text><text x="276" y="258" text-anchor="middle" font-size="11"></text><text x="289" y="258" text-anchor="middle" font-size="11"></text><text x="302" y="258" text-anchor="middle" font-size="11">20</text><text x="315" y="258" text-anchor="middle" font-size="11"></text><text x="327" y="258" text-anchor="middle" font-size="11"></text><text x="340" y="258" text-anchor="middle" font-size="11"></text><text x="353" y="258" text-anchor="middle" font-size="11"></text><text x="365" y="258" text-anchor="middle" font-size="11">25</text><text x="378" y="258" text-anchor="middle" font-size="11"></text><text x="391" y="258" text-anchor="middle" font-size="11"></text><text x="404" y="258" text-anchor="middle" font-size="11"></text><text x="416" y="258" text-anchor="middle" font-size="11"></text><text x="429" y="258" text-anchor="middle" font-size="11">30</text><text x="442" y="258" text-anchor="middle" font-size="11"></text><text x="455" y="258" text-anchor="middle" font-size="11"></text><text x="467" y="258" text-anchor="middle" font-size="11"></text><text x="480" y="258" text-anchor="middle" font-size="11"></text><text x="493" y="258" text-anchor="middle" font-size="11">35</text><text x="505" y="258" text-anchor="middle" font-size="11"></text><text x="518" y="258" text-anchor="middle" font-size="11"></text><text x="531" y="258" text-anchor="middle" font-size="11"></text><text x="544" y="258" text-anchor="middle" font-size="11"></text><text x="556" y="258" text-anchor="middle" font-size="11">40</text><text x="569" y="258" text-anchor="middle" font-size="11"></text><text x="582" y="258" text-anchor="middle" font-size="11"></text><text x="595" y="258" text-anchor="middle" font-size="11"></text><text x="607" y="258" text-anchor="middle" font-size="11"></text><text x="620" y="258" text-anchor="middle" font-size="11">45</text><text x="340" y="288" text-anchor="middle" font-size="12" class="edge-label">round trips</text><text transform="rotate(-90)" x="-130" y="16" text-anchor="middle" font-size="12" class="edge-label">segments in flight</text><polyline points="60.0,235.6 72.7,231.2 85.5,222.4 98.2,204.8 110.9,169.6 123.6,99.2 136.4,94.8 149.1,90.4 161.8,86.0 174.5,81.6 187.3,77.2 200.0,72.8 212.7,68.4 225.5,64.0 238.2,235.6 250.9,231.2 263.6,222.4 276.4,204.8 289.1,169.6 301.8,152.0 314.5,147.6 327.3,143.2 340.0,138.8 352.7,134.4 365.5,130.0 378.2,125.6 390.9,182.8 403.6,178.4 416.4,174.0 429.1,169.6 441.8,165.2 454.5,160.8 467.3,156.4 480.0,152.0 492.7,147.6 505.5,143.2 518.2,138.8 530.9,134.4 543.6,187.2 556.4,182.8 569.1,178.4 581.8,174.0 594.5,169.6 607.3,165.2 620.0,160.8" fill="none" stroke="var(--accent)" stroke-width="2.5"/><circle cx="60.0" cy="235.6" r="3.5" fill="var(--accent)"/><circle cx="72.7" cy="231.2" r="3.5" fill="var(--accent)"/><circle cx="85.5" cy="222.4" r="3.5" fill="var(--accent)"/><circle cx="98.2" cy="204.8" r="3.5" fill="var(--accent)"/><circle cx="110.9" cy="169.6" r="3.5" fill="var(--accent)"/><circle cx="123.6" cy="99.2" r="3.5" fill="var(--accent)"/><circle cx="136.4" cy="94.8" r="3.5" fill="var(--accent)"/><circle cx="149.1" cy="90.4" r="3.5" fill="var(--accent)"/><circle cx="161.8" cy="86.0" r="3.5" fill="var(--accent)"/><circle cx="174.5" cy="81.6" r="3.5" fill="var(--accent)"/><circle cx="187.3" cy="77.2" r="3.5" fill="var(--accent)"/><circle cx="200.0" cy="72.8" r="3.5" fill="var(--accent)"/><circle cx="212.7" cy="68.4" r="3.5" fill="var(--accent)"/><circle cx="225.5" cy="64.0" r="3.5" fill="var(--accent)"/><circle cx="238.2" cy="235.6" r="3.5" fill="var(--accent)"/><circle cx="250.9" cy="231.2" r="3.5" fill="var(--accent)"/><circle cx="263.6" cy="222.4" r="3.5" fill="var(--accent)"/><circle cx="276.4" cy="204.8" r="3.5" fill="var(--accent)"/><circle cx="289.1" cy="169.6" r="3.5" fill="var(--accent)"/><circle cx="301.8" cy="152.0" r="3.5" fill="var(--accent)"/><circle cx="314.5" cy="147.6" r="3.5" fill="var(--accent)"/><circle cx="327.3" cy="143.2" r="3.5" fill="var(--accent)"/><circle cx="340.0" cy="138.8" r="3.5" fill="var(--accent)"/><circle cx="352.7" cy="134.4" r="3.5" fill="var(--accent)"/><circle cx="365.5" cy="130.0" r="3.5" fill="var(--accent)"/><circle cx="378.2" cy="125.6" r="3.5" fill="var(--accent)"/><circle cx="390.9" cy="182.8" r="3.5" fill="var(--accent)"/><circle cx="403.6" cy="178.4" r="3.5" fill="var(--accent)"/><circle cx="416.4" cy="174.0" r="3.5" fill="var(--accent)"/><circle cx="429.1" cy="169.6" r="3.5" fill="var(--accent)"/><circle cx="441.8" cy="165.2" r="3.5" fill="var(--accent)"/><circle cx="454.5" cy="160.8" r="3.5" fill="var(--accent)"/><circle cx="467.3" cy="156.4" r="3.5" fill="var(--accent)"/><circle cx="480.0" cy="152.0" r="3.5" fill="var(--accent)"/><circle cx="492.7" cy="147.6" r="3.5" fill="var(--accent)"/><circle cx="505.5" cy="143.2" r="3.5" fill="var(--accent)"/><circle cx="518.2" cy="138.8" r="3.5" fill="var(--accent)"/><circle cx="530.9" cy="134.4" r="3.5" fill="var(--accent)"/><circle cx="543.6" cy="187.2" r="3.5" fill="var(--accent)"/><circle cx="556.4" cy="182.8" r="3.5" fill="var(--accent)"/><circle cx="569.1" cy="178.4" r="3.5" fill="var(--accent)"/><circle cx="581.8" cy="174.0" r="3.5" fill="var(--accent)"/><circle cx="594.5" cy="169.6" r="3.5" fill="var(--accent)"/><circle cx="607.3" cy="165.2" r="3.5" fill="var(--accent)"/><circle cx="620.0" cy="160.8" r="3.5" fill="var(--accent)"/><text x="70" y="32" font-size="12" fill="var(--accent)" style="fill:var(--accent)">● cwnd (segments)</text></svg><div class="diagram-caption">Fig S7 — Congestion window over time (TCP Reno-style simulation): slow start, linear growth, halving and reset.</div></div><details class="deepdive" open><summary>Slow start, congestion avoidance, fast recovery, timeout (run for real)</summary><pre><code># TCP congestion control (Reno-style), simulated: slow start, congestion avoidance, and reactions to loss.
+cwnd, ssthresh, rows = 1.0, 32.0, []
+events = {14: &quot;timeout&quot;, 26: &quot;3 dup ACKs&quot;, 38: &quot;3 dup ACKs&quot;}
+for rtt in range(1, 46):
+    rows.append((rtt, cwnd))
+    ev = events.get(rtt)
+    if ev == &quot;timeout&quot;: ssthresh = max(cwnd / 2, 2); cwnd = 1.0                      # severe: back to 1
+    elif ev == &quot;3 dup ACKs&quot;: ssthresh = max(cwnd / 2, 2); cwnd = ssthresh            # fast recovery: halve
+    elif cwnd &lt; ssthresh: cwnd = min(cwnd * 2, ssthresh) if cwnd * 2 &gt; ssthresh else cwnd * 2   # slow start: double per RTT
+    else: cwnd += 1                                                                   # congestion avoidance: +1 per RTT
+print(&quot;RTT  cwnd (segments)&quot;)
+for r, c in rows:
+    print(&quot;%3d  %5.1f %s %s&quot; % (r, c, &quot;#&quot; * int(c // 2), &quot;&lt;- &quot; + events[r] if r in events else &quot;&quot;))
+print(&quot;CWND series:&quot;, [round(c, 1) for _, c in rows])
+
+# ----- Output (real run) -----
+# RTT  cwnd (segments)
+#   1    1.0  
+#   2    2.0 # 
+#   3    4.0 ## 
+#   4    8.0 #### 
+#   5   16.0 ######## 
+#   6   32.0 ################ 
+#   7   33.0 ################ 
+#   8   34.0 ################# 
+#   9   35.0 ################# 
+#  10   36.0 ################## 
+#  11   37.0 ################## 
+#  12   38.0 ################### 
+#  13   39.0 ################### 
+#  14   40.0 #################### &lt;- timeout
+#  15    1.0  
+#  16    2.0 # 
+#  17    4.0 ## 
+#  18    8.0 #### 
+#  19   16.0 ######## 
+#  20   20.0 ########## 
+#  21   21.0 ########## 
+#  22   22.0 ########### 
+#  23   23.0 ########### 
+#  24   24.0 ############ 
+#  25   25.0 ############ 
+#  26   26.0 ############# &lt;- 3 dup ACKs
+#  27   13.0 ###### 
+#  28   14.0 ####### 
+#  29   15.0 ####### 
+#  30   16.0 ######## 
+#  31   17.0 ######## 
+#  32   18.0 ######### 
+#  33   19.0 ######### 
+#  34   20.0 ########## 
+#  35   21.0 ########## 
+#  36   22.0 ########### 
+#  37   23.0 ########### 
+#  38   24.0 ############ &lt;- 3 dup ACKs
+#  39   12.0 ###### 
+#  40   13.0 ###### 
+#  41   14.0 ####### 
+#  42   15.0 ####### 
+#  43   16.0 ######## 
+#  44   17.0 ######## 
+#  45   18.0 ######### 
+# CWND series: [1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 33.0, 34.0, 35.0, 36.0, 37.0, 38.0, 39.0, 40.0, 1.0, 2.0, 4.0, 8.0, 16.0, 20.0, 21.0, 22.0, 23.0, 24.0, 25.0, 26.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0]</code></pre><p>Slow start doubles the window every RTT until the threshold (32); then it grows by 1 per RTT. A timeout (RTT 14) drops it to 1 and halves the threshold; three duplicate ACKs (RTT 26, 38) only halve it (fast recovery). The saw-tooth shape is classic AIMD: additive increase, multiplicative decrease.</p></details><table><tr><th>Algorithm</th><th>Signal</th><th>Note</th></tr><tr><td>Tahoe / Reno / NewReno</td><td>Packet loss</td><td>Classic textbook algorithms</td></tr><tr><td>CUBIC</td><td>Loss; window grows as a cubic function of time</td><td>Default in Linux and Windows for years</td></tr><tr><td>BBR</td><td>Measured bandwidth and RTT</td><td>Developed at Google; tries to avoid filling buffers</td></tr><tr><td>ECN</td><td>Routers mark packets instead of dropping</td><td>Needs support end to end</td></tr></table><h3>Good to know</h3><ul><li>Bufferbloat: huge router buffers hide congestion and add seconds of delay; active queue management (CoDel, FQ-CoDel) fixes it.</li></ul>
+    </section>
+
+    <!-- 29 -->
+    <section class="block" id="quic">
+      <h2><span class="num">29</span> QUIC: Transport over UDP</h2>
+<div class="callout life"><strong>Picture:</strong> Instead of rebuilding the national highway, a delivery company runs its own smarter vans on the existing roads.</div><table><tr><th>Feature</th><th>Why</th></tr><tr><td>Runs over UDP</td><td>Can be deployed in applications without changing operating systems or middleboxes</td></tr><tr><td>Built-in TLS 1.3</td><td>Encryption always on; faster set-up (1 RTT, 0-RTT on resumption)</td></tr><tr><td>Independent streams</td><td>A lost packet blocks only its own stream (no TCP head-of-line blocking)</td></tr><tr><td>Connection IDs</td><td>A connection survives switching from Wi-Fi to mobile data</td></tr></table><h3>Good to know</h3><ul><li>Standardised by the IETF in 2021 (RFC 9000); HTTP/3 runs on it (RFC 9114, 2022).</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part E — The Application Layer</h2></div>
+
+    <!-- 30 -->
+    <section class="block" id="dns">
+      <h2><span class="num">30</span> DNS: The Internet's Phone Book</h2>
+<div class="callout life"><strong>Picture:</strong> You remember your friend's name, not their phone number. DNS turns names (example.com) into numbers (IP addresses), asking a chain of directories if needed.</div><div class="diagram-wrap"><svg viewBox="0 0 860 362" style="width:100%;max-width:860px" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrSc8_arrow" markerWidth="10" markerHeight="10" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8" fill="none" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc8_tri" markerWidth="12" markerHeight="12" refX="11" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc8_dia" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--accent)" stroke="var(--accent)"/></marker><marker id="arrSc8_diah" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker></defs><rect class="box-hl" x="46" y="10" width="128" height="30" rx="6"/><text x="110" y="30" text-anchor="middle" font-size="12" font-weight="700">Your PC</text><line x1="110" y1="40" x2="110" y2="352" stroke="var(--card-border)" stroke-width="2" stroke-dasharray="4 4"/><rect class="box-hl" x="206" y="10" width="128" height="30" rx="6"/><text x="270" y="30" text-anchor="middle" font-size="12" font-weight="700">Recursive resolver</text><line x1="270" y1="40" x2="270" y2="352" stroke="var(--card-border)" stroke-width="2" stroke-dasharray="4 4"/><rect class="box-hl" x="366" y="10" width="128" height="30" rx="6"/><text x="430" y="30" text-anchor="middle" font-size="12" font-weight="700">Root server</text><line x1="430" y1="40" x2="430" y2="352" stroke="var(--card-border)" stroke-width="2" stroke-dasharray="4 4"/><rect class="box-hl" x="526" y="10" width="128" height="30" rx="6"/><text x="590" y="30" text-anchor="middle" font-size="12" font-weight="700">.com server</text><line x1="590" y1="40" x2="590" y2="352" stroke="var(--card-border)" stroke-width="2" stroke-dasharray="4 4"/><rect class="box-hl" x="686" y="10" width="128" height="30" rx="6"/><text x="750" y="30" text-anchor="middle" font-size="12" font-weight="700">example.com's server</text><line x1="750" y1="40" x2="750" y2="352" stroke="var(--card-border)" stroke-width="2" stroke-dasharray="4 4"/><line x1="110" y1="72" x2="270" y2="72" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#arrSc8_arrow)"/><text x="190" y="67" text-anchor="middle" font-size="11" class="edge-label">where is example.com?</text><line x1="270" y1="106" x2="430" y2="106" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#arrSc8_arrow)"/><text x="350" y="101" text-anchor="middle" font-size="11" class="edge-label">example.com?</text><line x1="430" y1="140" x2="270" y2="140" stroke="var(--accent)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arrSc8_arrow)"/><text x="350" y="135" text-anchor="middle" font-size="11" class="edge-label">ask the .com servers</text><line x1="270" y1="174" x2="590" y2="174" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#arrSc8_arrow)"/><text x="430" y="169" text-anchor="middle" font-size="11" class="edge-label">example.com?</text><line x1="590" y1="208" x2="270" y2="208" stroke="var(--accent)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arrSc8_arrow)"/><text x="430" y="203" text-anchor="middle" font-size="11" class="edge-label">ask ns1.example.com</text><line x1="270" y1="242" x2="750" y2="242" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#arrSc8_arrow)"/><text x="510" y="237" text-anchor="middle" font-size="11" class="edge-label">example.com?</text><line x1="750" y1="276" x2="270" y2="276" stroke="var(--accent)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arrSc8_arrow)"/><text x="510" y="271" text-anchor="middle" font-size="11" class="edge-label">A 93.184.x.x, TTL 3600</text><line x1="270" y1="310" x2="110" y2="310" stroke="var(--accent)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arrSc8_arrow)"/><text x="190" y="305" text-anchor="middle" font-size="11" class="edge-label">answer (cached for TTL)</text></svg><div class="diagram-caption">Fig S8 — A DNS lookup with an empty cache (simplified).</div></div><details class="deepdive" open><summary>A real DNS query packet, built byte by byte, and a decoded answer (run for real)</summary><pre><code># DNS messages are small binary packets. Build a real query for &#x27;example.com&#x27; type A and decode a hand-made answer (no network needed).
+import struct
+def build_query(name, qid=0x1234):
+    header = struct.pack(&quot;&gt;HHHHHH&quot;, qid, 0x0100, 1, 0, 0, 0)          # id, flags (recursion desired), 1 question
+    q = b&quot;&quot;.join(bytes([len(p)]) + p.encode() for p in name.split(&quot;.&quot;)) + b&quot;\x00&quot; + struct.pack(&quot;&gt;HH&quot;, 1, 1)   # QTYPE A, QCLASS IN
+    return header + q
+pkt = build_query(&quot;example.com&quot;)
+print(&quot;query (%d bytes): %s&quot; % (len(pkt), pkt.hex(&quot; &quot;)))
+print(&quot;  name is stored as length-prefixed labels: 07 &#x27;example&#x27; 03 &#x27;com&#x27; 00&quot;)
+answer = pkt[:2] + struct.pack(&quot;&gt;H&quot;, 0x8180) + struct.pack(&quot;&gt;HHHH&quot;, 1, 1, 0, 0) + pkt[12:] + \
+         struct.pack(&quot;&gt;HHHIH&quot;, 0xC00C, 1, 1, 3600, 4) + bytes([93, 184, 215, 14])      # pointer to the name, A, IN, TTL 3600, 4 bytes of address (EXAMPLE values)
+qid, flags, qd, an, ns, ar = struct.unpack(&quot;&gt;HHHHHH&quot;, answer[:12])
+ttl, rdlen = struct.unpack(&quot;&gt;IH&quot;, answer[len(pkt) + 6:len(pkt) + 12])
+ip = &quot;.&quot;.join(str(b) for b in answer[-4:])
+print(&quot;decoded answer: id=0x%04X response=%s answers=%d ttl=%ds address=%s (hand-made example record)&quot; % (qid, bool(flags &amp; 0x8000), an, ttl, ip))
+
+# ----- Output (real run) -----
+# query (29 bytes): 12 34 01 00 00 01 00 00 00 00 00 00 07 65 78 61 6d 70 6c 65 03 63 6f 6d 00 00 01 00 01
+#   name is stored as length-prefixed labels: 07 &#x27;example&#x27; 03 &#x27;com&#x27; 00
+# decoded answer: id=0x1234 response=True answers=1 ttl=3600s address=93.184.215.14 (hand-made example record)</code></pre><p>The query is only 29 bytes. Names are stored as length-prefixed labels. The answer record shown is <strong>hand-made</strong> (no network request was sent).</p></details><table><tr><th>Record</th><th>Holds</th></tr><tr><td>A / AAAA</td><td>IPv4 / IPv6 address</td></tr><tr><td>CNAME</td><td>Alias to another name</td></tr><tr><td>MX</td><td>Mail server</td></tr><tr><td>NS</td><td>Authoritative name servers</td></tr><tr><td>TXT</td><td>Text (SPF, domain verification)</td></tr><tr><td>SOA</td><td>Zone information</td></tr><tr><td>PTR</td><td>Reverse lookup (IP → name)</td></tr><tr><td>CAA</td><td>Which CAs may issue certificates</td></tr></table><details class="deepdive" open><summary>dig, traceroute, curl, openssl, tcpdump (template, not run)</summary><pre><code># DNS and connectivity tools (template: outputs depend on your network, so not shown)
+dig example.com A +short              # ask DNS for the IPv4 address
+dig example.com AAAA +short           # IPv6 address
+dig +trace example.com                # follow the referrals from the root servers down
+nslookup example.com                  # older, available on Windows too
+traceroute example.com                # Windows: tracert   (routers on the path, using TTL expiry)
+mtr example.com                       # traceroute + ping combined
+curl -v https://example.com           # see the TLS handshake summary and HTTP headers
+curl -I --http2 https://example.com   # only headers, over HTTP/2
+openssl s_client -connect example.com:443 -servername example.com    # inspect the certificate chain
+sudo tcpdump -i any -n port 53        # capture DNS packets (Wireshark is the graphical version)</code></pre></details><h3>Good to know</h3><ul><li>DNS uses UDP port 53 (TCP for large answers); private, encrypted variants: DNS over TLS (853) and DNS over HTTPS.</li><li>TTL controls caching: lower before a migration, raise after. DNSSEC signs records so they cannot be forged.</li></ul>
+    </section>
+
+    <!-- 31 -->
+    <section class="block" id="http">
+      <h2><span class="num">31</span> HTTP: How the Web Talks</h2>
+<div class="callout life"><strong>Picture:</strong> Ordering at a counter: you say what you want (request line), add details (headers), maybe hand over a form (body); the clerk replies with a status ('200 here you go', '404 we don't have it') and the item.</div><details class="deepdive" open><summary>A hand-written HTTP/1.1 request to a real local server (run for real)</summary><pre><code># HTTP is just text over TCP. A real HTTP server (standard library) and a client that writes the request BY HAND.
+import socket, threading
+from http.server import HTTPServer, BaseHTTPRequestHandler
+class H(BaseHTTPRequestHandler):
+    def log_message(self, *a): pass
+    def do_GET(self):
+        body = b&#x27;{&quot;message&quot;: &quot;hi&quot;}&#x27;
+        self.send_response(200); self.send_header(&quot;Content-Type&quot;, &quot;application/json&quot;); self.send_header(&quot;Content-Length&quot;, str(len(body)))
+        self.send_header(&quot;Cache-Control&quot;, &quot;max-age=60&quot;); self.end_headers(); self.wfile.write(body)
+srv = HTTPServer((&quot;127.0.0.1&quot;, 0), H); port = srv.server_port
+threading.Thread(target=srv.serve_forever, daemon=True).start()
+s = socket.create_connection((&quot;127.0.0.1&quot;, port))
+request = &quot;GET /hello HTTP/1.1\r\nHost: example.local\r\nUser-Agent: hand-made\r\nConnection: close\r\n\r\n&quot;
+print(&quot;--- request bytes sent ---&quot;); print(request.replace(&quot;\r\n&quot;, &quot;\\r\\n\n&quot;))
+s.sendall(request.encode())
+resp = b&quot;&quot;
+while chunk := s.recv(4096): resp += chunk
+head, body = resp.split(b&quot;\r\n\r\n&quot;, 1)
+print(&quot;--- response ---&quot;)
+for line in head.decode().split(&quot;\r\n&quot;):
+    if not line.startswith((&quot;Date:&quot;, &quot;Server:&quot;)): print(line)
+print(&quot;(Date and Server headers hidden)&quot;); print(&quot;body:&quot;, body.decode())
+srv.shutdown()
+
+# ----- Output (real run) -----
+# --- request bytes sent ---
+# GET /hello HTTP/1.1\r\n
+# Host: example.local\r\n
+# User-Agent: hand-made\r\n
+# Connection: close\r\n
+# \r\n
+#
+# --- response ---
+# HTTP/1.0 200 OK
+# Content-Type: application/json
+# Content-Length: 17
+# Cache-Control: max-age=60
+# (Date and Server headers hidden)
+# body: {&quot;message&quot;: &quot;hi&quot;}</code></pre><p>HTTP/1.1 is plain text: a request line, headers, a blank line (<code>\r\n\r\n</code>), then an optional body. Python's simple server answered with HTTP/1.0 (its default) and a JSON body.</p></details><table><tr><th>Method</th><th>Meaning</th><th>Safe / idempotent</th></tr><tr><td>GET</td><td>Read a resource</td><td>Safe, idempotent</td></tr><tr><td>POST</td><td>Create / submit</td><td>Neither</td></tr><tr><td>PUT</td><td>Replace</td><td>Idempotent</td></tr><tr><td>PATCH</td><td>Partly update</td><td>Neither (usually)</td></tr><tr><td>DELETE</td><td>Remove</td><td>Idempotent</td></tr><tr><td>HEAD / OPTIONS</td><td>Headers only / capabilities</td><td>Safe</td></tr></table><table><tr><th>Status class</th><th>Examples</th></tr><tr><td>1xx informational</td><td>101 Switching Protocols (WebSocket)</td></tr><tr><td>2xx success</td><td>200 OK, 201 Created, 204 No Content</td></tr><tr><td>3xx redirection</td><td>301 Moved Permanently, 302 Found, 304 Not Modified (cache)</td></tr><tr><td>4xx client error</td><td>400, 401 Unauthorized, 403 Forbidden, 404 Not Found, 429 Too Many Requests</td></tr><tr><td>5xx server error</td><td>500, 502 Bad Gateway, 503 Service Unavailable, 504 Gateway Timeout</td></tr></table><h3>Good to know</h3><ul><li>HTTP is stateless; cookies, tokens and sessions add state.</li><li>Caching headers: Cache-Control, ETag / If-None-Match, Last-Modified. CDNs depend on them.</li></ul>
+    </section>
+
+    <!-- 32 -->
+    <section class="block" id="http-versions">
+      <h2><span class="num">32</span> HTTP/1.1, HTTP/2 and HTTP/3</h2>
+<div class="callout life"><strong>Picture:</strong> One checkout counter serving customers one by one (HTTP/1.1), one counter with many parallel conveyor lanes (HTTP/2), and lanes that do not all stop when one item falls off (HTTP/3).</div><details class="deepdive" open><summary>The same request in three versions (template, not run)</summary><pre><code># The same request in HTTP/1.1, HTTP/2 and HTTP/3 (conceptual)
+HTTP/1.1   text lines over TCP (+TLS); one request at a time per connection (pipelining rarely used)
+           GET /index.html HTTP/1.1
+           Host: example.com
+
+HTTP/2     binary frames over ONE TCP+TLS connection; many streams multiplexed; header compression (HPACK)
+           HEADERS frame (stream 1): :method=GET :path=/index.html :authority=example.com
+           -&gt; but one lost TCP packet still blocks every stream (TCP head-of-line blocking)
+
+HTTP/3     the same ideas over QUIC (UDP + built-in TLS 1.3); streams are independent; faster connection set-up (1-RTT, 0-RTT resumption)</code></pre></details><h3>Good to know</h3><ul><li>HTTP/2 (2015) and HTTP/3 (2022) keep the same methods, status codes and headers; only the wire format and transport change.</li><li>Browsers open several HTTP/1.1 connections per site to work around one-at-a-time; HTTP/2 multiplexes on one.</li></ul>
+    </section>
+
+    <!-- 33 -->
+    <section class="block" id="tls">
+      <h2><span class="num">33</span> HTTPS and TLS: Locking the Conversation</h2>
+<div class="callout life"><strong>Picture:</strong> Two strangers agree on a secret handshake in a crowded room without anyone overhearing it, after checking each other's ID card issued by a trusted office (certificate authority).</div><div class="diagram-wrap"><svg viewBox="0 0 620 260" style="width:100%;max-width:620px" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrSc9_arrow" markerWidth="10" markerHeight="10" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8" fill="none" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc9_tri" markerWidth="12" markerHeight="12" refX="11" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc9_dia" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--accent)" stroke="var(--accent)"/></marker><marker id="arrSc9_diah" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker></defs><rect class="box-hl" x="58" y="10" width="224" height="30" rx="6"/><text x="170" y="30" text-anchor="middle" font-size="12" font-weight="700">Browser</text><line x1="170" y1="40" x2="170" y2="250" stroke="var(--card-border)" stroke-width="2" stroke-dasharray="4 4"/><rect class="box-hl" x="338" y="10" width="224" height="30" rx="6"/><text x="450" y="30" text-anchor="middle" font-size="12" font-weight="700">Server</text><line x1="450" y1="40" x2="450" y2="250" stroke="var(--card-border)" stroke-width="2" stroke-dasharray="4 4"/><line x1="170" y1="72" x2="450" y2="72" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#arrSc9_arrow)"/><text x="310" y="67" text-anchor="middle" font-size="11" class="edge-label">ClientHello: versions, ciphers, key share</text><line x1="450" y1="106" x2="170" y2="106" stroke="var(--accent)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arrSc9_arrow)"/><text x="310" y="101" text-anchor="middle" font-size="11" class="edge-label">ServerHello: key share; then encrypted: certificate, signature, Finished</text><path d="M170,132 h30 v14 h-30" fill="none" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#arrSc9_arrow)"/><text x="206" y="142" font-size="11" class="edge-label">check certificate chain + name; derive keys</text><line x1="170" y1="174" x2="450" y2="174" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#arrSc9_arrow)"/><text x="310" y="169" text-anchor="middle" font-size="11" class="edge-label">Finished; then encrypted HTTP request</text><line x1="450" y1="208" x2="170" y2="208" stroke="var(--accent)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arrSc9_arrow)"/><text x="310" y="203" text-anchor="middle" font-size="11" class="edge-label">encrypted HTTP response</text></svg><div class="diagram-caption">Fig S9 — TLS 1.3 handshake (simplified, one round trip).</div></div><details class="deepdive" open><summary>TLS building blocks really computed: hashes, HMAC, a toy Diffie-Hellman (run for real)</summary><pre><code># Building blocks of TLS, really computed: a hash, an HMAC, and a Diffie-Hellman key agreement with SMALL toy numbers.
+import hashlib, hmac, secrets
+print(&quot;SHA-256(&#x27;hello&#x27;)  =&quot;, hashlib.sha256(b&quot;hello&quot;).hexdigest()[:32], &quot;...&quot;)
+print(&quot;SHA-256(&#x27;hellp&#x27;)  =&quot;, hashlib.sha256(b&quot;hellp&quot;).hexdigest()[:32], &quot;...  (one letter changed -&gt; totally different)&quot;)
+key = b&quot;shared-secret&quot;
+print(&quot;HMAC proves who sent a message and that it was not changed:&quot;, hmac.new(key, b&quot;pay 100&quot;, &quot;sha256&quot;).hexdigest()[:16], &quot;...&quot;)
+p, g = 23, 5                                       # TOY numbers for teaching; real TLS uses elliptic curves (X25519) or large groups
+a, b = 6, 15                                       # fixed &#x27;private&#x27; choices so the output is repeatable
+A, B = pow(g, a, p), pow(g, b, p)
+print(&quot;Diffie-Hellman toy: Alice sends %d, Bob sends %d over the open network&quot; % (A, B))
+print(&quot;   Alice computes %d, Bob computes %d -&gt; same secret, never sent&quot; % (pow(B, a, p), pow(A, b, p)))
+print(&quot;   an eavesdropper sees only p, g, %d, %d; with real sizes recovering the secret is infeasible&quot; % (A, B))
+print(&quot;random 128-bit session key example:&quot;, len(secrets.token_bytes(16)) * 8, &quot;bits&quot;)
+
+# ----- Output (real run) -----
+# SHA-256(&#x27;hello&#x27;)  = 2cf24dba5fb0a30e26e83b2ac5b9e29e ...
+# SHA-256(&#x27;hellp&#x27;)  = fdd7585e08c4e2afd71dcabdb4636c89 ...  (one letter changed -&gt; totally different)
+# HMAC proves who sent a message and that it was not changed: 964500a57fa405c0 ...
+# Diffie-Hellman toy: Alice sends 8, Bob sends 19 over the open network
+#    Alice computes 2, Bob computes 2 -&gt; same secret, never sent
+#    an eavesdropper sees only p, g, 8, 19; with real sizes recovering the secret is infeasible
+# random 128-bit session key example: 128 bits</code></pre><p>Changing one letter changes the whole SHA-256 hash. In the toy Diffie-Hellman both sides compute the same secret (2) while only 8 and 19 crossed the network. Real TLS uses large numbers or elliptic curves (X25519).</p></details><h3>Good to know</h3><ul><li>TLS gives confidentiality (encryption), integrity (MACs/AEAD such as AES-GCM, ChaCha20-Poly1305) and authentication (certificates).</li><li>Certificates are signed by certificate authorities your OS/browser trusts; Let's Encrypt made them free and automatic.</li><li>TLS 1.0/1.1 are deprecated; use TLS 1.2 or 1.3.</li></ul>
+    </section>
+
+    <!-- 34 -->
+    <section class="block" id="email">
+      <h2><span class="num">34</span> Email: SMTP, IMAP, POP3</h2>
+<div class="callout life"><strong>Picture:</strong> Posting a letter (SMTP pushes it from post office to post office) and then collecting it from your PO box (IMAP keeps it at the post office, POP3 takes it home).</div><table><tr><th>Protocol</th><th>Port</th><th>Job</th></tr><tr><td>SMTP</td><td>25 (server-to-server), 587 (submission)</td><td>Send and relay mail</td></tr><tr><td>IMAP</td><td>993 (with TLS)</td><td>Read mail kept on the server, synced across devices</td></tr><tr><td>POP3</td><td>995 (with TLS)</td><td>Download mail (usually removes it from the server)</td></tr><tr><td>SPF / DKIM / DMARC</td><td>DNS records</td><td>Fight spoofing: who may send for a domain, signatures, policy</td></tr></table><h3>Good to know</h3><ul><li>Mail servers are found with MX records in DNS.</li></ul>
+    </section>
+
+    <!-- 35 -->
+    <section class="block" id="other-protocols">
+      <h2><span class="num">35</span> Other Everyday Protocols</h2>
+<div class="callout life"><strong>Picture:</strong> Different tools in the same toolbox.</div><table><tr><th>Protocol</th><th>Port</th><th>Use</th></tr><tr><td>SSH</td><td>22</td><td>Secure remote shell, file copy (scp/sftp), tunnels</td></tr><tr><td>FTP / SFTP</td><td>21 / 22</td><td>File transfer (plain FTP is unencrypted: avoid)</td></tr><tr><td>DHCP</td><td>67/68 UDP</td><td>Automatic IP configuration</td></tr><tr><td>NTP</td><td>123 UDP</td><td>Clock synchronisation</td></tr><tr><td>SNMP</td><td>161 UDP</td><td>Network device monitoring</td></tr><tr><td>WebSocket</td><td>80/443</td><td>Two-way messages over one HTTP-upgraded connection</td></tr><tr><td>gRPC</td><td>443 (HTTP/2)</td><td>Fast RPC between services with Protocol Buffers</td></tr><tr><td>MQTT</td><td>1883 / 8883</td><td>Light publish-subscribe for IoT</td></tr><tr><td>RTP / WebRTC</td><td>UDP</td><td>Real-time audio and video</td></tr><tr><td>LDAP, Kerberos</td><td>389/636, 88</td><td>Directories and single sign-on in organisations</td></tr></table>
+    </section>
+
+    <!-- 36 -->
+    <section class="block" id="cdn-lb">
+      <h2><span class="num">36</span> CDNs, Proxies and Load Balancers</h2>
+<div class="callout life"><strong>Picture:</strong> Branches of a library in every neighbourhood (CDN), a receptionist who forwards your question to whichever clerk is free (load balancer), and a translator who speaks on your behalf (proxy).</div><table><tr><th>Thing</th><th>Job</th></tr><tr><td>Forward proxy</td><td>Acts for clients (company web filter, privacy)</td></tr><tr><td>Reverse proxy</td><td>Acts for servers: TLS termination, caching, routing (nginx, Envoy, HAProxy)</td></tr><tr><td>Layer-4 load balancer</td><td>Spreads TCP/UDP connections by address and port</td></tr><tr><td>Layer-7 load balancer</td><td>Routes by HTTP path, headers, cookies</td></tr><tr><td>CDN</td><td>Caches content at edge locations near users; absorbs attacks</td></tr><tr><td>Anycast</td><td>Same IP announced from many places; BGP picks a nearby one</td></tr></table><h3>Good to know</h3><ul><li>Balancing algorithms: round robin, least connections, weighted, consistent hashing (see <a href="system-design.html">System Design</a>).</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part F — Security, Tools and Modern Networking</h2></div>
+
+    <!-- 37 -->
+    <section class="block" id="network-security">
+      <h2><span class="num">37</span> Network Security Basics</h2>
+<div class="callout life"><strong>Picture:</strong> A town with walls (firewalls), guarded gates (authentication), sealed envelopes (encryption) and watchmen who notice odd behaviour (intrusion detection).</div><table><tr><th>Threat</th><th>Example</th><th>Defence</th></tr><tr><td>Eavesdropping</td><td>Reading traffic on open Wi-Fi</td><td>TLS everywhere, VPNs, WPA3</td></tr><tr><td>Man-in-the-middle</td><td>ARP/DNS spoofing, rogue access point</td><td>Certificates, DNSSEC, HSTS, switch protections</td></tr><tr><td>Denial of service (DDoS)</td><td>Flooding a site</td><td>CDNs and scrubbing, rate limits, SYN cookies, anycast</td></tr><tr><td>Port scanning and exploits</td><td>Finding open services</td><td>Firewalls, patching, closing unused ports</td></tr><tr><td>Phishing and stolen credentials</td><td>Fake login pages</td><td>MFA, passkeys, training</td></tr><tr><td>Route hijacks</td><td>False BGP announcements</td><td>RPKI, monitoring</td></tr></table><details class="deepdive" open><summary>Host firewalls: ufw, nftables, Windows (template, not run)</summary><pre><code># Host firewalls (templates; need root)
+sudo ufw default deny incoming &amp;&amp; sudo ufw allow 22/tcp &amp;&amp; sudo ufw enable        # Ubuntu&#x27;s simple front-end
+sudo nft list ruleset                                                             # nftables: the modern Linux firewall
+# nftables rule: allow established traffic and SSH, drop the rest
+#   table inet filter { chain input { type filter hook input priority 0; policy drop;
+#       ct state established,related accept; iif lo accept; tcp dport 22 accept; } }
+# Windows: New-NetFirewallRule -DisplayName &quot;Web&quot; -Direction Inbound -Protocol TCP -LocalPort 443 -Action Allow</code></pre></details><h3>Good to know</h3><ul><li>Zero trust: do not trust the network location; authenticate and authorise every request.</li><li>VPNs: IPsec, WireGuard, TLS-based VPNs create encrypted tunnels across untrusted networks.</li><li>IDS/IPS (Snort, Suricata, Zeek) watch traffic for attacks. This guide teaches defence; see <a href="ai-security.html">AI Security</a> for AI-specific threats.</li></ul>
+    </section>
+
+    <!-- 38 -->
+    <section class="block" id="socket-programming">
+      <h2><span class="num">38</span> Socket Programming</h2>
+<div class="callout life"><strong>Picture:</strong> Learning to use the phone yourself instead of only reading about phone networks.</div><p>The Python demos in this guide use the same BSD socket API that C, Java and Go use underneath. The C version of a tiny TCP echo server:</p><details class="deepdive" open><summary>A TCP echo server in C (BSD sockets) (template, not run)</summary><pre><code>/* A minimal TCP server in C with the BSD socket API (template; the Python demos above use the same calls). */
+int s = socket(AF_INET, SOCK_STREAM, 0);
+struct sockaddr_in a = { .sin_family = AF_INET, .sin_port = htons(8080), .sin_addr.s_addr = htonl(INADDR_ANY) };   /* htons: host -&gt; network byte order */
+bind(s, (struct sockaddr *)&amp;a, sizeof a);
+listen(s, 16);                                    /* backlog of pending connections */
+for (;;) {
+    int c = accept(s, NULL, NULL);                /* one connected socket per client */
+    char buf[1024]; ssize_t n = read(c, buf, sizeof buf);
+    write(c, buf, n);                             /* echo */
+    close(c);
+}</code></pre></details><h3>Good to know</h3><ul><li>Handle partial sends/receives, timeouts and many clients (threads, <code>select</code>/<code>epoll</code>/<code>io_uring</code>, or async frameworks).</li><li>Always convert numbers to network byte order (big-endian: <code>htons</code>, <code>htonl</code>). See <a href="computer-organization.html#endianness">COA → endianness</a>.</li></ul>
+    </section>
+
+    <!-- 39 -->
+    <section class="block" id="troubleshooting">
+      <h2><span class="num">39</span> Troubleshooting a Network, Layer by Layer</h2>
+<div class="callout life"><strong>Picture:</strong> A doctor checking from the outside in: is the patient breathing (link), is the heart beating (IP), can they talk (port), do they make sense (application)?</div><table><tr><th>Step</th><th>Question</th><th>Tool</th></tr><tr><td>1 Physical / link</td><td>Cable/Wi-Fi up? Got an address?</td><td><code>ip addr</code>, <code>ipconfig</code>, link lights</td></tr><tr><td>2 Local network</td><td>Can I reach my gateway?</td><td><code>ping &lt;gateway&gt;</code>, <code>ip neigh</code></td></tr><tr><td>3 Routing</td><td>Can I reach the outside? Where does it stop?</td><td><code>ping 1.1.1.1</code>, <code>traceroute</code>, <code>mtr</code></td></tr><tr><td>4 DNS</td><td>Does the name resolve?</td><td><code>dig</code>, <code>nslookup</code></td></tr><tr><td>5 Transport</td><td>Is the port open?</td><td><code>nc -vz host 443</code>, <code>ss -tlnp</code> on the server, firewall rules</td></tr><tr><td>6 Application</td><td>What does the server say?</td><td><code>curl -v</code>, logs, browser dev tools</td></tr><tr><td>7 Packets</td><td>What is really on the wire?</td><td><code>tcpdump</code>, Wireshark</td></tr></table><h3>Good to know</h3><ul><li>'It's always DNS' is a joke because name resolution is so often the culprit.</li></ul>
+    </section>
+
+    <!-- 40 -->
+    <section class="block" id="sdn-cloud">
+      <h2><span class="num">40</span> SDN, Cloud Networking and 5G</h2>
+<div class="callout life"><strong>Picture:</strong> Instead of every traffic light deciding on its own, a central control room sets all lights by software.</div><table><tr><th>Topic</th><th>Idea</th></tr><tr><td>SDN</td><td>Separate the control plane (decisions, in software controllers) from the data plane (fast forwarding in switches); OpenFlow, P4</td></tr><tr><td>NFV</td><td>Network functions (firewalls, routers) as software on ordinary servers</td></tr><tr><td>Cloud VPCs</td><td>Private virtual networks with subnets, route tables, security groups (see <a href="cloud.html">Cloud</a>)</td></tr><tr><td>Container networking</td><td>CNI plugins, Services, overlay networks, eBPF (see <a href="docker-kubernetes.html">Docker &amp; Kubernetes</a>)</td></tr><tr><td>Overlay networks</td><td>VXLAN, Geneve tunnels carry virtual networks over the physical one</td></tr><tr><td>5G core</td><td>Service-based, cloud-native mobile core; network slicing</td></tr><tr><td>Data-centre fabrics</td><td>Leaf-spine Clos topologies, RDMA/RoCE for AI clusters</td></tr></table><h3>Good to know</h3><ul><li>Facts about product rollouts change quickly; treat vendor claims as 'as reported'.</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part G — Practice and Reference</h2></div>
+
+    <!-- 41 -->
+    <section class="block" id="cn-formulas">
+      <h2><span class="num">41</span> Formulas and Numbers Cheat Sheet</h2>
+<div class="callout life"><strong>Picture:</strong> The numbers to remember for exams and interviews.</div><table><tr><th>Topic</th><th>Formula / value</th></tr><tr><td>Transmission delay</td><td>L ÷ R (bits ÷ bits per second)</td></tr><tr><td>Propagation delay</td><td>distance ÷ speed (~2 × 10<sup>8</sup> m/s in fibre/copper)</td></tr><tr><td>Bandwidth-delay product</td><td>R × RTT</td></tr><tr><td>Stop-and-wait efficiency</td><td>1 ÷ (1 + 2a), a = propagation ÷ transmission</td></tr><tr><td>Sliding window efficiency</td><td>min(1, W ÷ (1 + 2a))</td></tr><tr><td>Go-Back-N / Selective Repeat window</td><td>≤ 2<sup>k</sup> − 1 / ≤ 2<sup>k−1</sup></td></tr><tr><td>Pure / slotted ALOHA max</td><td>18.4% / 36.8%</td></tr><tr><td>Nyquist</td><td>2B log<sub>2</sub> V</td></tr><tr><td>Shannon</td><td>B log<sub>2</sub>(1 + S/N)</td></tr><tr><td>Hosts in a /n</td><td>2<sup>32 − n</sup> − 2</td></tr><tr><td>TCP throughput ceiling</td><td>window ÷ RTT</td></tr><tr><td>Headers</td><td>Ethernet 14 + 4 CRC, IPv4 20, IPv6 40, TCP 20, UDP 8</td></tr><tr><td>Ethernet MTU</td><td>1500 bytes</td></tr></table>
+    </section>
+
+    <!-- 42 -->
+    <section class="block" id="interview-cn">
+      <h2><span class="num">42</span> Interview Questions (With Answers)</h2>
+<div class="callout life"><strong>Picture:</strong> Grouped by theme, easiest first. Click to reveal.</div><h3>A. Basics</h3>
+<details class="quiz-item"><summary>Q1: OSI vs TCP/IP model?</summary><p class="answer">OSI has 7 layers (teaching model); TCP/IP has 4 (application, transport, internet, link) and is what the Internet uses.</p></details>
+<details class="quiz-item"><summary>Q2: Hub vs switch vs router?</summary><p class="answer">Hub repeats bits to all ports (L1); switch forwards frames by MAC (L2); router forwards packets between networks by IP (L3).</p></details>
+<details class="quiz-item"><summary>Q3: Bandwidth vs latency vs throughput?</summary><p class="answer">Capacity of the link; delay for a bit to arrive; actual achieved data rate.</p></details>
+<details class="quiz-item"><summary>Q4: What happens when you type a URL and press Enter?</summary><p class="answer">DNS resolves the name, TCP (or QUIC) connects, TLS handshakes, HTTP request is sent, server responds, browser renders and fetches more resources; caches and CDNs may answer earlier.</p></details>
+<h3>B. Data link</h3>
+<details class="quiz-item"><summary>Q5: What is a MAC address?</summary><p class="answer">A 48-bit link-layer address of a network interface, used inside one LAN.</p></details>
+<details class="quiz-item"><summary>Q6: CSMA/CD vs CSMA/CA?</summary><p class="answer">Collision detection (old wired Ethernet) vs collision avoidance with random backoff and optional RTS/CTS (Wi-Fi).</p></details>
+<details class="quiz-item"><summary>Q7: Why CRC instead of a simple checksum?</summary><p class="answer">CRC detects burst errors and reorderings a simple sum misses (our word-swap example).</p></details>
+<details class="quiz-item"><summary>Q8: What is a VLAN?</summary><p class="answer">A logical LAN on shared switches, separated by 802.1Q tags.</p></details>
+<h3>C. Network layer</h3>
+<details class="quiz-item"><summary>Q9: How many usable hosts in a /26?</summary><p class="answer">2^6 − 2 = 62.</p></details>
+<details class="quiz-item"><summary>Q10: What is CIDR and longest prefix match?</summary><p class="answer">Classless prefixes of any length; routers pick the most specific matching route.</p></details>
+<details class="quiz-item"><summary>Q11: What does ARP do?</summary><p class="answer">Finds the MAC address for an IPv4 address on the local network.</p></details>
+<details class="quiz-item"><summary>Q12: What is NAT and its downsides?</summary><p class="answer">Maps many private addresses to one public address with port translation; breaks end-to-end reachability and complicates peer-to-peer.</p></details>
+<details class="quiz-item"><summary>Q13: Link state vs distance vector?</summary><p class="answer">Link state: full map + Dijkstra (OSPF), fast convergence. Distance vector: neighbours exchange distances (RIP), simple, slow, count-to-infinity.</p></details>
+<details class="quiz-item"><summary>Q14: What is BGP?</summary><p class="answer">The path-vector protocol that exchanges routes between autonomous systems, driven by policy.</p></details>
+<details class="quiz-item"><summary>Q15: IPv4 vs IPv6 key differences?</summary><p class="answer">32 vs 128-bit addresses, fixed 40-byte header without checksum, no broadcast, SLAAC, no router fragmentation.</p></details>
+<h3>D. Transport</h3>
+<details class="quiz-item"><summary>Q16: TCP vs UDP?</summary><p class="answer">TCP: connection-oriented, reliable, ordered byte stream with flow and congestion control. UDP: connectionless, unreliable datagrams with low overhead.</p></details>
+<details class="quiz-item"><summary>Q17: Explain the 3-way handshake.</summary><p class="answer">SYN, SYN-ACK, ACK: both sides agree on initial sequence numbers.</p></details>
+<details class="quiz-item"><summary>Q18: Why does TIME_WAIT exist?</summary><p class="answer">To let delayed packets of the old connection expire and to resend the final ACK if needed.</p></details>
+<details class="quiz-item"><summary>Q19: Flow control vs congestion control?</summary><p class="answer">Protect the receiver (rwnd) vs protect the network (cwnd).</p></details>
+<details class="quiz-item"><summary>Q20: Describe slow start and AIMD.</summary><p class="answer">Window doubles per RTT until ssthresh, then +1 per RTT; halves on loss (3 dup ACKs) or resets to 1 on timeout.</p></details>
+<details class="quiz-item"><summary>Q21: Why is TCP called a byte stream?</summary><p class="answer">Message boundaries are not preserved; three sends can arrive as one receive.</p></details>
+<details class="quiz-item"><summary>Q22: What problem does QUIC solve?</summary><p class="answer">TCP head-of-line blocking across streams, slow connection set-up, and connection migration; encryption is built in.</p></details>
+<h3>E. Application and security</h3>
+<details class="quiz-item"><summary>Q23: How does DNS resolution work?</summary><p class="answer">Stub → recursive resolver → root → TLD → authoritative server, with caching by TTL.</p></details>
+<details class="quiz-item"><summary>Q24: HTTP/1.1 vs HTTP/2 vs HTTP/3?</summary><p class="answer">Text, one request at a time per connection; binary multiplexed streams over TCP; multiplexed streams over QUIC/UDP.</p></details>
+<details class="quiz-item"><summary>Q25: What does TLS provide?</summary><p class="answer">Encryption, integrity and server (optionally client) authentication via certificates.</p></details>
+<details class="quiz-item"><summary>Q26: GET vs POST?</summary><p class="answer">GET reads and is safe/idempotent; POST submits data and is neither.</p></details>
+<details class="quiz-item"><summary>Q27: What is a DDoS attack and how do you mitigate it?</summary><p class="answer">Overwhelming a target with traffic from many sources; CDNs/scrubbing, anycast, rate limiting, SYN cookies.</p></details>
+<details class="quiz-item"><summary>Q28: How would you debug 'website not loading'?</summary><p class="answer">Check link and IP, gateway, DNS, port reachability, TLS, HTTP status and logs, packet capture if needed.</p></details>
+    </section>
+
+    <!-- 43 -->
+    <section class="block" id="glossary-cn">
+      <h2><span class="num">43</span> Mini Glossary</h2>
+<div class="callout life"><strong>Picture:</strong> A pocket dictionary.</div><dl class="glossary">
+<dt>ACK</dt><dd>Acknowledgement that data arrived.</dd>
+<dt>ARP</dt><dd>Maps IPv4 addresses to MAC addresses.</dd>
+<dt>AS</dt><dd>Autonomous system: one independently run network.</dd>
+<dt>BGP</dt><dd>Routing protocol between autonomous systems.</dd>
+<dt>CIDR</dt><dd>Classless addressing with prefix lengths (/24).</dd>
+<dt>CRC</dt><dd>Cyclic redundancy check for error detection.</dd>
+<dt>DHCP</dt><dd>Automatic IP configuration.</dd>
+<dt>DNS</dt><dd>Name-to-address lookup system.</dd>
+<dt>Frame / packet / segment</dt><dd>Data units at layers 2 / 3 / 4.</dd>
+<dt>Gateway</dt><dd>The router that leads out of the local network.</dd>
+<dt>ICMP</dt><dd>Error and diagnostic messages (ping).</dd>
+<dt>MAC address</dt><dd>48-bit hardware address.</dd>
+<dt>MTU</dt><dd>Largest payload a link carries in one frame.</dd>
+<dt>NAT</dt><dd>Translating private addresses to a public one.</dd>
+<dt>Port</dt><dd>Number identifying an application endpoint on a host.</dd>
+<dt>QUIC</dt><dd>Encrypted, multiplexed transport over UDP.</dd>
+<dt>RTT</dt><dd>Round-trip time.</dd>
+<dt>Socket</dt><dd>An endpoint for sending/receiving data.</dd>
+<dt>Subnet mask</dt><dd>Marks the network part of an address.</dd>
+<dt>TLS</dt><dd>Encryption and authentication layer for TCP.</dd>
+<dt>TTL</dt><dd>Hop limit on packets / cache lifetime in DNS.</dd>
+<dt>VLAN</dt><dd>Logical LAN on shared switches.</dd>
+</dl>
+    </section>
+
+    <!-- 44 -->
+    <section class="block" id="faq-cn">
+      <h2><span class="num">44</span> FAQ</h2>
+<div class="callout life"><strong>Picture:</strong> Click a question to reveal the answer.</div><details class="quiz-item"><summary>Q: Do I need to memorise the OSI model?</summary><p class="answer">Know what each layer does and which protocols and devices live there; that is what interviews test.</p></details>
+<details class="quiz-item"><summary>Q: Why did my speed test say 100 Mbps but downloads show 12 MB/s?</summary><p class="answer">Bits vs bytes: 100 Mbit/s ÷ 8 = 12.5 MB/s.</p></details>
+<details class="quiz-item"><summary>Q: Is HTTPS enough to be private?</summary><p class="answer">It hides content, not who you talk to (DNS lookups and the server name in TLS may still be visible unless encrypted DNS and ECH are used).</p></details>
+<details class="quiz-item"><summary>Q: Were the demos real?</summary><p class="answer">Socket demos are real exchanges over loopback; Linux commands ran in WSL with addresses hidden; routing/ARQ/congestion are simulations; dig/traceroute/tcpdump are templates.</p></details>
+<details class="quiz-item"><summary>Q: Which books are classic?</summary><p class="answer">Kurose and Ross 'Computer Networking: A Top-Down Approach'; Tanenbaum 'Computer Networks'; Stevens 'TCP/IP Illustrated'; Forouzan for exams.</p></details>
+    </section>
+
+    <!-- 45 -->
+    <section class="block" id="pitfalls-cn">
+      <h2><span class="num">45</span> Common Mistakes and Checklist</h2>
+<div class="callout life"><strong>Picture:</strong> Traps in exams and in real systems.</div><div class="grid">
+<div class="card"><h4>🔢 Bits vs bytes</h4><p>Mbit/s ÷ 8 = MB/s.</p></div>
+<div class="card"><h4>📦 Treating TCP as messages</h4><p>Add framing.</p></div>
+<div class="card"><h4>🧮 Forgetting −2 hosts</h4><p>Network and broadcast addresses.</p></div>
+<div class="card"><h4>🔁 Instant retries</h4><p>Use exponential backoff with jitter.</p></div>
+<div class="card"><h4>🔓 Plain-text protocols</h4><p>Telnet/FTP/HTTP on the open Internet: use SSH/SFTP/HTTPS.</p></div>
+<div class="card"><h4>⏱️ Ignoring DNS TTL</h4><p>Migrations take as long as old caches live.</p></div>
+<div class="card"><h4>🔥 Opening every port</h4><p>Default deny; open only what you need.</p></div>
+<div class="card"><h4>📏 Blaming bandwidth</h4><p>Often it is latency, loss or a small window.</p></div></div>
+    </section>
+
+    <!-- 46 -->
+    <section class="block" id="quiz-cn">
+      <h2><span class="num">46</span> Quick Quiz 🎯</h2>
+<div class="callout life"><strong>Picture:</strong> Click each question to reveal the answer.</div><details class="quiz-item"><summary>Q1: Which layer does a router work at?</summary><p class="answer">Layer 3 (network).</p></details>
+<details class="quiz-item"><summary>Q2: Network address of 10.4.77.200/20?</summary><p class="answer">10.4.64.0/20.</p></details>
+<details class="quiz-item"><summary>Q3: Which protocol delivered all frames in the fewest round trips in our simulation?</summary><p class="answer">Selective repeat (36).</p></details>
+<details class="quiz-item"><summary>Q4: What does a timeout do to TCP's window in Reno?</summary><p class="answer">Resets it to 1 segment and halves ssthresh.</p></details>
+<details class="quiz-item"><summary>Q5: Why did three sends arrive as one receive?</summary><p class="answer">TCP is a byte stream.</p></details>
+<details class="quiz-item"><summary>Q6: What port does DNS use?</summary><p class="answer">53 (UDP, and TCP for large answers).</p></details>
+<details class="quiz-item"><summary>Q7: What fixes count-to-infinity in our demo?</summary><p class="answer">Poisoned reverse.</p></details>
+    </section>
+
+    <!-- 47 -->
+    <section class="block" id="learning-path-cn">
+      <h2><span class="num">47</span> Learning Path</h2>
+<div class="callout life"><strong>Picture:</strong> A staircase from curious to confident.</div><table><tr><th>Step</th><th>Learn</th><th>Do</th></tr><tr><td>1</td><td>Part A: models, devices, delays</td><td>Draw the path of a web request; compute delays</td></tr><tr><td>2</td><td>Part B: link layer</td><td>Compute CRCs; explain how a switch learns</td></tr><tr><td>3</td><td>Part C: IP and routing</td><td>Subnet and VLSM exercises; run Dijkstra by hand</td></tr><tr><td>4</td><td>Part D: TCP/UDP</td><td>Write a socket echo server and client; watch them in Wireshark</td></tr><tr><td>5</td><td>Part E: DNS, HTTP, TLS</td><td>Use dig and curl -v; read headers in browser dev tools</td></tr><tr><td>6</td><td>Part F: security and modern networks</td><td>Set up a firewall and WireGuard VPN in a lab; try cloud VPCs</td></tr><tr><td>7</td><td>Go deeper</td><td>Kurose & Ross labs; RFC 9293 (TCP); build a tiny HTTP server</td></tr></table><h3>Good to know</h3><ul><li>Related: <a href="operating-systems.html">Operating Systems</a>, <a href="computer-organization.html">COA</a>, <a href="dbms.html">DBMS</a>, <a href="system-design.html">System Design</a>, <a href="cloud.html">Cloud</a>.</li></ul>
+    </section>
+
+    <!-- 48 -->
+    <section class="block" id="resources-cn">
+      <h2><span class="num">48</span> Learn More — Resources</h2>
+<div class="callout life"><strong>Picture:</strong> A shelf of primary sources.</div><p>All links below returned HTTP 200 when checked on 18 November 2026. YouTube links are search queries.</p>
+<ul class="resources">
+<li><span class="tag docs">docs</span> <a href="https://www.rfc-editor.org/rfc/rfc9293">RFC 9293 (TCP)</a> · <a href="https://www.rfc-editor.org/rfc/rfc9000">RFC 9000 (QUIC)</a> · <a href="https://www.rfc-editor.org/rfc/rfc9114">RFC 9114 (HTTP/3)</a> · <a href="https://www.rfc-editor.org/rfc/rfc8446">RFC 8446 (TLS 1.3)</a> · <a href="https://www.rfc-editor.org/rfc/rfc1918">RFC 1918 (private addresses)</a> · <a href="https://www.rfc-editor.org/rfc/rfc1035">RFC 1035 (DNS)</a></li>
+<li><span class="tag docs">docs</span> <a href="https://docs.python.org/3/library/socket.html">Python socket module</a> · <a href="https://docs.python.org/3/library/ipaddress.html">Python ipaddress</a> · <a href="https://man7.org/linux/man-pages/man7/tcp.7.html">Linux tcp(7)</a> · <a href="https://www.wireshark.org/">Wireshark</a></li>
+<li><span class="tag article">article</span> <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP">MDN: HTTP</a> · <a href="https://letsencrypt.org/how-it-works/">How Let's Encrypt works</a></li>
+<li><span class="tag video">video</span> <a href="https://www.youtube.com/results?search_query=computer+networks+full+course">Computer networks full course (search)</a> · <a href="https://www.youtube.com/results?search_query=subnetting+made+easy">Subnetting made easy (search)</a> · <a href="https://www.youtube.com/results?search_query=tcp+congestion+control+explained">TCP congestion control (search)</a></li>
+</ul>
+<p><strong>Dated facts:</strong> QUIC RFC 9000 (2021), HTTP/3 RFC 9114 (2022), TCP consolidated in RFC 9293 (2022), TLS 1.3 RFC 8446 (2018). Demos ran on 18 Nov 2026 (Python 3.14, WSL2 Ubuntu 26.04).</p>
+    </section>
+  </main>
+</div>
+
+<div class="page-nav">
+  <a href="index.html">⬅ Back to Roadmap Home</a>
+  <a href="system-design.html">Related: System Design (HLD) ➜</a>
+</div>
+
+</body>
+</html>

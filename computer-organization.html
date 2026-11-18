@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Computer Organization and Architecture — The Complete A-Z Guide</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧮</text></svg>">
+</head>
+<body>
+
+<header class="hero">
+  <div class="breadcrumb"><a href="index.html">🏠 Roadmap Home</a> / Computer Organization &amp; Architecture</div>
+  <h1>🧮 Computer Organization &amp; Architecture — How a Computer Really Works</h1>
+  <p class="subtitle">
+    The complete A-to-Z guide in very easy words: number systems, data representation, IEEE 754, logic gates and circuits, ALU and arithmetic algorithms (Booth, division), the CPU and its datapath, instruction sets (x86, ARM, RISC-V), addressing modes, control unit, pipelining and hazards, branch prediction, memory hierarchy and caches, virtual memory hardware, I/O, buses, interrupts, DMA, parallelism (multicore, SIMD, GPUs), performance laws and modern chips. Real runs: Python simulations of arithmetic, caches, pipelines and a tiny CPU, real x86-64 assembly from g++, and real cache-effect timings on this machine.
+    Every picture has a daily-life story; outputs shown are from programs that were really run; anything not run is labelled.
+    <strong>Last reviewed: 18 November 2026</strong> (dated facts are marked and hedged).
+  </p>
+  <div class="badge-row">
+    <span class="badge beginner">Beginner friendly</span>
+    <span class="badge intermediate">Intermediate concepts</span>
+    <span class="badge advanced">Advanced / Interview</span>
+  </div>
+</header>
+
+<div class="layout">
+
+  <nav class="toc">
+    <h3>On this page (51 sections)</h3>
+    <ol>
+      <li class="toc-part">Part A — Foundations</li>
+      <li><a href="#what-is-coa">What Is Computer Organization and Architecture?</a></li>
+      <li><a href="#von-neumann">The Von Neumann Model: The Big Picture</a></li>
+      <li><a href="#coa-history">A Short History: From Vacuum Tubes to Chiplets</a></li>
+      <li><a href="#performance">Measuring Performance: The Iron Law</a></li>
+      <li class="toc-part">Part B — Representing Data</li>
+      <li><a href="#number-systems">Number Systems: Binary, Octal, Hexadecimal</a></li>
+      <li><a href="#signed-integers">Signed Integers and Two's Complement</a></li>
+      <li><a href="#floating-point">Floating Point (IEEE 754)</a></li>
+      <li><a href="#characters">Characters and Text: ASCII and Unicode</a></li>
+      <li><a href="#endianness">Endianness: Byte Order</a></li>
+      <li><a href="#error-detection">Error Detection and Correction (Parity, Hamming, ECC)</a></li>
+      <li class="toc-part">Part C — Digital Logic</li>
+      <li><a href="#logic-gates">Logic Gates and Boolean Algebra</a></li>
+      <li><a href="#combinational">Combinational Circuits: Adders, Multiplexers, Decoders</a></li>
+      <li><a href="#sequential">Sequential Circuits: Latches, Flip-Flops, Registers, Clocks</a></li>
+      <li class="toc-part">Part D — Computer Arithmetic</li>
+      <li><a href="#alu">The ALU: The Calculator Inside the CPU</a></li>
+      <li><a href="#multiplication">Multiplication and Booth's Algorithm</a></li>
+      <li><a href="#division">Division: Restoring and Non-Restoring</a></li>
+      <li><a href="#float-arithmetic">Floating-Point Arithmetic</a></li>
+      <li class="toc-part">Part E — The CPU: Instructions and Control</li>
+      <li><a href="#datapath">Inside the CPU: Registers and the Datapath</a></li>
+      <li><a href="#instruction-cycle">The Instruction Cycle: Fetch, Decode, Execute</a></li>
+      <li><a href="#isa">Instruction Set Architectures: CISC vs RISC; x86, ARM, RISC-V</a></li>
+      <li><a href="#instruction-formats">Instruction Formats and Machine Code</a></li>
+      <li><a href="#addressing-modes">Addressing Modes</a></li>
+      <li><a href="#assembly-from-c">From C++ to Real Assembly</a></li>
+      <li><a href="#control-unit">The Control Unit: Hardwired vs Microprogrammed</a></li>
+      <li class="toc-part">Part F — Pipelining and Speed Tricks</li>
+      <li><a href="#pipelining">Pipelining: An Assembly Line for Instructions</a></li>
+      <li><a href="#hazards">Pipeline Hazards: Data, Control, Structural</a></li>
+      <li><a href="#branch-prediction">Branch Prediction</a></li>
+      <li><a href="#superscalar-ooo">Superscalar, Out-of-Order and Speculative Execution</a></li>
+      <li class="toc-part">Part G — Memory Hierarchy and Caches</li>
+      <li><a href="#memory-hierarchy">The Memory Hierarchy (Measured on This Machine)</a></li>
+      <li><a href="#cache-mapping">Cache Organization: Lines, Sets, Tags</a></li>
+      <li><a href="#cache-sim">Cache Simulation and AMAT</a></li>
+      <li><a href="#locality">Locality: Writing Cache-Friendly Code (Measured)</a></li>
+      <li><a href="#cache-write-coherence">Write Policies and Cache Coherence (and False Sharing, Measured)</a></li>
+      <li><a href="#main-memory">Main Memory: SRAM, DRAM and Friends</a></li>
+      <li><a href="#vm-hardware">Virtual Memory Hardware: MMU and TLB</a></li>
+      <li class="toc-part">Part H — Input/Output and Buses</li>
+      <li><a href="#io-methods">I/O Techniques: Programmed, Interrupt-Driven, DMA</a></li>
+      <li><a href="#interrupt-hardware">Interrupt Hardware</a></li>
+      <li><a href="#buses">Buses and Interconnects</a></li>
+      <li class="toc-part">Part I — Parallelism and Modern Processors</li>
+      <li><a href="#flynn">Flynn's Taxonomy: SISD, SIMD, MISD, MIMD</a></li>
+      <li><a href="#simd-gpu">SIMD, Vector Units and GPUs</a></li>
+      <li><a href="#multicore">Multicore, SMT and Shared Memory</a></li>
+      <li><a href="#amdahl">Amdahl's Law and Gustafson's Law</a></li>
+      <li><a href="#modern-chips">Modern Processor Trends</a></li>
+      <li class="toc-part">Part J — Practice and Reference</li>
+      <li><a href="#coa-formulas">Formulas Cheat Sheet</a></li>
+      <li><a href="#interview-coa">Interview Questions (With Answers)</a></li>
+      <li><a href="#glossary-coa">Mini Glossary</a></li>
+      <li><a href="#faq-coa">FAQ</a></li>
+      <li><a href="#pitfalls-coa">Common Mistakes and Checklist</a></li>
+      <li><a href="#quiz-coa">Quick Quiz 🎯</a></li>
+      <li><a href="#learning-path-coa">Learning Path</a></li>
+      <li><a href="#resources-coa">Learn More — Resources</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <div class="part-divider"><h2>Part A — Foundations</h2></div>
+
+    <!-- 1 -->
+    <section class="block" id="what-is-coa">
+      <h2><span class="num">1</span> What Is Computer Organization and Architecture?</h2>
+<div class="callout life"><strong>Picture:</strong> A house. <strong>Architecture</strong> is the plan the family sees: how many rooms, where the doors are, what each room is for. <strong>Organization</strong> is how the builder made it: brick or concrete, pipe sizes, wiring. Two houses can have the same plan but be built differently.</div><table><tr><th></th><th>Computer architecture</th><th>Computer organization</th></tr><tr><td>Question</td><td>WHAT the computer does, as seen by the programmer</td><td>HOW the hardware does it</td></tr><tr><td>Includes</td><td>Instruction set, registers visible to programs, data types, addressing modes, memory model</td><td>Pipelines, caches, buses, control signals, circuit technology</td></tr><tr><td>Example</td><td>x86-64 has an <code>ADD</code> instruction and 16 general registers</td><td>One chip adds in 1 cycle with 4 ALUs, another in a different pipeline</td></tr><tr><td>Changes</td><td>Rarely (compatibility)</td><td>Every chip generation</td></tr></table><h3>Good to know</h3><ul><li>The <strong>ISA</strong> (instruction set architecture) is the contract between software and hardware: Intel and AMD build very different chips that run the same x86-64 programs.</li><li>Why learn it? To understand why some code is 20× faster than other code doing the same job (see the real measurements in Part G), to write compilers, operating systems, drivers and embedded code, and to pass interviews/exams (GATE, university).</li><li>Related guides: <a href="operating-systems.html">Operating Systems</a> (the software right above the hardware), <a href="cpp.html">C++</a>, <a href="computer-networks.html">Computer Networks</a>, <a href="deep-learning.html">Deep Learning</a> (GPUs).</li></ul><div class="callout tip">Honest note: the measurements on this page (memory latency, cache effects, false sharing, branch test) were <strong>really run</strong> on this machine with C++ compiled by g++ 15.2 at -O2; the assembly listing is real g++ output; the arithmetic, cache and pipeline demos are Python simulations that ran (18 Nov 2026). Verilog and RISC-V assembly are templates (no simulator here).</div>
+    </section>
+
+    <!-- 2 -->
+    <section class="block" id="von-neumann">
+      <h2><span class="num">2</span> The Von Neumann Model: The Big Picture</h2>
+<div class="callout life"><strong>Picture:</strong> A kitchen: the <strong>recipe book and the ingredients sit on the same shelf</strong> (memory holds both program and data), a <strong>cook</strong> reads one step at a time and does it (CPU), and <strong>doors</strong> bring groceries in and dishes out (input/output).</div><div class="diagram-wrap"><svg viewBox="0 0 740 214" style="width:100%;max-width:740px" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrSc1_arrow" markerWidth="10" markerHeight="10" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8" fill="none" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc1_tri" markerWidth="12" markerHeight="12" refX="11" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc1_dia" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--accent)" stroke="var(--accent)"/></marker><marker id="arrSc1_diah" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker></defs><line x1="209" y1="70" x2="280" y2="91" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc1_arrow)"/><line x1="210" y1="114" x2="280" y2="114" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc1_arrow)"/><line x1="210" y1="150" x2="280" y2="134" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc1_arrow)"/><line x1="440" y1="99" x2="510" y2="85" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc1_arrow)"/><line x1="440" y1="128" x2="510" y2="139" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc1_arrow)"/><rect class="box-hl" x="40" y="20" width="170" height="50" rx="9"/><text x="125" y="42" text-anchor="middle" font-size="12">Control unit</text><text x="125" y="56" text-anchor="middle" font-size="10" class="edge-label">fetch, decode, sequence</text><rect class="box-hl" x="40" y="90" width="170" height="46" rx="9"/><text x="125" y="110" text-anchor="middle" font-size="12">ALU</text><text x="125" y="124" text-anchor="middle" font-size="10" class="edge-label">add, compare, logic</text><rect class="box-hl" x="40" y="150" width="170" height="40" rx="9"/><text x="125" y="167" text-anchor="middle" font-size="12">Registers</text><text x="125" y="181" text-anchor="middle" font-size="10" class="edge-label">PC, IR, general</text><rect class="box-dim" x="280" y="90" width="160" height="50" rx="9"/><text x="360" y="112" text-anchor="middle" font-size="12">System bus</text><text x="360" y="126" text-anchor="middle" font-size="10" class="edge-label">address, data, control</text><rect class="box-final" x="510" y="40" width="200" height="50" rx="9"/><text x="610" y="62" text-anchor="middle" font-size="12">Memory</text><text x="610" y="76" text-anchor="middle" font-size="10" class="edge-label">instructions AND data</text><rect class="box" x="510" y="130" width="200" height="50" rx="9"/><text x="610" y="152" text-anchor="middle" font-size="12">Input / Output</text><text x="610" y="166" text-anchor="middle" font-size="10" class="edge-label">keyboard, disk, network</text></svg><div class="diagram-caption">Fig S1 — Von Neumann architecture: one memory for instructions and data, connected to the CPU by buses.</div></div><table><tr><th>Idea</th><th>Meaning</th></tr><tr><td>Stored-program concept</td><td>Programs are data in memory, so a computer can load a new program without rewiring (described by von Neumann and others, 1945)</td></tr><tr><td>Von Neumann bottleneck</td><td>One path between CPU and memory limits speed: the CPU often waits for memory. Caches exist because of this (Part G)</td></tr><tr><td>Harvard architecture</td><td>Separate memories (and paths) for instructions and data; common in microcontrollers and DSPs</td></tr><tr><td>Modified Harvard</td><td>Modern CPUs: one main memory, but separate L1 instruction and data caches</td></tr></table><h3>Good to know</h3><ul><li>Every general-purpose computer you use today follows this model with many speed tricks added on top.</li></ul>
+    </section>
+
+    <!-- 3 -->
+    <section class="block" id="coa-history">
+      <h2><span class="num">3</span> A Short History: From Vacuum Tubes to Chiplets</h2>
+<div class="callout life"><strong>Picture:</strong> From a room-sized calculator to a phone that is millions of times faster, in about 80 years.</div><table><tr><th>Generation</th><th>Technology</th><th>Example milestone</th></tr><tr><td>1940s</td><td>Vacuum tubes</td><td>ENIAC (1945), programmed by plugging cables</td></tr><tr><td>1950s–60s</td><td>Transistors, then integrated circuits</td><td>IBM System/360 (1964) introduces one ISA for a family of machines</td></tr><tr><td>1971</td><td>Microprocessor (whole CPU on one chip)</td><td>Intel 4004</td></tr><tr><td>1978–1985</td><td>8086 → x86; RISC research (Berkeley RISC, Stanford MIPS)</td><td>ARM1 (1985)</td></tr><tr><td>1990s</td><td>Pipelining, superscalar, out-of-order execution, on-chip caches</td><td>Pentium Pro (1995)</td></tr><tr><td>2000s</td><td>Clock speed stops rising (power wall) → multicore</td><td>Dual-core desktop CPUs (2005)</td></tr><tr><td>2010s</td><td>Phones run ARM; GPUs for general computing and AI; RISC-V open ISA (2010+)</td><td>Apple, Qualcomm, NVIDIA CUDA</td></tr><tr><td>2020s</td><td>Chiplets, 3D stacking, big + little cores, on-chip AI accelerators (NPUs), ARM in laptops and servers</td><td>Apple M-series, AMD chiplets, cloud ARM servers</td></tr></table><h3>Good to know</h3><ul><li><strong>Moore's law</strong> (transistor counts doubling about every two years) slowed; <strong>Dennard scaling</strong> (power per area staying constant) ended around 2005–2007. That is why we got more cores instead of faster single cores.</li><li>Dates are simplified; product claims change yearly.</li></ul>
+    </section>
+
+    <!-- 4 -->
+    <section class="block" id="performance">
+      <h2><span class="num">4</span> Measuring Performance: The Iron Law</h2>
+<div class="callout life"><strong>Picture:</strong> Travel time = number of steps × time per step. A car with a faster engine (clock) can still arrive later if it takes a longer road (more instructions) or stops often (high CPI).</div><p><strong>CPU time = Instruction count × CPI × Clock period</strong> (= IC × CPI ÷ clock rate). CPI = cycles per instruction. MIPS = millions of instructions per second (easy to misuse).</p><details class="deepdive" open><summary>Two example machines and an instruction mix (ASSUMED numbers) (run for real)</summary><pre><code># The &#x27;iron law&#x27; of performance: CPU time = instructions x CPI x clock period.
+def t(ic, cpi, ghz): return ic * cpi / (ghz * 1e9)
+A = (2.0e9, 1.5, 3.0); B = (1.4e9, 2.2, 3.6)          # (instruction count, CPI, GHz): ASSUMED example machines/compilers
+for name, (ic, cpi, ghz) in [(&quot;A&quot;, A), (&quot;B&quot;, B)]:
+    print(&quot;machine %s: %.1e instructions x CPI %.1f / %.1f GHz = %.3f s   MIPS = %.0f&quot; % (name, ic, cpi, ghz, t(ic, cpi, ghz), ic / t(ic, cpi, ghz) / 1e6))
+print(&quot;B has the faster clock, but A finishes first: clock speed alone (and MIPS) can mislead.&quot;)
+mix = {&quot;ALU&quot;: (0.50, 1), &quot;load&quot;: (0.20, 5), &quot;store&quot;: (0.10, 3), &quot;branch&quot;: (0.20, 2)}
+cpi = sum(f * c for f, c in mix.values())
+print(&quot;average CPI from an instruction mix %s = %.2f&quot; % ({k: v[0] for k, v in mix.items()}, cpi))
+print(&quot;if loads got twice as fast (CPI 5 -&gt; 2.5): new CPI %.2f, speedup %.2fx&quot; % (cpi - 0.20 * 2.5, cpi / (cpi - 0.20 * 2.5)))
+
+# ----- Output (real run) -----
+# machine A: 2.0e+09 instructions x CPI 1.5 / 3.0 GHz = 1.000 s   MIPS = 2000
+# machine B: 1.4e+09 instructions x CPI 2.2 / 3.6 GHz = 0.856 s   MIPS = 1636
+# B has the faster clock, but A finishes first: clock speed alone (and MIPS) can mislead.
+# average CPI from an instruction mix {&#x27;ALU&#x27;: 0.5, &#x27;load&#x27;: 0.2, &#x27;store&#x27;: 0.1, &#x27;branch&#x27;: 0.2} = 2.20
+# if loads got twice as fast (CPI 5 -&gt; 2.5): new CPI 1.70, speedup 1.29x</code></pre><p>Machine B has the faster clock but takes 0.856 s vs A's 1.000 s here only because of its smaller instruction count; with CPI 2.2 vs 1.5 the comparison could easily go the other way. Lowering the cost of loads (20% of instructions) cut average CPI from 2.20 to 1.70.</p></details><h3>Good to know</h3><ul><li>Benchmarks: SPEC CPU (standard), Geekbench (consumer), MLPerf (AI). Always test <em>your</em> workload.</li><li>Throughput (jobs per second) vs latency (time for one job): different goals, different designs.</li><li>Power matters as much as speed today: dynamic power ≈ C × V² × f (capacitance, voltage squared, frequency).</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part B — Representing Data</h2></div>
+
+    <!-- 5 -->
+    <section class="block" id="number-systems">
+      <h2><span class="num">5</span> Number Systems: Binary, Octal, Hexadecimal</h2>
+<div class="callout life"><strong>Picture:</strong> Counting with only two fingers (0 and 1). Each place is worth double the one to its right: 1, 2, 4, 8, 16 ...</div><details class="deepdive" open><summary>Converting 202 between bases (run for real)</summary><pre><code># One number, many bases. Each position is worth base^position.
+n = 202
+print(&quot;decimal %d = binary %s = octal %s = hex %s&quot; % (n, bin(n)[2:], oct(n)[2:], hex(n)[2:].upper()))
+print(&quot;binary 11001010 as sum of powers of 2:&quot;, &quot; + &quot;.join(str(2 ** i) for i, b in enumerate(reversed(&quot;11001010&quot;)) if b == &quot;1&quot;), &quot;=&quot;, int(&quot;11001010&quot;, 2))
+def to_base(x, b, digits=&quot;0123456789ABCDEF&quot;):
+    s = &quot;&quot;
+    while x: x, r = divmod(x, b); s = digits[r] + s
+    return s or &quot;0&quot;
+print(&quot;repeated division of 202 by 2 (read remainders bottom-up):&quot;)
+x = 202
+while x:
+    print(&quot;   %3d / 2 = %3d remainder %d&quot; % (x, x // 2, x % 2)); x //= 2
+print(&quot;base 5:&quot;, to_base(202, 5), &quot; base 16:&quot;, to_base(202, 16))
+print(&quot;one hex digit = 4 bits: 0xCA =&quot;, &quot;1100 1010&quot;)
+f = 0.625; bits = &quot;&quot;
+for _ in range(4): f *= 2; bits += str(int(f)); f -= int(f)
+print(&quot;fraction 0.625 in binary = 0.&quot; + bits, &quot;(multiply by 2, take the integer part)&quot;)
+print(&quot;units: 1 KiB = %d bytes, 1 KB = 1000 bytes (disk makers use KB/MB/GB; RAM uses KiB/MiB/GiB)&quot; % 1024)
+
+# ----- Output (real run) -----
+# decimal 202 = binary 11001010 = octal 312 = hex CA
+# binary 11001010 as sum of powers of 2: 2 + 8 + 64 + 128 = 202
+# repeated division of 202 by 2 (read remainders bottom-up):
+#    202 / 2 = 101 remainder 0
+#    101 / 2 =  50 remainder 1
+#     50 / 2 =  25 remainder 0
+#     25 / 2 =  12 remainder 1
+#     12 / 2 =   6 remainder 0
+#      6 / 2 =   3 remainder 0
+#      3 / 2 =   1 remainder 1
+#      1 / 2 =   0 remainder 1
+# base 5: 1302  base 16: CA
+# one hex digit = 4 bits: 0xCA = 1100 1010
+# fraction 0.625 in binary = 0.1010 (multiply by 2, take the integer part)
+# units: 1 KiB = 1024 bytes, 1 KB = 1000 bytes (disk makers use KB/MB/GB; RAM uses KiB/MiB/GiB)</code></pre></details><table><tr><th>Decimal</th><th>Binary</th><th>Hex</th></tr><tr><td>0</td><td>0000</td><td>0</td></tr><tr><td>5</td><td>0101</td><td>5</td></tr><tr><td>9</td><td>1001</td><td>9</td></tr><tr><td>10</td><td>1010</td><td>A</td></tr><tr><td>15</td><td>1111</td><td>F</td></tr><tr><td>16</td><td>1 0000</td><td>10</td></tr><tr><td>255</td><td>1111 1111</td><td>FF</td></tr></table><h3>Good to know</h3><ul><li>A <strong>bit</strong> is one binary digit; a <strong>byte</strong> is 8 bits; a <strong>word</strong> is the CPU's natural size (64 bits on today's PCs).</li><li>Hex is shorthand for binary: each hex digit is exactly 4 bits, so <code>0xCA</code> = 1100 1010.</li><li>BCD (binary-coded decimal) stores each decimal digit in 4 bits; used in some financial hardware and clocks.</li></ul>
+    </section>
+
+    <!-- 6 -->
+    <section class="block" id="signed-integers">
+      <h2><span class="num">6</span> Signed Integers and Two's Complement</h2>
+<div class="callout life"><strong>Picture:</strong> A car's odometer that rolls back from 0000 to 9999 when you reverse. In 8-bit two's complement, going below 0 rolls to 1111 1111, which we agree means −1.</div><details class="deepdive" open><summary>Two's complement, carry and overflow (run for real)</summary><pre><code># Signed integers: two&#x27;s complement. To negate: flip all bits, add 1. One adder works for + and -.
+def bits(x, n=8): return format(x &amp; ((1 &lt;&lt; n) - 1), &quot;0%db&quot; % n)
+def val(b): n = len(b); x = int(b, 2); return x - (1 &lt;&lt; n) if b[0] == &quot;1&quot; else x
+for x in (5, -5, 127, -128, -1, 0):
+    print(&quot;%5d -&gt; %s&quot; % (x, bits(x)))
+print(&quot;negate 5: %s -&gt; flip %s -&gt; +1 %s = %d&quot; % (bits(5), bits(~5 &amp; 0xFF), bits(-5), val(bits(-5))))
+print(&quot;8-bit range: %d .. %d (unsigned 0 .. 255)&quot; % (-(1 &lt;&lt; 7), (1 &lt;&lt; 7) - 1))
+def add8(a, b):
+    s = (a + b) &amp; 0xFF; sa, sb, ss = a &gt;&gt; 7 &amp; 1, b &gt;&gt; 7 &amp; 1, s &gt;&gt; 7 &amp; 1
+    carry = (a + b) &gt;&gt; 8 &amp; 1; overflow = (sa == sb) and (ss != sa)
+    return s, carry, overflow
+for a, b in [(100, 27), (100, 28), (0b11111111, 1), (-100 &amp; 0xFF, -29 &amp; 0xFF)]:
+    s, c, o = add8(a, b)
+    print(&quot;%s + %s = %s  as signed %4d + %4d = %4d   carry=%d overflow=%s&quot; % (bits(a), bits(b), bits(s), val(bits(a)), val(bits(b)), val(bits(s)), c, o))
+print(&quot;Overflow (signed) happens when two numbers of the SAME sign give a result of the OTHER sign; carry matters for unsigned numbers.&quot;)
+
+# ----- Output (real run) -----
+#     5 -&gt; 00000101
+#    -5 -&gt; 11111011
+#   127 -&gt; 01111111
+#  -128 -&gt; 10000000
+#    -1 -&gt; 11111111
+#     0 -&gt; 00000000
+# negate 5: 00000101 -&gt; flip 11111010 -&gt; +1 11111011 = -5
+# 8-bit range: -128 .. 127 (unsigned 0 .. 255)
+# 01100100 + 00011011 = 01111111  as signed  100 +   27 =  127   carry=0 overflow=False
+# 01100100 + 00011100 = 10000000  as signed  100 +   28 = -128   carry=0 overflow=True
+# 11111111 + 00000001 = 00000000  as signed   -1 +    1 =    0   carry=1 overflow=False
+# 10011100 + 11100011 = 01111111  as signed -100 +  -29 =  127   carry=1 overflow=True
+# Overflow (signed) happens when two numbers of the SAME sign give a result of the OTHER sign; carry matters for unsigned numbers.</code></pre><p>100 + 28 in 8 bits gives 1000 0000, which reads as −128: <strong>signed overflow</strong> (two positives made a negative). −1 + 1 produces a carry out but no overflow: the signed answer 0 is correct.</p></details><table><tr><th>Representation</th><th>−5 in 8 bits</th><th>Two zeros?</th><th>Note</th></tr><tr><td>Sign-magnitude</td><td>1000 0101</td><td>Yes (+0, −0)</td><td>Simple to read, awkward to add</td></tr><tr><td>One's complement</td><td>1111 1010</td><td>Yes</td><td>End-around carry needed</td></tr><tr><td><strong>Two's complement</strong></td><td>1111 1011</td><td>No</td><td>Used by virtually all CPUs: one adder does + and −</td></tr><tr><td>Excess-127 (biased)</td><td>0111 1010</td><td>No</td><td>Used for float exponents</td></tr></table><h3>Good to know</h3><ul><li>n-bit two's complement range: −2<sup>n−1</sup> … 2<sup>n−1</sup> − 1.</li><li>Sign extension: copying the sign bit to widen a number (1011 → 1111 1011) keeps its value.</li></ul>
+    </section>
+
+    <!-- 7 -->
+    <section class="block" id="floating-point">
+      <h2><span class="num">7</span> Floating Point (IEEE 754)</h2>
+<div class="callout life"><strong>Picture:</strong> Scientific notation in binary: 6.02 × 10<sup>23</sup> becomes 1.something × 2<sup>exponent</sup>. A fixed number of digits means most decimals (like 0.1) cannot be stored exactly, the same way 1/3 cannot be written exactly in decimal.</div><p>A 32-bit float has 1 sign bit, 8 exponent bits (stored with a bias of 127) and 23 fraction bits (plus a hidden leading 1). A 64-bit double has 1, 11 (bias 1023) and 52. Value = (−1)<sup>sign</sup> × 1.fraction × 2<sup>exponent − bias</sup>.</p><details class="deepdive" open><summary>Real IEEE 754 bit patterns and the classic surprises (run for real)</summary><pre><code># IEEE 754 floating point: sign | exponent | fraction. Real bits taken from this machine&#x27;s float hardware via struct.
+import struct, math, sys
+def show32(x):
+    b = struct.unpack(&quot;&gt;I&quot;, struct.pack(&quot;&gt;f&quot;, x))[0]; s = format(b, &quot;032b&quot;)
+    sign, exp, frac = s[0], s[1:9], s[9:]
+    e = int(exp, 2)
+    kind = &quot;zero/subnormal&quot; if e == 0 else (&quot;inf/NaN&quot; if e == 255 else &quot;normal, exponent %d - 127 = %d&quot; % (e, e - 127))
+    print(&quot;%-12s %s %s %s  (%s)&quot; % (repr(x), sign, exp, frac, kind))
+for x in (1.0, -2.5, 0.1, 1e-45, float(&quot;inf&quot;), float(&quot;nan&quot;)):
+    show32(x)
+print(&quot;\nfloat32 0.1 is really&quot;, &quot;%.20f&quot; % struct.unpack(&quot;&gt;f&quot;, struct.pack(&quot;&gt;f&quot;, 0.1))[0])
+print(&quot;float64: 0.1 + 0.2 == 0.3 ?&quot;, 0.1 + 0.2 == 0.3, &quot;  0.1 + 0.2 =&quot;, repr(0.1 + 0.2))
+print(&quot;safe comparison: math.isclose(0.1 + 0.2, 0.3) =&quot;, math.isclose(0.1 + 0.2, 0.3))
+print(&quot;float64 machine epsilon:&quot;, sys.float_info.epsilon, &quot;  largest:&quot;, sys.float_info.max)
+print(&quot;2**53 + 1 as float:&quot;, float(2 ** 53 + 1), &quot;(integers above 2^53 cannot all be stored exactly)&quot;)
+big, small = 1e16, 1.0
+print(&quot;(1e16 + 1.0) - 1e16 =&quot;, (big + small) - big, &quot; &lt;- the 1.0 was lost: adding numbers of very different size loses digits&quot;)
+
+# ----- Output (real run) -----
+# 1.0          0 01111111 00000000000000000000000  (normal, exponent 127 - 127 = 0)
+# -2.5         1 10000000 01000000000000000000000  (normal, exponent 128 - 127 = 1)
+# 0.1          0 01111011 10011001100110011001101  (normal, exponent 123 - 127 = -4)
+# 1e-45        0 00000000 00000000000000000000001  (zero/subnormal)
+# inf          0 11111111 00000000000000000000000  (inf/NaN)
+# nan          0 11111111 10000000000000000000000  (inf/NaN)
+#
+# float32 0.1 is really 0.10000000149011611938
+# float64: 0.1 + 0.2 == 0.3 ? False   0.1 + 0.2 = 0.30000000000000004
+# safe comparison: math.isclose(0.1 + 0.2, 0.3) = True
+# float64 machine epsilon: 2.220446049250313e-16   largest: 1.7976931348623157e+308
+# 2**53 + 1 as float: 9007199254740992.0 (integers above 2^53 cannot all be stored exactly)
+# (1e16 + 1.0) - 1e16 = 0.0  &lt;- the 1.0 was lost: adding numbers of very different size loses digits</code></pre><p>0.1 is stored as 0.10000000149... in 32 bits. <code>0.1 + 0.2 == 0.3</code> is False; compare with a tolerance. Above 2<sup>53</sup> not every integer fits in a double, and adding 1.0 to 1e16 changes nothing.</p></details><table><tr><th>Special value</th><th>Exponent bits</th><th>Fraction</th></tr><tr><td>Zero (±0)</td><td>all 0</td><td>0</td></tr><tr><td>Subnormal (tiny)</td><td>all 0</td><td>≠ 0</td></tr><tr><td>Infinity (±∞)</td><td>all 1</td><td>0</td></tr><tr><td>NaN (not a number)</td><td>all 1</td><td>≠ 0</td></tr></table><h3>Good to know</h3><ul><li>Never use binary floats for money: use integers (paise/cents) or decimal types.</li><li>AI hardware uses smaller formats: FP16, bfloat16 (8-bit exponent like FP32), FP8 and even 4-bit formats trade precision for speed and memory.</li><li>Rounding modes: round to nearest even (default), toward zero, up, down.</li></ul>
+    </section>
+
+    <!-- 8 -->
+    <section class="block" id="characters">
+      <h2><span class="num">8</span> Characters and Text: ASCII and Unicode</h2>
+<div class="callout life"><strong>Picture:</strong> A secret code book where every letter has a number. ASCII was a small book for English; Unicode is a giant book for every script, emoji included.</div><table><tr><th>Encoding</th><th>Size</th><th>Note</th></tr><tr><td>ASCII</td><td>7 bits (128 characters)</td><td>'A' = 65, 'a' = 97, '0' = 48</td></tr><tr><td>Unicode</td><td>Code points up to U+10FFFF</td><td>One number per character in every script</td></tr><tr><td>UTF-8</td><td>1–4 bytes per character</td><td>ASCII-compatible; the web's default</td></tr><tr><td>UTF-16</td><td>2 or 4 bytes</td><td>Windows and Java internals</td></tr><tr><td>UTF-32</td><td>4 bytes</td><td>Simple indexing, large</td></tr></table><h3>Good to know</h3><ul><li>'é' is 1 Unicode character but 2 bytes in UTF-8; an emoji can be 4 bytes. String length depends on what you count.</li><li>Mojibake (garbled text) happens when bytes are decoded with the wrong encoding.</li></ul>
+    </section>
+
+    <!-- 9 -->
+    <section class="block" id="endianness">
+      <h2><span class="num">9</span> Endianness: Byte Order</h2>
+<div class="callout life"><strong>Picture:</strong> Writing a date as day/month/year or year/month/day: same information, different order. Mix them up and 03/04 means the wrong day.</div><details class="deepdive" open><summary>The same number in little-endian and big-endian memory (run for real)</summary><pre><code># Endianness: the order of bytes inside a multi-byte number in memory.
+import struct, sys
+x = 0x12345678
+print(&quot;this machine is&quot;, sys.byteorder, &quot;endian&quot;)
+print(&quot;little-endian bytes:&quot;, struct.pack(&quot;&lt;I&quot;, x).hex(&quot; &quot;), &quot;  (x86, most ARM setups)&quot;)
+print(&quot;big-endian bytes   :&quot;, struct.pack(&quot;&gt;I&quot;, x).hex(&quot; &quot;), &quot;  (network byte order, some older CPUs)&quot;)
+print(&quot;reading little-endian bytes as big-endian gives 0x%08X: a classic bug when sending binary data&quot; % struct.unpack(&quot;&gt;I&quot;, struct.pack(&quot;&lt;I&quot;, x))[0])
+
+# ----- Output (real run) -----
+# this machine is little endian
+# little-endian bytes: 78 56 34 12   (x86, most ARM setups)
+# big-endian bytes   : 12 34 56 78   (network byte order, some older CPUs)
+# reading little-endian bytes as big-endian gives 0x78563412: a classic bug when sending binary data</code></pre></details><h3>Good to know</h3><ul><li>Little-endian: least significant byte at the lowest address (x86, almost all ARM systems in practice). Big-endian: most significant first (network protocols: 'network byte order').</li><li>Use <code>htonl</code>/<code>ntohl</code> or explicit formats (<code>struct.pack('>I')</code>) when sending binary data. See <a href="computer-networks.html">Computer Networks</a>.</li></ul>
+    </section>
+
+    <!-- 10 -->
+    <section class="block" id="error-detection">
+      <h2><span class="num">10</span> Error Detection and Correction (Parity, Hamming, ECC)</h2>
+<div class="callout life"><strong>Picture:</strong> Sending a long number over a noisy phone line. Adding a check digit lets the listener notice a mistake; cleverer check digits let them even fix it.</div><details class="deepdive" open><summary>Hamming(7,4): find and fix any single flipped bit (run for real)</summary><pre><code># Hamming(7,4): add 3 parity bits so that any single flipped bit can be FOUND and FIXED.
+def encode(d):                       # d = [d1,d2,d3,d4]; positions 1..7: p1 p2 d1 p3 d2 d3 d4
+    p1 = d[0] ^ d[1] ^ d[3]; p2 = d[0] ^ d[2] ^ d[3]; p3 = d[1] ^ d[2] ^ d[3]
+    return [p1, p2, d[0], p3, d[1], d[2], d[3]]
+def decode(c):
+    s1 = c[0] ^ c[2] ^ c[4] ^ c[6]; s2 = c[1] ^ c[2] ^ c[5] ^ c[6]; s3 = c[3] ^ c[4] ^ c[5] ^ c[6]
+    pos = s1 + 2 * s2 + 4 * s3                       # the syndrome IS the position of the bad bit
+    c = c[:]
+    if pos: c[pos - 1] ^= 1
+    return [c[2], c[4], c[5], c[6]], pos
+data = [1, 0, 1, 1]; code = encode(data)
+print(&quot;data&quot;, data, &quot;-&gt; codeword&quot;, code)
+for bad in (0, 3, 6):
+    r = code[:]; r[bad] ^= 1
+    fixed, pos = decode(r)
+    print(&quot;flip bit %d -&gt; received %s -&gt; syndrome says position %d -&gt; corrected data %s %s&quot; % (bad + 1, r, pos, fixed, &quot;OK&quot; if fixed == data else &quot;WRONG&quot;))
+r = code[:]; r[0] ^= 1; r[1] ^= 1
+fixed, pos = decode(r); print(&quot;TWO flips -&gt; &#x27;corrected&#x27; data %s: %s (Hamming(7,4) cannot handle 2 errors; ECC memory adds 1 more bit to DETECT them: SECDED)&quot; % (fixed, &quot;OK&quot; if fixed == data else &quot;WRONG&quot;))
+
+# ----- Output (real run) -----
+# data [1, 0, 1, 1] -&gt; codeword [0, 1, 1, 0, 0, 1, 1]
+# flip bit 1 -&gt; received [1, 1, 1, 0, 0, 1, 1] -&gt; syndrome says position 1 -&gt; corrected data [1, 0, 1, 1] OK
+# flip bit 4 -&gt; received [0, 1, 1, 1, 0, 1, 1] -&gt; syndrome says position 4 -&gt; corrected data [1, 0, 1, 1] OK
+# flip bit 7 -&gt; received [0, 1, 1, 0, 0, 1, 0] -&gt; syndrome says position 7 -&gt; corrected data [1, 0, 1, 1] OK
+# TWO flips -&gt; &#x27;corrected&#x27; data [0, 0, 1, 1]: WRONG (Hamming(7,4) cannot handle 2 errors; ECC memory adds 1 more bit to DETECT them: SECDED)</code></pre><p>Each single-bit error is located by the 'syndrome' and corrected. Two flipped bits are 'corrected' into the <strong>wrong</strong> data: that is why ECC memory uses SECDED (single error correct, double error detect) with one extra parity bit.</p></details><table><tr><th>Code</th><th>Detects</th><th>Corrects</th><th>Used in</th></tr><tr><td>Parity bit</td><td>Any odd number of flipped bits</td><td>None</td><td>Old memory, serial links</td></tr><tr><td>Hamming (7,4)</td><td>1 (2 with an extra bit)</td><td>1</td><td>ECC RAM (SECDED variants)</td></tr><tr><td>CRC</td><td>Burst errors, very reliably</td><td>None</td><td>Ethernet, disks, ZIP (see <a href="computer-networks.html">Networks</a>)</td></tr><tr><td>Reed–Solomon, LDPC</td><td>Many</td><td>Many</td><td>QR codes, SSDs, 5G, satellite</td></tr></table><h3>Good to know</h3><ul><li>Rule: a code with minimum distance d detects d−1 errors and corrects ⌊(d−1)/2⌋. Hamming(7,4) has d = 3.</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part C — Digital Logic</h2></div>
+
+    <!-- 11 -->
+    <section class="block" id="logic-gates">
+      <h2><span class="num">11</span> Logic Gates and Boolean Algebra</h2>
+<div class="callout life"><strong>Picture:</strong> Light switches. Two switches in a row (both must be on) is AND; two switches side by side (either one) is OR; a switch that turns the light off when pressed is NOT.</div><table><tr><th>Gate</th><th>Symbol idea</th><th>Output is 1 when</th><th>Expression</th></tr><tr><td>AND</td><td>series switches</td><td>all inputs are 1</td><td>A · B</td></tr><tr><td>OR</td><td>parallel switches</td><td>any input is 1</td><td>A + B</td></tr><tr><td>NOT</td><td>inverter</td><td>input is 0</td><td>A'</td></tr><tr><td>NAND</td><td>NOT of AND</td><td>not all inputs are 1</td><td>(A · B)'</td></tr><tr><td>NOR</td><td>NOT of OR</td><td>all inputs are 0</td><td>(A + B)'</td></tr><tr><td>XOR</td><td>difference detector</td><td>inputs differ</td><td>A ⊕ B</td></tr><tr><td>XNOR</td><td>equality detector</td><td>inputs are equal</td><td>(A ⊕ B)'</td></tr></table><table><tr><th>Law</th><th>Form</th></tr><tr><td>Identity / null</td><td>A + 0 = A, A · 1 = A, A + 1 = 1, A · 0 = 0</td></tr><tr><td>Idempotent / complement</td><td>A + A = A, A · A' = 0, A + A' = 1</td></tr><tr><td>Distributive</td><td>A(B + C) = AB + AC, A + BC = (A + B)(A + C)</td></tr><tr><td>Absorption</td><td>A + AB = A</td></tr><tr><td>De Morgan</td><td>(AB)' = A' + B', (A + B)' = A'B'</td></tr></table><h3>Good to know</h3><ul><li>NAND and NOR are <strong>universal</strong>: any circuit can be built from just one of them (shown in the next run).</li><li>Simplification tools: Boolean laws, Karnaugh maps (by hand, up to 4–5 variables), Quine–McCluskey and software (larger).</li><li>Gates are made of transistors (CMOS: a NAND gate uses 4 transistors).</li></ul>
+    </section>
+
+    <!-- 12 -->
+    <section class="block" id="combinational">
+      <h2><span class="num">12</span> Combinational Circuits: Adders, Multiplexers, Decoders</h2>
+<div class="callout life"><strong>Picture:</strong> A vending machine's coin-counter: the output depends only on the coins in right now, with no memory of yesterday.</div><details class="deepdive" open><summary>A full adder from gates and an 8-bit ripple-carry adder, checked on every input (run for real)</summary><pre><code># From logic gates to an adder: half adder, full adder, and an 8-bit ripple-carry adder built ONLY from AND/OR/XOR.
+AND = lambda a, b: a &amp; b; OR = lambda a, b: a | b; XOR = lambda a, b: a ^ b; NOT = lambda a: 1 - a
+print(&quot;full adder truth table (a b cin -&gt; sum carry)&quot;)
+def full_adder(a, b, c):
+    s1 = XOR(a, b); s = XOR(s1, c); cout = OR(AND(a, b), AND(s1, c)); return s, cout
+for a in (0, 1):
+    for b in (0, 1):
+        for c in (0, 1): print(&quot;  %d %d %d -&gt; %d %d&quot; % (a, b, c, *full_adder(a, b, c)))
+def ripple(x, y, n=8):
+    c, out = 0, 0
+    for i in range(n):
+        s, c = full_adder(x &gt;&gt; i &amp; 1, y &gt;&gt; i &amp; 1, c); out |= s &lt;&lt; i
+    return out, c
+ok = all(ripple(x, y) == ((x + y) &amp; 255, (x + y) &gt;&gt; 8) for x in range(256) for y in range(256))
+print(&quot;8-bit ripple adder correct for all 65,536 input pairs:&quot;, ok)
+print(&quot;NAND alone can build every gate: NOT a = NAND(a,a), AND = NOT(NAND), OR = NAND(NOT a, NOT b)&quot;)
+NAND = lambda a, b: 1 - (a &amp; b)
+print(&quot;XOR from 4 NANDs correct:&quot;, all((lambda t: NAND(NAND(a, t), NAND(b, t)))(NAND(a, b)) == (a ^ b) for a in (0, 1) for b in (0, 1)))
+print(&quot;Ripple carry delay grows with n (each stage waits for the previous carry); carry-lookahead adders compute carries in parallel.&quot;)
+
+# ----- Output (real run) -----
+# full adder truth table (a b cin -&gt; sum carry)
+#   0 0 0 -&gt; 0 0
+#   0 0 1 -&gt; 1 0
+#   0 1 0 -&gt; 1 0
+#   0 1 1 -&gt; 0 1
+#   1 0 0 -&gt; 1 0
+#   1 0 1 -&gt; 0 1
+#   1 1 0 -&gt; 0 1
+#   1 1 1 -&gt; 1 1
+# 8-bit ripple adder correct for all 65,536 input pairs: True
+# NAND alone can build every gate: NOT a = NAND(a,a), AND = NOT(NAND), OR = NAND(NOT a, NOT b)
+# XOR from 4 NANDs correct: True
+# Ripple carry delay grows with n (each stage waits for the previous carry); carry-lookahead adders compute carries in parallel.</code></pre><p>The adder built only from AND, OR and XOR matches real addition for all 65,536 pairs of 8-bit numbers, and XOR built from four NAND gates is correct.</p></details><table><tr><th>Circuit</th><th>Does</th><th>Used for</th></tr><tr><td>Half / full adder</td><td>Adds 2 / 3 bits</td><td>ALUs</td></tr><tr><td>Ripple-carry adder</td><td>Chains full adders</td><td>Simple, slow for wide numbers</td></tr><tr><td>Carry-lookahead adder</td><td>Computes carries in parallel (generate/propagate)</td><td>Fast ALUs</td></tr><tr><td>Multiplexer (MUX)</td><td>Chooses one of N inputs by select lines</td><td>Datapath routing</td></tr><tr><td>Demultiplexer</td><td>Sends one input to one of N outputs</td><td>Routing</td></tr><tr><td>Decoder</td><td>n inputs → one of 2<sup>n</sup> outputs active</td><td>Memory address decoding, instruction decoding</td></tr><tr><td>Encoder / priority encoder</td><td>Which input is active (highest priority)</td><td>Interrupt controllers</td></tr><tr><td>Comparator</td><td>A &lt; B, A = B, A &gt; B</td><td>Branches</td></tr></table><h3>Good to know</h3><ul><li>Propagation delay: each gate takes time; the slowest path (critical path) limits the clock speed.</li></ul><div class="callout tip">Hardware is described with HDLs. A Verilog version of the adder is below (template, not simulated here).</div><details class="deepdive" open><summary>Verilog: full adder and 4-bit adder (template, not run)</summary><pre><code>// A full adder and a 4-bit ripple-carry adder in Verilog (hardware description language). Template: not simulated here.
+module full_adder(input a, input b, input cin, output sum, output cout);
+  assign sum  = a ^ b ^ cin;
+  assign cout = (a &amp; b) | (cin &amp; (a ^ b));
+endmodule
+
+module adder4(input [3:0] x, input [3:0] y, output [3:0] s, output c);
+  wire c1, c2, c3;
+  full_adder f0(x[0], y[0], 1&#x27;b0, s[0], c1);
+  full_adder f1(x[1], y[1], c1,   s[1], c2);
+  full_adder f2(x[2], y[2], c2,   s[2], c3);
+  full_adder f3(x[3], y[3], c3,   s[3], c);
+endmodule
+// Simulate with Icarus Verilog (iverilog) or Verilator; synthesise to an FPGA with vendor tools.</code></pre></details>
+    </section>
+
+    <!-- 13 -->
+    <section class="block" id="sequential">
+      <h2><span class="num">13</span> Sequential Circuits: Latches, Flip-Flops, Registers, Clocks</h2>
+<div class="callout life"><strong>Picture:</strong> A light switch that <em>remembers</em> its position (sequential) vs a doorbell that rings only while pressed (combinational). Memory in hardware is circuits that feed their output back to their input.</div><table><tr><th>Element</th><th>Behaviour</th><th>Use</th></tr><tr><td>SR latch</td><td>Set / reset, holds its value</td><td>Basic memory cell</td></tr><tr><td>D latch</td><td>Copies D while enable is high</td><td>Transparent storage</td></tr><tr><td>D flip-flop</td><td>Copies D only at the clock edge</td><td>Registers, pipelines</td></tr><tr><td>JK / T flip-flop</td><td>Toggle behaviours</td><td>Counters</td></tr><tr><td>Register</td><td>n flip-flops sharing a clock</td><td>Holding a word</td></tr><tr><td>Shift register</td><td>Moves bits each clock</td><td>Serial ↔ parallel conversion</td></tr><tr><td>Counter</td><td>Register + adder feedback</td><td>Timers, program counter</td></tr><tr><td>Finite state machine</td><td>State register + next-state logic</td><td>Control units, protocols</td></tr></table><h3>Good to know</h3><ul><li>The <strong>clock</strong> is a heartbeat: everything updates together on its edge. A 4 GHz clock ticks every 0.25 ns.</li><li>Setup and hold times: data must be stable a little before and after the edge, or the flip-flop can go metastable.</li></ul><details class="deepdive" open><summary>Verilog: a 4-bit counter (template, not run)</summary><pre><code>// A synchronous counter (sequential logic): changes only on the rising clock edge. Template: not simulated here.
+module counter4(input clk, input reset, output reg [3:0] q);
+  always @(posedge clk) begin
+    if (reset) q &lt;= 4&#x27;d0;
+    else       q &lt;= q + 4&#x27;d1;     // a register (4 flip-flops) + an adder feeding back into itself
+  end
+endmodule</code></pre></details>
+    </section>
+
+    <div class="part-divider"><h2>Part D — Computer Arithmetic</h2></div>
+
+    <!-- 14 -->
+    <section class="block" id="alu">
+      <h2><span class="num">14</span> The ALU: The Calculator Inside the CPU</h2>
+<div class="callout life"><strong>Picture:</strong> A pocket calculator wired into the CPU: give it two numbers and a button (operation code), and it returns the answer plus a few warning lights (flags).</div><table><tr><th>Flag</th><th>Set when</th><th>Used by</th></tr><tr><td>Z (zero)</td><td>Result is 0</td><td><code>if (a == b)</code> after a subtraction</td></tr><tr><td>N / S (negative / sign)</td><td>Top bit is 1</td><td>Signed comparisons</td></tr><tr><td>C (carry)</td><td>Unsigned overflow / borrow</td><td>Unsigned comparisons, multi-word maths</td></tr><tr><td>V / O (overflow)</td><td>Signed overflow</td><td>Signed comparisons, overflow checks</td></tr></table><h3>Good to know</h3><ul><li>A typical ALU does add, subtract, AND, OR, XOR, NOT, shifts and comparisons; multiply and divide use separate, multi-cycle units; floating point has its own FPU.</li><li>Shifts: logical (fill with 0), arithmetic right (copy the sign bit: divides signed numbers by 2), rotate.</li></ul>
+    </section>
+
+    <!-- 15 -->
+    <section class="block" id="multiplication">
+      <h2><span class="num">15</span> Multiplication and Booth's Algorithm</h2>
+<div class="callout life"><strong>Picture:</strong> Long multiplication from school, in binary: for each 1 in the multiplier, add a shifted copy of the multiplicand. Booth's trick: a run of 1s like 0111 can be done as 1000 − 0001: one subtract and one add instead of three adds.</div><details class="deepdive" open><summary>Booth's algorithm step by step (4-bit signed) (run for real)</summary><pre><code># Booth&#x27;s algorithm: multiply signed numbers with shifts and add/subtract. 4-bit example: 3 x (-4).
+def booth(m, q, n=4):
+    mask = (1 &lt;&lt; n) - 1
+    A, Q, Q_1, M = 0, q &amp; mask, 0, m &amp; mask
+    print(&quot;step  A     Q     Q-1  action&quot;)
+    print(&quot;init  %s  %s  %d&quot; % (format(A, &quot;04b&quot;), format(Q, &quot;04b&quot;), Q_1))
+    for step in range(1, n + 1):
+        pair = (Q &amp; 1, Q_1); act = &quot;shift&quot;
+        if pair == (1, 0): A = (A - M) &amp; mask; act = &quot;A = A - M, shift&quot;
+        elif pair == (0, 1): A = (A + M) &amp; mask; act = &quot;A = A + M, shift&quot;
+        Q_1 = Q &amp; 1                                                       # arithmetic shift right of A,Q,Q-1 together
+        Q = ((Q &gt;&gt; 1) | ((A &amp; 1) &lt;&lt; (n - 1))) &amp; mask
+        A = ((A &gt;&gt; 1) | (A &amp; (1 &lt;&lt; (n - 1)))) &amp; mask
+        print(&quot;%4d  %s  %s  %d    %s&quot; % (step, format(A, &quot;04b&quot;), format(Q, &quot;04b&quot;), Q_1, act))
+    r = (A &lt;&lt; n) | Q
+    if r &amp; (1 &lt;&lt; (2 * n - 1)): r -= 1 &lt;&lt; (2 * n)
+    return r
+r = booth(3, -4)
+print(&quot;result:&quot;, r, &quot; check:&quot;, 3 * -4)
+r = booth(-7, 5); print(&quot;result:&quot;, r, &quot; check:&quot;, -7 * 5)
+
+# ----- Output (real run) -----
+# step  A     Q     Q-1  action
+# init  0000  1100  0
+#    1  0000  0110  0    shift
+#    2  0000  0011  0    shift
+#    3  1110  1001  1    A = A - M, shift
+#    4  1111  0100  1    shift
+# result: -12  check: -12
+# step  A     Q     Q-1  action
+# init  0000  0101  0
+#    1  0011  1010  1    A = A - M, shift
+#    2  1110  0101  0    A = A + M, shift
+#    3  0010  1010  1    A = A - M, shift
+#    4  1101  1101  0    A = A + M, shift
+# result: -35  check: -35</code></pre><p>Both 3 × (−4) = −12 and (−7) × 5 = −35 come out right, working directly with two's-complement numbers.</p></details><h3>Good to know</h3><ul><li>Booth rules on the pair (Q<sub>0</sub>, Q<sub>−1</sub>): 10 → A = A − M; 01 → A = A + M; 00 or 11 → nothing; then arithmetic shift right of A, Q, Q<sub>−1</sub>.</li><li>Real CPUs use fast parallel multipliers (Wallace/Dadda trees, Booth radix-4 encoding) finishing in a few cycles.</li></ul>
+    </section>
+
+    <!-- 16 -->
+    <section class="block" id="division">
+      <h2><span class="num">16</span> Division: Restoring and Non-Restoring</h2>
+<div class="callout life"><strong>Picture:</strong> Long division at school: try to subtract, and if it goes negative, undo it (restore) and write 0 in the answer.</div><details class="deepdive" open><summary>13 ÷ 4 by restoring division (run for real)</summary><pre><code># Restoring division (unsigned), step by step: 13 / 4 with 4-bit registers.
+def restoring(dividend, divisor, n=4):
+    A, Q, M = 0, dividend, divisor
+    print(&quot;step  A       Q     action&quot;)
+    for step in range(1, n + 1):
+        A = (A &lt;&lt; 1) | (Q &gt;&gt; (n - 1)); Q = (Q &lt;&lt; 1) &amp; ((1 &lt;&lt; n) - 1)      # shift A,Q left
+        A -= M
+        if A &lt; 0: A += M; act = &quot;A-M &lt; 0 -&gt; restore, Q0 = 0&quot;
+        else: Q |= 1; act = &quot;A-M &gt;= 0 -&gt; keep,   Q0 = 1&quot;
+        print(&quot;%4d  %s  %s  %s&quot; % (step, format(A, &quot;05b&quot;), format(Q, &quot;04b&quot;), act))
+    return Q, A
+q, r = restoring(13, 4)
+print(&quot;quotient&quot;, q, &quot;remainder&quot;, r, &quot; check:&quot;, divmod(13, 4))
+
+# ----- Output (real run) -----
+# step  A       Q     action
+#    1  00001  1010  A-M &lt; 0 -&gt; restore, Q0 = 0
+#    2  00011  0100  A-M &lt; 0 -&gt; restore, Q0 = 0
+#    3  00010  1001  A-M &gt;= 0 -&gt; keep,   Q0 = 1
+#    4  00001  0011  A-M &gt;= 0 -&gt; keep,   Q0 = 1
+# quotient 3 remainder 1  check: (3, 1)</code></pre></details><h3>Good to know</h3><ul><li>Non-restoring division skips the 'undo' step by adding back in the next step instead; SRT division (used in CPUs) guesses quotient digits from a table (the 1994 Pentium FDIV bug was a few missing table entries).</li><li>Division is slow (tens of cycles); compilers replace division by a constant with multiplication by a 'magic number' and shifts.</li></ul>
+    </section>
+
+    <!-- 17 -->
+    <section class="block" id="float-arithmetic">
+      <h2><span class="num">17</span> Floating-Point Arithmetic</h2>
+<div class="callout life"><strong>Picture:</strong> Adding 1.5 thousand and 2.5 million: first write both in the same unit (align exponents), then add, then tidy up (normalise and round).</div><table><tr><th>Operation</th><th>Steps</th></tr><tr><td>Add / subtract</td><td>1 align exponents (shift the smaller), 2 add significands, 3 normalise, 4 round, 5 check overflow/underflow</td></tr><tr><td>Multiply</td><td>Add exponents (subtract one bias), multiply significands, normalise, round, set sign = XOR of signs</td></tr><tr><td>Divide</td><td>Subtract exponents, divide significands, normalise, round</td></tr><tr><td>Fused multiply-add (FMA)</td><td>a × b + c with only ONE rounding: more accurate and faster; the core operation of AI and graphics</td></tr></table><h3>Good to know</h3><ul><li>Aligning exponents throws away low bits of the smaller number: the (1e16 + 1) − 1e16 = 0 result in Part B.</li><li>Floating-point addition is not associative: (a + b) + c can differ from a + (b + c), so parallel sums give slightly different answers (see the NumPy demo in Part I).</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part E — The CPU: Instructions and Control</h2></div>
+
+    <!-- 18 -->
+    <section class="block" id="datapath">
+      <h2><span class="num">18</span> Inside the CPU: Registers and the Datapath</h2>
+<div class="callout life"><strong>Picture:</strong> A chef's counter: a few bowls within arm's reach (registers), a chopping board and knife (ALU), a recipe card being read (instruction register) and a finger marking the current line (program counter).</div><table><tr><th>Register</th><th>Job</th></tr><tr><td>PC (program counter)</td><td>Address of the next instruction</td></tr><tr><td>IR (instruction register)</td><td>The instruction being decoded</td></tr><tr><td>MAR / MDR</td><td>Memory address register / memory data register: the CPU's mailbox to memory</td></tr><tr><td>General-purpose registers</td><td>Fast storage for values (x86-64: 16 such as rax, rbx...; RISC-V and ARM64: 31–32)</td></tr><tr><td>Flags / status register</td><td>Results of the last operation (Z, N, C, V)</td></tr><tr><td>SP (stack pointer)</td><td>Top of the call stack</td></tr></table><h3>Good to know</h3><ul><li>Registers are the fastest storage (inside the CPU, read in a fraction of a cycle); there are only a few dozen of them, which is why compilers work hard on 'register allocation'.</li><li>The <strong>datapath</strong> is the road network (registers, ALU, multiplexers, buses) along which data moves; the <strong>control unit</strong> is the traffic police.</li></ul>
+    </section>
+
+    <!-- 19 -->
+    <section class="block" id="instruction-cycle">
+      <h2><span class="num">19</span> The Instruction Cycle: Fetch, Decode, Execute</h2>
+<div class="callout life"><strong>Picture:</strong> Following a recipe: read the next line (fetch), understand it (decode), do it (execute), put the result in a bowl (write back), move your finger to the next line.</div><div class="diagram-wrap"><svg viewBox="0 0 760 214" style="width:100%;max-width:760px" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrSc2_arrow" markerWidth="10" markerHeight="10" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8" fill="none" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc2_tri" markerWidth="12" markerHeight="12" refX="11" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc2_dia" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--accent)" stroke="var(--accent)"/></marker><marker id="arrSc2_diah" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker></defs><line x1="160" y1="68" x2="200" y2="68" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc2_arrow)"/><line x1="350" y1="68" x2="390" y2="68" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc2_arrow)"/><line x1="540" y1="68" x2="580" y2="68" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc2_arrow)"/><line x1="597" y1="96" x2="513" y2="140" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc2_arrow)"/><line x1="390" y1="165" x2="350" y2="165" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc2_arrow)"/><line x1="226" y1="140" x2="140" y2="96" stroke="var(--accent)" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#arrSc2_arrow)"/><text class="edge-label" x="183" y="113" text-anchor="middle">next</text><rect class="box-hl" x="10" y="40" width="150" height="56" rx="9"/><text x="85" y="58" text-anchor="middle" font-size="12">FETCH</text><text x="85" y="72" text-anchor="middle" font-size="10" class="edge-label">IR ← memory[PC]</text><text x="85" y="86" text-anchor="middle" font-size="10" class="edge-label">PC ← PC + size</text><rect class="box-hl" x="200" y="40" width="150" height="56" rx="9"/><text x="275" y="58" text-anchor="middle" font-size="12">DECODE</text><text x="275" y="72" text-anchor="middle" font-size="10" class="edge-label">which operation?</text><text x="275" y="86" text-anchor="middle" font-size="10" class="edge-label">read registers</text><rect class="box-hl" x="390" y="40" width="150" height="56" rx="9"/><text x="465" y="58" text-anchor="middle" font-size="12">EXECUTE</text><text x="465" y="72" text-anchor="middle" font-size="10" class="edge-label">ALU computes /</text><text x="465" y="86" text-anchor="middle" font-size="10" class="edge-label">address calculated</text><rect class="box" x="580" y="40" width="140" height="56" rx="9"/><text x="650" y="58" text-anchor="middle" font-size="12">MEMORY</text><text x="650" y="72" text-anchor="middle" font-size="10" class="edge-label">load or store</text><text x="650" y="86" text-anchor="middle" font-size="10" class="edge-label">(if needed)</text><rect class="box-final" x="390" y="140" width="150" height="50" rx="9"/><text x="465" y="162" text-anchor="middle" font-size="12">WRITE BACK</text><text x="465" y="176" text-anchor="middle" font-size="10" class="edge-label">result → register</text><rect class="box-dim" x="200" y="140" width="150" height="50" rx="9"/><text x="275" y="155" text-anchor="middle" font-size="12">Interrupt?</text><text x="275" y="169" text-anchor="middle" font-size="10" class="edge-label">check between</text><text x="275" y="183" text-anchor="middle" font-size="10" class="edge-label">instructions</text></svg><div class="diagram-caption">Fig S2 — The basic instruction cycle (each step may take one or more clock cycles).</div></div><details class="deepdive" open><summary>A tiny CPU simulator running a loop (sum 1..10) (run for real)</summary><pre><code># A tiny CPU simulator: registers, a program counter, memory, and a fetch-decode-execute loop.
+prog = &quot;&quot;&quot;
+    LOAD  R1, 0        ; sum = 0
+    LOAD  R2, 1        ; i = 1
+    LOAD  R3, 11       ; limit
+loop:
+    ADD   R1, R1, R2   ; sum += i
+    ADDI  R2, R2, 1    ; i += 1
+    BLT   R2, R3, loop ; if i &lt; limit goto loop
+    STORE R1, 100      ; memory[100] = sum
+    HALT
+&quot;&quot;&quot;
+lines = [l.split(&quot;;&quot;)[0].strip() for l in prog.strip().splitlines()]
+labels, code = {}, []
+for l in lines:
+    if l.endswith(&quot;:&quot;): labels[l[:-1]] = len(code)
+    elif l: code.append(l.replace(&quot;,&quot;, &quot; &quot;).split())
+R, MEM, pc, cycles, executed = [0] * 4, {}, 0, 0, 0
+CPI = {&quot;LOAD&quot;: 1, &quot;ADD&quot;: 1, &quot;ADDI&quot;: 1, &quot;BLT&quot;: 2, &quot;STORE&quot;: 3, &quot;HALT&quot;: 1}          # ASSUMED cycles per instruction type
+reg = lambda s: int(s[1:])
+while True:
+    ins = code[pc]; op = ins[0]; pc += 1; executed += 1; cycles += CPI[op]     # FETCH (and move the program counter) + DECODE
+    if op == &quot;LOAD&quot;: R[reg(ins[1])] = int(ins[2])                              # EXECUTE
+    elif op == &quot;ADD&quot;: R[reg(ins[1])] = R[reg(ins[2])] + R[reg(ins[3])]
+    elif op == &quot;ADDI&quot;: R[reg(ins[1])] = R[reg(ins[2])] + int(ins[3])
+    elif op == &quot;BLT&quot;:
+        if R[reg(ins[1])] &lt; R[reg(ins[2])]: pc = labels[ins[3]]
+    elif op == &quot;STORE&quot;: MEM[int(ins[2])] = R[reg(ins[1])]
+    elif op == &quot;HALT&quot;: break
+print(&quot;program:&quot;, len(code), &quot;instructions; executed&quot;, executed, &quot;instructions in&quot;, cycles, &quot;cycles&quot;)
+print(&quot;result memory[100] =&quot;, MEM[100], &quot;(1 + 2 + ... + 10)&quot;)
+print(&quot;CPI = %.2f ; at an ASSUMED 1 GHz clock: %.0f ns&quot; % (cycles / executed, cycles))
+
+# ----- Output (real run) -----
+# program: 8 instructions; executed 35 instructions in 47 cycles
+# result memory[100] = 55 (1 + 2 + ... + 10)
+# CPI = 1.34 ; at an ASSUMED 1 GHz clock: 47 ns</code></pre><p>The 8-instruction program executed 35 instructions (the loop body runs 10 times) in 47 cycles with the assumed costs, giving CPI 1.34. Real CPUs overlap these steps (pipelining, Part F).</p></details><h3>Good to know</h3><ul><li>Branches change the PC instead of letting it advance: that is all an <code>if</code> or a loop is at machine level.</li></ul>
+    </section>
+
+    <!-- 20 -->
+    <section class="block" id="isa">
+      <h2><span class="num">20</span> Instruction Set Architectures: CISC vs RISC; x86, ARM, RISC-V</h2>
+<div class="callout life"><strong>Picture:</strong> A Swiss-army knife with many complex tools (CISC) vs a small set of simple, fast tools you combine (RISC). Modern chips borrow from both.</div><table><tr><th></th><th>CISC</th><th>RISC</th></tr><tr><td>Instructions</td><td>Many, complex, variable length</td><td>Fewer, simple, fixed length (usually 32 bits)</td></tr><tr><td>Memory access</td><td>Many instructions can use memory operands</td><td>Load/store architecture: only loads and stores touch memory</td></tr><tr><td>Registers</td><td>Fewer (historically)</td><td>Many</td></tr><tr><td>Decoding</td><td>Harder</td><td>Easy, good for pipelines</td></tr><tr><td>Examples</td><td>x86 / x86-64</td><td>ARM (AArch64), RISC-V, MIPS, POWER</td></tr></table><table><tr><th>ISA</th><th>Owner / licence</th><th>Where</th><th>Note</th></tr><tr><td>x86-64</td><td>Intel and AMD</td><td>PCs, most servers</td><td>Internally decodes x86 instructions into RISC-like micro-operations</td></tr><tr><td>ARM (AArch64)</td><td>Arm Ltd licenses designs/ISA</td><td>Phones, Apple Macs, cloud servers, embedded</td><td>Very power-efficient designs</td></tr><tr><td>RISC-V</td><td>Open standard (RISC-V International)</td><td>Microcontrollers, accelerators, growing</td><td>Free to implement; modular extensions</td></tr><tr><td>GPU ISAs</td><td>Vendor-specific (PTX/SASS for NVIDIA)</td><td>Graphics, AI</td><td>Thousands of simple cores</td></tr></table><h3>Good to know</h3><ul><li>Market shares and product claims change quickly; check current sources before quoting numbers.</li><li>Instruction categories: data transfer (load/store/move), arithmetic/logic, control flow (branch, jump, call, return), system (traps, privileged).</li></ul>
+    </section>
+
+    <!-- 21 -->
+    <section class="block" id="instruction-formats">
+      <h2><span class="num">21</span> Instruction Formats and Machine Code</h2>
+<div class="callout life"><strong>Picture:</strong> A form with boxes: 'operation', 'from box A', 'from box B', 'into box C'. The CPU reads the boxes by position.</div><details class="deepdive" open><summary>Encoding real RISC-V instructions into 32-bit words (run for real)</summary><pre><code># Machine code: how an instruction becomes 32 bits (RISC-V RV32I formats).
+def r_type(f7, rs2, rs1, f3, rd, op): return f7 &lt;&lt; 25 | rs2 &lt;&lt; 20 | rs1 &lt;&lt; 15 | f3 &lt;&lt; 12 | rd &lt;&lt; 7 | op
+def i_type(imm, rs1, f3, rd, op): return (imm &amp; 0xFFF) &lt;&lt; 20 | rs1 &lt;&lt; 15 | f3 &lt;&lt; 12 | rd &lt;&lt; 7 | op
+def s_type(imm, rs2, rs1, f3, op): return (imm &gt;&gt; 5 &amp; 0x7F) &lt;&lt; 25 | rs2 &lt;&lt; 20 | rs1 &lt;&lt; 15 | f3 &lt;&lt; 12 | (imm &amp; 0x1F) &lt;&lt; 7 | op
+rows = [(&quot;addi x1, x0, 5&quot;, i_type(5, 0, 0, 1, 0b0010011)), (&quot;add  x3, x1, x2&quot;, r_type(0, 2, 1, 0, 3, 0b0110011)),
+        (&quot;sub  x4, x3, x1&quot;, r_type(0b0100000, 1, 3, 0, 4, 0b0110011)), (&quot;lw   x5, 8(x2)&quot;, i_type(8, 2, 0b010, 5, 0b0000011)), (&quot;sw   x5, 12(x2)&quot;, s_type(12, 5, 2, 0b010, 0b0100011))]
+for asm, word in rows:
+    b = format(word, &quot;032b&quot;)
+    print(&quot;%-17s 0x%08X  %s %s %s %s %s %s&quot; % (asm, word, b[:7], b[7:12], b[12:17], b[17:20], b[20:25], b[25:]))
+print(&quot;field split shown: funct7/imm | rs2 | rs1 | funct3 | rd/imm | opcode&quot;)
+print(&quot;check against the RISC-V spec examples: addi x1,x0,5 = 0x00500093, add x3,x1,x2 = 0x002081B3:&quot;, rows[0][1] == 0x00500093 and rows[1][1] == 0x002081B3)
+
+# ----- Output (real run) -----
+# addi x1, x0, 5    0x00500093  0000000 00101 00000 000 00001 0010011
+# add  x3, x1, x2   0x002081B3  0000000 00010 00001 000 00011 0110011
+# sub  x4, x3, x1   0x40118233  0100000 00001 00011 000 00100 0110011
+# lw   x5, 8(x2)    0x00812283  0000000 01000 00010 010 00101 0000011
+# sw   x5, 12(x2)   0x00512623  0000000 00101 00010 010 01100 0100011
+# field split shown: funct7/imm | rs2 | rs1 | funct3 | rd/imm | opcode
+# check against the RISC-V spec examples: addi x1,x0,5 = 0x00500093, add x3,x1,x2 = 0x002081B3: True</code></pre><p>The encoder's output matches the published encodings for <code>addi x1, x0, 5</code> and <code>add x3, x1, x2</code>. Notice the fixed positions: rs1, rs2, rd and the opcode are always in the same bits, so decoding is cheap.</p></details><table><tr><th>RISC-V format</th><th>Fields</th><th>Used by</th></tr><tr><td>R</td><td>funct7 | rs2 | rs1 | funct3 | rd | opcode</td><td>add, sub, and, or</td></tr><tr><td>I</td><td>imm[11:0] | rs1 | funct3 | rd | opcode</td><td>addi, lw, jalr</td></tr><tr><td>S</td><td>imm[11:5] | rs2 | rs1 | funct3 | imm[4:0] | opcode</td><td>sw</td></tr><tr><td>B</td><td>branch offset split across fields</td><td>beq, bne</td></tr><tr><td>U / J</td><td>20-bit immediates</td><td>lui, auipc, jal</td></tr></table><h3>Good to know</h3><ul><li>Zero-, one-, two-, three-address machines: stack machines (JVM bytecode) vs accumulator vs register-register designs.</li><li>x86 instructions are 1 to 15 bytes long: denser code, harder decoding.</li></ul>
+    </section>
+
+    <!-- 22 -->
+    <section class="block" id="addressing-modes">
+      <h2><span class="num">22</span> Addressing Modes</h2>
+<div class="callout life"><strong>Picture:</strong> Ways to say where a parcel is: 'it is this parcel' (immediate), 'it is in locker 5' (register/direct), 'locker 5 holds the address of the parcel' (indirect), 'third house after house 100' (indexed / base + offset).</div><table><tr><th>Mode</th><th>Operand is</th><th>Example (generic)</th><th>Use</th></tr><tr><td>Immediate</td><td>The constant in the instruction</td><td><code>ADD R1, #5</code></td><td>Constants</td></tr><tr><td>Register</td><td>A register's value</td><td><code>ADD R1, R2</code></td><td>Fastest</td></tr><tr><td>Direct (absolute)</td><td>Memory at a fixed address</td><td><code>LOAD R1, [1000]</code></td><td>Global variables</td></tr><tr><td>Register indirect</td><td>Memory at the address in a register</td><td><code>LOAD R1, [R2]</code></td><td>Pointers</td></tr><tr><td>Base + displacement</td><td>Memory at register + constant</td><td><code>lw x5, 8(x2)</code></td><td>Struct fields, stack variables</td></tr><tr><td>Indexed / scaled</td><td>Base + index × scale</td><td><code>mov eax, [rbx + rcx*4]</code></td><td>Arrays</td></tr><tr><td>PC-relative</td><td>PC + offset</td><td><code>beq ..., label</code></td><td>Branches, position-independent code</td></tr><tr><td>Memory indirect</td><td>Memory holds the address</td><td><code>LOAD R1, @[1000]</code></td><td>Rare today</td></tr><tr><td>Auto-increment / decrement</td><td>Use, then bump the register</td><td>ARM post-index</td><td>Walking arrays, stacks</td></tr></table><h3>Good to know</h3><ul><li>Effective address (EA) = the final memory address computed by the mode.</li><li>Look for these in the real assembly below: <code>[rcx+rdx*4]</code> is scaled-index addressing.</li></ul>
+    </section>
+
+    <!-- 23 -->
+    <section class="block" id="assembly-from-c">
+      <h2><span class="num">23</span> From C++ to Real Assembly</h2>
+<div class="callout life"><strong>Picture:</strong> Translating a story from English into a language with a tiny vocabulary: every sentence becomes several very simple sentences.</div><details class="deepdive" open><summary>g++ 15 output for three small functions (x86-64, Intel syntax) (run for real)</summary><pre><code># Real compiler output: g++ 15 turns C++ into x86-64 assembly (-O1, Intel syntax). Then the same at -O3.
+import subprocess, tempfile, os, re
+src = r&quot;&quot;&quot;
+int add(int a, int b) { return a + b; }
+long sum(const int* p, int n) { long s = 0; for (int i = 0; i &lt; n; ++i) s += p[i]; return s; }
+int square_plus_one(int x) { return x * x + 1; }
+&quot;&quot;&quot;
+d = tempfile.mkdtemp(); f = os.path.join(d, &quot;f.cpp&quot;); open(f, &quot;w&quot;).write(src)
+def asm(opt):
+    out = subprocess.run([r&quot;C:\msys64\mingw64\bin\g++.exe&quot;, opt, &quot;-S&quot;, &quot;-masm=intel&quot;, &quot;-fno-asynchronous-unwind-tables&quot;, &quot;-fno-exceptions&quot;, &quot;-o&quot;, &quot;-&quot;, f], capture_output=True, text=True).stdout
+    keep = [l for l in out.splitlines() if l and not l.lstrip().startswith((&quot;.file&quot;, &quot;.ident&quot;, &quot;.def&quot;, &quot;.scl&quot;, &quot;.type&quot;, &quot;.endef&quot;, &quot;.section&quot;, &quot;.p2align&quot;, &quot;.globl&quot;, &quot;.seh&quot;, &quot;.text&quot;, &quot;.align&quot;))]
+    return &quot;\n&quot;.join(keep)
+print(&quot;=== -O1 ===&quot;)
+print(asm(&quot;-O1&quot;))
+o3 = asm(&quot;-O3&quot;)
+print(&quot;\n=== -O3: the loop in sum() now uses SIMD instructions (xmm registers) ===&quot;)
+print(&quot;SIMD instructions found:&quot;, sorted(set(re.findall(r&quot;\b(p(?:add|movsx|shufd|unpck)\w*|movdq\w*)\b&quot;, o3)))[:8])
+print(&quot;Windows x64 calling convention: first integer arguments arrive in ecx/rcx, edx/rdx, r8, r9; the result returns in eax/rax.&quot;)
+
+# ----- Output (real run) -----
+# === -O1 ===
+# 	.intel_syntax noprefix
+# _Z3addii:
+# 	lea	eax, [rcx+rdx]
+# 	ret
+# _Z3sumPKii:
+# 	test	edx, edx
+# 	jle	.L5
+# 	mov	rax, rcx
+# 	movsx	rdx, edx
+# 	lea	rcx, [rcx+rdx*4]
+# 	mov	edx, 0
+# .L4:
+# 	add	edx, DWORD PTR [rax]
+# 	add	rax, 4
+# 	cmp	rax, rcx
+# 	jne	.L4
+# .L2:
+# 	mov	eax, edx
+# 	ret
+# .L5:
+# 	mov	edx, 0
+# 	jmp	.L2
+# _Z15square_plus_onei:
+# 	imul	ecx, ecx
+# 	lea	eax, 1[rcx]
+# 	ret
+#
+# === -O3: the loop in sum() now uses SIMD instructions (xmm registers) ===
+# SIMD instructions found: [&#x27;movdqa&#x27;, &#x27;movdqu&#x27;, &#x27;paddd&#x27;]
+# Windows x64 calling convention: first integer arguments arrive in ecx/rcx, edx/rdx, r8, r9; the result returns in eax/rax.</code></pre><p><code>add</code> became a single <code>lea eax, [rcx+rdx]</code> (the compiler used the address-calculation unit to add). The loop in <code>sum</code> is a load-add, pointer bump, compare and conditional jump. Note it accumulates in 32-bit <code>edx</code>: on Windows (LLP64) <code>long</code> is 32 bits. At -O3 the loop uses SIMD instructions (<code>paddd</code> adds four ints at once).</p></details><details class="deepdive" open><summary>The same array sum in RISC-V assembly (template, not run)</summary><pre><code># RISC-V assembly: sum of an array (template: assemble and run with a RISC-V toolchain + simulator such as Spike or QEMU)
+# a0 = address of the array, a1 = number of elements; result in a0
+sum:
+    li   t0, 0          # t0 = running sum
+loop:
+    beqz a1, done       # if count == 0, finish
+    lw   t1, 0(a0)      # load one 32-bit element
+    add  t0, t0, t1     # sum += element
+    addi a0, a0, 4      # move to the next element (4 bytes)
+    addi a1, a1, -1     # count -= 1
+    j    loop
+done:
+    mv   a0, t0         # return value in a0
+    ret</code></pre></details><h3>Good to know</h3><ul><li>Use <a href="https://godbolt.org/">Compiler Explorer (godbolt.org)</a> to see assembly for any compiler and CPU online.</li><li>Calling conventions decide where arguments go: Windows x64 uses rcx, rdx, r8, r9; Linux x86-64 (System V) uses rdi, rsi, rdx, rcx, r8, r9.</li></ul>
+    </section>
+
+    <!-- 24 -->
+    <section class="block" id="control-unit">
+      <h2><span class="num">24</span> The Control Unit: Hardwired vs Microprogrammed</h2>
+<div class="callout life"><strong>Picture:</strong> A music box with fixed pins (hardwired: fast, cannot change) vs a pianist reading sheet music (microprogrammed: slower, but you can give new sheets).</div><table><tr><th></th><th>Hardwired</th><th>Microprogrammed</th></tr><tr><td>How</td><td>Logic circuits (an FSM) generate control signals</td><td>Each instruction runs a small program of micro-instructions stored in control memory</td></tr><tr><td>Speed</td><td>Faster</td><td>Slower</td></tr><tr><td>Changing it</td><td>Redesign the chip</td><td>Update the microcode (CPUs receive microcode updates, e.g. for security fixes)</td></tr><tr><td>Typical</td><td>RISC designs</td><td>Complex CISC instructions (x86 uses microcode for complex ones)</td></tr></table><h3>Good to know</h3><ul><li>Control signals: register write enables, ALU operation select, memory read/write, multiplexer selects.</li><li>Horizontal microcode (wide words, one bit per signal) vs vertical (encoded, narrower).</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part F — Pipelining and Speed Tricks</h2></div>
+
+    <!-- 25 -->
+    <section class="block" id="pipelining">
+      <h2><span class="num">25</span> Pipelining: An Assembly Line for Instructions</h2>
+<div class="callout life"><strong>Picture:</strong> A laundry: wash, dry, fold. Doing one load completely before starting the next takes 3 hours per load; overlapping (washer runs while the dryer runs) finishes a load every hour once it is going.</div><table><tr><th>Stage (classic 5-stage RISC)</th><th>Job</th></tr><tr><td>IF</td><td>Instruction fetch</td></tr><tr><td>ID</td><td>Decode, read registers</td></tr><tr><td>EX</td><td>ALU / address calculation</td></tr><tr><td>MEM</td><td>Data memory access</td></tr><tr><td>WB</td><td>Write result to register</td></tr></table><p>Ideal speed-up with k stages ≈ k (each instruction still takes k cycles, but one finishes every cycle). Time for n instructions on a k-stage pipeline = (k + n − 1) cycles. Speed-up = n·k ÷ (k + n − 1) → k for large n.</p><h3>Good to know</h3><ul><li>Real pipelines have 10–20+ stages; deeper pipelines allow higher clocks but make mispredicted branches cost more.</li><li>Anything that stops the next instruction from starting is a <strong>hazard</strong> (next section).</li></ul>
+    </section>
+
+    <!-- 26 -->
+    <section class="block" id="hazards">
+      <h2><span class="num">26</span> Pipeline Hazards: Data, Control, Structural</h2>
+<div class="callout life"><strong>Picture:</strong> On the laundry line: you cannot fold a shirt that is still in the dryer (data hazard); you do not know which load comes next until the customer decides (control hazard); two loads cannot use the one dryer at once (structural hazard).</div><details class="deepdive" open><summary>Stalls with and without forwarding (5 instructions) (run for real)</summary><pre><code># A 5-stage pipeline (IF ID EX MEM WB): data hazards with and without forwarding.
+prog = [(&quot;lw&quot;, &quot;x1&quot;, [&quot;x2&quot;]), (&quot;add&quot;, &quot;x3&quot;, [&quot;x1&quot;, &quot;x4&quot;]), (&quot;sub&quot;, &quot;x5&quot;, [&quot;x3&quot;, &quot;x6&quot;]), (&quot;and&quot;, &quot;x7&quot;, [&quot;x8&quot;, &quot;x9&quot;]), (&quot;or&quot;, &quot;x10&quot;, [&quot;x5&quot;, &quot;x7&quot;])]
+def schedule(forwarding):
+    ready, start, rows = {}, 0, []
+    for i, (op, rd, srcs) in enumerate(prog):
+        ex = max([start + 2] + [ready.get(s, 0) for s in srcs])          # EX stage cycle (IF at start, ID at start+1)
+        stalls = ex - (start + 2)
+        if forwarding: done = ex + (2 if op == &quot;lw&quot; else 1)               # value usable by the NEXT instruction&#x27;s EX
+        else: done = ex + 3                                               # no forwarding: consumer&#x27;s ID may read the register in the producer&#x27;s WB cycle (write first half, read second half)
+        ready[rd] = done
+        rows.append((op, rd, srcs, start, stalls)); start = start + 1 + stalls
+    total = rows[-1][3] + rows[-1][4] + 5
+    return rows, total
+for fw in (False, True):
+    rows, total = schedule(fw)
+    print(&quot;forwarding&quot; if fw else &quot;no forwarding&quot;)
+    for op, rd, srcs, st, stalls in rows:
+        line = [&quot;  &quot;] * (total + 1)
+        c = st
+        for s in [&quot;IF&quot;, &quot;ID&quot;] + [&quot;**&quot;] * stalls + [&quot;EX&quot;, &quot;ME&quot;, &quot;WB&quot;]: line[c] = s; c += 1
+        print(&quot;  %-4s %-4s &lt;- %-10s %s&quot; % (op, rd, &quot;,&quot;.join(srcs), &quot; &quot;.join(line)))
+    print(&quot;  total cycles: %d for %d instructions, CPI = %.2f (ideal 1.0 after the pipeline fills)\n&quot; % (total, len(prog), (total - 4) / len(prog)))
+print(&quot;** = stall (bubble). Even with forwarding, a value loaded from memory (lw) is not ready for the very next instruction: the &#x27;load-use&#x27; hazard.&quot;)
+
+# ----- Output (real run) -----
+# no forwarding
+#   lw   x1   &lt;- x2         IF ID EX ME WB                                 
+#   add  x3   &lt;- x1,x4         IF ID ** ** EX ME WB                        
+#   sub  x5   &lt;- x3,x6                  IF ID ** ** EX ME WB               
+#   and  x7   &lt;- x8,x9                           IF ID EX ME WB            
+#   or   x10  &lt;- x5,x7                              IF ID ** ** EX ME WB   
+#   total cycles: 15 for 5 instructions, CPI = 2.20 (ideal 1.0 after the pipeline fills)
+#
+# forwarding
+#   lw   x1   &lt;- x2         IF ID EX ME WB                  
+#   add  x3   &lt;- x1,x4         IF ID ** EX ME WB            
+#   sub  x5   &lt;- x3,x6               IF ID EX ME WB         
+#   and  x7   &lt;- x8,x9                  IF ID EX ME WB      
+#   or   x10  &lt;- x5,x7                     IF ID EX ME WB   
+#   total cycles: 10 for 5 instructions, CPI = 1.20 (ideal 1.0 after the pipeline fills)
+#
+# ** = stall (bubble). Even with forwarding, a value loaded from memory (lw) is not ready for the very next instruction: the &#x27;load-use&#x27; hazard.</code></pre><p>Without forwarding the program needs 15 cycles (CPI 2.2): every dependent instruction waits until the value is written back. With forwarding (passing results straight from the ALU/memory stage to the next instruction) it takes 10 cycles; only the <strong>load-use</strong> hazard still costs one bubble.</p></details><table><tr><th>Hazard</th><th>Cause</th><th>Fixes</th></tr><tr><td>Data (RAW)</td><td>An instruction needs a result not yet written</td><td>Forwarding/bypassing, stalls, compiler scheduling (put an independent instruction in the slot)</td></tr><tr><td>Control</td><td>Branch outcome / target not yet known</td><td>Branch prediction, speculation, delay slots (old MIPS)</td></tr><tr><td>Structural</td><td>Two instructions need the same unit at once</td><td>Duplicate units (separate instruction and data caches)</td></tr><tr><td>WAR / WAW</td><td>Write-after-read / write-after-write ordering (out-of-order CPUs)</td><td>Register renaming</td></tr></table><h3>Good to know</h3><ul><li>Data dependence types: RAW (true dependence), WAR (anti), WAW (output). Only RAW is a 'real' dependence; renaming removes the other two.</li></ul>
+    </section>
+
+    <!-- 27 -->
+    <section class="block" id="branch-prediction">
+      <h2><span class="num">27</span> Branch Prediction</h2>
+<div class="callout life"><strong>Picture:</strong> A traffic officer guessing which way each car will turn so the road ahead can be cleared in time. Right guesses keep traffic flowing; wrong guesses mean everyone behind must reverse.</div><details class="deepdive" open><summary>1-bit vs 2-bit predictors on a loop branch (run for real)</summary><pre><code># Branch prediction: 1-bit vs 2-bit saturating counters on a loop branch (taken 9 times, then not taken), repeated 10 times.
+pattern = ([1] * 9 + [0]) * 10
+def run(bits):
+    state = (1 &lt;&lt; bits) - 1; hits = 0
+    for t in pattern:
+        pred = 1 if state &gt;= (1 &lt;&lt; (bits - 1)) else 0
+        hits += pred == t
+        state = min(state + 1, (1 &lt;&lt; bits) - 1) if t else max(state - 1, 0)
+    return hits / len(pattern)
+print(&quot;always &#x27;taken&#x27;   : %.0f%%&quot; % (100 * sum(pattern) / len(pattern)))
+print(&quot;1-bit predictor  : %.0f%%  (mispredicts twice per loop: at the exit AND at the next entry)&quot; % (100 * run(1)))
+print(&quot;2-bit predictor  : %.0f%%  (one surprise is not enough to change its mind)&quot; % (100 * run(2)))
+import random; random.seed(0); rnd = [random.randint(0, 1) for _ in range(1000)]
+pattern = rnd; print(&quot;random branches  : %.0f%% with 2 bits (nothing can predict coin flips)&quot; % (100 * run(2)))
+
+# ----- Output (real run) -----
+# always &#x27;taken&#x27;   : 90%
+# 1-bit predictor  : 81%  (mispredicts twice per loop: at the exit AND at the next entry)
+# 2-bit predictor  : 90%  (one surprise is not enough to change its mind)
+# random branches  : 50% with 2 bits (nothing can predict coin flips)</code></pre><p>For a loop that runs 9 times then exits, a 1-bit predictor is right only 81% of the time (it mispredicts at the exit and again at the next start); a 2-bit saturating counter gets 90%. Nothing predicts random branches better than 50%.</p></details><p><strong>A real measurement:</strong> the famous 'sorted vs unsorted array' experiment, compiled with g++ -O2 on this machine:</p><details class="deepdive" open><summary>Summing values ≥ 128: random order vs sorted order (run for real)</summary><pre><code>// Branch prediction, measured: the same loop over the same numbers, random order vs sorted order.
+#include &lt;algorithm&gt;
+#include &lt;chrono&gt;
+#include &lt;cstdio&gt;
+#include &lt;random&gt;
+#include &lt;vector&gt;
+long long work(const std::vector&lt;int&gt;&amp; v) {
+    long long s = 0;
+    for (int r = 0; r &lt; 20; ++r)
+        for (int x : v) { if (x &gt;= 128) s += x; else s -= 1; }       // a data-dependent branch
+    return s;
+}
+int main() {
+    std::vector&lt;int&gt; v(4000000); std::mt19937 g(1); for (int&amp; x : v) x = g() % 256;
+    auto t = [&amp;](const char* name) { auto t0 = std::chrono::steady_clock::now(); long long s = work(v);
+        std::printf(&quot;%-8s %7.1f ms (sum %lld)\n&quot;, name, std::chrono::duration&lt;double, std::milli&gt;(std::chrono::steady_clock::now() - t0).count(), s); };
+    t(&quot;random&quot;); std::sort(v.begin(), v.end()); t(&quot;sorted&quot;);
+}
+
+# ----- Output (real run) -----
+# random      58.0 ms (sum 7625374680)
+# sorted      58.2 ms (sum 7625374680)</code></pre><p><strong>No difference here</strong> (58.0 vs 58.2 ms). The compiler turned the <code>if</code> into branch-free code (a conditional move / blend), so there was nothing to mispredict. With lower optimisation or a more complex branch the sorted version is usually much faster. An honest lesson: measure; compilers and CPUs change the picture.</p></details><h3>Good to know</h3><ul><li>Modern predictors (TAGE, perceptron-based) use global history and reach very high accuracy on typical code; a misprediction costs about the pipeline depth in cycles (often 15–20).</li><li>Branch target buffer (BTB): remembers <em>where</em> a branch goes; return stack buffer: predicts function returns.</li></ul>
+    </section>
+
+    <!-- 28 -->
+    <section class="block" id="superscalar-ooo">
+      <h2><span class="num">28</span> Superscalar, Out-of-Order and Speculative Execution</h2>
+<div class="callout life"><strong>Picture:</strong> A restaurant with several cooks (superscalar) who prepare dishes in whatever order the ingredients are ready (out-of-order), and even start a dish before the customer confirms (speculation), throwing it away if they guessed wrong.</div><table><tr><th>Technique</th><th>Idea</th></tr><tr><td>Superscalar</td><td>Issue several instructions per cycle to several execution units</td></tr><tr><td>Out-of-order execution</td><td>Run instructions as soon as their inputs are ready; a reorder buffer commits results in program order</td></tr><tr><td>Register renaming</td><td>Many physical registers behind the few architectural ones; removes WAR/WAW hazards</td></tr><tr><td>Speculative execution</td><td>Execute past predicted branches; squash on misprediction</td></tr><tr><td>SMT (Hyper-Threading)</td><td>Two hardware threads share one core's units to fill idle slots</td></tr><tr><td>VLIW</td><td>The compiler packs parallel operations into one long instruction (DSPs, Itanium)</td></tr></table><h3>Good to know</h3><ul><li>Speculation has security side effects: Spectre and Meltdown (2018) used cache timing to read data accessed only speculatively; fixes cost some performance (see <a href="operating-systems.html#protection-security">OS protection</a>).</li><li>IPC (instructions per cycle) of modern big cores is often several per cycle on friendly code.</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part G — Memory Hierarchy and Caches</h2></div>
+
+    <!-- 29 -->
+    <section class="block" id="memory-hierarchy">
+      <h2><span class="num">29</span> The Memory Hierarchy (Measured on This Machine)</h2>
+<div class="callout life"><strong>Picture:</strong> Your desk (registers), your drawer (L1 cache), a cupboard in the room (L2), a cupboard down the hall (L3), the basement store room (RAM), and a warehouse across town (SSD). The closer, the smaller and faster.</div><div class="diagram-wrap"><svg viewBox="0 0 640 300" style="width:100%;max-width:640px" xmlns="http://www.w3.org/2000/svg"><line x1="60" y1="240" x2="620" y2="240" stroke="var(--card-border)"/><text x="54" y="244" text-anchor="end" font-size="11">0</text><line x1="60" y1="185" x2="620" y2="185" stroke="var(--card-border)"/><text x="54" y="189" text-anchor="end" font-size="11">125</text><line x1="60" y1="130" x2="620" y2="130" stroke="var(--card-border)"/><text x="54" y="134" text-anchor="end" font-size="11">250</text><line x1="60" y1="75" x2="620" y2="75" stroke="var(--card-border)"/><text x="54" y="79" text-anchor="end" font-size="11">375</text><line x1="60" y1="20" x2="620" y2="20" stroke="var(--card-border)"/><text x="54" y="24" text-anchor="end" font-size="11">500</text><text x="60" y="258" text-anchor="middle" font-size="11">16</text><text x="140" y="258" text-anchor="middle" font-size="11">32</text><text x="220" y="258" text-anchor="middle" font-size="11">128</text><text x="300" y="258" text-anchor="middle" font-size="11">512</text><text x="380" y="258" text-anchor="middle" font-size="11">2M</text><text x="460" y="258" text-anchor="middle" font-size="11">8M</text><text x="540" y="258" text-anchor="middle" font-size="11">32M</text><text x="620" y="258" text-anchor="middle" font-size="11">128M</text><text x="340" y="288" text-anchor="middle" font-size="12" class="edge-label">working set (KiB; M = MiB)</text><text transform="rotate(-90)" x="-130" y="16" text-anchor="middle" font-size="12" class="edge-label">nanoseconds per load</text><polyline points="60.0,239.3 140.0,239.2 220.0,238.0 300.0,237.4 380.0,233.4 460.0,223.6 540.0,165.5 620.0,147.1" fill="none" stroke="var(--accent-2)" stroke-width="2.5"/><circle cx="60.0" cy="239.3" r="3.5" fill="var(--accent-2)"/><circle cx="140.0" cy="239.2" r="3.5" fill="var(--accent-2)"/><circle cx="220.0" cy="238.0" r="3.5" fill="var(--accent-2)"/><circle cx="300.0" cy="237.4" r="3.5" fill="var(--accent-2)"/><circle cx="380.0" cy="233.4" r="3.5" fill="var(--accent-2)"/><circle cx="460.0" cy="223.6" r="3.5" fill="var(--accent-2)"/><circle cx="540.0" cy="165.5" r="3.5" fill="var(--accent-2)"/><circle cx="620.0" cy="147.1" r="3.5" fill="var(--accent-2)"/><text x="70" y="32" font-size="12" fill="var(--accent-2)" style="fill:var(--accent-2)">● ns per load</text></svg><div class="diagram-caption">Fig S3 — Time per dependent memory load vs working-set size (real run, g++ -O2, this machine).</div></div><details class="deepdive" open><summary>Pointer chasing through a random cycle: the hierarchy appears (run for real)</summary><pre><code>// Memory hierarchy, measured: chase pointers through a random cycle of N bytes. Time per load jumps when data no longer fits L1, L2, L3.
+#include &lt;algorithm&gt;
+#include &lt;chrono&gt;
+#include &lt;cstdio&gt;
+#include &lt;numeric&gt;
+#include &lt;random&gt;
+#include &lt;vector&gt;
+int main() {
+    std::mt19937_64 rng(42);
+    std::printf(&quot;working set   ns per dependent load\n&quot;);
+    for (size_t kb : {16, 32, 128, 512, 2048, 8192, 32768, 131072}) {
+        size_t n = kb * 1024 / sizeof(size_t);
+        std::vector&lt;size_t&gt; order(n); std::iota(order.begin(), order.end(), 0); std::shuffle(order.begin() + 1, order.end(), rng);
+        std::vector&lt;size_t&gt; next(n);
+        for (size_t i = 0; i &lt; n; ++i) next[order[i]] = order[(i + 1) % n];       // one big random cycle: the CPU cannot guess the next address
+        size_t p = 0, steps = 20000000;
+        auto t0 = std::chrono::steady_clock::now();
+        for (size_t i = 0; i &lt; steps; ++i) p = next[p];
+        double ns = std::chrono::duration&lt;double, std::nano&gt;(std::chrono::steady_clock::now() - t0).count() / steps;
+        std::printf(&quot;%8zu KiB   %6.2f   (check %zu)\n&quot;, kb, ns, p % 7);
+    }
+}
+
+# ----- Output (real run) -----
+# working set   ns per dependent load
+#       16 KiB     1.62   (check 2)
+#       32 KiB     1.73   (check 6)
+#      128 KiB     4.48   (check 1)
+#      512 KiB     6.00   (check 6)
+#     2048 KiB    14.98   (check 4)
+#     8192 KiB    37.27   (check 6)
+#    32768 KiB   169.29   (check 3)
+#   131072 KiB   211.10   (check 3)</code></pre><p>About 1.6–1.7 ns while the data fits in L1 (16–32 KiB), 4.5–6 ns in L2-sized sets, 15–37 ns in L3-sized sets, and about 170–210 ns once it spills to RAM: a jump of more than 100×. The exact steps depend on this CPU's cache sizes; the shape is universal.</p></details><table><tr><th>Level</th><th>Typical size (order of magnitude)</th><th>Typical latency (order of magnitude)</th><th>Technology</th></tr><tr><td>Registers</td><td>Hundreds of bytes</td><td>< 1 ns</td><td>Flip-flops</td></tr><tr><td>L1 cache</td><td>32–64 KiB per core</td><td>~1 ns</td><td>SRAM</td></tr><tr><td>L2 cache</td><td>0.5–2 MiB per core</td><td>~3–5 ns</td><td>SRAM</td></tr><tr><td>L3 cache</td><td>Several to tens of MiB, shared</td><td>~10–40 ns</td><td>SRAM</td></tr><tr><td>Main memory</td><td>GiB</td><td>~60–120 ns (more under load)</td><td>DRAM</td></tr><tr><td>SSD</td><td>Hundreds of GiB to TiB</td><td>~tens of µs</td><td>NAND flash</td></tr><tr><td>Hard disk</td><td>TiB</td><td>~ms</td><td>Magnetic</td></tr></table><h3>Good to know</h3><ul><li>Rough numbers only; they vary by product and generation.</li><li><strong>Locality</strong> makes the hierarchy work: temporal (reuse soon) and spatial (use neighbours).</li></ul>
+    </section>
+
+    <!-- 30 -->
+    <section class="block" id="cache-mapping">
+      <h2><span class="num">30</span> Cache Organization: Lines, Sets, Tags</h2>
+<div class="callout life"><strong>Picture:</strong> A coat check with numbered hooks. Direct-mapped: your ticket number decides exactly one hook. Fully associative: any hook. Set-associative: a small group of hooks for your number.</div><details class="deepdive" open><summary>How an address splits into tag, index (set) and offset (run for real)</summary><pre><code># Splitting an address into TAG | INDEX | OFFSET for different cache designs (32-bit addresses).
+import math
+def split(cache_bytes, block, ways, addr_bits=32):
+    lines = cache_bytes // block; sets = lines // ways
+    off = int(math.log2(block)); idx = int(math.log2(sets)); tag = addr_bits - idx - off
+    return lines, sets, tag, idx, off
+print(&quot;cache    block  ways  lines  sets  tag bits  index bits  offset bits&quot;)
+for cb, bl, w in [(32 * 1024, 64, 1), (32 * 1024, 64, 8), (1024 * 1024, 64, 16), (32 * 1024, 64, 512)]:
+    l, s, t, i, o = split(cb, bl, w)
+    print(&quot;%6d KiB %5d %5d %6d %5d %9d %11d %12d&quot; % (cb // 1024, bl, w, l, s, t, i, o))
+a = 0x1234ABCD; l, s, t, i, o = split(32 * 1024, 64, 8)
+print(&quot;\naddress 0x%08X in a 32 KiB, 8-way, 64-byte-line cache: tag 0x%X, set %d, byte %d&quot; % (a, a &gt;&gt; (i + o), (a &gt;&gt; o) &amp; (s - 1), a &amp; (64 - 1)))
+
+# ----- Output (real run) -----
+# cache    block  ways  lines  sets  tag bits  index bits  offset bits
+#     32 KiB    64     1    512   512        17           9            6
+#     32 KiB    64     8    512    64        20           6            6
+#   1024 KiB    64    16  16384  1024        16          10            6
+#     32 KiB    64   512    512     1        26           0            6
+#
+# address 0x1234ABCD in a 32 KiB, 8-way, 64-byte-line cache: tag 0x1234A, set 47, byte 13</code></pre><p>A 32 KiB cache with 64-byte lines has 512 lines. Direct-mapped, it needs 9 index bits; 8-way, only 64 sets (6 bits) and a longer tag. Fully associative (512-way) has no index bits at all: every tag must be compared.</p></details><table><tr><th>Mapping</th><th>A block can go</th><th>Lookup cost</th><th>Conflict misses</th></tr><tr><td>Direct-mapped</td><td>Exactly one line</td><td>1 tag compare</td><td>Most</td></tr><tr><td>k-way set-associative</td><td>Any of k lines in its set</td><td>k compares in parallel</td><td>Fewer</td></tr><tr><td>Fully associative</td><td>Anywhere</td><td>Compare all tags</td><td>None (only capacity)</td></tr></table><h3>Good to know</h3><ul><li>The 3 Cs of misses: <strong>compulsory</strong> (first touch), <strong>capacity</strong> (cache too small), <strong>conflict</strong> (too many blocks map to one set). A 4th C, <strong>coherence</strong>, appears with multiple cores.</li><li>Replacement policy within a set: LRU (or pseudo-LRU), random, FIFO.</li></ul>
+    </section>
+
+    <!-- 31 -->
+    <section class="block" id="cache-sim">
+      <h2><span class="num">31</span> Cache Simulation and AMAT</h2>
+<div class="callout life"><strong>Picture:</strong> Testing which coat-check design loses fewer coats with the same number of hooks.</div><details class="deepdive" open><summary>Hit rates for three access patterns; AMAT arithmetic (run for real)</summary><pre><code># A cache simulator: direct-mapped vs 2-way vs 4-way vs fully associative (LRU), same total size (8 lines of 16 bytes).
+import random
+def simulate(trace, lines=8, ways=1, block=16):
+    sets = lines // ways; cache = [[] for _ in range(sets)]; hits = 0
+    for addr in trace:
+        blk = addr // block; s = blk % sets; tag = blk // sets; row = cache[s]
+        if tag in row: hits += 1; row.remove(tag); row.append(tag)
+        else:
+            if len(row) == ways: row.pop(0)
+            row.append(tag)
+    return hits / len(trace)
+seq = [i * 4 for i in range(256)] * 4                                # walk 1 KiB of ints 4 times
+conflict = [0, 128, 0, 128, 0, 128] * 50                              # two addresses that map to the same direct-mapped set
+random.seed(1); loopish = [random.choice(range(0, 96, 4)) for _ in range(2000)]   # random reuse within 96 bytes (fits)
+print(&quot;trace              direct  2-way  4-way  fully-assoc&quot;)
+for name, t in [(&quot;sequential walk&quot;, seq), (&quot;ping-pong conflict&quot;, conflict), (&quot;small hot set&quot;, loopish)]:
+    print(&quot;%-18s %6.2f  %5.2f  %5.2f  %11.2f&quot; % (name, *(simulate(t, ways=w) for w in (1, 2, 4, 8))))
+print(&quot;\nAMAT = hit time + miss rate x miss penalty  (ASSUMED 1 ns hit, 100 ns penalty)&quot;)
+for mr in (0.02, 0.05, 0.10):
+    print(&quot;  miss rate %4.0f%% -&gt; AMAT %5.1f ns&quot; % (mr * 100, 1 + mr * 100))
+print(&quot;two levels: L1 1 ns, 5%% miss -&gt; L2 10 ns, 20%% miss -&gt; RAM 100 ns:  AMAT = 1 + 0.05 x (10 + 0.2 x 100) = %.1f ns&quot; % (1 + 0.05 * (10 + 0.2 * 100)))
+
+# ----- Output (real run) -----
+# trace              direct  2-way  4-way  fully-assoc
+# sequential walk      0.75   0.75   0.75         0.75
+# ping-pong conflict   0.00   0.99   0.99         0.99
+# small hot set        1.00   1.00   1.00         1.00
+#
+# AMAT = hit time + miss rate x miss penalty  (ASSUMED 1 ns hit, 100 ns penalty)
+#   miss rate    2% -&gt; AMAT   3.0 ns
+#   miss rate    5% -&gt; AMAT   6.0 ns
+#   miss rate   10% -&gt; AMAT  11.0 ns
+# two levels: L1 1 ns, 5% miss -&gt; L2 10 ns, 20% miss -&gt; RAM 100 ns:  AMAT = 1 + 0.05 x (10 + 0.2 x 100) = 2.5 ns</code></pre><p>A sequential walk hits 75% in every design (each 16-byte line holds 4 ints: 1 compulsory miss then 3 hits). The ping-pong pattern of two addresses mapping to the same set gets <strong>0% in direct-mapped</strong> but 99% with 2 ways. A small hot set fits everywhere.</p></details><h3>Good to know</h3><ul><li>AMAT (average memory access time) = hit time + miss rate × miss penalty. Multi-level: AMAT = t<sub>L1</sub> + m<sub>L1</sub> × (t<sub>L2</sub> + m<sub>L2</sub> × t<sub>mem</sub>).</li><li>Reducing misses: bigger caches, more ways, bigger lines (helps spatial locality, hurts if too big), prefetching, better code (next section).</li></ul>
+    </section>
+
+    <!-- 32 -->
+    <section class="block" id="locality">
+      <h2><span class="num">32</span> Locality: Writing Cache-Friendly Code (Measured)</h2>
+<div class="callout life"><strong>Picture:</strong> Reading a book page by page vs jumping to a random page for every word: same words, very different effort.</div><div class="diagram-wrap"><svg viewBox="0 0 640 300" style="width:100%;max-width:640px" xmlns="http://www.w3.org/2000/svg"><line x1="60" y1="230" x2="620" y2="230" stroke="var(--card-border)"/><text x="54" y="234" text-anchor="end" font-size="11">0</text><line x1="60" y1="178" x2="620" y2="178" stroke="var(--card-border)"/><text x="54" y="182" text-anchor="end" font-size="11">25</text><line x1="60" y1="125" x2="620" y2="125" stroke="var(--card-border)"/><text x="54" y="129" text-anchor="end" font-size="11">50</text><line x1="60" y1="72" x2="620" y2="72" stroke="var(--card-border)"/><text x="54" y="76" text-anchor="end" font-size="11">75</text><line x1="60" y1="20" x2="620" y2="20" stroke="var(--card-border)"/><text x="54" y="24" text-anchor="end" font-size="11">100</text><rect x="116" y="220" width="168" height="10" rx="3" fill="var(--accent)" opacity="0.85"/><text x="200" y="215" text-anchor="middle" font-size="11">4.6</text><text x="200" y="246" text-anchor="middle" font-size="10.5">row by row</text><rect x="396" y="49" width="168" height="181" rx="3" fill="var(--accent)" opacity="0.85"/><text x="480" y="44" text-anchor="middle" font-size="11">86.4</text><text x="480" y="246" text-anchor="middle" font-size="10.5">column by column</text><text transform="rotate(-90)" x="-125" y="16" text-anchor="middle" font-size="12" class="edge-label">milliseconds</text></svg><div class="diagram-caption">Fig S4 — Summing a 4096×4096 int matrix (real run): row order vs column order.</div></div><details class="deepdive" open><summary>Row-major vs column-major traversal of the same matrix (run for real)</summary><pre><code>// Spatial locality, measured: summing a 4096x4096 int matrix row by row vs column by column.
+#include &lt;chrono&gt;
+#include &lt;cstdio&gt;
+#include &lt;vector&gt;
+int main() {
+    const int N = 4096; std::vector&lt;int&gt; m(size_t(N) * N, 1);
+    auto time = [&amp;](bool rows) {
+        auto t = std::chrono::steady_clock::now(); long long s = 0;
+        if (rows) { for (int i = 0; i &lt; N; ++i) for (int j = 0; j &lt; N; ++j) s += m[size_t(i) * N + j]; }
+        else      { for (int j = 0; j &lt; N; ++j) for (int i = 0; i &lt; N; ++i) s += m[size_t(i) * N + j]; }
+        double ms = std::chrono::duration&lt;double, std::milli&gt;(std::chrono::steady_clock::now() - t).count();
+        std::printf(&quot;%-15s sum=%lld  %7.1f ms\n&quot;, rows ? &quot;row by row&quot; : &quot;column by column&quot;, s, ms); return ms; };
+    double a = time(true), b = time(false);
+    std::printf(&quot;column order was %.1fx slower: each step jumps 16 KiB, so every access needs a new cache line\n&quot;, b / a);
+}
+
+# ----- Output (real run) -----
+# row by row      sum=16777216      4.6 ms
+# column by column sum=16777216     86.4 ms
+# column order was 18.9x slower: each step jumps 16 KiB, so every access needs a new cache line</code></pre><p>Same additions, same result, about 19× slower in column order on this machine, because each step jumps 16 KiB and wastes the other 15 ints in every 64-byte cache line it loads.</p></details><h3>Good to know</h3><ul><li>C, C++, Python/NumPy (default) store matrices row-major; Fortran and MATLAB column-major. Loop in storage order.</li><li>Other tricks: blocking/tiling (work on cache-sized tiles), structure-of-arrays layouts, avoiding pointer-chasing data structures for hot loops.</li></ul>
+    </section>
+
+    <!-- 33 -->
+    <section class="block" id="cache-write-coherence">
+      <h2><span class="num">33</span> Write Policies and Cache Coherence (and False Sharing, Measured)</h2>
+<div class="callout life"><strong>Picture:</strong> Several people with photocopies of one shared notebook. When one person edits their copy, the others must be told their copies are stale. Even if two people edit different lines of the <em>same page</em>, the whole page bounces between them.</div><table><tr><th>Policy</th><th>Meaning</th></tr><tr><td>Write-through</td><td>Every write also goes to the next level (simple, more traffic)</td></tr><tr><td>Write-back</td><td>Write only to the cache; mark the line dirty; write back on eviction (common)</td></tr><tr><td>Write-allocate / no-write-allocate</td><td>On a write miss, bring the line in or not</td></tr><tr><td>MESI protocol</td><td>Each line is Modified, Exclusive, Shared or Invalid; cores snoop or use a directory to keep copies consistent (variants: MOESI, MESIF)</td></tr></table><div class="diagram-wrap"><svg viewBox="0 0 640 300" style="width:100%;max-width:640px" xmlns="http://www.w3.org/2000/svg"><line x1="60" y1="230" x2="620" y2="230" stroke="var(--card-border)"/><text x="54" y="234" text-anchor="end" font-size="11">0</text><line x1="60" y1="178" x2="620" y2="178" stroke="var(--card-border)"/><text x="54" y="182" text-anchor="end" font-size="11">398.75</text><line x1="60" y1="125" x2="620" y2="125" stroke="var(--card-border)"/><text x="54" y="129" text-anchor="end" font-size="11">797.5</text><line x1="60" y1="72" x2="620" y2="72" stroke="var(--card-border)"/><text x="54" y="76" text-anchor="end" font-size="11">1196.25</text><line x1="60" y1="20" x2="620" y2="20" stroke="var(--card-border)"/><text x="54" y="24" text-anchor="end" font-size="11">1595</text><rect x="116" y="39" width="168" height="191" rx="3" fill="var(--accent-2)" opacity="0.85"/><text x="200" y="34" text-anchor="middle" font-size="11">1450</text><text x="200" y="246" text-anchor="middle" font-size="10.5">same line</text><rect x="396" y="191" width="168" height="39" rx="3" fill="var(--accent-2)" opacity="0.85"/><text x="480" y="186" text-anchor="middle" font-size="11">298</text><text x="480" y="246" text-anchor="middle" font-size="10.5">separate lines</text><text transform="rotate(-90)" x="-125" y="16" text-anchor="middle" font-size="12" class="edge-label">milliseconds</text></svg><div class="diagram-caption">Fig S5 — Two threads updating two separate counters: same cache line vs padded apart (real run).</div></div><details class="deepdive" open><summary>False sharing between two cores (run for real)</summary><pre><code>// False sharing, measured: two threads update two DIFFERENT counters. If they sit on the same 64-byte cache line, cores fight over it.
+#include &lt;atomic&gt;
+#include &lt;chrono&gt;
+#include &lt;cstdio&gt;
+#include &lt;thread&gt;
+struct Close { std::atomic&lt;long&gt; a{0}; std::atomic&lt;long&gt; b{0}; };                         // neighbours: same cache line
+struct Apart { alignas(64) std::atomic&lt;long&gt; a{0}; alignas(64) std::atomic&lt;long&gt; b{0}; };  // padded onto separate lines
+template &lt;class T&gt; double run() {
+    T c; const long N = 50000000;
+    auto t0 = std::chrono::steady_clock::now();
+    std::thread x([&amp;] { for (long i = 0; i &lt; N; ++i) c.a.fetch_add(1, std::memory_order_relaxed); });
+    std::thread y([&amp;] { for (long i = 0; i &lt; N; ++i) c.b.fetch_add(1, std::memory_order_relaxed); });
+    x.join(); y.join();
+    return std::chrono::duration&lt;double, std::milli&gt;(std::chrono::steady_clock::now() - t0).count();
+}
+int main() {
+    double s = run&lt;Close&gt;(), p = run&lt;Apart&gt;();
+    std::printf(&quot;same cache line : %7.0f ms\nseparate lines  : %7.0f ms\nratio           : %.1fx\n&quot;, s, p, s / p);
+}
+
+# ----- Output (real run) -----
+# same cache line :    1450 ms
+# separate lines  :     298 ms
+# ratio           : 4.9x</code></pre><p>The counters are logically independent, yet sharing one 64-byte line made the program about 5× slower: each write invalidates the other core's copy. Padding each counter onto its own line (<code>alignas(64)</code>) fixes it.</p></details><h3>Good to know</h3><ul><li>C++17 offers <code>std::hardware_destructive_interference_size</code> as a portable hint for this padding.</li><li>Memory consistency models (x86 TSO vs weaker ARM ordering) decide what other cores may observe; atomics and fences restore order (see <a href="operating-systems.html#hardware-sync">OS synchronization</a>).</li></ul>
+    </section>
+
+    <!-- 34 -->
+    <section class="block" id="main-memory">
+      <h2><span class="num">34</span> Main Memory: SRAM, DRAM and Friends</h2>
+<div class="callout life"><strong>Picture:</strong> SRAM is a light switch (stays on while powered, fast, takes space). DRAM is a tiny bucket of charge that leaks and must be refilled (refreshed) thousands of times a second (dense and cheap).</div><table><tr><th>Memory</th><th>Cell</th><th>Speed</th><th>Use</th></tr><tr><td>SRAM</td><td>6 transistors, no refresh</td><td>Fast</td><td>Caches, registers files</td></tr><tr><td>DRAM (DDR4/DDR5, LPDDR)</td><td>1 transistor + 1 capacitor, refreshed</td><td>Slower, dense</td><td>Main memory</td></tr><tr><td>HBM</td><td>Stacked DRAM next to the processor</td><td>Very high bandwidth</td><td>GPUs and AI accelerators</td></tr><tr><td>ROM / flash</td><td>Non-volatile</td><td>Slow writes</td><td>Firmware, SSDs</td></tr></table><details class="deepdive" open><summary>Peak bandwidth arithmetic for DDR5 and PCIe (run for real)</summary><pre><code># Bandwidth arithmetic: width x transfers per second.
+def gbps(bits, mt_s): return bits / 8 * mt_s * 1e6 / 1e9
+print(&quot;DDR5-6400, one 64-bit channel : %.1f GB/s&quot; % gbps(64, 6400))
+print(&quot;dual channel                  : %.1f GB/s&quot; % (2 * gbps(64, 6400)))
+lanes = {&quot;PCIe 3.0&quot;: 8, &quot;PCIe 4.0&quot;: 16, &quot;PCIe 5.0&quot;: 32}
+for gen, gt in lanes.items():
+    per_lane = gt * (128 / 130) / 8                       # 128b/130b encoding
+    print(&quot;%s x16 : about %.0f GB/s each way&quot; % (gen, per_lane * 16))
+print(&quot;(theoretical peaks from the published transfer rates; real throughput is lower)&quot;)
+
+# ----- Output (real run) -----
+# DDR5-6400, one 64-bit channel : 51.2 GB/s
+# dual channel                  : 102.4 GB/s
+# PCIe 3.0 x16 : about 16 GB/s each way
+# PCIe 4.0 x16 : about 32 GB/s each way
+# PCIe 5.0 x16 : about 63 GB/s each way
+# (theoretical peaks from the published transfer rates; real throughput is lower)</code></pre></details><h3>Good to know</h3><ul><li>DRAM is organised in banks, rows and columns; opening a row costs time, so accessing the same row again is faster (row-buffer locality).</li><li>Interleaving spreads consecutive addresses over banks/channels so they can work in parallel.</li></ul>
+    </section>
+
+    <!-- 35 -->
+    <section class="block" id="vm-hardware">
+      <h2><span class="num">35</span> Virtual Memory Hardware: MMU and TLB</h2>
+<div class="callout life"><strong>Picture:</strong> Every flat has a door number; the building's directory (page table) says where the flat really is; the receptionist's sticky notes (TLB) remember the last few lookups.</div><table><tr><th>Hardware</th><th>Job</th></tr><tr><td>MMU</td><td>Translates every virtual address to a physical one, checks permissions</td></tr><tr><td>TLB</td><td>Cache of recent translations (dozens to a few thousand entries, split into levels)</td></tr><tr><td>Page-table walker</td><td>Hardware that walks the multi-level page table on a TLB miss (x86, ARM)</td></tr><tr><td>Huge pages</td><td>2 MiB / 1 GiB pages: one TLB entry covers much more memory</td></tr></table><h3>Good to know</h3><ul><li>The full software side (page faults, replacement, thrashing) is in <a href="operating-systems.html#paging">Operating Systems → Paging</a>.</li><li>The demand-paging measurement there shows one minor fault per 4 KiB page touched.</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part H — Input/Output and Buses</h2></div>
+
+    <!-- 36 -->
+    <section class="block" id="io-methods">
+      <h2><span class="num">36</span> I/O Techniques: Programmed, Interrupt-Driven, DMA</h2>
+<div class="callout life"><strong>Picture:</strong> Waiting for a delivery: keep looking out of the window (programmed I/O / polling), wait for the doorbell (interrupt), or have a helper receive the parcel and put it on the table (DMA).</div><table><tr><th>Technique</th><th>CPU involvement</th><th>Best for</th></tr><tr><td>Programmed I/O (polling)</td><td>CPU checks status and moves every word</td><td>Simple or extremely fast devices</td></tr><tr><td>Interrupt-driven</td><td>Device interrupts when ready; CPU moves data</td><td>Keyboards, low-rate devices</td></tr><tr><td>DMA</td><td>DMA controller moves a whole block; one interrupt at the end</td><td>Disks, network cards, GPUs</td></tr></table><h3>Good to know</h3><ul><li>Memory-mapped I/O (device registers appear at memory addresses) vs port-mapped I/O (separate x86 <code>in</code>/<code>out</code> instructions).</li><li>IOMMU: an MMU for devices, so DMA cannot scribble on arbitrary memory (security and VMs).</li></ul>
+    </section>
+
+    <!-- 37 -->
+    <section class="block" id="interrupt-hardware">
+      <h2><span class="num">37</span> Interrupt Hardware</h2>
+<div class="callout life"><strong>Picture:</strong> A school office with a bell panel: each classroom has a button; the panel decides whose bell rings first and tells the principal which room called.</div><table><tr><th>Part</th><th>Job</th></tr><tr><td>Interrupt request lines / messages (MSI)</td><td>Devices signal the CPU</td></tr><tr><td>Interrupt controller (APIC, GIC)</td><td>Prioritises, masks and routes interrupts to cores</td></tr><tr><td>Interrupt vector table</td><td>Maps each interrupt number to its handler address</td></tr><tr><td>Maskable vs non-maskable (NMI)</td><td>Most can be temporarily blocked; NMIs (hardware errors) cannot</td></tr></table><h3>Good to know</h3><ul><li>On an interrupt the CPU finishes the current instruction, saves the PC and flags, switches to kernel mode and jumps to the handler. Software side: <a href="operating-systems.html#interrupts">OS interrupts</a>.</li></ul>
+    </section>
+
+    <!-- 38 -->
+    <section class="block" id="buses">
+      <h2><span class="num">38</span> Buses and Interconnects</h2>
+<div class="callout life"><strong>Picture:</strong> Roads between buildings. Width = number of lanes; speed = how many cars per second per lane. Bandwidth = lanes × cars per second.</div><table><tr><th>Bus / link</th><th>Connects</th><th>Note</th></tr><tr><td>Address, data, control buses</td><td>CPU ↔ memory (classic model)</td><td>Address width limits addressable memory (32 bits → 4 GiB)</td></tr><tr><td>DDR memory channels</td><td>Memory controller ↔ DIMMs</td><td>64 bits per channel (DDR5 splits it into two 32-bit subchannels)</td></tr><tr><td>PCI Express</td><td>CPU ↔ GPUs, SSDs, NICs</td><td>Serial lanes (x1 … x16); each generation roughly doubles per-lane speed</td></tr><tr><td>USB, Thunderbolt</td><td>External devices</td><td>Serial, hot-pluggable</td></tr><tr><td>On-chip networks / fabrics</td><td>Cores, caches, memory controllers, chiplets</td><td>Rings, meshes, Infinity Fabric-style links</td></tr><tr><td>CXL</td><td>Coherent memory/devices over PCIe physical layer</td><td>Memory expansion and pooling</td></tr></table><h3>Good to know</h3><ul><li>Synchronous buses share a clock; asynchronous ones use handshakes. Bus arbitration decides who uses a shared bus.</li><li>See the bandwidth arithmetic in the main-memory section.</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part I — Parallelism and Modern Processors</h2></div>
+
+    <!-- 39 -->
+    <section class="block" id="flynn">
+      <h2><span class="num">39</span> Flynn's Taxonomy: SISD, SIMD, MISD, MIMD</h2>
+<div class="callout life"><strong>Picture:</strong> A teacher giving one instruction to one student (SISD), one instruction to the whole class doing the same sum on different numbers (SIMD), or many students each doing their own task (MIMD).</div><table><tr><th>Class</th><th>Instruction streams</th><th>Data streams</th><th>Examples</th></tr><tr><td>SISD</td><td>1</td><td>1</td><td>Classic single-core CPU</td></tr><tr><td>SIMD</td><td>1</td><td>Many</td><td>Vector instructions (SSE, AVX, NEON, SVE, RISC-V V), GPU warps</td></tr><tr><td>MISD</td><td>Many</td><td>1</td><td>Rare (some fault-tolerant systems)</td></tr><tr><td>MIMD</td><td>Many</td><td>Many</td><td>Multicore CPUs, clusters</td></tr></table><h3>Good to know</h3><ul><li>GPUs are called SIMT (single instruction, multiple threads): groups of threads run the same instruction in lockstep.</li></ul>
+    </section>
+
+    <!-- 40 -->
+    <section class="block" id="simd-gpu">
+      <h2><span class="num">40</span> SIMD, Vector Units and GPUs</h2>
+<div class="callout life"><strong>Picture:</strong> Painting a fence one plank at a time vs with a wide roller that paints eight planks per stroke.</div><details class="deepdive" open><summary>A Python loop vs NumPy's compiled vectorised sum (real timings) (run for real)</summary><pre><code># Vectorisation: the same sum done one-by-one in Python vs by NumPy&#x27;s compiled, SIMD-friendly loop. Real timings on this machine.
+import time, numpy as np
+x = np.random.default_rng(0).random(5_000_000)
+t = time.perf_counter(); s1 = 0.0
+for v in x.tolist(): s1 += v
+t1 = time.perf_counter() - t
+t = time.perf_counter(); s2 = float(x.sum()); t2 = time.perf_counter() - t
+print(&quot;Python loop : %.3f s&quot; % t1)
+print(&quot;NumPy sum   : %.4f s   (%.0fx faster)&quot; % (t2, t1 / t2))
+print(&quot;results agree to %.1e (different summation order changes the last digits)&quot; % abs(s1 - s2))
+print(&quot;Most of the gap is interpreter overhead; part comes from SIMD instructions and tight compiled loops. Not a CPU benchmark.&quot;)
+
+# ----- Output (real run) -----
+# Python loop : 0.427 s
+# NumPy sum   : 0.0092 s   (46x faster)
+# results agree to 8.6e-08 (different summation order changes the last digits)
+# Most of the gap is interpreter overhead; part comes from SIMD instructions and tight compiled loops. Not a CPU benchmark.</code></pre><p>NumPy was about 46× faster here. Most of that is avoiding Python's per-item interpreter work; the rest is tight compiled loops that can use SIMD. The real assembly in Part E showed g++ emitting SIMD <code>paddd</code> at -O3.</p></details><table><tr><th></th><th>CPU core</th><th>GPU</th></tr><tr><td>Cores</td><td>A few to dozens of big, smart cores</td><td>Thousands of small, simple cores</td></tr><tr><td>Good at</td><td>Branchy, latency-sensitive code</td><td>The same operation on huge arrays (graphics, AI)</td></tr><tr><td>Memory</td><td>Big caches, low latency</td><td>Very high bandwidth (HBM/GDDR)</td></tr><tr><td>Programming</td><td>Threads, SIMD intrinsics</td><td>CUDA, ROCm/HIP, OpenCL, SYCL, Metal, Vulkan compute</td></tr></table><h3>Good to know</h3><ul><li>AI chips (TPUs, NPUs, tensor cores) add matrix-multiply units: thousands of multiply-adds per cycle on small number formats.</li><li>See <a href="deep-learning.html">Deep Learning</a> and <a href="tensorflow-pytorch.html">TensorFlow &amp; PyTorch</a> for how frameworks use them.</li></ul>
+    </section>
+
+    <!-- 41 -->
+    <section class="block" id="multicore">
+      <h2><span class="num">41</span> Multicore, SMT and Shared Memory</h2>
+<div class="callout life"><strong>Picture:</strong> A kitchen with several chefs sharing one pantry. More chefs help only if they do not keep bumping into each other at the pantry door.</div><table><tr><th>Concept</th><th>Meaning</th></tr><tr><td>Multicore</td><td>Several full cores on one chip, usually with private L1/L2 and a shared L3</td></tr><tr><td>SMT / Hyper-Threading</td><td>One core runs two (or more) hardware threads to fill idle units: not double speed</td></tr><tr><td>UMA vs NUMA</td><td>Uniform vs non-uniform memory access (multi-socket servers: local memory is faster)</td></tr><tr><td>Cache coherence</td><td>Keeping cores' cached copies consistent (MESI, Part G)</td></tr><tr><td>Heterogeneous (big.LITTLE / P+E cores)</td><td>Fast power-hungry cores + efficient small cores; the OS schedules between them</td></tr></table><h3>Good to know</h3><ul><li>The machine used here exposes 16 logical CPUs to the OS.</li><li>Writing parallel code: threads and locks (<a href="operating-systems.html">OS</a>), task libraries, message passing (MPI) for clusters.</li></ul>
+    </section>
+
+    <!-- 42 -->
+    <section class="block" id="amdahl">
+      <h2><span class="num">42</span> Amdahl's Law and Gustafson's Law</h2>
+<div class="callout life"><strong>Picture:</strong> Ten friends can wash the dishes faster, but they cannot shorten the one person who must drive to the shop first. The part that cannot be shared limits the whole job.</div><div class="diagram-wrap"><svg viewBox="0 0 640 300" style="width:100%;max-width:640px" xmlns="http://www.w3.org/2000/svg"><line x1="60" y1="240" x2="620" y2="240" stroke="var(--card-border)"/><text x="54" y="244" text-anchor="end" font-size="11">0</text><line x1="60" y1="185" x2="620" y2="185" stroke="var(--card-border)"/><text x="54" y="189" text-anchor="end" font-size="11">25</text><line x1="60" y1="130" x2="620" y2="130" stroke="var(--card-border)"/><text x="54" y="134" text-anchor="end" font-size="11">50</text><line x1="60" y1="75" x2="620" y2="75" stroke="var(--card-border)"/><text x="54" y="79" text-anchor="end" font-size="11">75</text><line x1="60" y1="20" x2="620" y2="20" stroke="var(--card-border)"/><text x="54" y="24" text-anchor="end" font-size="11">100</text><text x="60" y="258" text-anchor="middle" font-size="11">1</text><text x="153" y="258" text-anchor="middle" font-size="11">2</text><text x="247" y="258" text-anchor="middle" font-size="11">4</text><text x="340" y="258" text-anchor="middle" font-size="11">8</text><text x="433" y="258" text-anchor="middle" font-size="11">16</text><text x="527" y="258" text-anchor="middle" font-size="11">64</text><text x="620" y="258" text-anchor="middle" font-size="11">1024</text><text x="340" y="288" text-anchor="middle" font-size="12" class="edge-label">cores</text><text transform="rotate(-90)" x="-130" y="16" text-anchor="middle" font-size="12" class="edge-label">speedup</text><polyline points="60.0,237.8 153.3,237.1 246.7,236.5 340.0,236.1 433.3,235.9 526.7,235.7 620.0,235.6" fill="none" stroke="var(--accent-2)" stroke-width="2.5"/><circle cx="60.0" cy="237.8" r="3.5" fill="var(--accent-2)"/><circle cx="153.3" cy="237.1" r="3.5" fill="var(--accent-2)"/><circle cx="246.7" cy="236.5" r="3.5" fill="var(--accent-2)"/><circle cx="340.0" cy="236.1" r="3.5" fill="var(--accent-2)"/><circle cx="433.3" cy="235.9" r="3.5" fill="var(--accent-2)"/><circle cx="526.7" cy="235.7" r="3.5" fill="var(--accent-2)"/><circle cx="620.0" cy="235.6" r="3.5" fill="var(--accent-2)"/><text x="70" y="32" font-size="12" fill="var(--accent-2)" style="fill:var(--accent-2)">● p=50%</text><polyline points="60.0,237.8 153.3,236.0 246.7,233.2 340.0,229.6 433.3,225.9 526.7,220.7 620.0,218.2" fill="none" stroke="var(--accent)" stroke-width="2.5"/><circle cx="60.0" cy="237.8" r="3.5" fill="var(--accent)"/><circle cx="153.3" cy="236.0" r="3.5" fill="var(--accent)"/><circle cx="246.7" cy="233.2" r="3.5" fill="var(--accent)"/><circle cx="340.0" cy="229.6" r="3.5" fill="var(--accent)"/><circle cx="433.3" cy="225.9" r="3.5" fill="var(--accent)"/><circle cx="526.7" cy="220.7" r="3.5" fill="var(--accent)"/><circle cx="620.0" cy="218.2" r="3.5" fill="var(--accent)"/><text x="210" y="32" font-size="12" fill="var(--accent)" style="fill:var(--accent)">● p=90%</text><polyline points="60.0,237.8 153.3,235.8 246.7,232.3 340.0,227.0 433.3,219.9 526.7,206.1 620.0,196.8" fill="none" stroke="var(--accent-3)" stroke-width="2.5"/><circle cx="60.0" cy="237.8" r="3.5" fill="var(--accent-3)"/><circle cx="153.3" cy="235.8" r="3.5" fill="var(--accent-3)"/><circle cx="246.7" cy="232.3" r="3.5" fill="var(--accent-3)"/><circle cx="340.0" cy="227.0" r="3.5" fill="var(--accent-3)"/><circle cx="433.3" cy="219.9" r="3.5" fill="var(--accent-3)"/><circle cx="526.7" cy="206.1" r="3.5" fill="var(--accent-3)"/><circle cx="620.0" cy="196.8" r="3.5" fill="var(--accent-3)"/><text x="350" y="32" font-size="12" fill="var(--accent-3)" style="fill:var(--accent-3)">● p=95%</text><polyline points="60.0,237.8 153.3,235.6 246.7,231.5 340.0,223.5 433.3,209.4 526.7,153.6 620.0,39.4" fill="none" stroke="var(--accent-4)" stroke-width="2.5"/><circle cx="60.0" cy="237.8" r="3.5" fill="var(--accent-4)"/><circle cx="153.3" cy="235.6" r="3.5" fill="var(--accent-4)"/><circle cx="246.7" cy="231.5" r="3.5" fill="var(--accent-4)"/><circle cx="340.0" cy="223.5" r="3.5" fill="var(--accent-4)"/><circle cx="433.3" cy="209.4" r="3.5" fill="var(--accent-4)"/><circle cx="526.7" cy="153.6" r="3.5" fill="var(--accent-4)"/><circle cx="620.0" cy="39.4" r="3.5" fill="var(--accent-4)"/><text x="490" y="32" font-size="12" fill="var(--accent-4)" style="fill:var(--accent-4)">● p=99%</text></svg><div class="diagram-caption">Fig S6 — Amdahl's law: speedup vs number of cores for different parallel fractions p.</div></div><details class="deepdive" open><summary>Speedup table (run for real)</summary><pre><code># Amdahl&#x27;s law: speedup = 1 / ((1 - p) + p / n). The part you cannot parallelise limits everything.
+print(&quot;cores   p=50%   p=90%   p=95%   p=99%&quot;)
+for n in (1, 2, 4, 8, 16, 64, 1024):
+    print(&quot;%5d &quot; % n + &quot; &quot;.join(&quot;%7.2f&quot; % (1 / ((1 - p) + p / n)) for p in (0.5, 0.9, 0.95, 0.99)))
+print(&quot;limit with infinite cores: p=90% -&gt; 10x, p=99% -&gt; 100x&quot;)
+print(&quot;Gustafson&#x27;s law (bigger problems on bigger machines): scaled speedup = (1 - p) + p x n; with p=0.95, n=64 -&gt; %.1f&quot; % ((1 - 0.95) + 0.95 * 64))
+
+# ----- Output (real run) -----
+# cores   p=50%   p=90%   p=95%   p=99%
+#     1    1.00    1.00    1.00    1.00
+#     2    1.33    1.82    1.90    1.98
+#     4    1.60    3.08    3.48    3.88
+#     8    1.78    4.71    5.93    7.48
+#    16    1.88    6.40    9.14   13.91
+#    64    1.97    8.77   15.42   39.26
+#  1024    2.00    9.91   19.64   91.18
+# limit with infinite cores: p=90% -&gt; 10x, p=99% -&gt; 100x
+# Gustafson&#x27;s law (bigger problems on bigger machines): scaled speedup = (1 - p) + p x n; with p=0.95, n=64 -&gt; 60.8</code></pre><p>With 90% parallel code, 1024 cores give only 9.9× (the limit is 10×). Gustafson's view: when the problem grows with the machine (bigger simulations), scaled speedup can be near-linear.</p></details><h3>Good to know</h3><ul><li>Speedup = 1 ÷ ((1 − p) + p ÷ n). Efficiency = speedup ÷ n.</li><li>Also remember communication and synchronization overhead, which Amdahl's simple form ignores.</li></ul>
+    </section>
+
+    <!-- 43 -->
+    <section class="block" id="modern-chips">
+      <h2><span class="num">43</span> Modern Processor Trends</h2>
+<div class="callout life"><strong>Picture:</strong> Instead of one giant, ever-faster engine, today's chips are like a team of specialists working closely together.</div><table><tr><th>Trend</th><th>What it means</th></tr><tr><td>Chiplets</td><td>Several smaller dies in one package (better yields, mix process nodes)</td></tr><tr><td>3D stacking</td><td>Cache or memory stacked on top of logic (e.g. stacked L3, HBM)</td></tr><tr><td>Unified memory SoCs</td><td>CPU, GPU and NPU share one memory pool (common in phones and some laptops)</td></tr><tr><td>Specialised accelerators</td><td>NPUs for AI, media encoders, crypto engines</td></tr><tr><td>Open ISAs</td><td>RISC-V adoption in microcontrollers and accelerators</td></tr><tr><td>Power and thermal limits</td><td>Performance per watt is the main goal; chips boost and throttle constantly</td></tr><tr><td>Security features</td><td>Memory tagging, pointer authentication, confidential computing enclaves</td></tr></table><h3>Good to know</h3><ul><li>Product details (core counts, process nodes such as '3 nm') change every year and node names are marketing labels, not physical sizes; check vendor documentation.</li><li>Quantum and neuromorphic computing are research directions, not replacements for CPUs today.</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part J — Practice and Reference</h2></div>
+
+    <!-- 44 -->
+    <section class="block" id="coa-formulas">
+      <h2><span class="num">44</span> Formulas Cheat Sheet</h2>
+<div class="callout life"><strong>Picture:</strong> The numbers you need for exams and interviews.</div><table><tr><th>Topic</th><th>Formula</th></tr><tr><td>CPU time</td><td>IC × CPI × clock period = IC × CPI ÷ f</td></tr><tr><td>Average CPI</td><td>Σ (fraction<sub>i</sub> × CPI<sub>i</sub>)</td></tr><tr><td>MIPS</td><td>f ÷ (CPI × 10<sup>6</sup>)</td></tr><tr><td>Pipeline time (k stages, n instructions)</td><td>(k + n − 1) cycles</td></tr><tr><td>Pipeline speedup</td><td>n·k ÷ (k + n − 1) → k</td></tr><tr><td>CPI with stalls</td><td>1 + stall cycles per instruction</td></tr><tr><td>AMAT</td><td>hit time + miss rate × miss penalty</td></tr><tr><td>Cache lines / sets</td><td>lines = size ÷ block; sets = lines ÷ ways</td></tr><tr><td>Address bits</td><td>offset = log<sub>2</sub>(block); index = log<sub>2</sub>(sets); tag = rest</td></tr><tr><td>Amdahl</td><td>1 ÷ ((1 − p) + p ÷ n)</td></tr><tr><td>Dynamic power</td><td>≈ C × V² × f</td></tr><tr><td>Two's complement range</td><td>−2<sup>n−1</sup> … 2<sup>n−1</sup> − 1</td></tr><tr><td>Float32 value</td><td>(−1)<sup>s</sup> × 1.f × 2<sup>e − 127</sup></td></tr><tr><td>Bandwidth</td><td>bus width (bytes) × transfers per second</td></tr><tr><td>Hamming check bits</td><td>2<sup>r</sup> ≥ m + r + 1</td></tr></table>
+    </section>
+
+    <!-- 45 -->
+    <section class="block" id="interview-coa">
+      <h2><span class="num">45</span> Interview Questions (With Answers)</h2>
+<div class="callout life"><strong>Picture:</strong> Grouped by theme, easiest first. Click to reveal.</div><h3>A. Basics</h3>
+<details class="quiz-item"><summary>Q1: Computer architecture vs organization?</summary><p class="answer">Architecture: what the programmer sees (ISA, registers, addressing). Organization: how hardware implements it (pipelines, caches, buses).</p></details>
+<details class="quiz-item"><summary>Q2: What is the von Neumann bottleneck?</summary><p class="answer">The single CPU–memory path limits throughput because the CPU waits for memory; caches and parallel paths reduce it.</p></details>
+<details class="quiz-item"><summary>Q3: Why two's complement?</summary><p class="answer">One zero, and the same adder handles addition and subtraction.</p></details>
+<details class="quiz-item"><summary>Q4: Why is 0.1 + 0.2 not 0.3 in floating point?</summary><p class="answer">0.1 and 0.2 have no exact binary representation; the rounded values add to 0.30000000000000004.</p></details>
+<h3>B. Logic and arithmetic</h3>
+<details class="quiz-item"><summary>Q5: Which gates are universal?</summary><p class="answer">NAND and NOR.</p></details>
+<details class="quiz-item"><summary>Q6: Combinational vs sequential?</summary><p class="answer">Combinational output depends only on current inputs; sequential also on stored state (flip-flops, clock).</p></details>
+<details class="quiz-item"><summary>Q7: Why is a ripple-carry adder slow?</summary><p class="answer">Each bit waits for the previous carry; carry-lookahead computes carries in parallel.</p></details>
+<details class="quiz-item"><summary>Q8: What does Booth's algorithm improve?</summary><p class="answer">Handles signed multiplication directly and reduces additions for runs of 1s.</p></details>
+<details class="quiz-item"><summary>Q9: How does Hamming code correct an error?</summary><p class="answer">Parity bits cover overlapping positions; the syndrome gives the position of the flipped bit.</p></details>
+<h3>C. CPU and ISA</h3>
+<details class="quiz-item"><summary>Q10: CISC vs RISC?</summary><p class="answer">CISC: many complex, variable-length instructions with memory operands. RISC: simple fixed-length instructions, load/store, many registers, pipeline-friendly.</p></details>
+<details class="quiz-item"><summary>Q11: Explain the instruction cycle.</summary><p class="answer">Fetch (IR ← M[PC], PC advances), decode, execute, memory access, write back, check interrupts.</p></details>
+<details class="quiz-item"><summary>Q12: Name five addressing modes.</summary><p class="answer">Immediate, register, direct, register indirect, base+displacement (also indexed, PC-relative).</p></details>
+<details class="quiz-item"><summary>Q13: Hardwired vs microprogrammed control?</summary><p class="answer">Hardwired: logic circuits, fast, fixed. Microprogrammed: microcode sequences, flexible, updatable.</p></details>
+<h3>D. Pipelining</h3>
+<details class="quiz-item"><summary>Q14: What are pipeline hazards?</summary><p class="answer">Structural (resource conflict), data (dependence), control (branches).</p></details>
+<details class="quiz-item"><summary>Q15: What is forwarding?</summary><p class="answer">Sending a result directly from a later stage to an earlier one so the dependent instruction need not wait for write-back.</p></details>
+<details class="quiz-item"><summary>Q16: Why does a load-use hazard still stall with forwarding?</summary><p class="answer">The loaded value is available only after the MEM stage, one cycle too late for the next instruction's EX.</p></details>
+<details class="quiz-item"><summary>Q17: Why is a 2-bit predictor better than 1-bit for loops?</summary><p class="answer">One unusual outcome (loop exit) does not flip the prediction, so the next loop entry is predicted correctly (90% vs 81% in our demo).</p></details>
+<details class="quiz-item"><summary>Q18: What is out-of-order execution?</summary><p class="answer">Executing instructions when their operands are ready, not strictly in program order, then committing results in order.</p></details>
+<h3>E. Memory</h3>
+<details class="quiz-item"><summary>Q19: Why do caches work?</summary><p class="answer">Programs show temporal and spatial locality.</p></details>
+<details class="quiz-item"><summary>Q20: Direct-mapped vs set-associative vs fully associative?</summary><p class="answer">One possible line vs one of k lines in a set vs any line; more associativity = fewer conflict misses, more compare hardware.</p></details>
+<details class="quiz-item"><summary>Q21: Compute tag/index/offset for a 32 KiB, 8-way cache with 64 B lines and 32-bit addresses.</summary><p class="answer">512 lines, 64 sets: offset 6, index 6, tag 20 bits.</p></details>
+<details class="quiz-item"><summary>Q22: What is AMAT?</summary><p class="answer">Average memory access time = hit time + miss rate × miss penalty.</p></details>
+<details class="quiz-item"><summary>Q23: Write-through vs write-back?</summary><p class="answer">Write-through updates memory on every write; write-back only on eviction of a dirty line.</p></details>
+<details class="quiz-item"><summary>Q24: What is false sharing?</summary><p class="answer">Threads writing different variables in the same cache line cause coherence traffic (about 5× slowdown in our run).</p></details>
+<details class="quiz-item"><summary>Q25: SRAM vs DRAM?</summary><p class="answer">SRAM: 6-transistor cells, fast, no refresh, used for caches. DRAM: capacitor cells, dense, needs refresh, main memory.</p></details>
+<h3>F. I/O and parallelism</h3>
+<details class="quiz-item"><summary>Q26: What is DMA?</summary><p class="answer">A controller transfers data between device and memory without the CPU copying each word.</p></details>
+<details class="quiz-item"><summary>Q27: State Amdahl's law.</summary><p class="answer">Speedup = 1 / ((1 − p) + p/n); the serial part limits speedup (90% parallel → max 10×).</p></details>
+<details class="quiz-item"><summary>Q28: SIMD vs MIMD?</summary><p class="answer">One instruction on many data elements vs independent instruction streams on independent data.</p></details>
+<details class="quiz-item"><summary>Q29: CPU vs GPU?</summary><p class="answer">Few complex low-latency cores vs thousands of simple throughput-oriented cores with high-bandwidth memory.</p></details>
+<details class="quiz-item"><summary>Q30: Why did clock speeds stop rising around 2005?</summary><p class="answer">Power and heat: Dennard scaling ended, so designers turned to multiple cores and specialisation.</p></details>
+    </section>
+
+    <!-- 46 -->
+    <section class="block" id="glossary-coa">
+      <h2><span class="num">46</span> Mini Glossary</h2>
+<div class="callout life"><strong>Picture:</strong> A pocket dictionary.</div><dl class="glossary">
+<dt>ALU</dt><dd>Arithmetic logic unit: does integer maths and logic.</dd>
+<dt>AMAT</dt><dd>Average memory access time.</dd>
+<dt>Branch prediction</dt><dd>Guessing a branch's outcome to keep the pipeline full.</dd>
+<dt>Cache line</dt><dd>The unit of data moved between cache levels (commonly 64 bytes).</dd>
+<dt>CPI</dt><dd>Clock cycles per instruction.</dd>
+<dt>DMA</dt><dd>Direct memory access by a device.</dd>
+<dt>Endianness</dt><dd>Byte order of multi-byte values in memory.</dd>
+<dt>Flip-flop</dt><dd>A 1-bit memory element updated on a clock edge.</dd>
+<dt>Forwarding</dt><dd>Passing a result to a later instruction before write-back.</dd>
+<dt>Hazard</dt><dd>A condition that prevents the next instruction from proceeding.</dd>
+<dt>IEEE 754</dt><dd>The standard for floating-point formats and arithmetic.</dd>
+<dt>ISA</dt><dd>Instruction set architecture: the hardware/software contract.</dd>
+<dt>Locality</dt><dd>Tendency to reuse data (temporal) and use nearby data (spatial).</dd>
+<dt>MESI</dt><dd>A cache-coherence protocol (Modified, Exclusive, Shared, Invalid).</dd>
+<dt>Microcode</dt><dd>Low-level sequences that implement complex instructions.</dd>
+<dt>MMU / TLB</dt><dd>Address-translation hardware / its translation cache.</dd>
+<dt>Pipeline</dt><dd>Overlapping instruction stages like an assembly line.</dd>
+<dt>Program counter</dt><dd>Register holding the next instruction's address.</dd>
+<dt>RISC / CISC</dt><dd>Reduced / complex instruction set computer.</dd>
+<dt>SIMD</dt><dd>Single instruction, multiple data.</dd>
+<dt>Superscalar</dt><dd>Issuing more than one instruction per cycle.</dd>
+<dt>Two's complement</dt><dd>The standard signed-integer encoding.</dd>
+</dl>
+    </section>
+
+    <!-- 47 -->
+    <section class="block" id="faq-coa">
+      <h2><span class="num">47</span> FAQ</h2>
+<div class="callout life"><strong>Picture:</strong> Click a question to reveal the answer.</div><details class="quiz-item"><summary>Q: Do programmers really need COA?</summary><p class="answer">For everyday code, less; for fast code, systems work, embedded, compilers, GPUs and interviews, yes. The 19× row/column difference on this page is pure COA.</p></details>
+<details class="quiz-item"><summary>Q: Is x86 dying because of ARM and RISC-V?</summary><p class="answer">All three are actively used; ARM has grown in laptops and servers and RISC-V in embedded. Market facts change, so check current sources.</p></details>
+<details class="quiz-item"><summary>Q: Why did the branch test show no difference?</summary><p class="answer">g++ -O2 compiled the branch into branch-free code. Different compilers, flags or code shapes can show a large difference: always measure.</p></details>
+<details class="quiz-item"><summary>Q: Were the results really measured?</summary><p class="answer">Yes: the C++ programs were compiled with g++ 15.2 (-O2) and run on this machine; timings depend on the machine. Verilog and RISC-V assembly are templates.</p></details>
+<details class="quiz-item"><summary>Q: Which books are classic?</summary><p class="answer">Patterson and Hennessy 'Computer Organization and Design'; Hennessy and Patterson 'Computer Architecture: A Quantitative Approach'; Stallings; Hamacher; Morris Mano for digital logic.</p></details>
+    </section>
+
+    <!-- 48 -->
+    <section class="block" id="pitfalls-coa">
+      <h2><span class="num">48</span> Common Mistakes and Checklist</h2>
+<div class="callout life"><strong>Picture:</strong> Traps in exams and in real code.</div><div class="grid">
+<div class="card"><h4>➕ Carry vs overflow</h4><p>Carry is for unsigned, overflow for signed.</p></div>
+<div class="card"><h4>💰 Floats for money</h4><p>Use integers or decimal types.</p></div>
+<div class="card"><h4>🧮 Comparing floats with ==</h4><p>Use a tolerance.</p></div>
+<div class="card"><h4>📏 KB vs KiB</h4><p>1000 vs 1024; check which one a question uses.</p></div>
+<div class="card"><h4>🕐 Higher GHz = faster?</h4><p>Not without IC and CPI.</p></div>
+<div class="card"><h4>🧱 Column-order loops</h4><p>Traverse in storage order.</p></div>
+<div class="card"><h4>🧵 Hot counters side by side</h4><p>Pad to avoid false sharing.</p></div>
+<div class="card"><h4>📈 Expecting linear speedup</h4><p>Amdahl's law limits it.</p></div></div>
+    </section>
+
+    <!-- 49 -->
+    <section class="block" id="quiz-coa">
+      <h2><span class="num">49</span> Quick Quiz 🎯</h2>
+<div class="callout life"><strong>Picture:</strong> Click each question to reveal the answer.</div><details class="quiz-item"><summary>Q1: −5 in 8-bit two's complement?</summary><p class="answer">1111 1011.</p></details>
+<details class="quiz-item"><summary>Q2: How many exponent bits in an IEEE 754 single?</summary><p class="answer">8 (bias 127).</p></details>
+<details class="quiz-item"><summary>Q3: What does the forwarding demo's CPI drop from and to?</summary><p class="answer">From 2.20 to 1.20.</p></details>
+<details class="quiz-item"><summary>Q4: Roughly how much slower was RAM than L1 in our measurement?</summary><p class="answer">More than 100× (about 1.6 ns vs about 200 ns per dependent load).</p></details>
+<details class="quiz-item"><summary>Q5: Which cache design failed the ping-pong pattern?</summary><p class="answer">Direct-mapped (0% hits).</p></details>
+<details class="quiz-item"><summary>Q6: Max speedup with p = 95% and infinite cores?</summary><p class="answer">20×.</p></details>
+<details class="quiz-item"><summary>Q7: What instruction did g++ use to add two ints?</summary><p class="answer"><code>lea eax, [rcx+rdx]</code>.</p></details>
+    </section>
+
+    <!-- 50 -->
+    <section class="block" id="learning-path-coa">
+      <h2><span class="num">50</span> Learning Path</h2>
+<div class="callout life"><strong>Picture:</strong> A staircase from curious to confident.</div><table><tr><th>Step</th><th>Learn</th><th>Do</th></tr><tr><td>1</td><td>Parts A–B: data representation</td><td>Convert numbers by hand; decode IEEE 754 bit patterns</td></tr><tr><td>2</td><td>Parts C–D: logic and arithmetic</td><td>Build an adder in a logic simulator (Logisim-evolution) or Verilog</td></tr><tr><td>3</td><td>Part E: ISA and assembly</td><td>Read compiler output on godbolt.org; write a RISC-V loop</td></tr><tr><td>4</td><td>Part F: pipelining</td><td>Draw pipeline diagrams with hazards and forwarding</td></tr><tr><td>5</td><td>Part G: caches</td><td>Solve tag/index/offset and AMAT problems; run the memory-latency program on your own computer</td></tr><tr><td>6</td><td>Parts H–I: I/O and parallelism</td><td>Write a multithreaded program; measure false sharing; try a GPU tutorial</td></tr><tr><td>7</td><td>Go deeper</td><td>Nand2Tetris (build a computer from NAND gates), Patterson and Hennessy, CPU design on an FPGA</td></tr></table><h3>Good to know</h3><ul><li>Related: <a href="operating-systems.html">Operating Systems</a>, <a href="cpp.html">C++</a> (performance sections), <a href="computer-networks.html">Networks</a>, <a href="dbms.html">DBMS</a>.</li></ul>
+    </section>
+
+    <!-- 51 -->
+    <section class="block" id="resources-coa">
+      <h2><span class="num">51</span> Learn More — Resources</h2>
+<div class="callout life"><strong>Picture:</strong> A shelf of primary sources.</div><p>All links below returned HTTP 200 when checked on 18 November 2026. YouTube links are search queries.</p>
+<ul class="resources">
+<li><span class="tag docs">docs</span> <a href="https://riscv.org/">RISC-V International</a> · <a href="https://www.nand2tetris.org/">Nand2Tetris</a> · <a href="https://godbolt.org/">Compiler Explorer</a></li>
+<li><span class="tag article">article</span> <a href="https://en.wikipedia.org/wiki/IEEE_754">IEEE 754 overview</a> · <a href="https://en.wikipedia.org/wiki/MESI_protocol">MESI protocol</a> · <a href="https://en.wikipedia.org/wiki/Amdahl%27s_law">Amdahl's law</a></li>
+<li><span class="tag video">video</span> <a href="https://www.youtube.com/results?search_query=computer+organization+and+architecture+full+course">COA full course (search)</a> · <a href="https://www.youtube.com/results?search_query=cpu+pipelining+hazards+explained">Pipelining and hazards (search)</a> · <a href="https://www.youtube.com/results?search_query=cache+memory+mapping+explained">Cache mapping (search)</a></li>
+</ul>
+<p><strong>Measured on this machine (18 Nov 2026):</strong> g++ 15.2.0 (MSYS2 MinGW-w64), -O2, Windows 11, 16 logical CPUs. Timings are one run on one machine and will differ elsewhere.</p>
+    </section>
+  </main>
+</div>
+
+<div class="page-nav">
+  <a href="index.html">⬅ Back to Roadmap Home</a>
+  <a href="operating-systems.html">Related: Operating Systems ➜</a>
+</div>
+
+</body>
+</html>

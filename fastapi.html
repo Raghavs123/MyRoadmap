@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FastAPI — The Complete A-Z Guide</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+</head>
+<body>
+
+<header class="hero">
+  <div class="breadcrumb"><a href="index.html">🏠 Roadmap Home</a> / FastAPI</div>
+  <h1>⚡ FastAPI — Building Fast, Typed Web APIs in Python</h1>
+  <p class="subtitle">
+    The complete A-to-Z guide in very easy words: what an API is, HTTP and REST basics, then FastAPI from your first endpoint to production: path and query parameters, Pydantic models and validation, responses and status codes, automatic OpenAPI docs, CRUD, dependency injection, databases with SQLModel/SQLAlchemy, authentication with OAuth2 and JWT, middleware, CORS, errors, async vs sync (measured), background tasks, files, streaming, WebSockets, lifespan, settings, routers and project structure, testing with pytest, performance, security, Docker and deployment, LLM endpoints, projects and interview prep. Every FastAPI example was really run (FastAPI 0.164.0, Pydantic 2.14.3, Python 3.14) with TestClient or a real Uvicorn server.
+    Every picture has a daily-life story; outputs shown are from programs that were really run; anything not run is labelled.
+    <strong>Last reviewed: 19 November 2026</strong> (dated facts are marked and hedged).
+  </p>
+  <div class="badge-row">
+    <span class="badge beginner">Beginner friendly</span>
+    <span class="badge intermediate">Intermediate concepts</span>
+    <span class="badge advanced">Advanced / Interview</span>
+  </div>
+</header>
+
+<div class="layout">
+
+  <nav class="toc">
+    <h3>On this page (39 sections)</h3>
+    <ol>
+      <li class="toc-part">Part A — APIs, HTTP and Why FastAPI</li>
+      <li><a href="#what-is-api">What Is an API?</a></li>
+      <li><a href="#http-basics">HTTP in Five Minutes</a></li>
+      <li><a href="#rest-design">Designing a Good REST API</a></li>
+      <li><a href="#why-fastapi">Why FastAPI? (and the Alternatives)</a></li>
+      <li><a href="#how-fastapi-works">How FastAPI Works Inside</a></li>
+      <li><a href="#first-app">Your First FastAPI App</a></li>
+      <li class="toc-part">Part B — The Core: Parameters, Models, Validation</li>
+      <li><a href="#path-query">Path and Query Parameters (and Automatic Validation)</a></li>
+      <li><a href="#pydantic">Pydantic Models: Describing Your Data</a></li>
+      <li><a href="#body-response">Request Bodies and Response Models</a></li>
+      <li><a href="#openapi-docs">Automatic Documentation (OpenAPI, Swagger UI, ReDoc)</a></li>
+      <li><a href="#crud">A Complete CRUD API</a></li>
+      <li><a href="#dependencies">Dependency Injection: Depends()</a></li>
+      <li class="toc-part">Part C — Databases, Security and Configuration</li>
+      <li><a href="#databases">Databases with SQLModel / SQLAlchemy</a></li>
+      <li><a href="#auth-overview">Authentication and Authorization: The Big Picture</a></li>
+      <li><a href="#jwt-login">Login with OAuth2 Password Flow, Hashed Passwords and JWT</a></li>
+      <li><a href="#middleware-cors-errors">Middleware, CORS and Error Handling</a></li>
+      <li><a href="#settings">Settings and Secrets</a></li>
+      <li><a href="#api-security">API Security Checklist</a></li>
+      <li class="toc-part">Part D — Advanced FastAPI</li>
+      <li><a href="#async-vs-sync">async def vs def (Measured)</a></li>
+      <li><a href="#background-streaming">Background Tasks, Streaming and Server-Sent Events</a></li>
+      <li><a href="#files-forms-websockets">Forms, File Uploads and WebSockets</a></li>
+      <li><a href="#routers-lifespan">Bigger Apps: Routers, Lifespan and Project Structure</a></li>
+      <li><a href="#rate-limit-caching">Rate Limiting and HTTP Caching</a></li>
+      <li><a href="#llm-endpoints">Serving AI: LLM and ML Model Endpoints</a></li>
+      <li class="toc-part">Part E — Testing, Running and Deploying</li>
+      <li><a href="#testing">Testing FastAPI Apps with pytest</a></li>
+      <li><a href="#running-servers">Running the Server (Measured with Real Uvicorn)</a></li>
+      <li><a href="#performance">Performance Tips</a></li>
+      <li><a href="#docker-deploy">Docker and Deployment</a></li>
+      <li><a href="#ci-observability">CI/CD and Observability</a></li>
+      <li class="toc-part">Part F — Projects and Reference</li>
+      <li><a href="#project-todo">Project 1: A Todo API with Users, Database and Tests</a></li>
+      <li><a href="#project-ai">Project 2: An AI Chat Backend</a></li>
+      <li><a href="#fastapi-cheatsheet">FastAPI Cheat Sheet</a></li>
+      <li><a href="#interview-fastapi">Interview Questions (With Answers)</a></li>
+      <li><a href="#glossary-fastapi">Mini Glossary</a></li>
+      <li><a href="#faq-fastapi">FAQ</a></li>
+      <li><a href="#pitfalls-fastapi">Common Mistakes and Checklist</a></li>
+      <li><a href="#quiz-fastapi">Quick Quiz 🎯</a></li>
+      <li><a href="#learning-path-fastapi">Learning Path</a></li>
+      <li><a href="#resources-fastapi">Learn More — Resources</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <div class="part-divider"><h2>Part A — APIs, HTTP and Why FastAPI</h2></div>
+
+    <!-- 1 -->
+    <section class="block" id="what-is-api">
+      <h2><span class="num">1</span> What Is an API?</h2>
+<div class="callout life"><strong>Picture:</strong> A restaurant waiter. You (the app) never walk into the kitchen (the server's database and code). You tell the waiter what you want from the menu, the waiter brings it back. The <strong>menu</strong> is the API's documentation; the <strong>waiter</strong> is the API.</div><table><tr><th>Word</th><th>Meaning</th><th>Restaurant picture</th></tr><tr><td>API</td><td>Application Programming Interface: a fixed way for programs to ask another program for things</td><td>The waiter + the menu</td></tr><tr><td>Client</td><td>The program that asks (browser, phone app, another service)</td><td>The customer</td></tr><tr><td>Server</td><td>The program that answers</td><td>The kitchen</td></tr><tr><td>Endpoint</td><td>One address you can call, e.g. <code>GET /items/5</code></td><td>One dish on the menu</td></tr><tr><td>Request / response</td><td>The question and the answer</td><td>Your order / your plate</td></tr><tr><td>JSON</td><td>The usual text format for data: <code>{"name": "pen", "price": 10}</code></td><td>The language on the order slip</td></tr></table><h3>Good to know</h3><ul><li>A <strong>web API</strong> uses HTTP (the language of the web). The phone app, the website and partner companies can all use the same API.</li><li>FastAPI is a Python library for building web APIs quickly, with automatic checking of data and automatic documentation.</li><li>Related guides: <a href="python.html">Python</a>, <a href="computer-networks.html">Computer Networks</a> (HTTP, TCP, TLS), <a href="dbms.html">DBMS</a>, <a href="docker-kubernetes.html">Docker &amp; Kubernetes</a>, <a href="mlops-llmops.html">MLOps &amp; LLMOps</a> (serving models), <a href="system-design.html">System Design</a>.</li></ul><div class="callout tip">Honest note: every FastAPI program on this page was <strong>really run</strong> on 19 Nov 2026 with FastAPI 0.164.0, Pydantic 2.14.3, Starlette 1.10.0, Uvicorn 0.54.0, SQLModel 0.0.50 and Python 3.14.2 (in a separate virtual environment). Most use <code>TestClient</code>, which sends HTTP requests into the app in-process; one starts a real Uvicorn server on a TCP port. Docker, PostgreSQL, Redis, cloud and Claude API code are templates (not run).</div>
+    </section>
+
+    <!-- 2 -->
+    <section class="block" id="http-basics">
+      <h2><span class="num">2</span> HTTP in Five Minutes</h2>
+<div class="callout life"><strong>Picture:</strong> Sending a letter with a clear subject line. The <strong>method</strong> says what you want to do (read, create, change, delete), the <strong>path</strong> says which thing, the <strong>headers</strong> are notes on the envelope, and the <strong>body</strong> is the letter itself.</div><div class="diagram-wrap"><svg viewBox="0 0 760 192" style="width:100%;max-width:760px" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrSc1_arrow" markerWidth="10" markerHeight="10" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8" fill="none" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc1_tri" markerWidth="12" markerHeight="12" refX="11" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc1_dia" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--accent)" stroke="var(--accent)"/></marker><marker id="arrSc1_diah" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker></defs><rect class="box-hl" x="65" y="10" width="280" height="30" rx="6"/><text x="205" y="30" text-anchor="middle" font-size="12" font-weight="700">Client (app)</text><line x1="205" y1="40" x2="205" y2="182" stroke="var(--card-border)" stroke-width="2" stroke-dasharray="4 4"/><rect class="box-hl" x="415" y="10" width="280" height="30" rx="6"/><text x="555" y="30" text-anchor="middle" font-size="12" font-weight="700">FastAPI server</text><line x1="555" y1="40" x2="555" y2="182" stroke="var(--card-border)" stroke-width="2" stroke-dasharray="4 4"/><line x1="205" y1="72" x2="555" y2="72" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#arrSc1_arrow)"/><text x="380" y="67" text-anchor="middle" font-size="11" class="edge-label">POST /users  (headers: Content-Type: application/json; body: {"username": "asha"})</text><path d="M555,98 h30 v14 h-30" fill="none" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#arrSc1_arrow)"/><text x="591" y="108" font-size="11" class="edge-label">validate body, run your function</text><line x1="555" y1="140" x2="205" y2="140" stroke="var(--accent)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arrSc1_arrow)"/><text x="380" y="135" text-anchor="middle" font-size="11" class="edge-label">201 Created  (headers: Content-Type: application/json; body: {"id": 1, ...})</text></svg><div class="diagram-caption">Fig S1 — One HTTP request and response.</div></div><table><tr><th>Method</th><th>Means</th><th>Safe?</th><th>Idempotent?</th></tr><tr><td>GET</td><td>Read</td><td>Yes</td><td>Yes</td></tr><tr><td>POST</td><td>Create / do an action</td><td>No</td><td>No</td></tr><tr><td>PUT</td><td>Replace completely</td><td>No</td><td>Yes</td></tr><tr><td>PATCH</td><td>Change some fields</td><td>No</td><td>Not necessarily</td></tr><tr><td>DELETE</td><td>Remove</td><td>No</td><td>Yes</td></tr></table><table><tr><th>Status code</th><th>Meaning</th><th>Typical use in FastAPI</th></tr><tr><td>200 OK</td><td>Success</td><td>Normal response</td></tr><tr><td>201 Created</td><td>Something new was made</td><td>POST that creates</td></tr><tr><td>204 No Content</td><td>Success, nothing to return</td><td>DELETE</td></tr><tr><td>304 Not Modified</td><td>Your cached copy is fine</td><td>ETag caching</td></tr><tr><td>400 Bad Request</td><td>Request makes no sense</td><td>Business rule broken</td></tr><tr><td>401 Unauthorized</td><td>Who are you? (no/invalid login)</td><td>Missing or bad token</td></tr><tr><td>403 Forbidden</td><td>I know you, but no</td><td>Not allowed for this user</td></tr><tr><td>404 Not Found</td><td>No such thing</td><td>Unknown id</td></tr><tr><td>409 Conflict</td><td>Clashes with current state</td><td>Duplicate username, out of stock</td></tr><tr><td>422 Unprocessable Content</td><td>Data failed validation</td><td>FastAPI's automatic validation errors</td></tr><tr><td>429 Too Many Requests</td><td>Slow down</td><td>Rate limiting</td></tr><tr><td>500 Internal Server Error</td><td>Server bug</td><td>Unhandled exception</td></tr></table><h3>Good to know</h3><ul><li>Safe = does not change anything. Idempotent = doing it twice has the same effect as once (important for retries).</li><li>Low-level details (TCP, TLS, HTTP/2, HTTP/3) are in <a href="computer-networks.html#http">Computer Networks → HTTP</a>.</li></ul>
+    </section>
+
+    <!-- 3 -->
+    <section class="block" id="rest-design">
+      <h2><span class="num">3</span> Designing a Good REST API</h2>
+<div class="callout life"><strong>Picture:</strong> A well-organised library: books are on shelves by subject (resources), every shelf has a clear label (URL), and the librarian answers every question in the same polite format.</div><table><tr><th>Rule</th><th>Good</th><th>Avoid</th></tr><tr><td>Use nouns for resources</td><td><code>GET /orders/42</code></td><td><code>GET /getOrder?id=42</code></td></tr><tr><td>Plural collections</td><td><code>/users</code>, <code>/users/7</code></td><td><code>/user/all</code></td></tr><tr><td>Methods carry the verb</td><td><code>DELETE /users/7</code></td><td><code>POST /deleteUser</code></td></tr><tr><td>Nest only for ownership</td><td><code>/users/7/orders</code></td><td>Deep nesting like <code>/a/1/b/2/c/3/d</code></td></tr><tr><td>Correct status codes</td><td>201 after create, 404 for missing</td><td>200 with <code>{"error": ...}</code> inside</td></tr><tr><td>Filter, sort, page with query parameters</td><td><code>/orders?status=paid&limit=20&offset=40</code></td><td>Returning 1 million rows at once</td></tr><tr><td>Version the API</td><td><code>/api/v1/...</code> or a header</td><td>Breaking clients silently</td></tr><tr><td>Consistent error shape</td><td><code>{"detail": ...}</code> everywhere</td><td>A different format per endpoint</td></tr></table><h3>Good to know</h3><ul><li>REST is a style, not a strict standard. Other API styles: GraphQL (client chooses fields), gRPC (fast binary RPC between services), WebSockets (two-way live messages), webhooks (the server calls you).</li><li>Design for idempotent retries: clients and networks repeat requests; idempotency keys protect payments.</li></ul>
+    </section>
+
+    <!-- 4 -->
+    <section class="block" id="why-fastapi">
+      <h2><span class="num">4</span> Why FastAPI? (and the Alternatives)</h2>
+<div class="callout life"><strong>Picture:</strong> Three ways to build a house: a full kit with every room pre-designed (Django), a box of basic tools (Flask), or modern power tools that measure and check as you build (FastAPI).</div><table><tr><th>Framework</th><th>Style</th><th>Strengths</th><th>Trade-offs</th></tr><tr><td><strong>FastAPI</strong></td><td>ASGI, async-first, type hints</td><td>Automatic validation and OpenAPI docs, very little code, high performance, great editor support</td><td>You choose your own database, admin, auth pieces</td></tr><tr><td>Flask</td><td>WSGI, minimal</td><td>Simple, huge ecosystem, mature</td><td>Validation/docs need extensions; async is limited</td></tr><tr><td>Django (+ Django REST Framework / Django Ninja)</td><td>Batteries included</td><td>ORM, admin site, auth, migrations built in</td><td>Heavier; more conventions to learn</td></tr><tr><td>Litestar, Starlette, Sanic, Quart</td><td>ASGI</td><td>Fast, modern</td><td>Smaller communities</td></tr><tr><td>Node (Express, NestJS), Go (Gin), Java (Spring Boot)</td><td>Other languages</td><td>Use if your team lives there</td><td>Not Python</td></tr></table><h3>Good to know</h3><ul><li>FastAPI was created by Sebastián Ramírez (first release 2018). It is one of the most-starred Python web frameworks on GitHub (as reported; star counts change).</li><li>Version note: FastAPI is still 0.x by number but widely used in production; the latest release seen on PyPI was <strong>0.164.0 (18 Nov 2026)</strong>, requiring Python ≥ 3.11 (checked on PyPI, 19 Nov 2026). Pin your version.</li><li>Spring Boot is covered in the <a href="java.html">Java guide</a> if you want to compare.</li></ul>
+    </section>
+
+    <!-- 5 -->
+    <section class="block" id="how-fastapi-works">
+      <h2><span class="num">5</span> How FastAPI Works Inside</h2>
+<div class="callout life"><strong>Picture:</strong> A relay team: Uvicorn catches the request from the network and hands it on; Starlette routes it to the right room; Pydantic checks the parcel; your function does the work; Pydantic packs the answer; Starlette and Uvicorn send it back.</div><div class="diagram-wrap"><svg viewBox="0 0 720 250" style="width:100%;max-width:720px" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrSc2_arrow" markerWidth="10" markerHeight="10" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8" fill="none" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc2_tri" markerWidth="12" markerHeight="12" refX="11" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc2_dia" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--accent)" stroke="var(--accent)"/></marker><marker id="arrSc2_diah" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker></defs><line x1="130" y1="95" x2="160" y2="95" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc2_arrow)"/><text class="edge-label" x="145" y="90" text-anchor="middle">HTTP</text><line x1="320" y1="95" x2="350" y2="95" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc2_arrow)"/><text class="edge-label" x="335" y="90" text-anchor="middle">ASGI call</text><line x1="510" y1="95" x2="540" y2="95" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc2_arrow)"/><line x1="620" y1="130" x2="620" y2="170" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc2_arrow)"/><line x1="555" y1="130" x2="482" y2="170" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc2_arrow)"/><text class="edge-label" x="519" y="145" text-anchor="middle">call with clean data</text><rect class="box" x="10" y="70" width="120" height="50" rx="9"/><text x="70" y="92" text-anchor="middle" font-size="12">Client</text><text x="70" y="106" text-anchor="middle" font-size="10" class="edge-label">browser, app, curl</text><rect class="box-hl" x="160" y="60" width="160" height="70" rx="9"/><text x="240" y="85" text-anchor="middle" font-size="12">Uvicorn</text><text x="240" y="99" text-anchor="middle" font-size="10" class="edge-label">ASGI server: sockets,</text><text x="240" y="113" text-anchor="middle" font-size="10" class="edge-label">HTTP parsing, event loop</text><rect class="box-hl" x="350" y="60" width="160" height="70" rx="9"/><text x="430" y="85" text-anchor="middle" font-size="12">Starlette</text><text x="430" y="99" text-anchor="middle" font-size="10" class="edge-label">routing, middleware,</text><text x="430" y="113" text-anchor="middle" font-size="10" class="edge-label">requests/responses</text><rect class="box-final" x="540" y="60" width="160" height="70" rx="9"/><text x="620" y="85" text-anchor="middle" font-size="12">FastAPI</text><text x="620" y="99" text-anchor="middle" font-size="10" class="edge-label">dependency injection,</text><text x="620" y="113" text-anchor="middle" font-size="10" class="edge-label">validation, OpenAPI</text><rect class="box-hl" x="540" y="170" width="160" height="56" rx="9"/><text x="620" y="188" text-anchor="middle" font-size="12">Pydantic</text><text x="620" y="202" text-anchor="middle" font-size="10" class="edge-label">parse + validate +</text><text x="620" y="216" text-anchor="middle" font-size="10" class="edge-label">serialise data</text><rect class="box" x="350" y="170" width="160" height="56" rx="9"/><text x="430" y="195" text-anchor="middle" font-size="12">Your function</text><text x="430" y="209" text-anchor="middle" font-size="10" class="edge-label">business logic</text></svg><div class="diagram-caption">Fig S2 — The layers under a FastAPI app.</div></div><table><tr><th>Term</th><th>Meaning</th></tr><tr><td>ASGI</td><td>Asynchronous Server Gateway Interface: the standard between async Python servers and frameworks (the modern successor of WSGI)</td></tr><tr><td>Uvicorn</td><td>A fast ASGI server (also Hypercorn, Granian)</td></tr><tr><td>Starlette</td><td>The lightweight ASGI toolkit FastAPI is built on (routing, middleware, WebSockets)</td></tr><tr><td>Pydantic</td><td>Data validation using Python type hints (core written in Rust since v2)</td></tr><tr><td>OpenAPI</td><td>A standard description of an HTTP API; powers the /docs page and client generators</td></tr></table><h3>Good to know</h3><ul><li>Because FastAPI reads your <strong>type hints</strong>, one line like <code>item_id: int</code> gives you conversion, validation, an error message and documentation.</li></ul>
+    </section>
+
+    <!-- 6 -->
+    <section class="block" id="first-app">
+      <h2><span class="num">6</span> Your First FastAPI App</h2>
+<div class="callout life"><strong>Picture:</strong> Opening a lemonade stand: one sign (<code>@app.get("/")</code>), one action (the function), and a customer who comes by (the request).</div><details class="deepdive" open><summary>Install and start the development server (template, not run)</summary><pre><code># Create an isolated environment and install FastAPI with the recommended extras (uvicorn, httpx, the &#x27;fastapi&#x27; CLI ...)
+python -m venv .venv
+.venv\Scripts\activate            # Windows      (Linux/macOS: source .venv/bin/activate)
+pip install &quot;fastapi[standard]&quot;
+# or with uv:  uv init shop &amp;&amp; cd shop &amp;&amp; uv add &quot;fastapi[standard]&quot;
+
+fastapi dev main.py               # development server with auto-reload  -&gt; http://127.0.0.1:8000/docs
+fastapi run main.py               # production-style server (no reload, listens on 0.0.0.0)
+uvicorn main:app --reload         # the same server called directly: &quot;module:variable&quot;</code></pre></details><details class="deepdive" open><summary>A two-endpoint app, called with TestClient (run for real)</summary><pre><code>from fastapi import FastAPI
+from fastapi.testclient import TestClient
+
+app = FastAPI(title=&quot;Hello API&quot;, version=&quot;1.0.0&quot;)
+
+@app.get(&quot;/&quot;)                       # when a GET request arrives for &quot;/&quot; ...
+def home():                         # ... FastAPI calls this function ...
+    return {&quot;message&quot;: &quot;Hello, world!&quot;}     # ... and turns the dict into JSON
+
+@app.get(&quot;/hello/{name}&quot;)
+def hello(name: str):
+    return {&quot;greeting&quot;: f&quot;Hello, {name}!&quot;}
+
+client = TestClient(app)            # a pretend browser that talks to the app directly
+r = client.get(&quot;/&quot;)
+print(r.status_code, r.headers[&quot;content-type&quot;], r.json())
+print(client.get(&quot;/hello/Asha&quot;).json())
+print(client.get(&quot;/nope&quot;).status_code, client.get(&quot;/nope&quot;).json())
+print(&quot;free documentation pages:&quot;, [p for p in (&quot;/docs&quot;, &quot;/redoc&quot;, &quot;/openapi.json&quot;) if client.get(p).status_code == 200])
+
+# ----- Output (real run) -----
+# 200 application/json {&#x27;message&#x27;: &#x27;Hello, world!&#x27;}
+# {&#x27;greeting&#x27;: &#x27;Hello, Asha!&#x27;}
+# 404 {&#x27;detail&#x27;: &#x27;Not Found&#x27;}
+# free documentation pages: [&#x27;/docs&#x27;, &#x27;/redoc&#x27;, &#x27;/openapi.json&#x27;]</code></pre><p>The dictionary became JSON automatically; an unknown path gives 404 with a standard error body; the interactive docs (/docs, Swagger UI), ReDoc and the raw OpenAPI file exist without writing anything.</p></details><h3>Good to know</h3><ul><li><code>@app.get("/hello/{name}")</code> is a <strong>decorator</strong>: it registers the function for that method and path.</li><li>Open <code>http://127.0.0.1:8000/docs</code> while <code>fastapi dev</code> runs to try every endpoint in the browser.</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part B — The Core: Parameters, Models, Validation</h2></div>
+
+    <!-- 7 -->
+    <section class="block" id="path-query">
+      <h2><span class="num">7</span> Path and Query Parameters (and Automatic Validation)</h2>
+<div class="callout life"><strong>Picture:</strong> An address and extra instructions on a parcel: <code>/items/5</code> says <em>which</em> item (path), <code>?limit=3&size=large</code> says <em>how</em> (query).</div><details class="deepdive" open><summary>Typed parameters, limits, enums, and the 422 errors FastAPI writes for you (run for real)</summary><pre><code>from enum import Enum
+from typing import Annotated
+from fastapi import FastAPI, Path, Query
+from fastapi.testclient import TestClient
+
+app = FastAPI()
+
+class Size(str, Enum):
+    small = &quot;small&quot;
+    large = &quot;large&quot;
+
+@app.get(&quot;/items/{item_id}&quot;)
+def read_item(item_id: Annotated[int, Path(ge=1, description=&quot;Item number, 1 or more&quot;)],     # PATH parameter: part of the URL
+              q: str | None = None,                                                          # QUERY parameter, optional
+              limit: Annotated[int, Query(ge=1, le=100)] = 10,                               # query with a default and limits
+              size: Size = Size.small):                                                      # only allowed values
+    return {&quot;item_id&quot;: item_id, &quot;q&quot;: q, &quot;limit&quot;: limit, &quot;size&quot;: size}
+
+c = TestClient(app)
+for url in [&quot;/items/5&quot;, &quot;/items/5?q=pen&amp;limit=3&amp;size=large&quot;, &quot;/items/abc&quot;, &quot;/items/0&quot;, &quot;/items/5?limit=500&quot;, &quot;/items/5?size=huge&quot;]:
+    r = c.get(url)
+    body = r.json()
+    if r.status_code == 422:                                             # FastAPI rejected the request BEFORE our function ran
+        body = [(e[&quot;loc&quot;], e[&quot;msg&quot;]) for e in body[&quot;detail&quot;]]
+    print(&quot;%-36s %d  %s&quot; % (url, r.status_code, body))
+
+# ----- Output (real run) -----
+# /items/5                             200  {&#x27;item_id&#x27;: 5, &#x27;q&#x27;: None, &#x27;limit&#x27;: 10, &#x27;size&#x27;: &#x27;small&#x27;}
+# /items/5?q=pen&amp;limit=3&amp;size=large    200  {&#x27;item_id&#x27;: 5, &#x27;q&#x27;: &#x27;pen&#x27;, &#x27;limit&#x27;: 3, &#x27;size&#x27;: &#x27;large&#x27;}
+# /items/abc                           422  [([&#x27;path&#x27;, &#x27;item_id&#x27;], &#x27;Input should be a valid integer, unable to parse string as an integer&#x27;)]
+# /items/0                             422  [([&#x27;path&#x27;, &#x27;item_id&#x27;], &#x27;Input should be greater than or equal to 1&#x27;)]
+# /items/5?limit=500                   422  [([&#x27;query&#x27;, &#x27;limit&#x27;], &#x27;Input should be less than or equal to 100&#x27;)]
+# /items/5?size=huge                   422  [([&#x27;query&#x27;, &#x27;size&#x27;], &quot;Input should be &#x27;small&#x27; or &#x27;large&#x27;&quot;)]</code></pre><p>'abc' is not an int, 0 is below the minimum 1, 500 is above the limit, 'huge' is not an allowed size: every bad request was rejected with status <strong>422</strong> and a precise location (<code>['path', 'item_id']</code>) <em>before</em> our function ran.</p></details><table><tr><th>Declare it as</th><th>FastAPI reads it from</th></tr><tr><td>A name in the path <code>{item_id}</code> + function argument</td><td>The URL path</td></tr><tr><td>A simple-type argument not in the path</td><td>The query string</td></tr><tr><td>A Pydantic model argument</td><td>The JSON body</td></tr><tr><td><code>Header()</code>, <code>Cookie()</code></td><td>Headers, cookies</td></tr><tr><td><code>Form()</code>, <code>File()</code>/<code>UploadFile</code></td><td>Form fields, uploaded files</td></tr><tr><td><code>Request</code></td><td>The raw request object</td></tr></table><h3>Good to know</h3><ul><li>Use <code>Annotated[int, Query(ge=1, le=100)]</code> (the recommended modern style) to add limits, descriptions, aliases and examples.</li><li>Optional parameters: give a default (<code>q: str | None = None</code>). Lists: <code>tags: Annotated[list[str], Query()] = []</code> reads <code>?tags=a&tags=b</code>.</li></ul>
+    </section>
+
+    <!-- 8 -->
+    <section class="block" id="pydantic">
+      <h2><span class="num">8</span> Pydantic Models: Describing Your Data</h2>
+<div class="callout life"><strong>Picture:</strong> A form at the post office with boxes marked 'name (at least 2 letters)', 'age (5 to 100)', 'email'. The clerk checks every box and corrects small slips like extra spaces.</div><details class="deepdive" open><summary>Validation, conversion and serialisation with Pydantic v2 (run for real)</summary><pre><code># Pydantic: describe the SHAPE of data with a class; Pydantic checks and converts incoming data.
+from datetime import date
+from pydantic import BaseModel, EmailStr, Field, ValidationError, field_validator
+
+class Student(BaseModel):
+    name: str = Field(min_length=2, max_length=50)
+    email: EmailStr
+    age: int = Field(ge=5, le=100)
+    joined: date
+    hobbies: list[str] = []
+
+    @field_validator(&quot;name&quot;)
+    @classmethod
+    def tidy(cls, v: str) -&gt; str:
+        return v.strip().title()
+
+s = Student(name=&quot;  asha rao &quot;, email=&quot;asha@example.com&quot;, age=&quot;15&quot;, joined=&quot;2026-06-01&quot;)   # &quot;15&quot; (text) becomes 15 (int)
+print(s)
+print(&quot;model_dump():&quot;, s.model_dump())
+print(&quot;model_dump_json():&quot;, s.model_dump_json())
+try:
+    Student(name=&quot;A&quot;, email=&quot;not-an-email&quot;, age=300, joined=&quot;yesterday&quot;)
+except ValidationError as e:
+    print(&quot;\n%d problems found:&quot; % e.error_count())
+    for err in e.errors(): print(&quot;  &quot;, err[&quot;loc&quot;], &quot;-&gt;&quot;, err[&quot;msg&quot;])
+print(&quot;\nJSON Schema keys:&quot;, list(Student.model_json_schema()[&quot;properties&quot;]))
+
+# ----- Output (real run) -----
+# name=&#x27;Asha Rao&#x27; email=&#x27;asha@example.com&#x27; age=15 joined=datetime.date(2026, 6, 1) hobbies=[]
+# model_dump(): {&#x27;name&#x27;: &#x27;Asha Rao&#x27;, &#x27;email&#x27;: &#x27;asha@example.com&#x27;, &#x27;age&#x27;: 15, &#x27;joined&#x27;: datetime.date(2026, 6, 1), &#x27;hobbies&#x27;: []}
+# model_dump_json(): {&quot;name&quot;:&quot;Asha Rao&quot;,&quot;email&quot;:&quot;asha@example.com&quot;,&quot;age&quot;:15,&quot;joined&quot;:&quot;2026-06-01&quot;,&quot;hobbies&quot;:[]}
+#
+# 4 problems found:
+#    (&#x27;name&#x27;,) -&gt; String should have at least 2 characters
+#    (&#x27;email&#x27;,) -&gt; value is not a valid email address: An email address must have an @-sign.
+#    (&#x27;age&#x27;,) -&gt; Input should be less than or equal to 100
+#    (&#x27;joined&#x27;,) -&gt; Input should be a valid date or datetime, input is too short
+#
+# JSON Schema keys: [&#x27;name&#x27;, &#x27;email&#x27;, &#x27;age&#x27;, &#x27;joined&#x27;, &#x27;hobbies&#x27;]</code></pre><p>The text '15' was converted to the number 15, the name was tidied by a validator, and bad data produced <strong>four separate</strong> error messages at once. <code>model_dump()</code> gives a dict, <code>model_dump_json()</code> JSON text.</p></details><table><tr><th>Pydantic v2 method</th><th>Does</th></tr><tr><td><code>Model(**data)</code> / <code>Model.model_validate(data)</code></td><td>Validate a dict (or object)</td></tr><tr><td><code>Model.model_validate_json(text)</code></td><td>Validate JSON text directly (fast)</td></tr><tr><td><code>m.model_dump(exclude_unset=True)</code></td><td>To dict, only fields the client sent (PATCH)</td></tr><tr><td><code>m.model_copy(update=...)</code></td><td>Copy with changes</td></tr><tr><td><code>Model.model_json_schema()</code></td><td>JSON Schema (used for OpenAPI)</td></tr><tr><td><code>@field_validator</code>, <code>@model_validator</code></td><td>Custom checks</td></tr><tr><td><code>Field(min_length=..., ge=..., pattern=...)</code></td><td>Built-in constraints</td></tr></table><h3>Good to know</h3><ul><li>Pydantic v1 code (<code>.dict()</code>, <code>@validator</code>, <code>class Config</code>) still appears in old tutorials; v2 names are <code>model_dump</code>, <code>field_validator</code>, <code>model_config</code>.</li><li>Special types: <code>EmailStr</code> (needs email-validator), <code>HttpUrl</code>, <code>SecretStr</code>, <code>UUID</code>, <code>datetime</code>, <code>Decimal</code>.</li></ul>
+    </section>
+
+    <!-- 9 -->
+    <section class="block" id="body-response">
+      <h2><span class="num">9</span> Request Bodies and Response Models</h2>
+<div class="callout life"><strong>Picture:</strong> Two different forms: the <em>application form</em> you fill in (with your password), and the <em>membership card</em> you get back (no password printed on it).</div><details class="deepdive" open><summary>Separate input and output models; response_model hides the password (run for real)</summary><pre><code>from fastapi import FastAPI, status
+from fastapi.testclient import TestClient
+from pydantic import BaseModel, Field
+
+app = FastAPI()
+
+class UserIn(BaseModel):              # what the client SENDS
+    username: str = Field(min_length=3)
+    password: str = Field(min_length=8)
+    full_name: str | None = None
+
+class UserOut(BaseModel):             # what we SEND BACK (no password!)
+    id: int
+    username: str
+    full_name: str | None = None
+
+db: list[dict] = []
+
+@app.post(&quot;/users&quot;, response_model=UserOut, status_code=status.HTTP_201_CREATED)
+def create_user(user: UserIn):        # a Pydantic parameter = read the JSON request BODY
+    record = {&quot;id&quot;: len(db) + 1, **user.model_dump()}
+    db.append(record)
+    return record                     # contains the password, but response_model filters it out
+
+c = TestClient(app)
+r = c.post(&quot;/users&quot;, json={&quot;username&quot;: &quot;asha&quot;, &quot;password&quot;: &quot;s3cret-pass&quot;, &quot;full_name&quot;: &quot;Asha Rao&quot;})
+print(r.status_code, r.json())
+r = c.post(&quot;/users&quot;, json={&quot;username&quot;: &quot;ab&quot;, &quot;password&quot;: &quot;short&quot;})
+print(r.status_code, [(e[&quot;loc&quot;], e[&quot;msg&quot;]) for e in r.json()[&quot;detail&quot;]])
+r = c.post(&quot;/users&quot;, content=&quot;not json&quot;, headers={&quot;content-type&quot;: &quot;application/json&quot;})
+print(r.status_code, r.json()[&quot;detail&quot;][0][&quot;type&quot;])
+print(&quot;stored internally:&quot;, db[0])
+
+# ----- Output (real run) -----
+# 201 {&#x27;id&#x27;: 1, &#x27;username&#x27;: &#x27;asha&#x27;, &#x27;full_name&#x27;: &#x27;Asha Rao&#x27;}
+# 422 [([&#x27;body&#x27;, &#x27;username&#x27;], &#x27;String should have at least 3 characters&#x27;), ([&#x27;body&#x27;, &#x27;password&#x27;], &#x27;String should have at least 8 characters&#x27;)]
+# 422 json_invalid
+# stored internally: {&#x27;id&#x27;: 1, &#x27;username&#x27;: &#x27;asha&#x27;, &#x27;password&#x27;: &#x27;s3cret-pass&#x27;, &#x27;full_name&#x27;: &#x27;Asha Rao&#x27;}</code></pre><p>The stored record contains the password, but the response contains only the <code>UserOut</code> fields. Too-short fields and broken JSON both give 422 with clear reasons.</p></details><h3>Good to know</h3><ul><li>Pattern: <code>XCreate</code> (input), <code>XUpdate</code> (all fields optional, for PATCH), <code>XPublic</code> (output), plus the table model.</li><li>You can also annotate the return type (<code>def f() -&gt; UserOut</code>); FastAPI then validates and filters the output the same way.</li><li>Never return database objects directly if they contain secrets; always use an output model.</li></ul>
+    </section>
+
+    <!-- 10 -->
+    <section class="block" id="openapi-docs">
+      <h2><span class="num">10</span> Automatic Documentation (OpenAPI, Swagger UI, ReDoc)</h2>
+<div class="callout life"><strong>Picture:</strong> A menu that writes itself from the kitchen's recipes, so it is never out of date.</div><details class="deepdive" open><summary>The OpenAPI document FastAPI generated (run for real)</summary><pre><code># FastAPI writes an OpenAPI (Swagger) description of your API automatically, from your type hints.
+from fastapi import FastAPI
+from fastapi.testclient import TestClient
+from pydantic import BaseModel
+
+app = FastAPI(title=&quot;Shop API&quot;, version=&quot;2.1.0&quot;, description=&quot;Sells pens.&quot;)
+
+class Item(BaseModel):
+    name: str
+    price: float
+
+@app.get(&quot;/items/{item_id}&quot;, tags=[&quot;items&quot;], summary=&quot;Get one item&quot;)
+def get_item(item_id: int) -&gt; Item:
+    return Item(name=&quot;pen&quot;, price=10)
+
+@app.post(&quot;/items&quot;, tags=[&quot;items&quot;], status_code=201)
+def add_item(item: Item) -&gt; Item:
+    return item
+
+spec = TestClient(app).get(&quot;/openapi.json&quot;).json()
+print(&quot;openapi version:&quot;, spec[&quot;openapi&quot;], &quot;| title:&quot;, spec[&quot;info&quot;][&quot;title&quot;], spec[&quot;info&quot;][&quot;version&quot;])
+for path, ops in spec[&quot;paths&quot;].items():
+    for method, op in ops.items():
+        print(&quot;  %-6s %-18s %-14s responses %s&quot; % (method.upper(), path, op.get(&quot;summary&quot;, &quot;&quot;), sorted(op[&quot;responses&quot;])))
+print(&quot;schemas:&quot;, sorted(spec[&quot;components&quot;][&quot;schemas&quot;]))
+print(&quot;Item schema:&quot;, spec[&quot;components&quot;][&quot;schemas&quot;][&quot;Item&quot;][&quot;properties&quot;])
+
+# ----- Output (real run) -----
+# openapi version: 3.1.0 | title: Shop API 2.1.0
+#   GET    /items/{item_id}   Get one item   responses [&#x27;200&#x27;, &#x27;422&#x27;]
+#   POST   /items             Add Item       responses [&#x27;201&#x27;, &#x27;422&#x27;]
+# schemas: [&#x27;HTTPValidationError&#x27;, &#x27;Item&#x27;, &#x27;ValidationError&#x27;]
+# Item schema: {&#x27;name&#x27;: {&#x27;type&#x27;: &#x27;string&#x27;, &#x27;title&#x27;: &#x27;Name&#x27;}, &#x27;price&#x27;: {&#x27;type&#x27;: &#x27;number&#x27;, &#x27;title&#x27;: &#x27;Price&#x27;}}</code></pre><p>FastAPI produced an OpenAPI 3.1 document listing every path, method, status code and schema, including the standard 422 validation-error schema.</p></details><h3>Good to know</h3><ul><li>Add <code>tags</code>, <code>summary</code>, <code>description</code> and examples to make /docs friendly.</li><li>Generate typed client code for TypeScript, Java, etc. from <code>/openapi.json</code> (OpenAPI Generator, openapi-typescript).</li><li>In production you may hide docs: <code>FastAPI(docs_url=None, redoc_url=None)</code> or protect them.</li></ul>
+    </section>
+
+    <!-- 11 -->
+    <section class="block" id="crud">
+      <h2><span class="num">11</span> A Complete CRUD API</h2>
+<div class="callout life"><strong>Picture:</strong> A notebook with four actions: write a new page (Create), read pages (Read), rewrite or correct a page (Update), tear out a page (Delete).</div><details class="deepdive" open><summary>Create, list, filter, PATCH, PUT, DELETE, and 404 (run for real)</summary><pre><code># A complete CRUD API (Create, Read, Update, Delete) kept in memory, with 404s and partial updates.
+from fastapi import FastAPI, HTTPException, status
+from fastapi.testclient import TestClient
+from pydantic import BaseModel
+
+app = FastAPI()
+
+class TodoIn(BaseModel):
+    title: str
+    done: bool = False
+
+class TodoPatch(BaseModel):
+    title: str | None = None
+    done: bool | None = None
+
+class Todo(TodoIn):
+    id: int
+
+todos: dict[int, Todo] = {}
+next_id = 1
+
+@app.post(&quot;/todos&quot;, status_code=status.HTTP_201_CREATED)
+def create(t: TodoIn) -&gt; Todo:
+    global next_id
+    todo = Todo(id=next_id, **t.model_dump()); todos[next_id] = todo; next_id += 1
+    return todo
+
+@app.get(&quot;/todos&quot;)
+def list_todos(done: bool | None = None) -&gt; list[Todo]:
+    return [t for t in todos.values() if done is None or t.done == done]
+
+def get_or_404(todo_id: int) -&gt; Todo:
+    if todo_id not in todos:
+        raise HTTPException(status_code=404, detail=f&quot;Todo {todo_id} not found&quot;)
+    return todos[todo_id]
+
+@app.get(&quot;/todos/{todo_id}&quot;)
+def read(todo_id: int) -&gt; Todo:
+    return get_or_404(todo_id)
+
+@app.put(&quot;/todos/{todo_id}&quot;)
+def replace(todo_id: int, t: TodoIn) -&gt; Todo:
+    get_or_404(todo_id); todos[todo_id] = Todo(id=todo_id, **t.model_dump()); return todos[todo_id]
+
+@app.patch(&quot;/todos/{todo_id}&quot;)
+def update(todo_id: int, p: TodoPatch) -&gt; Todo:
+    old = get_or_404(todo_id)
+    todos[todo_id] = old.model_copy(update=p.model_dump(exclude_unset=True))   # only the fields the client actually sent
+    return todos[todo_id]
+
+@app.delete(&quot;/todos/{todo_id}&quot;, status_code=status.HTTP_204_NO_CONTENT)
+def delete(todo_id: int):
+    get_or_404(todo_id); del todos[todo_id]
+
+c = TestClient(app)
+def show(r): print(&quot;%-6s %-14s -&gt; %d %s&quot; % (r.request.method, r.request.url.path, r.status_code, r.text or &quot;(empty)&quot;))
+show(c.post(&quot;/todos&quot;, json={&quot;title&quot;: &quot;learn FastAPI&quot;})); show(c.post(&quot;/todos&quot;, json={&quot;title&quot;: &quot;drink water&quot;, &quot;done&quot;: True}))
+show(c.get(&quot;/todos&quot;)); show(c.get(&quot;/todos?done=true&quot;))
+show(c.patch(&quot;/todos/1&quot;, json={&quot;done&quot;: True})); show(c.put(&quot;/todos/2&quot;, json={&quot;title&quot;: &quot;drink more water&quot;}))
+show(c.delete(&quot;/todos/2&quot;)); show(c.get(&quot;/todos/2&quot;)); show(c.get(&quot;/todos&quot;))
+
+# ----- Output (real run) -----
+# POST   /todos         -&gt; 201 {&quot;title&quot;:&quot;learn FastAPI&quot;,&quot;done&quot;:false,&quot;id&quot;:1}
+# POST   /todos         -&gt; 201 {&quot;title&quot;:&quot;drink water&quot;,&quot;done&quot;:true,&quot;id&quot;:2}
+# GET    /todos         -&gt; 200 [{&quot;title&quot;:&quot;learn FastAPI&quot;,&quot;done&quot;:false,&quot;id&quot;:1},{&quot;title&quot;:&quot;drink water&quot;,&quot;done&quot;:true,&quot;id&quot;:2}]
+# GET    /todos         -&gt; 200 [{&quot;title&quot;:&quot;drink water&quot;,&quot;done&quot;:true,&quot;id&quot;:2}]
+# PATCH  /todos/1       -&gt; 200 {&quot;title&quot;:&quot;learn FastAPI&quot;,&quot;done&quot;:true,&quot;id&quot;:1}
+# PUT    /todos/2       -&gt; 200 {&quot;title&quot;:&quot;drink more water&quot;,&quot;done&quot;:false,&quot;id&quot;:2}
+# DELETE /todos/2       -&gt; 204 (empty)
+# GET    /todos/2       -&gt; 404 {&quot;detail&quot;:&quot;Todo 2 not found&quot;}
+# GET    /todos         -&gt; 200 [{&quot;title&quot;:&quot;learn FastAPI&quot;,&quot;done&quot;:true,&quot;id&quot;:1}]</code></pre><p>PATCH changed only <code>done</code> because <code>model_dump(exclude_unset=True)</code> keeps just the fields the client sent; PUT replaced the whole item (its <code>done</code> went back to the default false). DELETE answered 204 with an empty body, and reading the deleted item gave 404 from <code>HTTPException</code>.</p></details><h3>Good to know</h3><ul><li><code>raise HTTPException(status_code=404, detail=...)</code> stops the request and returns that error.</li><li>This version keeps data in a dict (lost on restart); Part C uses a real database.</li></ul>
+    </section>
+
+    <!-- 12 -->
+    <section class="block" id="dependencies">
+      <h2><span class="num">12</span> Dependency Injection: Depends()</h2>
+<div class="callout life"><strong>Picture:</strong> A hotel concierge. Your room service order says 'I need a clean towel and a key card'; the concierge fetches them before you need them and tidies up after you leave. You never write the fetching code in every room.</div><div class="diagram-wrap"><svg viewBox="0 0 740 250" style="width:100%;max-width:740px" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrSc3_arrow" markerWidth="10" markerHeight="10" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8" fill="none" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc3_tri" markerWidth="12" markerHeight="12" refX="11" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc3_dia" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--accent)" stroke="var(--accent)"/></marker><marker id="arrSc3_diah" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker></defs><line x1="316" y1="40" x2="182" y2="90" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc3_arrow)"/><line x1="370" y1="40" x2="370" y2="90" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc3_arrow)"/><line x1="422" y1="40" x2="551" y2="90" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc3_arrow)"/><line x1="610" y1="180" x2="610" y2="136" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc3_arrow)"/><rect class="box-final" x="280" y="0" width="180" height="40" rx="9"/><text x="370" y="24" text-anchor="middle" font-size="12">GET /items endpoint</text><rect class="box-hl" x="40" y="90" width="160" height="46" rx="9"/><text x="120" y="110" text-anchor="middle" font-size="12">pagination()</text><text x="120" y="124" text-anchor="middle" font-size="10" class="edge-label">skip, limit</text><rect class="box-hl" x="280" y="90" width="180" height="46" rx="9"/><text x="370" y="110" text-anchor="middle" font-size="12">get_db()</text><text x="370" y="124" text-anchor="middle" font-size="10" class="edge-label">open ... yield ... close</text><rect class="box-hl" x="520" y="90" width="180" height="46" rx="9"/><text x="610" y="110" text-anchor="middle" font-size="12">current_user()</text><text x="610" y="124" text-anchor="middle" font-size="10" class="edge-label">reads X-Token header</text><rect class="box" x="520" y="180" width="180" height="46" rx="9"/><text x="610" y="200" text-anchor="middle" font-size="12">admin_only()</text><text x="610" y="214" text-anchor="middle" font-size="10" class="edge-label">depends on current_user</text></svg><div class="diagram-caption">Fig S3 — Dependencies form a graph; FastAPI resolves it for every request (and caches each dependency once per request).</div></div><details class="deepdive" open><summary>Shared parameters, a yield dependency, auth checks and overrides (run for real)</summary><pre><code># Dependency injection: FastAPI calls helper functions FOR you and hands their results to your endpoint.
+from typing import Annotated
+from fastapi import Depends, FastAPI, Header, HTTPException
+from fastapi.testclient import TestClient
+
+app = FastAPI()
+log = []
+
+def pagination(skip: int = 0, limit: int = 3):                    # a reusable set of query parameters
+    return {&quot;skip&quot;: skip, &quot;limit&quot;: limit}
+
+def get_db():                                                    # &#x27;yield&#x27; dependency: setup, hand over, then clean up
+    log.append(&quot;open db&quot;); db = {&quot;items&quot;: [f&quot;item{i}&quot; for i in range(10)]}
+    try:
+        yield db
+    finally:
+        log.append(&quot;close db&quot;)
+
+def current_user(x_token: Annotated[str | None, Header()] = None):   # reads the X-Token header
+    if x_token != &quot;secret&quot;:
+        raise HTTPException(status_code=401, detail=&quot;Bad or missing X-Token&quot;)
+    return {&quot;name&quot;: &quot;asha&quot;}
+
+def admin_only(user: Annotated[dict, Depends(current_user)]):    # a dependency that depends on another one
+    if user[&quot;name&quot;] != &quot;admin&quot;:
+        raise HTTPException(status_code=403, detail=&quot;Admins only&quot;)
+    return user
+
+Page = Annotated[dict, Depends(pagination)]
+
+@app.get(&quot;/items&quot;)
+def items(page: Page, db: Annotated[dict, Depends(get_db)], user: Annotated[dict, Depends(current_user)]):
+    log.append(&quot;endpoint runs&quot;)
+    return {&quot;user&quot;: user[&quot;name&quot;], &quot;items&quot;: db[&quot;items&quot;][page[&quot;skip&quot;]: page[&quot;skip&quot;] + page[&quot;limit&quot;]]}
+
+@app.get(&quot;/admin&quot;)
+def admin(user: Annotated[dict, Depends(admin_only)]):
+    return {&quot;ok&quot;: True}
+
+c = TestClient(app)
+r = c.get(&quot;/items?skip=2&quot;, headers={&quot;X-Token&quot;: &quot;secret&quot;}); print(r.status_code, r.json()); print(&quot;order of events:&quot;, log)
+print(c.get(&quot;/items&quot;).status_code, c.get(&quot;/items&quot;).json())
+print(c.get(&quot;/admin&quot;, headers={&quot;X-Token&quot;: &quot;secret&quot;}).status_code, c.get(&quot;/admin&quot;, headers={&quot;X-Token&quot;: &quot;secret&quot;}).json())
+app.dependency_overrides[current_user] = lambda: {&quot;name&quot;: &quot;admin&quot;}        # swap a dependency, e.g. in tests
+print(&quot;with override:&quot;, c.get(&quot;/admin&quot;).json())
+
+# ----- Output (real run) -----
+# 200 {&#x27;user&#x27;: &#x27;asha&#x27;, &#x27;items&#x27;: [&#x27;item2&#x27;, &#x27;item3&#x27;, &#x27;item4&#x27;]}
+# order of events: [&#x27;open db&#x27;, &#x27;endpoint runs&#x27;, &#x27;close db&#x27;]
+# 401 {&#x27;detail&#x27;: &#x27;Bad or missing X-Token&#x27;}
+# 403 {&#x27;detail&#x27;: &#x27;Admins only&#x27;}
+# with override: {&#x27;ok&#x27;: True}</code></pre><p>The order of events shows <code>get_db</code> opening before the endpoint and closing after it. A missing token gives 401, a non-admin 403. <code>app.dependency_overrides</code> swapped the user, which is how tests replace databases and logins.</p></details><h3>Good to know</h3><ul><li>Use dependencies for: database sessions, current user, permissions, pagination, settings, rate limits, feature flags.</li><li><code>Annotated[dict, Depends(f)]</code> can be stored in a type alias and reused everywhere.</li><li>Dependencies can be async or sync, and can be attached to a whole router: <code>APIRouter(dependencies=[Depends(auth)])</code>.</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part C — Databases, Security and Configuration</h2></div>
+
+    <!-- 13 -->
+    <section class="block" id="databases">
+      <h2><span class="num">13</span> Databases with SQLModel / SQLAlchemy</h2>
+<div class="callout life"><strong>Picture:</strong> A filing cabinet behind the waiter. Each request borrows the cabinet key (a session), files or fetches papers, and returns the key.</div><details class="deepdive" open><summary>A real SQLite database: create, filter, paginate, 404 (run for real)</summary><pre><code># A real database: SQLite through SQLModel (SQLAlchemy + Pydantic), one session per request via a dependency.
+from typing import Annotated
+from fastapi import Depends, FastAPI, HTTPException, Query
+from fastapi.testclient import TestClient
+from sqlalchemy.pool import StaticPool
+from sqlmodel import Field, Session, SQLModel, create_engine, select
+
+class HeroBase(SQLModel):
+    name: str = Field(index=True)
+    age: int | None = Field(default=None, ge=0)
+
+class Hero(HeroBase, table=True):            # table=True -&gt; this class is also a database table
+    id: int | None = Field(default=None, primary_key=True)
+    secret_name: str
+
+class HeroCreate(HeroBase):
+    secret_name: str
+
+class HeroPublic(HeroBase):                   # never return secret_name
+    id: int
+
+engine = create_engine(&quot;sqlite://&quot;, connect_args={&quot;check_same_thread&quot;: False}, poolclass=StaticPool)   # in-memory DB shared by threads
+SQLModel.metadata.create_all(engine)
+
+def get_session():
+    with Session(engine) as session:
+        yield session
+SessionDep = Annotated[Session, Depends(get_session)]
+app = FastAPI()
+
+@app.post(&quot;/heroes&quot;, response_model=HeroPublic, status_code=201)
+def create_hero(hero: HeroCreate, session: SessionDep):
+    db_hero = Hero.model_validate(hero)
+    session.add(db_hero); session.commit(); session.refresh(db_hero)
+    return db_hero
+
+@app.get(&quot;/heroes&quot;, response_model=list[HeroPublic])
+def list_heroes(session: SessionDep, offset: int = 0, limit: Annotated[int, Query(le=100)] = 100, min_age: int | None = None):
+    stmt = select(Hero)
+    if min_age is not None: stmt = stmt.where(Hero.age &gt;= min_age)
+    return session.exec(stmt.offset(offset).limit(limit)).all()
+
+@app.get(&quot;/heroes/{hero_id}&quot;, response_model=HeroPublic)
+def get_hero(hero_id: int, session: SessionDep):
+    hero = session.get(Hero, hero_id)
+    if not hero: raise HTTPException(404, &quot;Hero not found&quot;)
+    return hero
+
+c = TestClient(app)
+for h in [{&quot;name&quot;: &quot;Shakti&quot;, &quot;age&quot;: 24, &quot;secret_name&quot;: &quot;Priya&quot;}, {&quot;name&quot;: &quot;Toofan&quot;, &quot;age&quot;: 17, &quot;secret_name&quot;: &quot;Rohan&quot;}, {&quot;name&quot;: &quot;Chhaya&quot;, &quot;secret_name&quot;: &quot;Meera&quot;}]:
+    print(c.post(&quot;/heroes&quot;, json=h).json())
+print(&quot;adults:&quot;, c.get(&quot;/heroes?min_age=18&quot;).json())
+print(&quot;page 2 of size 2:&quot;, c.get(&quot;/heroes?offset=2&amp;limit=2&quot;).json())
+print(&quot;missing:&quot;, c.get(&quot;/heroes/99&quot;).status_code, c.get(&quot;/heroes/99&quot;).json())
+print(&quot;rows really in SQLite:&quot;, Session(engine).exec(select(Hero.name, Hero.secret_name)).all())
+
+# ----- Output (real run) -----
+# {&#x27;name&#x27;: &#x27;Shakti&#x27;, &#x27;age&#x27;: 24, &#x27;id&#x27;: 1}
+# {&#x27;name&#x27;: &#x27;Toofan&#x27;, &#x27;age&#x27;: 17, &#x27;id&#x27;: 2}
+# {&#x27;name&#x27;: &#x27;Chhaya&#x27;, &#x27;age&#x27;: None, &#x27;id&#x27;: 3}
+# adults: [{&#x27;name&#x27;: &#x27;Shakti&#x27;, &#x27;age&#x27;: 24, &#x27;id&#x27;: 1}]
+# page 2 of size 2: [{&#x27;name&#x27;: &#x27;Chhaya&#x27;, &#x27;age&#x27;: None, &#x27;id&#x27;: 3}]
+# missing: 404 {&#x27;detail&#x27;: &#x27;Hero not found&#x27;}
+# rows really in SQLite: [(&#x27;Shakti&#x27;, &#x27;Priya&#x27;), (&#x27;Toofan&#x27;, &#x27;Rohan&#x27;), (&#x27;Chhaya&#x27;, &#x27;Meera&#x27;)]</code></pre><p>The heroes were really stored in SQLite (the last line reads the table directly), yet the API never revealed <code>secret_name</code> because responses use <code>HeroPublic</code>. One session per request comes from a <code>yield</code> dependency.</p></details><details class="deepdive" open><summary>Async SQLAlchemy 2.x with PostgreSQL (asyncpg) (template, not run)</summary><pre><code># Async database access with SQLAlchemy 2.x + asyncpg (template: needs PostgreSQL)
+from typing import Annotated
+from fastapi import Depends, FastAPI
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+
+engine = create_async_engine(&quot;postgresql+asyncpg://shop:pw@localhost/shop&quot;, pool_size=10, max_overflow=20)
+SessionLocal = async_sessionmaker(engine, expire_on_commit=False)
+
+async def get_session():
+    async with SessionLocal() as session:
+        yield session
+
+app = FastAPI()
+@app.get(&quot;/users/{user_id}&quot;)
+async def get_user(user_id: int, session: Annotated[AsyncSession, Depends(get_session)]):
+    result = await session.execute(select(User).where(User.id == user_id))      # &#x27;await&#x27; while the database works
+    return result.scalar_one_or_none()
+# Rule: in &#x27;async def&#x27; use async drivers (asyncpg, httpx.AsyncClient, redis.asyncio); in plain &#x27;def&#x27; use normal blocking libraries.</code></pre></details><details class="deepdive" open><summary>Schema migrations with Alembic (template, not run)</summary><pre><code>alembic init alembic                                   # once
+alembic revision --autogenerate -m &quot;add hero table&quot;     # compare models with the database, write a migration file
+alembic upgrade head                                    # apply all migrations
+alembic downgrade -1                                    # undo the last one
+# Never call metadata.create_all() in production; migrations are versioned, reviewed and reversible.</code></pre></details><h3>Good to know</h3><ul><li>SQLModel combines SQLAlchemy tables and Pydantic models in one class (by FastAPI's author). Plain SQLAlchemy 2.x + separate Pydantic schemas is equally common.</li><li>Use PostgreSQL in production; SQLite is perfect for learning and tests. Database theory (indexes, transactions, N+1) is in <a href="dbms.html">DBMS</a>.</li><li>Sync drivers in <code>def</code> endpoints, async drivers in <code>async def</code> endpoints (see the async section).</li></ul>
+    </section>
+
+    <!-- 14 -->
+    <section class="block" id="auth-overview">
+      <h2><span class="num">14</span> Authentication and Authorization: The Big Picture</h2>
+<div class="callout life"><strong>Picture:</strong> A concert: checking your ticket at the gate is <strong>authentication</strong> (who are you?); the wristband colour that lets you into the VIP area is <strong>authorization</strong> (what may you do?).</div><table><tr><th>Method</th><th>How it works</th><th>Good for</th></tr><tr><td>API key</td><td>A secret string in a header (<code>X-API-Key</code>)</td><td>Server-to-server, simple integrations</td></tr><tr><td>Session cookie</td><td>Server stores a session; browser sends an HttpOnly cookie</td><td>Classic websites (needs CSRF protection)</td></tr><tr><td>JWT bearer token</td><td>Signed token with claims (<code>sub</code>, <code>exp</code>) sent as <code>Authorization: Bearer ...</code></td><td>SPAs, mobile apps, microservices</td></tr><tr><td>OAuth2 / OpenID Connect</td><td>Log in with an identity provider (Google, Microsoft, Auth0, Keycloak); you receive tokens</td><td>Real products: SSO, social login, delegated access</td></tr><tr><td>mTLS</td><td>Both sides present certificates</td><td>Internal service meshes</td></tr></table><h3>Good to know</h3><ul><li>Authorization models: roles (RBAC), scopes in tokens (OAuth2 scopes), resource ownership checks ('is this order yours?').</li><li>A separate Authentication guide is on your topic list; this page shows the FastAPI side.</li></ul>
+    </section>
+
+    <!-- 15 -->
+    <section class="block" id="jwt-login">
+      <h2><span class="num">15</span> Login with OAuth2 Password Flow, Hashed Passwords and JWT</h2>
+<div class="callout life"><strong>Picture:</strong> A cinema: you show your ID once at the counter (username + password) and receive a stamped ticket valid for 30 minutes (the JWT). Ushers only check the stamp, not your ID again.</div><div class="diagram-wrap"><svg viewBox="0 0 700 294" style="width:100%;max-width:700px" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrSc4_arrow" markerWidth="10" markerHeight="10" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8" fill="none" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc4_tri" markerWidth="12" markerHeight="12" refX="11" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc4_dia" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--accent)" stroke="var(--accent)"/></marker><marker id="arrSc4_diah" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker></defs><rect class="box-hl" x="51" y="10" width="171" height="30" rx="6"/><text x="137" y="30" text-anchor="middle" font-size="12" font-weight="700">Client</text><line x1="137" y1="40" x2="137" y2="284" stroke="var(--card-border)" stroke-width="2" stroke-dasharray="4 4"/><rect class="box-hl" x="265" y="10" width="171" height="30" rx="6"/><text x="350" y="30" text-anchor="middle" font-size="12" font-weight="700">POST /token</text><line x1="350" y1="40" x2="350" y2="284" stroke="var(--card-border)" stroke-width="2" stroke-dasharray="4 4"/><rect class="box-hl" x="478" y="10" width="171" height="30" rx="6"/><text x="563" y="30" text-anchor="middle" font-size="12" font-weight="700">GET /me</text><line x1="563" y1="40" x2="563" y2="284" stroke="var(--card-border)" stroke-width="2" stroke-dasharray="4 4"/><line x1="137" y1="72" x2="350" y2="72" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#arrSc4_arrow)"/><text x="243" y="67" text-anchor="middle" font-size="11" class="edge-label">username + password (form data)</text><path d="M350,98 h30 v14 h-30" fill="none" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#arrSc4_arrow)"/><text x="386" y="108" font-size="11" class="edge-label">verify Argon2 hash</text><line x1="350" y1="140" x2="137" y2="140" stroke="var(--accent)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arrSc4_arrow)"/><text x="243" y="135" text-anchor="middle" font-size="11" class="edge-label">{access_token: JWT, token_type: bearer}</text><line x1="137" y1="174" x2="563" y2="174" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#arrSc4_arrow)"/><text x="350" y="169" text-anchor="middle" font-size="11" class="edge-label">Authorization: Bearer <JWT></text><path d="M563,200 h30 v14 h-30" fill="none" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#arrSc4_arrow)"/><text x="599" y="210" font-size="11" class="edge-label">check signature + expiry</text><line x1="563" y1="242" x2="137" y2="242" stroke="var(--accent)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arrSc4_arrow)"/><text x="350" y="237" text-anchor="middle" font-size="11" class="edge-label">{username, role}</text></svg><div class="diagram-caption">Fig S4 — Logging in and calling a protected endpoint.</div></div><details class="deepdive" open><summary>Argon2 password hashing, token issue, protected route, forged and expired tokens (run for real)</summary><pre><code># Login with OAuth2 password flow: hashed passwords (Argon2 via pwdlib) + signed JWT access tokens.
+from datetime import datetime, timedelta, timezone
+from typing import Annotated
+import jwt
+from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.testclient import TestClient
+from pwdlib import PasswordHash
+
+SECRET_KEY = &quot;demo-only-change-me-use-a-long-random-value-from-an-env-var&quot;   # NEVER hard-code a real secret
+ALGORITHM = &quot;HS256&quot;
+hasher = PasswordHash.recommended()
+users = {&quot;asha&quot;: {&quot;username&quot;: &quot;asha&quot;, &quot;hashed&quot;: hasher.hash(&quot;correct horse battery&quot;), &quot;role&quot;: &quot;student&quot;}}
+print(&quot;stored password hash starts with:&quot;, users[&quot;asha&quot;][&quot;hashed&quot;][:30], &quot;...&quot;)
+
+app = FastAPI()
+oauth2 = OAuth2PasswordBearer(tokenUrl=&quot;token&quot;)      # reads &#x27;Authorization: Bearer &lt;token&gt;&#x27;
+
+def make_token(sub: str, minutes: int) -&gt; str:
+    payload = {&quot;sub&quot;: sub, &quot;exp&quot;: datetime.now(timezone.utc) + timedelta(minutes=minutes)}
+    return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
+
+@app.post(&quot;/token&quot;)
+def login(form: Annotated[OAuth2PasswordRequestForm, Depends()]):
+    u = users.get(form.username)
+    if not u or not hasher.verify(form.password, u[&quot;hashed&quot;]):
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, &quot;Incorrect username or password&quot;, headers={&quot;WWW-Authenticate&quot;: &quot;Bearer&quot;})
+    return {&quot;access_token&quot;: make_token(u[&quot;username&quot;], 30), &quot;token_type&quot;: &quot;bearer&quot;}
+
+def current_user(token: Annotated[str, Depends(oauth2)]):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(401, &quot;Token expired&quot;, headers={&quot;WWW-Authenticate&quot;: &quot;Bearer&quot;})
+    except jwt.InvalidTokenError:
+        raise HTTPException(401, &quot;Invalid token&quot;, headers={&quot;WWW-Authenticate&quot;: &quot;Bearer&quot;})
+    return users[payload[&quot;sub&quot;]]
+
+@app.get(&quot;/me&quot;)
+def me(user: Annotated[dict, Depends(current_user)]):
+    return {&quot;username&quot;: user[&quot;username&quot;], &quot;role&quot;: user[&quot;role&quot;]}
+
+c = TestClient(app)
+print(&quot;wrong password :&quot;, c.post(&quot;/token&quot;, data={&quot;username&quot;: &quot;asha&quot;, &quot;password&quot;: &quot;guess&quot;}).status_code)
+tok = c.post(&quot;/token&quot;, data={&quot;username&quot;: &quot;asha&quot;, &quot;password&quot;: &quot;correct horse battery&quot;}).json()
+print(&quot;login ok, token type:&quot;, tok[&quot;token_type&quot;], &quot;| token has 3 dot-separated parts:&quot;, tok[&quot;access_token&quot;].count(&quot;.&quot;) == 2)
+print(&quot;JWT payload (readable by ANYONE, only signed, not encrypted):&quot;, jwt.decode(tok[&quot;access_token&quot;], options={&quot;verify_signature&quot;: False}).keys())
+print(&quot;/me with token :&quot;, c.get(&quot;/me&quot;, headers={&quot;Authorization&quot;: &quot;Bearer &quot; + tok[&quot;access_token&quot;]}).json())
+print(&quot;/me no token   :&quot;, c.get(&quot;/me&quot;).status_code, c.get(&quot;/me&quot;).json())
+forged = tok[&quot;access_token&quot;][:-4] + (&quot;AAAA&quot; if not tok[&quot;access_token&quot;].endswith(&quot;AAAA&quot;) else &quot;BBBB&quot;)
+print(&quot;/me forged     :&quot;, c.get(&quot;/me&quot;, headers={&quot;Authorization&quot;: &quot;Bearer &quot; + forged}).json())
+print(&quot;/me expired    :&quot;, c.get(&quot;/me&quot;, headers={&quot;Authorization&quot;: &quot;Bearer &quot; + make_token(&quot;asha&quot;, -1)}).json())
+
+# ----- Output (real run) -----
+# stored password hash starts with: $argon2id$v=19$m=65536,t=3,p=4 ...
+# wrong password : 401
+# login ok, token type: bearer | token has 3 dot-separated parts: True
+# JWT payload (readable by ANYONE, only signed, not encrypted): dict_keys([&#x27;sub&#x27;, &#x27;exp&#x27;])
+# /me with token : {&#x27;username&#x27;: &#x27;asha&#x27;, &#x27;role&#x27;: &#x27;student&#x27;}
+# /me no token   : 401 {&#x27;detail&#x27;: &#x27;Not authenticated&#x27;}
+# /me forged     : {&#x27;detail&#x27;: &#x27;Invalid token&#x27;}
+# /me expired    : {&#x27;detail&#x27;: &#x27;Token expired&#x27;}</code></pre><p>The password is stored only as an Argon2id hash. A valid token opens <code>/me</code>; no token gives 401; a token with a changed signature is rejected; an expired one is rejected. Note: the JWT payload is <strong>readable by anyone</strong> (base64); it is signed, not encrypted, so never put secrets in it.</p></details><h3>Good to know</h3><ul><li>Keep secrets in environment variables or a secrets manager (see Settings), use long random keys, short expiry, HTTPS only.</li><li>Add refresh tokens, token revocation (denylist or short expiry), and scopes/roles for authorization. Consider an identity provider instead of building login yourself.</li><li><code>passlib</code> appears in older tutorials; FastAPI's current docs use <code>pwdlib</code> with Argon2 (as seen in the docs around this date).</li><li>Defensive security for AI apps: <a href="ai-security.html">AI Security</a>.</li></ul>
+    </section>
+
+    <!-- 16 -->
+    <section class="block" id="middleware-cors-errors">
+      <h2><span class="num">16</span> Middleware, CORS and Error Handling</h2>
+<div class="callout life"><strong>Picture:</strong> Middleware is the security guard at the building door who sees everybody coming in and going out: they can stamp the time, check badges, or add a note to every parcel.</div><details class="deepdive" open><summary>Timing and request-id middleware, a custom exception handler, a 500, and CORS (run for real)</summary><pre><code># Middleware (code around EVERY request), custom exception handlers, and CORS.
+import time, uuid
+from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from fastapi.testclient import TestClient
+
+app = FastAPI()
+app.add_middleware(CORSMiddleware, allow_origins=[&quot;https://shop.example.com&quot;], allow_methods=[&quot;GET&quot;, &quot;POST&quot;], allow_headers=[&quot;*&quot;])
+
+@app.middleware(&quot;http&quot;)
+async def timing_and_id(request: Request, call_next):
+    start = time.perf_counter()
+    response = await call_next(request)                 # the rest of the app runs here
+    response.headers[&quot;X-Request-ID&quot;] = str(uuid.uuid4())[:8]
+    response.headers[&quot;X-Process-Time-ms&quot;] = f&quot;{(time.perf_counter() - start) * 1000:.2f}&quot;
+    return response
+
+class OutOfStock(Exception):
+    def __init__(self, item: str): self.item = item
+
+@app.exception_handler(OutOfStock)
+async def out_of_stock_handler(request: Request, exc: OutOfStock):
+    return JSONResponse(status_code=409, content={&quot;error&quot;: &quot;out_of_stock&quot;, &quot;item&quot;: exc.item})
+
+@app.get(&quot;/buy/{item}&quot;)
+def buy(item: str):
+    if item == &quot;unicorn&quot;: raise OutOfStock(item)
+    return {&quot;bought&quot;: item}
+
+@app.get(&quot;/crash&quot;)
+def crash():
+    return 1 / 0
+
+c = TestClient(app, raise_server_exceptions=False)
+r = c.get(&quot;/buy/pen&quot;); print(r.status_code, r.json(), &quot;| X-Request-ID present:&quot;, &quot;x-request-id&quot; in r.headers, &quot;| timing header:&quot;, &quot;x-process-time-ms&quot; in r.headers)
+r = c.get(&quot;/buy/unicorn&quot;); print(r.status_code, r.json())
+r = c.get(&quot;/crash&quot;); print(r.status_code, r.text, &quot; &lt;- no stack trace leaks to the client&quot;)
+pre = c.options(&quot;/buy/pen&quot;, headers={&quot;Origin&quot;: &quot;https://shop.example.com&quot;, &quot;Access-Control-Request-Method&quot;: &quot;GET&quot;})
+print(&quot;CORS preflight from allowed site :&quot;, pre.status_code, pre.headers.get(&quot;access-control-allow-origin&quot;))
+bad = c.get(&quot;/buy/pen&quot;, headers={&quot;Origin&quot;: &quot;https://evil.example&quot;})
+print(&quot;request from another site        : allow-origin header =&quot;, bad.headers.get(&quot;access-control-allow-origin&quot;), &quot;(browser will block reading it)&quot;)
+
+# ----- Output (real run) -----
+# 200 {&#x27;bought&#x27;: &#x27;pen&#x27;} | X-Request-ID present: True | timing header: True
+# 409 {&#x27;error&#x27;: &#x27;out_of_stock&#x27;, &#x27;item&#x27;: &#x27;unicorn&#x27;}
+# 500 Internal Server Error  &lt;- no stack trace leaks to the client
+# CORS preflight from allowed site : 200 https://shop.example.com
+# request from another site        : allow-origin header = None (browser will block reading it)</code></pre><p>Every response got <code>X-Request-ID</code> and <code>X-Process-Time-ms</code> headers. The custom exception became a clean 409 JSON error; an unexpected crash became a plain 500 with no stack trace. The browser pre-flight from the allowed site was approved, while another site got no CORS permission header.</p></details><table><tr><th>Concept</th><th>Meaning</th></tr><tr><td>Middleware</td><td>Code that runs before and after every request (logging, timing, headers, compression)</td></tr><tr><td>CORS</td><td>Browsers block JavaScript from reading responses from another origin unless the server allows it; CORSMiddleware sends the allow headers. Not a security wall for non-browser clients</td></tr><tr><td>Exception handlers</td><td>Turn your own exceptions into consistent HTTP responses</td></tr><tr><td>HTTPException</td><td>The quick way to return an error from inside an endpoint</td></tr><tr><td>Validation errors</td><td>422 by default; customise with a handler for <code>RequestValidationError</code></td></tr></table><h3>Good to know</h3><ul><li>Never use <code>allow_origins=["*"]</code> together with credentials (cookies); list exact origins.</li><li>Useful built-ins: <code>GZipMiddleware</code>, <code>TrustedHostMiddleware</code>, <code>HTTPSRedirectMiddleware</code>.</li></ul>
+    </section>
+
+    <!-- 17 -->
+    <section class="block" id="settings">
+      <h2><span class="num">17</span> Settings and Secrets</h2>
+<div class="callout life"><strong>Picture:</strong> A recipe that says 'salt: to taste': the same code runs on a laptop, in testing and in production, but each kitchen supplies its own amounts (environment variables).</div><details class="deepdive" open><summary>pydantic-settings: environment variables, type conversion, hidden secrets (run for real)</summary><pre><code># Configuration from environment variables / .env files with pydantic-settings (12-factor style).
+import os
+from functools import lru_cache
+from pydantic import SecretStr
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_prefix=&quot;SHOP_&quot;, env_file=&quot;.env&quot;)
+    app_name: str = &quot;Shop API&quot;
+    debug: bool = False
+    database_url: str = &quot;sqlite:///./shop.db&quot;
+    jwt_secret: SecretStr                      # required, and hidden when printed
+
+@lru_cache                                    # read settings once
+def get_settings() -&gt; Settings:
+    return Settings()
+
+os.environ[&quot;SHOP_DEBUG&quot;] = &quot;true&quot;; os.environ[&quot;SHOP_JWT_SECRET&quot;] = &quot;from-the-environment&quot;
+s = get_settings()
+print(s.app_name, &quot;| debug:&quot;, s.debug, &quot;(text &#x27;true&#x27; became a bool) | db:&quot;, s.database_url)
+print(&quot;secret prints as:&quot;, s.jwt_secret, &quot;| real value only on purpose:&quot;, s.jwt_secret.get_secret_value()[:4] + &quot;...&quot;)
+del os.environ[&quot;SHOP_JWT_SECRET&quot;]; get_settings.cache_clear()
+try: get_settings()
+except Exception as e: print(&quot;missing required setting -&gt;&quot;, type(e).__name__, &quot;(the app refuses to start without its secret)&quot;)
+
+# ----- Output (real run) -----
+# Shop API | debug: True (text &#x27;true&#x27; became a bool) | db: sqlite:///./shop.db
+# secret prints as: ********** | real value only on purpose: from...
+# missing required setting -&gt; ValidationError (the app refuses to start without its secret)</code></pre><p>'true' from the environment became the boolean True, the secret prints as stars, and a missing required secret stops the app from starting (better than running with a blank key).</p></details><h3>Good to know</h3><ul><li>Commit a <code>.env.example</code> with names only; never commit real <code>.env</code> files.</li><li>Provide settings through a dependency (<code>Depends(get_settings)</code>) so tests can override them.</li></ul>
+    </section>
+
+    <!-- 18 -->
+    <section class="block" id="api-security">
+      <h2><span class="num">18</span> API Security Checklist</h2>
+<div class="callout life"><strong>Picture:</strong> Locking every door of the shop, not only the front one.</div><table><tr><th>Risk (in the spirit of the OWASP API Security Top 10)</th><th>What to do in FastAPI</th></tr><tr><td>Broken object-level authorization (accessing other users' data by changing an id)</td><td>Always check ownership: <code>if order.user_id != user.id: 404/403</code></td></tr><tr><td>Broken authentication</td><td>Proven libraries, hashed passwords (Argon2/bcrypt), short-lived tokens, rate-limit login</td></tr><tr><td>Excessive data exposure</td><td>Response models; never return raw database objects</td></tr><tr><td>Lack of rate limiting / resource limits</td><td>Rate limits, pagination limits (<code>le=100</code>), body size limits at the proxy, timeouts</td></tr><tr><td>Mass assignment</td><td>Separate input models; do not let clients set <code>is_admin</code> or <code>id</code></td></tr><tr><td>Injection</td><td>ORM / parameterised SQL (see <a href="dbms.html#sql-injection">DBMS → SQL injection</a>)</td></tr><tr><td>Security misconfiguration</td><td>HTTPS, strict CORS, no debug tracebacks, security headers, hide docs if needed</td></tr><tr><td>Unsafe consumption of other APIs</td><td>Timeouts, validation of their responses, retries with backoff</td></tr></table><h3>Good to know</h3><ul><li>Check the current OWASP API Security Top 10 list for exact names (the 2023 edition was current as of this review, as reported).</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part D — Advanced FastAPI</h2></div>
+
+    <!-- 19 -->
+    <section class="block" id="async-vs-sync">
+      <h2><span class="num">19</span> async def vs def (Measured)</h2>
+<div class="callout life"><strong>Picture:</strong> A waiter who takes an order, and while the kitchen cooks, serves other tables (async). A waiter who stands frozen at the kitchen door until the dish is ready (blocking) makes every other table wait.</div><div class="diagram-wrap"><svg viewBox="0 0 640 300" style="width:100%;max-width:640px" xmlns="http://www.w3.org/2000/svg"><line x1="60" y1="230" x2="620" y2="230" stroke="var(--card-border)"/><text x="54" y="234" text-anchor="end" font-size="11">0</text><line x1="60" y1="178" x2="620" y2="178" stroke="var(--card-border)"/><text x="54" y="182" text-anchor="end" font-size="11">1.25</text><line x1="60" y1="125" x2="620" y2="125" stroke="var(--card-border)"/><text x="54" y="129" text-anchor="end" font-size="11">2.5</text><line x1="60" y1="72" x2="620" y2="72" stroke="var(--card-border)"/><text x="54" y="76" text-anchor="end" font-size="11">3.75</text><line x1="60" y1="20" x2="620" y2="20" stroke="var(--card-border)"/><text x="54" y="24" text-anchor="end" font-size="11">5</text><rect x="97" y="221" width="112" height="9" rx="3" fill="var(--accent-2)" opacity="0.85"/><text x="153" y="216" text-anchor="middle" font-size="11">0.22</text><text x="153" y="246" text-anchor="middle" font-size="10.5">async def + await</text><rect x="284" y="220" width="112" height="10" rx="3" fill="var(--accent-2)" opacity="0.85"/><text x="340" y="215" text-anchor="middle" font-size="11">0.24</text><text x="340" y="246" text-anchor="middle" font-size="10.5">plain def (thread pool)</text><rect x="471" y="145" width="112" height="85" rx="3" fill="var(--accent-2)" opacity="0.85"/><text x="527" y="140" text-anchor="middle" font-size="11">2.02</text><text x="527" y="246" text-anchor="middle" font-size="10.5">async def + time.sleep (WRONG)</text><text transform="rotate(-90)" x="-125" y="16" text-anchor="middle" font-size="12" class="edge-label">seconds</text></svg><div class="diagram-caption">Fig S5 — Time for 10 simultaneous requests that each wait 0.2 s (real run, in-process).</div></div><details class="deepdive" open><summary>Three endpoint styles under 10 concurrent requests (run for real)</summary><pre><code># async def vs def, MEASURED: 10 requests at the same time to endpoints that wait 0.2 s each.
+import asyncio, time
+import httpx
+from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get(&quot;/async-await&quot;)
+async def good_async():
+    await asyncio.sleep(0.2)          # non-blocking wait: the event loop serves others meanwhile
+    return {&quot;ok&quot;: True}
+
+@app.get(&quot;/sync-def&quot;)
+def plain_def():
+    time.sleep(0.2)                   # blocking, BUT plain &#x27;def&#x27; endpoints run in a thread pool
+    return {&quot;ok&quot;: True}
+
+@app.get(&quot;/async-blocking&quot;)
+async def bad_async():
+    time.sleep(0.2)                   # BLOCKING call inside async def: freezes the whole event loop
+    return {&quot;ok&quot;: True}
+
+async def burst(path, n=10):
+    async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url=&quot;http://test&quot;) as client:
+        t = time.perf_counter()
+        rs = await asyncio.gather(*[client.get(path) for _ in range(n)])
+        return time.perf_counter() - t, {r.status_code for r in rs}
+
+for path in [&quot;/async-await&quot;, &quot;/sync-def&quot;, &quot;/async-blocking&quot;]:
+    secs, codes = asyncio.run(burst(path))
+    print(&quot;%-16s 10 concurrent requests took %.2f s  %s&quot; % (path, secs, codes))
+print(&quot;Ideal is about 0.2 s (all waits overlap). 2 s means the requests were handled ONE AT A TIME.&quot;)
+
+# ----- Output (real run) -----
+# /async-await     10 concurrent requests took 0.22 s  {200}
+# /sync-def        10 concurrent requests took 0.24 s  {200}
+# /async-blocking  10 concurrent requests took 2.02 s  {200}
+# Ideal is about 0.2 s (all waits overlap). 2 s means the requests were handled ONE AT A TIME.</code></pre><p><code>async def</code> with <code>await asyncio.sleep</code> and plain <code>def</code> (which FastAPI runs in a thread pool) both finished all 10 in about 0.2 s. A <strong>blocking</strong> <code>time.sleep</code> inside <code>async def</code> froze the event loop and served them one at a time: about 2 s, ten times slower.</p></details><table><tr><th>Your code calls</th><th>Write the endpoint as</th></tr><tr><td>Async libraries (<code>await</code>: httpx.AsyncClient, asyncpg, redis.asyncio, the async Anthropic client)</td><td><code>async def</code></td></tr><tr><td>Blocking libraries (requests, most ORMs in sync mode, file I/O, CPU work)</td><td>plain <code>def</code> (thread pool) or move heavy CPU work to a worker/process</td></tr><tr><td>Not sure</td><td>plain <code>def</code> is the safe default</td></tr></table><h3>Good to know</h3><ul><li>The thread pool has a limited size (about 40 threads by default in AnyIO), so thousands of slow blocking calls still queue up.</li><li>CPU-heavy work (image processing, ML inference) does not get faster with async: use worker processes, a task queue or a model server (see <a href="mlops-llmops.html">MLOps</a>).</li></ul>
+    </section>
+
+    <!-- 20 -->
+    <section class="block" id="background-streaming">
+      <h2><span class="num">20</span> Background Tasks, Streaming and Server-Sent Events</h2>
+<div class="callout life"><strong>Picture:</strong> A shop assistant who hands you your receipt first and then sends the thank-you email (background task); a TV broadcast you watch while it is still being filmed (streaming).</div><details class="deepdive" open><summary>BackgroundTasks, StreamingResponse and an SSE stream (run for real)</summary><pre><code># Background tasks (work after the response), streaming responses, and Server-Sent Events.
+import asyncio
+from fastapi import BackgroundTasks, FastAPI
+from fastapi.responses import StreamingResponse
+from fastapi.testclient import TestClient
+
+app = FastAPI()
+events = []
+
+def send_welcome_email(email: str):
+    events.append(f&quot;email sent to {email}&quot;)
+
+@app.post(&quot;/signup&quot;)
+def signup(email: str, tasks: BackgroundTasks):
+    tasks.add_task(send_welcome_email, email)   # runs AFTER the response is sent
+    events.append(&quot;response prepared&quot;)
+    return {&quot;status&quot;: &quot;signed up&quot;}
+
+@app.get(&quot;/count&quot;)
+def count():
+    def gen():
+        for i in range(1, 4):
+            yield f&quot;line {i}\n&quot;               # sent piece by piece
+    return StreamingResponse(gen(), media_type=&quot;text/plain&quot;)
+
+@app.get(&quot;/sse&quot;)
+async def sse():
+    async def gen():
+        for word in [&quot;Hello&quot;, &quot;from&quot;, &quot;a&quot;, &quot;stream&quot;]:
+            await asyncio.sleep(0.01)
+            yield f&quot;data: {word}\n\n&quot;         # Server-Sent Events format: &#x27;data: ...&#x27; + blank line
+    return StreamingResponse(gen(), media_type=&quot;text/event-stream&quot;)
+
+c = TestClient(app)
+print(c.post(&quot;/signup?email=asha@example.com&quot;).json(), &quot;| order:&quot;, events)
+with c.stream(&quot;GET&quot;, &quot;/count&quot;) as r:
+    print(&quot;streamed chunks:&quot;, [chunk for chunk in r.iter_text()])
+with c.stream(&quot;GET&quot;, &quot;/sse&quot;) as r:
+    print(&quot;SSE content-type:&quot;, r.headers[&quot;content-type&quot;]); print(&quot;SSE lines:&quot;, [l for l in r.iter_lines() if l])
+
+# ----- Output (real run) -----
+# {&#x27;status&#x27;: &#x27;signed up&#x27;} | order: [&#x27;response prepared&#x27;, &#x27;email sent to asha@example.com&#x27;]
+# streamed chunks: [&#x27;line 1\n&#x27;, &#x27;line 2\n&#x27;, &#x27;line 3\n&#x27;]
+# SSE content-type: text/event-stream; charset=utf-8
+# SSE lines: [&#x27;data: Hello&#x27;, &#x27;data: from&#x27;, &#x27;data: a&#x27;, &#x27;data: stream&#x27;]</code></pre><p>The response was prepared before the 'email' was sent. The text stream arrived in three chunks; the SSE stream sent <code>data: ...</code> lines, the format browsers read with <code>EventSource</code> and that chat apps use to stream LLM answers.</p></details><details class="deepdive" open><summary>Long or important jobs: a real task queue (Celery-style) (template, not run)</summary><pre><code># Heavy or long jobs belong in a task queue, not in BackgroundTasks (template: needs Redis/RabbitMQ)
+from celery import Celery
+celery = Celery(&quot;shop&quot;, broker=&quot;redis://localhost:6379/0&quot;, backend=&quot;redis://localhost:6379/1&quot;)
+
+@celery.task(bind=True, max_retries=3)
+def make_invoice_pdf(self, order_id: int):
+    ...                                   # runs in a separate worker process, can retry, survives API restarts
+
+@app.post(&quot;/orders/{order_id}/invoice&quot;, status_code=202)
+def request_invoice(order_id: int):
+    job = make_invoice_pdf.delay(order_id)
+    return {&quot;job_id&quot;: job.id, &quot;status_url&quot;: f&quot;/jobs/{job.id}&quot;}      # 202 Accepted + a URL to poll
+# Alternatives: RQ, Dramatiq, arq (async), Taskiq, cloud queues (SQS, Pub/Sub).</code></pre></details><h3>Good to know</h3><ul><li>BackgroundTasks run in the same process after the response: fine for small things (emails, logs). If the process dies, the task is lost: use a queue for anything important.</li><li>Return 202 Accepted + a status URL for long jobs.</li></ul>
+    </section>
+
+    <!-- 21 -->
+    <section class="block" id="files-forms-websockets">
+      <h2><span class="num">21</span> Forms, File Uploads and WebSockets</h2>
+<div class="callout life"><strong>Picture:</strong> Posting a paper form with an attached photo (form + file), versus a walkie-talkie conversation where both sides can talk at any time (WebSocket).</div><details class="deepdive" open><summary>Form fields, an UploadFile, and a WebSocket echo (run for real)</summary><pre><code># HTML form fields, file uploads, and a WebSocket chat (two-way, long-lived connection).
+from typing import Annotated
+from fastapi import FastAPI, File, Form, UploadFile, WebSocket, WebSocketDisconnect
+from fastapi.testclient import TestClient
+
+app = FastAPI()
+
+@app.post(&quot;/login-form&quot;)
+def login_form(username: Annotated[str, Form()], remember: Annotated[bool, Form()] = False):
+    return {&quot;username&quot;: username, &quot;remember&quot;: remember}
+
+@app.post(&quot;/upload&quot;)
+async def upload(file: UploadFile, note: Annotated[str, Form()] = &quot;&quot;):
+    data = await file.read()
+    return {&quot;filename&quot;: file.filename, &quot;content_type&quot;: file.content_type, &quot;bytes&quot;: len(data), &quot;first_line&quot;: data.splitlines()[0].decode(), &quot;note&quot;: note}
+
+@app.websocket(&quot;/ws&quot;)
+async def ws_echo(ws: WebSocket):
+    await ws.accept()
+    try:
+        while True:
+            msg = await ws.receive_text()
+            await ws.send_text(f&quot;server got: {msg.upper()}&quot;)
+    except WebSocketDisconnect:
+        pass
+
+c = TestClient(app)
+print(c.post(&quot;/login-form&quot;, data={&quot;username&quot;: &quot;asha&quot;, &quot;remember&quot;: &quot;true&quot;}).json())
+print(c.post(&quot;/upload&quot;, files={&quot;file&quot;: (&quot;notes.txt&quot;, b&quot;hello file\nsecond line&quot;, &quot;text/plain&quot;)}, data={&quot;note&quot;: &quot;homework&quot;}).json())
+with c.websocket_connect(&quot;/ws&quot;) as ws:
+    for m in [&quot;hi&quot;, &quot;how are you&quot;]:
+        ws.send_text(m); print(&quot;websocket:&quot;, ws.receive_text())
+
+# ----- Output (real run) -----
+# {&#x27;username&#x27;: &#x27;asha&#x27;, &#x27;remember&#x27;: True}
+# {&#x27;filename&#x27;: &#x27;notes.txt&#x27;, &#x27;content_type&#x27;: &#x27;text/plain&#x27;, &#x27;bytes&#x27;: 22, &#x27;first_line&#x27;: &#x27;hello file&#x27;, &#x27;note&#x27;: &#x27;homework&#x27;}
+# websocket: server got: HI
+# websocket: server got: HOW ARE YOU</code></pre><p>Form data and the uploaded file were parsed (needs <code>python-multipart</code>); the WebSocket stayed open for two messages in both directions.</p></details><h3>Good to know</h3><ul><li><code>UploadFile</code> streams large files to a temporary file instead of holding them all in memory; still limit upload size at the proxy and validate file types.</li><li>WebSockets are for chats, live dashboards and games; scale them carefully (each is a long-lived connection; use Redis pub/sub between workers).</li></ul>
+    </section>
+
+    <!-- 22 -->
+    <section class="block" id="routers-lifespan">
+      <h2><span class="num">22</span> Bigger Apps: Routers, Lifespan and Project Structure</h2>
+<div class="callout life"><strong>Picture:</strong> A big school splits into departments (routers), each with its own rooms (endpoints), and the caretaker opens the building in the morning and locks it at night (lifespan).</div><details class="deepdive" open><summary>Nested APIRouters with prefixes, and a lifespan that runs at startup and shutdown (run for real)</summary><pre><code># Bigger apps: APIRouter modules with prefixes and tags, and a lifespan for startup/shutdown work.
+from contextlib import asynccontextmanager
+from fastapi import APIRouter, FastAPI
+from fastapi.testclient import TestClient
+
+log = []
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    log.append(&quot;startup: connect DB, load ML model&quot;)      # runs once before the first request
+    app.state.model = {&quot;version&quot;: &quot;v3&quot;}
+    yield
+    log.append(&quot;shutdown: close connections&quot;)             # runs once when the server stops
+
+users = APIRouter(prefix=&quot;/users&quot;, tags=[&quot;users&quot;])
+@users.get(&quot;/&quot;)
+def list_users(): return [&quot;asha&quot;, &quot;ravi&quot;]
+
+items = APIRouter(prefix=&quot;/items&quot;, tags=[&quot;items&quot;])
+@items.get(&quot;/{item_id}&quot;)
+def get_item(item_id: int): return {&quot;item_id&quot;: item_id}
+
+v1 = APIRouter(prefix=&quot;/api/v1&quot;)
+v1.include_router(users); v1.include_router(items)
+
+app = FastAPI(lifespan=lifespan)
+app.include_router(v1)
+
+@app.get(&quot;/model&quot;)
+def model_info(): return app.state.model
+
+with TestClient(app) as c:                                # using &#x27;with&#x27; runs the lifespan
+    print(c.get(&quot;/api/v1/users/&quot;).json(), c.get(&quot;/api/v1/items/7&quot;).json(), c.get(&quot;/model&quot;).json())
+print(&quot;lifespan log:&quot;, log)
+print(&quot;paths in the OpenAPI spec:&quot;, sorted(app.openapi()[&quot;paths&quot;]))
+
+# ----- Output (real run) -----
+# [&#x27;asha&#x27;, &#x27;ravi&#x27;] {&#x27;item_id&#x27;: 7} {&#x27;version&#x27;: &#x27;v3&#x27;}
+# lifespan log: [&#x27;startup: connect DB, load ML model&#x27;, &#x27;shutdown: close connections&#x27;]
+# paths in the OpenAPI spec: [&#x27;/api/v1/items/{item_id}&#x27;, &#x27;/api/v1/users/&#x27;, &#x27;/model&#x27;]</code></pre><p>Routers combine into <code>/api/v1/users/</code> and <code>/api/v1/items/{item_id}</code>; the lifespan ran once before the first request and once at shutdown; <code>app.state</code> carried a loaded 'model'. (In FastAPI 0.164 the entries in <code>app.routes</code> for included routers are wrapper objects, so the demo lists paths from the OpenAPI spec instead.)</p></details><details class="deepdive" open><summary>A common project layout (template, not run)</summary><pre><code>shop/
+├── app/
+│   ├── main.py            # app = FastAPI(lifespan=...); app.include_router(...)
+│   ├── core/
+│   │   ├── config.py      # Settings (pydantic-settings)
+│   │   └── security.py    # password hashing, JWT helpers
+│   ├── db.py              # engine, get_session dependency
+│   ├── models/            # SQLModel / SQLAlchemy tables
+│   ├── schemas/           # Pydantic request/response models (UserCreate, UserPublic ...)
+│   ├── routers/           # users.py, items.py, auth.py  (APIRouter each)
+│   ├── services/          # business logic, no HTTP details here
+│   └── deps.py            # shared dependencies (current_user, pagination)
+├── tests/                 # pytest + TestClient, dependency_overrides for the DB
+├── alembic/               # database migrations
+├── pyproject.toml         # pinned dependencies
+├── Dockerfile
+└── .env.example           # names of settings, never real secrets</code></pre></details><h3>Good to know</h3><ul><li>Load expensive things once in the lifespan (ML models, connection pools); the old <code>@app.on_event</code> hooks are deprecated in favour of lifespan.</li><li>Keep business logic in plain functions/services so it can be tested without HTTP.</li></ul>
+    </section>
+
+    <!-- 23 -->
+    <section class="block" id="rate-limit-caching">
+      <h2><span class="num">23</span> Rate Limiting and HTTP Caching</h2>
+<div class="callout life"><strong>Picture:</strong> A water fountain that lets each child drink three times per minute (rate limit), and a teacher who says 'you already have the latest worksheet, no need for a new copy' (304 Not Modified).</div><details class="deepdive" open><summary>A token-style rate limit (429 + Retry-After) and ETag / If-None-Match (304) (run for real)</summary><pre><code># Two production tricks done by hand: a per-client rate limit (429) and ETag caching (304 Not Modified).
+import hashlib, json, time
+from fastapi import Depends, FastAPI, HTTPException, Request, Response
+from fastapi.testclient import TestClient
+
+app = FastAPI()
+buckets: dict[str, list[float]] = {}
+
+def rate_limit(request: Request, limit: int = 3, window: float = 60.0):
+    key = request.headers.get(&quot;X-API-Key&quot;, request.client.host)
+    now = time.monotonic(); hits = [t for t in buckets.get(key, []) if now - t &lt; window]
+    if len(hits) &gt;= limit:
+        raise HTTPException(429, &quot;Too many requests&quot;, headers={&quot;Retry-After&quot;: str(int(window - (now - hits[0])))})
+    buckets[key] = hits + [now]
+
+CATALOG = {&quot;pens&quot;: 12, &quot;books&quot;: 4}
+
+@app.get(&quot;/catalog&quot;, dependencies=[Depends(rate_limit)])
+def catalog(request: Request, response: Response):
+    body = json.dumps(CATALOG, sort_keys=True).encode()
+    etag = &#x27;&quot;&#x27; + hashlib.sha256(body).hexdigest()[:16] + &#x27;&quot;&#x27;
+    if request.headers.get(&quot;If-None-Match&quot;) == etag:
+        return Response(status_code=304, headers={&quot;ETag&quot;: etag})     # client&#x27;s copy is still fresh: send no body
+    response.headers[&quot;ETag&quot;] = etag
+    return CATALOG
+
+c = TestClient(app)
+r1 = c.get(&quot;/catalog&quot;, headers={&quot;X-API-Key&quot;: &quot;A&quot;}); print(&quot;1st:&quot;, r1.status_code, r1.json(), &quot;ETag&quot;, r1.headers[&quot;etag&quot;])
+r2 = c.get(&quot;/catalog&quot;, headers={&quot;X-API-Key&quot;: &quot;A&quot;, &quot;If-None-Match&quot;: r1.headers[&quot;etag&quot;]}); print(&quot;2nd with If-None-Match:&quot;, r2.status_code, &quot;body bytes:&quot;, len(r2.content))
+r3 = c.get(&quot;/catalog&quot;, headers={&quot;X-API-Key&quot;: &quot;A&quot;}); print(&quot;3rd:&quot;, r3.status_code)
+r4 = c.get(&quot;/catalog&quot;, headers={&quot;X-API-Key&quot;: &quot;A&quot;}); print(&quot;4th:&quot;, r4.status_code, r4.json(), &quot;Retry-After:&quot;, r4.headers.get(&quot;retry-after&quot;))
+print(&quot;other client B:&quot;, c.get(&quot;/catalog&quot;, headers={&quot;X-API-Key&quot;: &quot;B&quot;}).status_code)
+print(&quot;(in-memory limits work for ONE process only; use Redis or the API gateway when you run many workers)&quot;)
+
+# ----- Output (real run) -----
+# 1st: 200 {&#x27;pens&#x27;: 12, &#x27;books&#x27;: 4} ETag &quot;6aa1c8d435534491&quot;
+# 2nd with If-None-Match: 304 body bytes: 0
+# 3rd: 200
+# 4th: 429 {&#x27;detail&#x27;: &#x27;Too many requests&#x27;} Retry-After: 59
+# other client B: 200
+# (in-memory limits work for ONE process only; use Redis or the API gateway when you run many workers)</code></pre><p>The second request carried the ETag and got 304 with an empty body (saves bandwidth). The fourth request from client A within a minute got 429 with Retry-After; client B was unaffected.</p></details><h3>Good to know</h3><ul><li>Real deployments rate-limit in an API gateway, the reverse proxy, or with Redis-backed libraries (e.g. slowapi, fastapi-limiter), because each worker process has its own memory.</li><li>Response caching: Cache-Control headers for clients/CDNs, Redis for server-side caching of expensive results.</li></ul>
+    </section>
+
+    <!-- 24 -->
+    <section class="block" id="llm-endpoints">
+      <h2><span class="num">24</span> Serving AI: LLM and ML Model Endpoints</h2>
+<div class="callout life"><strong>Picture:</strong> A translator booth at a conference: questions come in, the translator (model) speaks, and you hear the words as they are spoken (streaming).</div><details class="deepdive" open><summary>Streaming a Claude answer as SSE (Anthropic async SDK) (template, not run)</summary><pre><code># An LLM chat endpoint that streams Claude&#x27;s answer as Server-Sent Events (template: needs ANTHROPIC_API_KEY; NOT run here)
+import json
+import anthropic
+from fastapi import FastAPI
+from fastapi.responses import StreamingResponse
+from pydantic import BaseModel, Field
+
+app = FastAPI()
+client = anthropic.AsyncAnthropic()              # reads ANTHROPIC_API_KEY from the environment
+
+class ChatIn(BaseModel):
+    message: str = Field(min_length=1, max_length=4000)
+
+@app.post(&quot;/chat&quot;)
+async def chat(req: ChatIn):
+    async def events():
+        async with client.messages.stream(
+            model=&quot;claude-sonnet-5-5&quot;, max_tokens=1024,
+            system=&quot;You are a helpful assistant for a school shop.&quot;,
+            messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: req.message}],
+        ) as stream:
+            async for text in stream.text_stream:                 # text pieces as they are generated
+                yield f&quot;data: {json.dumps({&#x27;text&#x27;: text})}\n\n&quot;
+        yield &quot;data: [DONE]\n\n&quot;
+    return StreamingResponse(events(), media_type=&quot;text/event-stream&quot;)
+# Production: authenticate users, rate-limit, cap max_tokens, log token usage, handle client disconnects, add timeouts.</code></pre></details><h3>Good to know</h3><ul><li>Use the async SDK in <code>async def</code> endpoints; stream with SSE for chat UIs; cap <code>max_tokens</code>; time out; handle client disconnects.</li><li>Add authentication, per-user rate limits and token budgets, log usage and prompt versions (see <a href="mlops-llmops.html">MLOps &amp; LLMOps</a>), and guard against prompt injection (see <a href="ai-security.html">AI Security</a>).</li><li>For classic ML models: load once in the lifespan, run inference in <code>def</code> endpoints or a model server, batch requests where possible.</li><li>The SSE mechanism itself was shown for real in the streaming section with a scripted text source; the Claude call above is a template (needs an API key).</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part E — Testing, Running and Deploying</h2></div>
+
+    <!-- 25 -->
+    <section class="block" id="testing">
+      <h2><span class="num">25</span> Testing FastAPI Apps with pytest</h2>
+<div class="callout life"><strong>Picture:</strong> A dress rehearsal before the show: every scene is played and checked, without a real audience.</div><details class="deepdive" open><summary>A small app and its pytest suite, run for real (run for real)</summary><pre><code># Testing with pytest: write a small app and its tests to files, then run pytest for real.
+import pathlib, subprocess, sys, tempfile, textwrap
+d = pathlib.Path(tempfile.mkdtemp())
+(d / &quot;main.py&quot;).write_text(textwrap.dedent(&quot;&quot;&quot;
+    from fastapi import FastAPI, HTTPException
+    from pydantic import BaseModel
+    app = FastAPI()
+    class Item(BaseModel):
+        name: str
+        price: float
+    ITEMS = {1: Item(name=&quot;pen&quot;, price=10)}
+    @app.get(&quot;/items/{item_id}&quot;)
+    def get_item(item_id: int) -&gt; Item:
+        if item_id not in ITEMS: raise HTTPException(404, &quot;not found&quot;)
+        return ITEMS[item_id]
+    @app.post(&quot;/items&quot;, status_code=201)
+    def add(item: Item) -&gt; Item:
+        ITEMS[len(ITEMS) + 1] = item; return item
+&quot;&quot;&quot;))
+(d / &quot;test_main.py&quot;).write_text(textwrap.dedent(&quot;&quot;&quot;
+    import pytest
+    from fastapi.testclient import TestClient
+    from main import app
+    client = TestClient(app)
+    def test_get_existing():
+        assert client.get(&quot;/items/1&quot;).json() == {&quot;name&quot;: &quot;pen&quot;, &quot;price&quot;: 10.0}
+    def test_missing_is_404():
+        assert client.get(&quot;/items/99&quot;).status_code == 404
+    @pytest.mark.parametrize(&quot;payload&quot;, [{&quot;name&quot;: &quot;x&quot;}, {&quot;price&quot;: 3}, {&quot;name&quot;: &quot;x&quot;, &quot;price&quot;: &quot;free&quot;}])
+    def test_bad_bodies_are_422(payload):
+        assert client.post(&quot;/items&quot;, json=payload).status_code == 422
+    def test_create():
+        r = client.post(&quot;/items&quot;, json={&quot;name&quot;: &quot;book&quot;, &quot;price&quot;: 99.5})
+        assert r.status_code == 201 and r.json()[&quot;name&quot;] == &quot;book&quot;
+&quot;&quot;&quot;))
+p = subprocess.run([sys.executable, &quot;-m&quot;, &quot;pytest&quot;, &quot;-q&quot;, &quot;-p&quot;, &quot;no:cacheprovider&quot;], cwd=d, capture_output=True, text=True)
+lines = [l for l in p.stdout.splitlines() if l.strip()]
+print(&quot;\n&quot;.join(lines[:1] + lines[-1:]))
+
+# ----- Output (real run) -----
+# ......                                                                   [100%]
+# 6 passed in 0.35s</code></pre><p>Six tests passed, including three parametrised bad bodies that must return 422.</p></details><h3>Good to know</h3><ul><li><code>TestClient</code> for sync tests; <code>httpx.AsyncClient(transport=ASGITransport(app))</code> for async tests (as in the async demo).</li><li>Override dependencies in tests (<code>app.dependency_overrides[get_session] = test_session</code>) to use a test database, and override the current user to test permissions.</li><li>Test the contract (status codes, response shapes), the edge cases (404, 422, 401/403) and the business rules.</li></ul>
+    </section>
+
+    <!-- 26 -->
+    <section class="block" id="running-servers">
+      <h2><span class="num">26</span> Running the Server (Measured with Real Uvicorn)</h2>
+<div class="callout life"><strong>Picture:</strong> Opening the shop for real customers: the doors (a TCP port), staff (worker processes) and a doorman (reverse proxy).</div><details class="deepdive" open><summary>A real Uvicorn server on a TCP port and real HTTP requests (run for real)</summary><pre><code># A REAL server: Uvicorn listening on a TCP port, and real HTTP requests over the network stack (loopback).
+import socket, threading, time
+import httpx, uvicorn
+from fastapi import FastAPI
+
+app = FastAPI()
+@app.get(&quot;/ping&quot;)
+def ping(): return {&quot;pong&quot;: True}
+
+s = socket.socket(); s.bind((&quot;127.0.0.1&quot;, 0)); port = s.getsockname()[1]; s.close()      # find a free port
+server = uvicorn.Server(uvicorn.Config(app, host=&quot;127.0.0.1&quot;, port=port, log_level=&quot;warning&quot;))
+t = threading.Thread(target=server.run, daemon=True); t.start()
+while not server.started: time.sleep(0.05)
+r = httpx.get(f&quot;http://127.0.0.1:{port}/ping&quot;)
+print(&quot;status&quot;, r.status_code, r.json(), &quot;| server header:&quot;, r.headers.get(&quot;server&quot;), &quot;| http version:&quot;, r.http_version)
+with httpx.Client() as client:                                        # keep-alive connection, many requests
+    t0 = time.perf_counter(); n = 300
+    for _ in range(n): client.get(f&quot;http://127.0.0.1:{port}/ping&quot;)
+    dt = time.perf_counter() - t0
+print(&quot;%d sequential requests over one keep-alive connection: %.2f s = %.0f requests/s, %.2f ms each (this laptop, loopback, one client)&quot; % (n, dt, n / dt, dt / n * 1000))
+server.should_exit = True; t.join(timeout=5)
+print(&quot;server stopped cleanly:&quot;, not t.is_alive())
+
+# ----- Output (real run) -----
+# status 200 {&#x27;pong&#x27;: True} | server header: uvicorn | http version: HTTP/1.1
+# 300 sequential requests over one keep-alive connection: 0.36 s = 842 requests/s, 1.19 ms each (this laptop, loopback, one client)
+# server stopped cleanly: True</code></pre><p>A real server answered over HTTP/1.1 on loopback, about 840 requests per second for one client sending one request at a time over a kept-alive connection, roughly 1.2 ms each on this laptop. That is a latency measurement, not a capacity benchmark: real throughput depends on workers, concurrency, the work each endpoint does, and the database.</p></details><table><tr><th>Command</th><th>Use</th></tr><tr><td><code>fastapi dev main.py</code></td><td>Development: auto-reload on file changes</td></tr><tr><td><code>fastapi run main.py --workers 4</code></td><td>Production: several processes (≈ one per CPU core as a start)</td></tr><tr><td><code>uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4</code></td><td>The same with Uvicorn directly</td></tr><tr><td><code>gunicorn -k uvicorn.workers.UvicornWorker main:app</code></td><td>Older pattern with Gunicorn as process manager</td></tr><tr><td>Kubernetes / containers</td><td>One process per container, scale replicas instead of workers</td></tr></table><h3>Good to know</h3><ul><li>Each worker is a separate process with its own memory: in-memory caches, rate limits and WebSocket rooms are NOT shared between them.</li></ul>
+    </section>
+
+    <!-- 27 -->
+    <section class="block" id="performance">
+      <h2><span class="num">27</span> Performance Tips</h2>
+<div class="callout life"><strong>Picture:</strong> Making a restaurant faster: do not make waiters wait at the kitchen door, keep popular dishes ready, and do not cook dishes nobody ordered.</div><table><tr><th>Tip</th><th>Why</th></tr><tr><td>Never block inside <code>async def</code></td><td>One blocking call stalls every request on that worker (measured above: 10× slower)</td></tr><tr><td>Use connection pools (DB, HTTP clients) created once</td><td>Opening connections per request is slow</td></tr><tr><td>Paginate and select only needed columns</td><td>Less data from the DB and over the network</td></tr><tr><td>Avoid N+1 queries</td><td>Use joins / eager loading</td></tr><tr><td>Cache hot, rarely changing data</td><td>Redis, HTTP caching, ETags</td></tr><tr><td>Move heavy work to workers/queues</td><td>Keep request latency low</td></tr><tr><td>Profile before optimising</td><td>py-spy, OpenTelemetry traces, load tests (Locust, k6)</td></tr><tr><td>Return Pydantic models / let FastAPI serialise</td><td>Pydantic v2's Rust core is fast; avoid manual slow conversions</td></tr></table><h3>Good to know</h3><ul><li>Benchmarks on the internet often measure 'hello world'; your database and external calls usually dominate.</li></ul>
+    </section>
+
+    <!-- 28 -->
+    <section class="block" id="docker-deploy">
+      <h2><span class="num">28</span> Docker and Deployment</h2>
+<div class="callout life"><strong>Picture:</strong> Packing the whole shop (code, Python, libraries) into a shipping container so it opens the same way in any city.</div><details class="deepdive" open><summary>Dockerfile (template, not run)</summary><pre><code>FROM python:3.13-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY app ./app
+RUN useradd --uid 10001 app
+USER 10001
+EXPOSE 8000
+CMD [&quot;fastapi&quot;, &quot;run&quot;, &quot;app/main.py&quot;, &quot;--port&quot;, &quot;8000&quot;, &quot;--workers&quot;, &quot;4&quot;]
+# behind a proxy add: --proxy-headers  (so request.client and the scheme come from X-Forwarded-* headers)</code></pre></details><details class="deepdive" open><summary>Compose: API + PostgreSQL + Redis (template, not run)</summary><pre><code># compose.yaml: the API + PostgreSQL + Redis for local development
+services:
+  api:
+    build: .
+    ports: [&quot;8000:8000&quot;]
+    environment:
+      SHOP_DATABASE_URL: postgresql+psycopg://shop:${DB_PASSWORD}@db:5432/shop
+      SHOP_JWT_SECRET: ${JWT_SECRET}
+      SHOP_REDIS_URL: redis://cache:6379/0
+    depends_on: { db: { condition: service_healthy } }
+  db:
+    image: postgres:17
+    environment: { POSTGRES_USER: shop, POSTGRES_PASSWORD: &quot;${DB_PASSWORD}&quot;, POSTGRES_DB: shop }
+    healthcheck: { test: [&quot;CMD-SHELL&quot;, &quot;pg_isready -U shop&quot;], interval: 5s, retries: 10 }
+    volumes: [pgdata:/var/lib/postgresql/data]
+  cache:
+    image: redis:7-alpine
+volumes: { pgdata: {} }</code></pre></details><details class="deepdive" open><summary>nginx reverse proxy with TLS and WebSockets (template, not run)</summary><pre><code># nginx in front of FastAPI: TLS, compression, static files, and passing the real client address
+server {
+    listen 443 ssl;
+    server_name api.example.com;
+    ssl_certificate     /etc/letsencrypt/live/api.example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/api.example.com/privkey.pem;
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Upgrade $http_upgrade;          # needed for WebSockets
+        proxy_set_header Connection &quot;upgrade&quot;;
+    }
+}</code></pre></details><h3>Good to know</h3><ul><li>Hosting options: a VM with Docker + nginx, a PaaS (Render, Railway, Fly.io, Heroku-style), serverless containers (Cloud Run, Azure Container Apps, AWS App Runner/ECS), or Kubernetes (<a href="docker-kubernetes.html">Docker &amp; Kubernetes</a>).</li><li>Production checklist: HTTPS, health endpoint, readiness after startup, graceful shutdown, structured logs, metrics, migrations run separately, secrets from the platform.</li></ul>
+    </section>
+
+    <!-- 29 -->
+    <section class="block" id="ci-observability">
+      <h2><span class="num">29</span> CI/CD and Observability</h2>
+<div class="callout life"><strong>Picture:</strong> A factory line that tests every new batch before it ships, and a dashboard that shows how the shop is doing right now.</div><details class="deepdive" open><summary>GitHub Actions: lint, type-check, test (template, not run)</summary><pre><code># .github/workflows/api-ci.yml
+name: api-ci
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: &quot;3.13&quot;, cache: pip }
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - run: ruff check . &amp;&amp; mypy app
+      - run: pytest -q --cov=app</code></pre></details><h3>Good to know</h3><ul><li>Observability: structured JSON logs with a request id (as in the middleware demo), Prometheus metrics (prometheus-fastapi-instrumentator), OpenTelemetry traces (opentelemetry-instrumentation-fastapi), error tracking (Sentry).</li><li>More on pipelines: <a href="jenkins-cicd.html">Jenkins &amp; CI/CD</a>.</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part F — Projects and Reference</h2></div>
+
+    <!-- 30 -->
+    <section class="block" id="project-todo">
+      <h2><span class="num">30</span> Project 1: A Todo API with Users, Database and Tests</h2>
+<div class="callout life"><strong>Picture:</strong> Put the pieces of this page together into one small real product.</div><table><tr><th>Step</th><th>Feature</th><th>Shown in</th></tr><tr><td>1</td><td>Project layout, settings from .env</td><td>Routers + Settings sections</td></tr><tr><td>2</td><td>SQLModel tables User and Todo (owner_id foreign key), Alembic migration</td><td>Databases section</td></tr><tr><td>3</td><td><code>POST /auth/register</code>, <code>POST /auth/token</code> with Argon2 hashes and JWTs</td><td>JWT login section</td></tr><tr><td>4</td><td>CRUD under <code>/todos</code>; every query filters by <code>owner_id == current_user.id</code></td><td>CRUD + security checklist (object-level authorization)</td></tr><tr><td>5</td><td>Pagination with <code>limit ≤ 100</code>, filters, sorting</td><td>Path and query parameters</td></tr><tr><td>6</td><td>Middleware for request id and timing; CORS for your frontend</td><td>Middleware section</td></tr><tr><td>7</td><td>pytest suite with dependency overrides and a test database</td><td>Testing section</td></tr><tr><td>8</td><td>Dockerfile + Compose with PostgreSQL; CI workflow</td><td>Deployment sections</td></tr></table><h3>Good to know</h3><ul><li>Stretch goals: refresh tokens, email verification with a background task, rate-limited login, ETags on lists, OpenTelemetry tracing, deploy to a container platform.</li></ul>
+    </section>
+
+    <!-- 31 -->
+    <section class="block" id="project-ai">
+      <h2><span class="num">31</span> Project 2: An AI Chat Backend</h2>
+<div class="callout life"><strong>Picture:</strong> A small ChatGPT-style backend for a school shop.</div><table><tr><th>Step</th><th>Feature</th></tr><tr><td>1</td><td><code>POST /chat</code> streaming SSE from Claude (template in Part D)</td></tr><tr><td>2</td><td>Conversations and messages stored in a database</td></tr><tr><td>3</td><td>Per-user authentication, rate limits and a daily token budget</td></tr><tr><td>4</td><td>Retrieval: search shop documents and add them to the prompt (see <a href="rag.html">RAG</a>)</td></tr><tr><td>5</td><td>Logging of prompt version, model, tokens and latency; an evaluation set run in CI (see <a href="mlops-llmops.html">MLOps &amp; LLMOps</a>)</td></tr><tr><td>6</td><td>Guardrails: input/output checks, no secrets in prompts (see <a href="ai-security.html">AI Security</a>)</td></tr></table>
+    </section>
+
+    <!-- 32 -->
+    <section class="block" id="fastapi-cheatsheet">
+      <h2><span class="num">32</span> FastAPI Cheat Sheet</h2>
+<div class="callout life"><strong>Picture:</strong> Everything you type most often.</div><table><tr><th>Want</th><th>Write</th></tr><tr><td>Create app</td><td><code>app = FastAPI(title=..., lifespan=lifespan)</code></td></tr><tr><td>GET endpoint</td><td><code>@app.get("/items/{item_id}")</code></td></tr><tr><td>Path/query limits</td><td><code>item_id: Annotated[int, Path(ge=1)]</code>, <code>limit: Annotated[int, Query(le=100)] = 10</code></td></tr><tr><td>JSON body</td><td><code>def create(item: ItemCreate)</code></td></tr><tr><td>Output shape</td><td><code>response_model=ItemPublic</code> or <code>-&gt; ItemPublic</code></td></tr><tr><td>Status code</td><td><code>status_code=201</code></td></tr><tr><td>Error</td><td><code>raise HTTPException(404, "Not found")</code></td></tr><tr><td>Dependency</td><td><code>user: Annotated[User, Depends(current_user)]</code></td></tr><tr><td>Header / cookie</td><td><code>x_token: Annotated[str, Header()]</code></td></tr><tr><td>Form / file</td><td><code>Annotated[str, Form()]</code>, <code>file: UploadFile</code></td></tr><tr><td>Router</td><td><code>r = APIRouter(prefix="/users", tags=["users"]); app.include_router(r)</code></td></tr><tr><td>Middleware</td><td><code>@app.middleware("http")</code> or <code>app.add_middleware(...)</code></td></tr><tr><td>Background job</td><td><code>tasks: BackgroundTasks; tasks.add_task(f, arg)</code></td></tr><tr><td>Stream</td><td><code>StreamingResponse(gen(), media_type="text/event-stream")</code></td></tr><tr><td>WebSocket</td><td><code>@app.websocket("/ws")</code></td></tr><tr><td>Test</td><td><code>TestClient(app).get("/")</code></td></tr><tr><td>Run</td><td><code>fastapi dev main.py</code> / <code>fastapi run main.py</code></td></tr></table>
+    </section>
+
+    <!-- 33 -->
+    <section class="block" id="interview-fastapi">
+      <h2><span class="num">33</span> Interview Questions (With Answers)</h2>
+<div class="callout life"><strong>Picture:</strong> Grouped by theme, easiest first. Click to reveal.</div><h3>A. Basics</h3>
+<details class="quiz-item"><summary>Q1: What is FastAPI and why is it popular?</summary><p class="answer">A Python ASGI web framework built on Starlette and Pydantic that uses type hints for automatic validation, serialization and OpenAPI docs, with good performance and little code.</p></details>
+<details class="quiz-item"><summary>Q2: WSGI vs ASGI?</summary><p class="answer">WSGI is the synchronous Python server interface (Flask, classic Django); ASGI supports async, WebSockets and long-lived connections (FastAPI, Starlette).</p></details>
+<details class="quiz-item"><summary>Q3: Path vs query parameters vs body?</summary><p class="answer">Path identifies the resource (<code>/items/5</code>); query refines it (<code>?limit=3</code>); body carries data (JSON for POST/PUT/PATCH).</p></details>
+<details class="quiz-item"><summary>Q4: What does a 422 mean in FastAPI?</summary><p class="answer">The request failed validation (wrong type, missing field, out of range); FastAPI returns details of each problem.</p></details>
+<details class="quiz-item"><summary>Q5: PUT vs PATCH?</summary><p class="answer">PUT replaces the whole resource; PATCH changes only the sent fields (use <code>model_dump(exclude_unset=True)</code>).</p></details>
+<h3>B. Pydantic and models</h3>
+<details class="quiz-item"><summary>Q6: Why separate input and output models?</summary><p class="answer">To control what clients may set (no mass assignment) and what they see (no passwords or internal fields).</p></details>
+<details class="quiz-item"><summary>Q7: What changed in Pydantic v2?</summary><p class="answer">Rust core (faster), renamed APIs (<code>model_dump</code>, <code>model_validate</code>, <code>field_validator</code>, <code>model_config</code>), stricter behaviours.</p></details>
+<details class="quiz-item"><summary>Q8: What is response_model for?</summary><p class="answer">Validates and filters the output and documents it in OpenAPI.</p></details>
+<h3>C. Dependencies and architecture</h3>
+<details class="quiz-item"><summary>Q9: What is dependency injection in FastAPI?</summary><p class="answer"><code>Depends()</code> declares helpers (DB session, current user, settings) that FastAPI resolves per request, can nest, cache per request, clean up with yield, and override in tests.</p></details>
+<details class="quiz-item"><summary>Q10: How do yield dependencies work?</summary><p class="answer">Code before <code>yield</code> runs before the endpoint, the yielded value is injected, code after runs after the response is ready (cleanup).</p></details>
+<details class="quiz-item"><summary>Q11: How do you structure a large FastAPI project?</summary><p class="answer">APIRouters per domain, schemas vs models, services for business logic, deps module, settings, migrations, tests; lifespan for shared resources.</p></details>
+<details class="quiz-item"><summary>Q12: What replaced @app.on_event('startup')?</summary><p class="answer">The lifespan async context manager passed to <code>FastAPI(lifespan=...)</code>.</p></details>
+<h3>D. Async and performance</h3>
+<details class="quiz-item"><summary>Q13: When do you use async def vs def?</summary><p class="answer">async def when everything inside is awaitable (async drivers); def for blocking code, which FastAPI runs in a thread pool.</p></details>
+<details class="quiz-item"><summary>Q14: What happens if you call time.sleep or a blocking DB driver in async def?</summary><p class="answer">It blocks the event loop; all requests on that worker wait (our demo: 2.0 s instead of 0.2 s for 10 requests).</p></details>
+<details class="quiz-item"><summary>Q15: How do you scale a FastAPI app?</summary><p class="answer">Multiple worker processes/containers behind a load balancer, stateless design, shared state in Redis/DB, caching, async I/O, background queues.</p></details>
+<details class="quiz-item"><summary>Q16: BackgroundTasks vs Celery?</summary><p class="answer">BackgroundTasks run in-process after the response (light work, lost on crash); Celery/queues run in separate workers with retries and persistence.</p></details>
+<h3>E. Security</h3>
+<details class="quiz-item"><summary>Q17: How does JWT authentication work?</summary><p class="answer">Login verifies the password hash and returns a signed token with sub/exp; protected routes verify signature and expiry on every request.</p></details>
+<details class="quiz-item"><summary>Q18: Is a JWT encrypted?</summary><p class="answer">Usually not: it is signed (tamper-evident) but its payload is readable base64; never put secrets in it.</p></details>
+<details class="quiz-item"><summary>Q19: 401 vs 403?</summary><p class="answer">401: not authenticated (missing/invalid credentials). 403: authenticated but not allowed.</p></details>
+<details class="quiz-item"><summary>Q20: What is CORS and is it a security feature for APIs?</summary><p class="answer">A browser rule controlling which websites' scripts may read your responses; it protects browser users, not your API from other clients.</p></details>
+<details class="quiz-item"><summary>Q21: How do you store passwords?</summary><p class="answer">Hash with a slow, salted algorithm (Argon2id, bcrypt); never store or log plain passwords.</p></details>
+<details class="quiz-item"><summary>Q22: What is broken object-level authorization?</summary><p class="answer">Users accessing others' objects by changing ids; always check ownership in queries.</p></details>
+<h3>F. Testing and deployment</h3>
+<details class="quiz-item"><summary>Q23: How do you test with a fake database or user?</summary><p class="answer"><code>app.dependency_overrides</code> to swap the session/user dependencies; TestClient or httpx AsyncClient.</p></details>
+<details class="quiz-item"><summary>Q24: How do you deploy FastAPI?</summary><p class="answer">Container with Uvicorn (fastapi run, workers), behind a reverse proxy/load balancer with TLS, migrations, health checks, logs and metrics.</p></details>
+<details class="quiz-item"><summary>Q25: How would you stream an LLM response?</summary><p class="answer">An async endpoint returning StreamingResponse with text/event-stream, yielding chunks from the async SDK stream.</p></details>
+    </section>
+
+    <!-- 34 -->
+    <section class="block" id="glossary-fastapi">
+      <h2><span class="num">34</span> Mini Glossary</h2>
+<div class="callout life"><strong>Picture:</strong> A pocket dictionary.</div><dl class="glossary">
+<dt>API</dt><dd>A defined way for programs to talk to each other.</dd>
+<dt>ASGI</dt><dd>Async server-framework interface used by FastAPI.</dd>
+<dt>Dependency</dt><dd>A function FastAPI runs for you and injects with Depends().</dd>
+<dt>Endpoint / path operation</dt><dd>One method + path handled by one function.</dd>
+<dt>ETag</dt><dd>A fingerprint of a response used for caching (304).</dd>
+<dt>Event loop</dt><dd>The scheduler that runs async code.</dd>
+<dt>HTTPException</dt><dd>Raise it to return an HTTP error.</dd>
+<dt>JWT</dt><dd>A signed token carrying claims such as sub and exp.</dd>
+<dt>Lifespan</dt><dd>Startup and shutdown code for the app.</dd>
+<dt>Middleware</dt><dd>Code around every request/response.</dd>
+<dt>OpenAPI</dt><dd>Machine-readable API description behind /docs.</dd>
+<dt>Pydantic</dt><dd>Validation library using type hints.</dd>
+<dt>Response model</dt><dd>The schema used to filter and document output.</dd>
+<dt>Router</dt><dd>A group of endpoints with a common prefix.</dd>
+<dt>SSE</dt><dd>Server-Sent Events: one-way stream from server to browser.</dd>
+<dt>Starlette</dt><dd>The ASGI toolkit FastAPI builds on.</dd>
+<dt>TestClient</dt><dd>Calls your app in tests without a real server.</dd>
+<dt>Uvicorn</dt><dd>The ASGI web server that runs FastAPI.</dd>
+<dt>WebSocket</dt><dd>Two-way long-lived connection.</dd>
+</dl>
+    </section>
+
+    <!-- 35 -->
+    <section class="block" id="faq-fastapi">
+      <h2><span class="num">35</span> FAQ</h2>
+<div class="callout life"><strong>Picture:</strong> Click a question to reveal the answer.</div><details class="quiz-item"><summary>Q: Do I need to know async to use FastAPI?</summary><p class="answer">No. Plain def endpoints work fine; learn async when you use async libraries.</p></details>
+<details class="quiz-item"><summary>Q: FastAPI or Django?</summary><p class="answer">FastAPI for APIs and services with full control; Django when you want an admin site, ORM, auth and templates built in.</p></details>
+<details class="quiz-item"><summary>Q: Is FastAPI production-ready although its version starts with 0?</summary><p class="answer">It is widely used in production; pin the exact version and read release notes before upgrading.</p></details>
+<details class="quiz-item"><summary>Q: Were these examples really run?</summary><p class="answer">Yes, with FastAPI 0.164.0, Pydantic 2.14.3 and Python 3.14 on 19 Nov 2026; Docker, PostgreSQL, Redis, Celery and Claude API code are templates.</p></details>
+<details class="quiz-item"><summary>Q: Where do I put my secret key?</summary><p class="answer">In an environment variable or secrets manager, read through settings; never in code or Git.</p></details>
+    </section>
+
+    <!-- 36 -->
+    <section class="block" id="pitfalls-fastapi">
+      <h2><span class="num">36</span> Common Mistakes and Checklist</h2>
+<div class="callout life"><strong>Picture:</strong> Traps beginners fall into.</div><div class="grid">
+<div class="card"><h4>😴 Blocking in async def</h4><p>requests, time.sleep, sync DB drivers freeze the loop.</p></div>
+<div class="card"><h4>🔓 Returning DB objects</h4><p>Leaks fields; use response models.</p></div>
+<div class="card"><h4>🔑 Secrets in code</h4><p>Use settings and env vars.</p></div>
+<div class="card"><h4>🌍 allow_origins=["*"] with cookies</h4><p>List exact origins.</p></div>
+<div class="card"><h4>🧍 Missing ownership checks</h4><p>Filter by current user.</p></div>
+<div class="card"><h4>📚 Unbounded lists</h4><p>Paginate with limits.</p></div>
+<div class="card"><h4>🧠 In-memory state with many workers</h4><p>Use Redis/DB.</p></div>
+<div class="card"><h4>🗑️ create_all in production</h4><p>Use migrations.</p></div>
+<div class="card"><h4>🔁 Old tutorials</h4><p>Pydantic v1 APIs, on_event, passlib: check current docs.</p></div></div>
+    </section>
+
+    <!-- 37 -->
+    <section class="block" id="quiz-fastapi">
+      <h2><span class="num">37</span> Quick Quiz 🎯</h2>
+<div class="callout life"><strong>Picture:</strong> Click each question to reveal the answer.</div><details class="quiz-item"><summary>Q1: What status code did /items/abc return?</summary><p class="answer">422 (not a valid integer).</p></details>
+<details class="quiz-item"><summary>Q2: Which model kept the password out of the response?</summary><p class="answer">The response model UserOut.</p></details>
+<details class="quiz-item"><summary>Q3: In which order did the yield dependency demo log events?</summary><p class="answer">open db → endpoint runs → close db.</p></details>
+<details class="quiz-item"><summary>Q4: Which endpoint style took about 2 s for 10 requests?</summary><p class="answer">async def with a blocking time.sleep.</p></details>
+<details class="quiz-item"><summary>Q5: What status means 'your cached copy is fine'?</summary><p class="answer">304 Not Modified.</p></details>
+<details class="quiz-item"><summary>Q6: Can anyone read a JWT's payload?</summary><p class="answer">Yes; it is signed, not encrypted.</p></details>
+<details class="quiz-item"><summary>Q7: Which command starts the development server with reload?</summary><p class="answer"><code>fastapi dev main.py</code>.</p></details>
+    </section>
+
+    <!-- 38 -->
+    <section class="block" id="learning-path-fastapi">
+      <h2><span class="num">38</span> Learning Path</h2>
+<div class="callout life"><strong>Picture:</strong> A staircase from curious to confident.</div><table><tr><th>Step</th><th>Learn</th><th>Build</th></tr><tr><td>1</td><td><a href="python.html">Python</a> (functions, type hints, classes), HTTP basics</td><td>Call public APIs with httpx</td></tr><tr><td>2</td><td>Part B: parameters, Pydantic, responses, docs</td><td>A notes API in memory</td></tr><tr><td>3</td><td>Dependencies, CRUD, errors</td><td>Same API with clean structure and tests</td></tr><tr><td>4</td><td>Part C: database, auth, settings, security</td><td>Project 1 with SQLite then PostgreSQL</td></tr><tr><td>5</td><td>Part D: async, streaming, WebSockets, background work</td><td>Live dashboard or chat</td></tr><tr><td>6</td><td>Part E: testing, Docker, deployment, observability</td><td>Deploy Project 1 to a container platform</td></tr><tr><td>7</td><td>AI backends</td><td>Project 2: streaming LLM chat with RAG and evaluation</td></tr></table><h3>Good to know</h3><ul><li>Related: <a href="dbms.html">DBMS</a>, <a href="computer-networks.html">Networks</a>, <a href="docker-kubernetes.html">Docker &amp; Kubernetes</a>, <a href="jenkins-cicd.html">CI/CD</a>, <a href="langchain.html">LangChain</a>, <a href="mlops-llmops.html">MLOps &amp; LLMOps</a>.</li></ul>
+    </section>
+
+    <!-- 39 -->
+    <section class="block" id="resources-fastapi">
+      <h2><span class="num">39</span> Learn More — Resources</h2>
+<div class="callout life"><strong>Picture:</strong> A shelf of primary sources.</div><p>All links below returned HTTP 200 when checked on 19 November 2026. YouTube links are search queries.</p>
+<ul class="resources">
+<li><span class="tag docs">docs</span> <a href="https://fastapi.tiangolo.com/">FastAPI documentation</a> · <a href="https://fastapi.tiangolo.com/tutorial/">Tutorial - User Guide</a> · <a href="https://fastapi.tiangolo.com/async/">Concurrency and async/await</a> · <a href="https://fastapi.tiangolo.com/tutorial/security/">Security</a> · <a href="https://fastapi.tiangolo.com/deployment/">Deployment</a> · <a href="https://fastapi.tiangolo.com/release-notes/">Release notes</a></li>
+<li><span class="tag docs">docs</span> <a href="https://docs.pydantic.dev/latest/">Pydantic</a> · <a href="https://docs.pydantic.dev/latest/concepts/pydantic_settings/">pydantic-settings</a> · <a href="https://starlette.dev/">Starlette</a> · <a href="https://uvicorn.dev/">Uvicorn</a> · <a href="https://sqlmodel.tiangolo.com/">SQLModel</a> · <a href="https://docs.sqlalchemy.org/en/20/">SQLAlchemy 2.0</a> · <a href="https://www.python-httpx.org/">HTTPX</a></li>
+<li><span class="tag docs">docs</span> <a href="https://swagger.io/specification/">OpenAPI specification</a> · <a href="https://owasp.org/API-Security/">OWASP API Security project</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status">MDN: HTTP status codes</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">MDN: CORS</a></li>
+<li><span class="tag video">video</span> <a href="https://www.youtube.com/results?search_query=fastapi+full+course">FastAPI full course (search)</a> · <a href="https://www.youtube.com/results?search_query=fastapi+jwt+authentication">FastAPI JWT authentication (search)</a></li>
+</ul>
+<p><strong>Dated facts (PyPI, 19 Nov 2026):</strong> fastapi 0.164.0 (18 Nov 2026, Python ≥ 3.11), pydantic 2.14.3 (5 Nov), starlette 1.10.0 (24 Oct), uvicorn 0.54.0 (25 Sep), sqlmodel 0.0.50 (13 Nov); also used: httpx 0.28.1, SQLAlchemy 2.1.9, PyJWT 2.15.1, pwdlib 0.4.2, pydantic-settings 2.16.3, pytest 9.2.0. Behaviour observed for real: included routers appear as wrapper objects in <code>app.routes</code> in this version.</p>
+    </section>
+  </main>
+</div>
+
+<div class="page-nav">
+  <a href="index.html">⬅ Back to Roadmap Home</a>
+  <a href="python.html">Related: Python ➜</a>
+</div>
+
+</body>
+</html>

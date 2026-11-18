@@ -464,3 +464,15 @@ dl.glossary dd { margin: 4px 0 0; color: var(--text-dim); }
 .block th, .block td { overflow-wrap: normal; word-break: normal; }
 .block pre { max-width: 100%; overflow-x: auto; }
 .block pre, .block pre code { overflow-wrap: normal; }
+
+/* ---------- Home page sections (19 Nov 2026) ---------- */
+.home-nav { max-width: var(--maxw); margin: 22px auto 0; padding: 0 24px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.home-nav a { background: var(--card); border: 1px solid var(--card-border); border-radius: 999px; padding: 6px 14px; color: var(--text); font-size: 0.9rem; }
+.home-nav a:hover { border-color: var(--accent); text-decoration: none; }
+.home-nav .count { color: var(--text-dim); font-size: 0.8rem; margin-left: 4px; }
+.home-sections { padding-bottom: 90px; }
+.home-section { max-width: var(--maxw); margin: 0 auto; padding: 38px 24px 0; scroll-margin-top: 12px; }
+.home-section h2 { margin: 0 0 4px; padding-bottom: 8px; border-bottom: 1px solid var(--card-border); color: var(--text); font-size: 1.45rem; }
+.home-section h2 .count { color: var(--text-dim); font-size: 0.85rem; font-weight: 400; margin-left: 8px; }
+.home-section .section-desc { color: var(--text-dim); margin: 8px 0 0; }
+.home-section .subject-grid { padding: 18px 0 0; }
