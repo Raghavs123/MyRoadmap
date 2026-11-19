@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Computer Vision (CV) — The Complete A-Z Guide</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👁️</text></svg>">
+</head>
+<body>
+
+<header class="hero">
+  <div class="breadcrumb"><a href="index.html">🏠 Roadmap Home</a> / Computer Vision</div>
+  <h1>👁️ Computer Vision — Teaching Computers to See</h1>
+  <p class="subtitle">
+    The complete A-to-Z guide in very easy words: what an image is to a computer (pixels, channels, colour spaces), image processing (histograms, thresholding, filters, convolution, edges, morphology), geometry (transforms, homography, camera model), features (corners, HOG, keypoints and matching), classic machine learning on images, CNNs from scratch, training tricks, transfer learning, object detection (IoU, NMS, anchors, YOLO-style), segmentation, Vision Transformers, self-supervised and multimodal models (CLIP), generative models, video and tracking, 3D and depth, OCR, evaluation metrics, deployment, ethics and privacy, projects and interview prep. Every program was really run (Python 3.14, OpenCV 5.1, scikit-image 0.26, PyTorch 2.14 CPU, torchvision 0.29, scikit-learn 1.9) on built-in sample images, synthetic images or small datasets.
+    Every picture has a daily-life story; outputs shown are from programs that were really run; anything not run is labelled.
+    <strong>Last reviewed: 19 November 2026</strong> (dated facts are marked and hedged).
+  </p>
+  <div class="badge-row">
+    <span class="badge beginner">Beginner friendly</span>
+    <span class="badge intermediate">Intermediate concepts</span>
+    <span class="badge advanced">Advanced / Interview</span>
+  </div>
+</header>
+
+<div class="layout">
+
+  <nav class="toc">
+    <h3>On this page (49 sections)</h3>
+    <ol>
+      <li class="toc-part">Part A — What Computer Vision Is and What an Image Really Is</li>
+      <li><a href="#what-is-cv">What Is Computer Vision?</a></li>
+      <li><a href="#history">A Short History (Dates to Re-check)</a></li>
+      <li><a href="#cv-tasks">The Map of Vision Tasks</a></li>
+      <li><a href="#pipeline">The CV Pipeline</a></li>
+      <li><a href="#pixels">An Image Is a Grid of Numbers</a></li>
+      <li><a href="#colour-spaces">Colour Spaces: RGB, HSV, LAB</a></li>
+      <li><a href="#page-helper">The Small Helper Used by the Programs</a></li>
+      <li class="toc-part">Part B — Image Processing: Changing and Cleaning Pictures</li>
+      <li><a href="#histogram">Histograms and Contrast</a></li>
+      <li><a href="#threshold">Thresholding and Counting Objects</a></li>
+      <li><a href="#convolution">Convolution: The Most Important Operation in Vision</a></li>
+      <li><a href="#denoising">Noise and Smoothing Filters (Measured)</a></li>
+      <li><a href="#edges">Edges: Sobel and Canny</a></li>
+      <li><a href="#morphology">Morphology: Erode, Dilate, Open, Close</a></li>
+      <li class="toc-part">Part C — Geometry, Cameras and Features</li>
+      <li><a href="#geometry">Geometric Transforms and Homography</a></li>
+      <li><a href="#features">Keypoints and Matching (ORB + RANSAC)</a></li>
+      <li><a href="#template-matching">Template Matching (and Where It Breaks)</a></li>
+      <li><a href="#hog-classic">Classic Machine Learning on Images: HOG + SVM</a></li>
+      <li class="toc-part">Part D — Deep Learning for Vision</li>
+      <li><a href="#conv-layers">CNN Building Blocks: Convolution, Stride, Padding, Pooling</a></li>
+      <li><a href="#cnn-digits">Your First CNN: Logistic Regression vs MLP vs CNN</a></li>
+      <li><a href="#cnn-learns">What Does a CNN Learn? Kernels and Feature Maps</a></li>
+      <li><a href="#augmentation">Data Augmentation: More Data for Free</a></li>
+      <li><a href="#transfer-learning">Transfer Learning with Pre-trained Networks</a></li>
+      <li><a href="#architectures">Famous Architectures in One Table</a></li>
+      <li><a href="#vit">Vision Transformers: Patches Are Words</a></li>
+      <li><a href="#clip-foundation">Self-Supervised, CLIP and Foundation Models</a></li>
+      <li class="toc-part">Part E — Detection and Segmentation</li>
+      <li><a href="#detection-basics">Object Detection: Boxes, Scores and Classes</a></li>
+      <li><a href="#iou-nms">IoU and Non-Maximum Suppression</a></li>
+      <li><a href="#map-metric">Measuring Detectors: Precision-Recall and mAP</a></li>
+      <li><a href="#yolo">Using a Real Detector (YOLO)</a></li>
+      <li><a href="#segmentation">Segmentation: Semantic, Instance and Panoptic (k-means Example)</a></li>
+      <li><a href="#unet">Train a Tiny U-Net for Segmentation</a></li>
+      <li class="toc-part">Part F — Video, 3-D, Generation, OCR and Vision-Language</li>
+      <li><a href="#optical-flow">Motion: Optical Flow and Background Subtraction</a></li>
+      <li><a href="#tracking">Multi-Object Tracking</a></li>
+      <li><a href="#camera-3d">Cameras, 3-D and Depth</a></li>
+      <li><a href="#generative-vision">Generating Images: GANs and Diffusion</a></li>
+      <li><a href="#ocr">OCR: Reading Text in Images</a></li>
+      <li><a href="#vision-language">Vision-Language Models: Asking Questions About Images</a></li>
+      <li class="toc-part">Part G — Robustness, Deployment and Responsibility</li>
+      <li><a href="#adversarial">Robustness: Adversarial Examples (Defence Lesson)</a></li>
+      <li><a href="#deploy-quantize">Deployment: Smaller and Faster Models</a></li>
+      <li><a href="#image-search">Near-Duplicate Images: Perceptual Hashing</a></li>
+      <li><a href="#ethics">Privacy, Fairness and Responsible Vision</a></li>
+      <li class="toc-part">Part H — Projects, Interview Prep and Reference</li>
+      <li><a href="#projects">Projects to Build (Beginner to Advanced)</a></li>
+      <li><a href="#interview">Interview Questions and Answers (Easy → Hard)</a></li>
+      <li><a href="#pitfalls">Common Pitfalls and a Checklist</a></li>
+      <li><a href="#glossary">Mini Glossary</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#quiz">Quick Quiz</a></li>
+      <li><a href="#learning-path">Learning Path</a></li>
+      <li><a href="#resources">Resources</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <div class="part-divider"><h2>Part A — What Computer Vision Is and What an Image Really Is</h2></div>
+
+    <!-- 1 -->
+    <section class="block" id="what-is-cv">
+      <h2><span class="num">1</span> What Is Computer Vision?</h2>
+<div class="callout life"><strong>Picture:</strong> Giving a computer eyes <em>and</em> the part of the brain that understands what the eyes see. A camera alone only records colours; computer vision turns those colours into answers: 'there are 24 coins', 'this is a cat', 'the car is 12 m away'.</div><table><tr><th>Question</th><th>CV task</th><th>Everyday example</th></tr><tr><td>What is in the picture?</td><td>image classification</td><td>photo app sorting pictures into 'food', 'pets'</td></tr><tr><td>Where is each object?</td><td>object detection</td><td>self-checkout spotting products, traffic cameras</td></tr><tr><td>Which pixels belong to what?</td><td>segmentation</td><td>portrait mode blur, medical scans</td></tr><tr><td>How did things move?</td><td>optical flow, tracking</td><td>sports analytics, video stabilisation</td></tr><tr><td>How far away is it?</td><td>depth / 3-D</td><td>robot vacuum, AR apps</td></tr><tr><td>What does the text say?</td><td>OCR</td><td>scanning receipts, number plates</td></tr><tr><td>Describe or create images</td><td>vision-language, generative models</td><td>image captions, AI image generation</td></tr></table><h3>Good to know</h3><ul><li>Related guides: <a href="deep-learning.html">Deep Learning</a>, <a href="tensorflow-pytorch.html">TensorFlow &amp; PyTorch</a>, <a href="machine-learning.html">Machine Learning</a>, <a href="nlp.html">NLP</a>, <a href="genai.html">Generative AI</a>, <a href="python.html">Python</a>.</li></ul><div class="callout tip">Honest note: every program on this page was <strong>really run</strong> on 19 Nov 2026 on a laptop CPU (Python 3.14, OpenCV 5.1, scikit-image 0.26, PyTorch 2.14, torchvision 0.29, scikit-learn 1.9). Images come from sample photos that ship with scikit-image and scikit-learn, from the 8×8 digits dataset, or are synthetic (drawn by the program). The pictures shown are the programs' real outputs. Anything needing a model download, a GPU, a camera or an API key is labelled <em>template (not run)</em>.</div>
+    </section>
+
+    <!-- 2 -->
+    <section class="block" id="history">
+      <h2><span class="num">2</span> A Short History (Dates to Re-check)</h2>
+<div class="callout life"><strong>Picture:</strong> How a baby learns to see: first edges and light/dark, then shapes, then faces and objects, then whole scenes. Computer vision grew in the same order.</div><table><tr><th>When</th><th>Milestone</th></tr><tr><td>1960s</td><td>Early 'blocks world' research; the idea that vision is a solvable summer project (it was not)</td></tr><tr><td>1980s</td><td>Edge detectors (Canny 1986), optical flow methods, camera geometry</td></tr><tr><td>1999-2005</td><td>SIFT keypoints, Viola-Jones face detection, HOG pedestrian detection</td></tr><tr><td>2009-2012</td><td>ImageNet dataset; AlexNet (2012) wins with a deep CNN on GPUs</td></tr><tr><td>2014-2016</td><td>VGG, GoogLeNet, ResNet (2015); R-CNN family, YOLO (2015/16) and SSD detectors; U-Net (2015) for segmentation</td></tr><tr><td>2017-2020</td><td>Mask R-CNN, EfficientNet, Vision Transformer (ViT, 2020)</td></tr><tr><td>2021-2023</td><td>CLIP (2021) links images and text; diffusion models generate images; Segment Anything (2023)</td></tr><tr><td>2024-2026</td><td>Vision-language models that answer questions about images; real-time detectors keep improving; models run on phones</td></tr></table><div class="callout warn">Detector and model version numbers (for example YOLO generations) change very fast and are partly vendor branding. Check the official docs for the current version before quoting one.</div>
+    </section>
+
+    <!-- 3 -->
+    <section class="block" id="cv-tasks">
+      <h2><span class="num">3</span> The Map of Vision Tasks</h2>
+<div class="callout life"><strong>Picture:</strong> Looking at a class photo at four zoom levels: 'it is a class photo' (classification), 'here are 30 boxes around 30 children' (detection), 'these exact pixels are Asha' (segmentation), 'Asha moved two seats left since last year' (tracking).</div><div class="diagram-wrap"><svg viewBox="0 0 560 254" style="width:100%;max-width:560px" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrSc1_arrow" markerWidth="10" markerHeight="10" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8" fill="none" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc1_tri" markerWidth="12" markerHeight="12" refX="11" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc1_dia" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--accent)" stroke="var(--accent)"/></marker><marker id="arrSc1_diah" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker></defs><line x1="120" y1="80" x2="160" y2="66" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc1_arrow)"/><line x1="120" y1="105" x2="160" y2="110" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc1_arrow)"/><line x1="115" y1="126" x2="186" y2="170" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc1_arrow)"/><line x1="310" y1="200" x2="350" y2="200" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc1_arrow)"/><line x1="310" y1="120" x2="350" y2="120" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc1_arrow)"/><rect class="box" x="20" y="70" width="100" height="56" rx="9"/><text x="70" y="102" text-anchor="middle" font-size="12">Image</text><rect class="box-hl" x="160" y="10" width="150" height="60" rx="9"/><text x="235" y="30" text-anchor="middle" font-size="12">Classification</text><text x="235" y="44" text-anchor="middle" font-size="10" class="edge-label">one label:</text><text x="235" y="58" text-anchor="middle" font-size="10" class="edge-label">'cat'</text><rect class="box-hl" x="160" y="90" width="150" height="60" rx="9"/><text x="235" y="117" text-anchor="middle" font-size="12">Detection</text><text x="235" y="131" text-anchor="middle" font-size="10" class="edge-label">boxes + labels</text><rect class="box-final" x="160" y="170" width="150" height="60" rx="9"/><text x="235" y="197" text-anchor="middle" font-size="12">Segmentation</text><text x="235" y="211" text-anchor="middle" font-size="10" class="edge-label">a label per pixel</text><rect class="box" x="350" y="170" width="190" height="60" rx="9"/><text x="445" y="190" text-anchor="middle" font-size="12">Instance / panoptic</text><text x="445" y="204" text-anchor="middle" font-size="10" class="edge-label">which pixels belong to</text><text x="445" y="218" text-anchor="middle" font-size="10" class="edge-label">which object</text><rect class="box" x="350" y="90" width="190" height="60" rx="9"/><text x="445" y="110" text-anchor="middle" font-size="12">Tracking (video)</text><text x="445" y="124" text-anchor="middle" font-size="10" class="edge-label">same object, same ID</text><text x="445" y="138" text-anchor="middle" font-size="10" class="edge-label">across frames</text></svg><div class="diagram-caption">Fig S1 — From coarse to fine: what each task outputs.</div></div>
+    </section>
+
+    <!-- 4 -->
+    <section class="block" id="pipeline">
+      <h2><span class="num">4</span> The CV Pipeline</h2>
+<div class="callout life"><strong>Picture:</strong> A photo studio: capture, develop and clean the photo, look for interesting parts, decide what they are, then act on the decision.</div><div class="diagram-wrap"><svg viewBox="0 0 790 230" style="width:100%;max-width:790px" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrSc2_arrow" markerWidth="10" markerHeight="10" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8" fill="none" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc2_tri" markerWidth="12" markerHeight="12" refX="11" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc2_dia" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--accent)" stroke="var(--accent)"/></marker><marker id="arrSc2_diah" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker></defs><line x1="130" y1="82" x2="160" y2="82" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc2_arrow)"/><line x1="290" y1="82" x2="320" y2="82" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc2_arrow)"/><line x1="450" y1="82" x2="480" y2="82" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc2_arrow)"/><line x1="610" y1="82" x2="640" y2="82" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc2_arrow)"/><line x1="705" y1="114" x2="705" y2="150" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc2_arrow)"/><rect class="box" x="10" y="50" width="120" height="64" rx="9"/><text x="70" y="72" text-anchor="middle" font-size="12">Capture</text><text x="70" y="86" text-anchor="middle" font-size="10" class="edge-label">camera, scan,</text><text x="70" y="100" text-anchor="middle" font-size="10" class="edge-label">video</text><rect class="box-hl" x="160" y="50" width="130" height="64" rx="9"/><text x="225" y="72" text-anchor="middle" font-size="12">Pre-process</text><text x="225" y="86" text-anchor="middle" font-size="10" class="edge-label">resize, colour,</text><text x="225" y="100" text-anchor="middle" font-size="10" class="edge-label">denoise</text><rect class="box-hl" x="320" y="50" width="130" height="64" rx="9"/><text x="385" y="72" text-anchor="middle" font-size="12">Features</text><text x="385" y="86" text-anchor="middle" font-size="10" class="edge-label">edges, keypoints</text><text x="385" y="100" text-anchor="middle" font-size="10" class="edge-label">or CNN layers</text><rect class="box-final" x="480" y="50" width="130" height="64" rx="9"/><text x="545" y="72" text-anchor="middle" font-size="12">Model</text><text x="545" y="86" text-anchor="middle" font-size="10" class="edge-label">classifier, detector,</text><text x="545" y="100" text-anchor="middle" font-size="10" class="edge-label">segmenter</text><rect class="box" x="640" y="50" width="130" height="64" rx="9"/><text x="705" y="72" text-anchor="middle" font-size="12">Post-process</text><text x="705" y="86" text-anchor="middle" font-size="10" class="edge-label">NMS, tracking,</text><text x="705" y="100" text-anchor="middle" font-size="10" class="edge-label">measurement</text><rect class="box" x="640" y="150" width="130" height="56" rx="9"/><text x="705" y="168" text-anchor="middle" font-size="12">Decide / act</text><text x="705" y="182" text-anchor="middle" font-size="10" class="edge-label">alert, count,</text><text x="705" y="196" text-anchor="middle" font-size="10" class="edge-label">robot moves</text></svg><div class="diagram-caption">Fig S2 — A typical computer vision pipeline.</div></div><h3>Good to know</h3><ul><li>Classic CV hand-designs the 'features' step; deep learning learns it from data. Real systems often mix both (classic pre/post-processing around a neural network).</li></ul>
+    </section>
+
+    <!-- 5 -->
+    <section class="block" id="pixels">
+      <h2><span class="num">5</span> An Image Is a Grid of Numbers</h2>
+<div class="callout life"><strong>Picture:</strong> A huge mosaic made of tiny coloured tiles. Each tile (pixel) has three numbers for how much red, green and blue light it gives, from 0 (none) to 255 (full).</div><details class="deepdive" open><summary>Shape, pixels, grayscale, crop, down-sampling (run for real)</summary><pre><code># An image is a grid of numbers: height x width x channels (red, green, blue), each 0..255
+import numpy as np
+from sklearn.datasets import load_sample_image
+from cvshared import montage
+img = load_sample_image(&quot;flower.jpg&quot;)                         # a real photo shipped with scikit-learn
+print(&quot;shape (height, width, channels):&quot;, img.shape, &quot;| type:&quot;, img.dtype, &quot;| size in memory:&quot;, img.nbytes, &quot;bytes&quot;)
+print(&quot;top-left pixel [R, G, B]:&quot;, img[0, 0].tolist(), &quot;| centre pixel:&quot;, img[213, 320].tolist())
+gray = (0.299 * img[..., 0] + 0.587 * img[..., 1] + 0.114 * img[..., 2]).astype(np.uint8)   # luminance formula
+print(&quot;gray shape:&quot;, gray.shape, &quot;| min/max/mean:&quot;, gray.min(), gray.max(), round(float(gray.mean()), 1))
+crop = img[100:300, 200:450]
+print(&quot;crop shape:&quot;, crop.shape, &quot;(slicing = cutting the picture)&quot;)
+small = img[::8, ::8]
+print(&quot;every 8th pixel -&gt;&quot;, small.shape, &quot;(that is why low resolution looks blocky)&quot;)
+montage(&quot;pixels.png&quot;, [img, gray, img[..., 0], img[..., 1], img[..., 2], small],
+        [&quot;original&quot;, &quot;gray&quot;, &quot;red channel&quot;, &quot;green channel&quot;, &quot;blue channel&quot;, &quot;every 8th pixel&quot;])
+
+# ----- Output (real run) -----
+# shape (height, width, channels): (427, 640, 3) | type: uint8 | size in memory: 819840 bytes
+# top-left pixel [R, G, B]: [2, 19, 13] | centre pixel: [143, 1, 0]
+# gray shape: (427, 640) | min/max/mean: 5 227 65.7
+# crop shape: (200, 250, 3) (slicing = cutting the picture)
+# every 8th pixel -&gt; (54, 80, 3) (that is why low resolution looks blocky)
+# [saved picture pixels.png: 1563x208]</code></pre></details><div class="diagram-wrap"><img src="img/cv/pixels.jpg" alt="The flower photo, its gray version, its three colour channels and every 8th pixel" loading="lazy" style="max-width:100%;height:auto;border-radius:6px"><div class="diagram-caption">Fig S3 — The flower photo, its gray version, its three colour channels and every 8th pixel (real output of the program above)</div></div><h3>Good to know</h3><ul><li>Shape is (height, width, channels). OpenCV loads files as <strong>BGR</strong>, most other libraries as RGB: mixing them up turns blue skies orange.</li><li>Gray = 0.299 R + 0.587 G + 0.114 B: green counts most because our eyes are most sensitive to it.</li><li>uint8 values wrap around (250 + 10 = 4!): convert to float before arithmetic, then clip back to 0-255.</li></ul>
+    </section>
+
+    <!-- 6 -->
+    <section class="block" id="colour-spaces">
+      <h2><span class="num">6</span> Colour Spaces: RGB, HSV, LAB</h2>
+<div class="callout life"><strong>Picture:</strong> Describing a dress: 'R=200, G=40, B=60' is hard to reason about; 'a deep red, quite bright' (hue, saturation, value) is how people talk. HSV separates the colour itself from how light or dark it is.</div><details class="deepdive" open><summary>Find yellow and red parts with HSV thresholds (run for real)</summary><pre><code># Colour spaces: find the flower&#x27;s yellow centre with HSV (hue = colour, saturation, value = brightness)
+import cv2, numpy as np
+from sklearn.datasets import load_sample_image
+from cvshared import montage
+rgb = load_sample_image(&quot;flower.jpg&quot;)
+hsv = cv2.cvtColor(rgb, cv2.COLOR_RGB2HSV)                     # OpenCV hue range is 0..179
+print(&quot;pixel RGB&quot;, rgb[213, 320].tolist(), &quot;-&gt; HSV&quot;, hsv[213, 320].tolist())
+yellow = cv2.inRange(hsv, (15, 80, 80), (35, 255, 255))         # hue 15-35 = yellow/orange
+red1, red2 = cv2.inRange(hsv, (0, 80, 60), (8, 255, 255)), cv2.inRange(hsv, (170, 80, 60), (179, 255, 255))
+red = red1 | red2                                              # red wraps around the hue circle
+print(f&quot;yellow pixels: {np.count_nonzero(yellow)} ({100 * np.count_nonzero(yellow) / yellow.size:.1f}% of image)&quot;)
+print(f&quot;red pixels   : {np.count_nonzero(red)} ({100 * np.count_nonzero(red) / red.size:.1f}% of image)&quot;)
+lab = cv2.cvtColor(rgb, cv2.COLOR_RGB2LAB)
+print(&quot;same pixel in LAB (lightness, green-red, blue-yellow):&quot;, lab[213, 320].tolist())
+montage(&quot;colour.png&quot;, [rgb, hsv[..., 0], yellow, red, rgb * (yellow[..., None] &gt; 0)],
+        [&quot;original&quot;, &quot;hue channel&quot;, &quot;yellow mask&quot;, &quot;red mask&quot;, &quot;only yellow kept&quot;])
+
+# ----- Output (real run) -----
+# pixel RGB [143, 1, 0] -&gt; HSV [0, 255, 143]
+# yellow pixels: 26973 (9.9% of image)
+# red pixels   : 8485 (3.1% of image)
+# same pixel in LAB (lightness, green-red, blue-yellow): [74, 180, 171]
+# [saved picture colour.png: 1306x208]</code></pre></details><div class="diagram-wrap"><img src="img/cv/colour.jpg" alt="Hue channel and colour masks of the flower photo" loading="lazy" style="max-width:100%;height:auto;border-radius:6px"><div class="diagram-caption">Fig S4 — Hue channel and colour masks of the flower photo (real output of the program above)</div></div><table><tr><th>Space</th><th>Channels</th><th>Good for</th></tr><tr><td>RGB / BGR</td><td>red, green, blue</td><td>storage, display, neural network input</td></tr><tr><td>HSV / HSL</td><td>hue, saturation, value</td><td>picking colours, simple colour segmentation</td></tr><tr><td>LAB</td><td>lightness, green-red, blue-yellow</td><td>colour differences that match human perception</td></tr><tr><td>YCrCb / YUV</td><td>brightness + 2 colour parts</td><td>video compression, skin detection</td></tr><tr><td>Gray</td><td>one brightness channel</td><td>edges, shapes, faster processing</td></tr></table><h3>Good to know</h3><ul><li>Red sits at both ends of the hue circle (0 and 179 in OpenCV), so red needs two ranges.</li><li>Colour thresholds break when lighting changes; learned models are more robust.</li></ul>
+    </section>
+
+    <!-- 7 -->
+    <section class="block" id="page-helper">
+      <h2><span class="num">7</span> The Small Helper Used by the Programs</h2>
+<div class="callout life"><strong>Picture:</strong> A photo-album page: the programs paste their before/after pictures side by side with a label, and save them so you can see the real results.</div><details class="deepdive" open><summary>shared/cvshared.py: save a labelled montage (used by many programs below) (template, not run)</summary><pre><code>&quot;&quot;&quot;Helpers shared by the programs on the Computer Vision page: save a labelled montage of images as a small PNG.&quot;&quot;&quot;
+import os
+import numpy as np
+from PIL import Image, ImageDraw, ImageFont
+
+OUT = os.environ.get(&quot;CV_OUT&quot;, &quot;.&quot;)
+
+
+def to_uint8(img):
+    a = np.asarray(img)
+    if a.dtype == bool:
+        a = a.astype(np.uint8) * 255
+    elif a.dtype != np.uint8:
+        a = a.astype(np.float64)
+        lo, hi = a.min(), a.max()
+        a = ((a - lo) / (hi - lo + 1e-12) * 255).astype(np.uint8)
+    if a.ndim == 2:
+        a = np.stack([a] * 3, -1)
+    return a
+
+
+def montage(name, images, labels, height=170):
+    &quot;&quot;&quot;Put images side by side (same height) with a label under each; save as OUT/name.&quot;&quot;&quot;
+    tiles = []
+    for img, lab in zip(images, labels):
+        im = Image.fromarray(to_uint8(img))
+        w = max(1, int(im.width * height / im.height))
+        im = im.resize((w, height), Image.NEAREST if im.height &lt; 64 else Image.BILINEAR)
+        tile = Image.new(&quot;RGB&quot;, (w, height + 26), &quot;white&quot;)
+        tile.paste(im, (0, 0))
+        ImageDraw.Draw(tile).text((4, height + 3), lab, fill=(20, 20, 20), font=ImageFont.load_default(size=16))
+        tiles.append(tile)
+    W = sum(t.width for t in tiles) + 6 * (len(tiles) + 1)
+    canvas = Image.new(&quot;RGB&quot;, (W, height + 38), (235, 238, 243))
+    x = 6
+    for t in tiles:
+        canvas.paste(t, (x, 6)); x += t.width + 6
+    path = os.path.join(OUT, name)
+    canvas.save(path, optimize=True)
+    print(f&quot;[saved picture {name}: {canvas.width}x{canvas.height}]&quot;)</code></pre></details>
+    </section>
+
+    <div class="part-divider"><h2>Part B — Image Processing: Changing and Cleaning Pictures</h2></div>
+
+    <!-- 8 -->
+    <section class="block" id="histogram">
+      <h2><span class="num">8</span> Histograms and Contrast</h2>
+<div class="callout life"><strong>Picture:</strong> Sorting all the tiles of the mosaic into 256 buckets by brightness and counting them. A dull photo has all its tiles in a few middle buckets; improving contrast spreads them out.</div><details class="deepdive" open><summary>Stretch, global equalization, CLAHE (run for real)</summary><pre><code># Histograms and contrast: plain stretch vs histogram equalization vs CLAHE
+import cv2, numpy as np
+from skimage import data
+from cvshared import montage
+img = data.moon()                                             # a dull, low-contrast photo
+def spread(a): return int(np.percentile(a, 99) - np.percentile(a, 1))
+eq = cv2.equalizeHist(img)
+clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8)).apply(img)
+lo, hi = np.percentile(img, (1, 99)); stretch = np.clip((img - lo) * 255.0 / (hi - lo), 0, 255).astype(np.uint8)
+for name, a in [(&quot;original&quot;, img), (&quot;stretch&quot;, stretch), (&quot;equalized&quot;, eq), (&quot;CLAHE&quot;, clahe)]:
+    h = np.bincount(a.ravel(), minlength=256)
+    print(f&quot;{name:10} 1-99% brightness range: {spread(a):3d} | darkest bin {int(np.argmax(h &gt; 0)):3d} | most common value {int(np.argmax(h)):3d}&quot;)
+montage(&quot;histogram.png&quot;, [img, stretch, eq, clahe], [&quot;original&quot;, &quot;contrast stretch&quot;, &quot;equalized&quot;, &quot;CLAHE (local)&quot;])
+
+# ----- Output (real run) -----
+# original   1-99% brightness range:  83 | darkest bin   0 | most common value 115
+# stretch    1-99% brightness range: 255 | darkest bin   0 | most common value 175
+# equalized  1-99% brightness range: 251 | darkest bin   0 | most common value 174
+# CLAHE      1-99% brightness range: 123 | darkest bin   1 | most common value 119
+# [saved picture histogram.png: 710x208]</code></pre></details><div class="diagram-wrap"><img src="img/cv/histogram.jpg" alt="Moon photo: original, contrast stretch, global histogram equalization, CLAHE" loading="lazy" style="max-width:100%;height:auto;border-radius:6px"><div class="diagram-caption">Fig S5 — Moon photo: original, contrast stretch, global histogram equalization, CLAHE (real output of the program above)</div></div><h3>Good to know</h3><ul><li>The original used only 83 of 256 brightness levels (1st-99th percentile); stretching and equalization use almost all of them.</li><li><strong>CLAHE</strong> equalizes small tiles separately with a limit, which avoids blowing up noise; widely used for medical and low-light images.</li><li>Histograms are also simple image 'fingerprints' for comparing photos.</li></ul>
+    </section>
+
+    <!-- 9 -->
+    <section class="block" id="threshold">
+      <h2><span class="num">9</span> Thresholding and Counting Objects</h2>
+<div class="callout life"><strong>Picture:</strong> Turning a photo into a black-and-white stencil: everything brighter than a chosen level becomes white, the rest black. Then you count the white islands.</div><details class="deepdive" open><summary>Otsu threshold + morphology + connected components on the coins photo (run for real)</summary><pre><code># Thresholding (Otsu) and counting objects with connected components: how many coins?
+import cv2, numpy as np
+from skimage import data
+from cvshared import montage
+img = data.coins()
+blur = cv2.GaussianBlur(img, (5, 5), 0)
+t, binary = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+print(&quot;Otsu picked threshold:&quot;, t)
+clean = cv2.morphologyEx(binary, cv2.MORPH_OPEN, np.ones((5, 5), np.uint8))
+n, labels, stats, _ = cv2.connectedComponentsWithStats(clean)
+areas = stats[1:, cv2.CC_STAT_AREA]
+big = areas[areas &gt; 300]
+print(f&quot;components found: {n - 1}, with area &gt; 300 px: {len(big)} (the photo shows 24 coins)&quot;)
+adapt = cv2.adaptiveThreshold(blur, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 51, -5)
+n2 = cv2.connectedComponentsWithStats(cv2.morphologyEx(adapt, cv2.MORPH_OPEN, np.ones((5, 5), np.uint8)))[2][1:, 4]
+print(f&quot;adaptive threshold: {int((n2 &gt; 300).sum())} components with area &gt; 300 px&quot;)
+montage(&quot;coins.png&quot;, [img, binary, clean, labels.astype(float), adapt], [&quot;original&quot;, &quot;Otsu threshold&quot;, &quot;after opening&quot;, &quot;labelled parts&quot;, &quot;adaptive threshold&quot;])
+
+# ----- Output (real run) -----
+# Otsu picked threshold: 104.0
+# components found: 24, with area &gt; 300 px: 24 (the photo shows 24 coins)
+# adaptive threshold: 26 components with area &gt; 300 px
+# [saved picture coins.png: 1111x208]</code></pre></details><div class="diagram-wrap"><img src="img/cv/coins.jpg" alt="Coins: original, Otsu threshold, cleaned, labelled components, adaptive threshold" loading="lazy" style="max-width:100%;height:auto;border-radius:6px"><div class="diagram-caption">Fig S6 — Coins: original, Otsu threshold, cleaned, labelled components, adaptive threshold (real output of the program above)</div></div><h3>Good to know</h3><ul><li>Otsu's method picks the threshold (here 104) that best separates two brightness groups, automatically.</li><li>Result: 24 components of area &gt; 300 px, matching the 24 coins in the photo. Adaptive thresholding found 26: a different method gives a different answer, so always check against known counts.</li><li>This 'threshold → clean → connected components' recipe still powers many industrial inspection systems.</li></ul>
+    </section>
+
+    <!-- 10 -->
+    <section class="block" id="convolution">
+      <h2><span class="num">10</span> Convolution: The Most Important Operation in Vision</h2>
+<div class="callout life"><strong>Picture:</strong> Sliding a small stencil (kernel) over the picture and, at each spot, mixing the pixels under it with the stencil's weights. A stencil of equal weights blurs; a stencil with +/− weights finds changes (edges).</div><details class="deepdive" open><summary>Convolution from scratch equals OpenCV (max difference 0) (run for real)</summary><pre><code># Convolution from scratch (NumPy) gives the same answer as OpenCV; famous 3x3 kernels
+import cv2, numpy as np
+from skimage import data
+from cvshared import montage
+img = data.camera().astype(np.float32)
+def conv2d(a, k):                                             # &#x27;same&#x27; size, zero padding, kernel flipped = true convolution
+    k = k[::-1, ::-1]; ph, pw = k.shape[0] // 2, k.shape[1] // 2
+    p = np.pad(a, ((ph, ph), (pw, pw)))
+    out = np.zeros_like(a)
+    for i in range(k.shape[0]):
+        for j in range(k.shape[1]):
+            out += k[i, j] * p[i:i + a.shape[0], j:j + a.shape[1]]
+    return out
+K = {&quot;box blur&quot;: np.ones((3, 3)) / 9, &quot;sharpen&quot;: np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]], float),
+     &quot;edge (Laplacian)&quot;: np.array([[0, 1, 0], [1, -4, 1], [0, 1, 0]], float), &quot;emboss&quot;: np.array([[-2, -1, 0], [-1, 1, 1], [0, 1, 2]], float)}
+outs = []
+for name, k in K.items():
+    mine = conv2d(img, k)
+    cvs = cv2.filter2D(img, -1, k[::-1, ::-1].astype(np.float32), borderType=cv2.BORDER_CONSTANT)   # filter2D = correlation
+    print(f&quot;{name:17} max difference NumPy vs OpenCV: {np.abs(mine - cvs).max():.4f}&quot;)
+    outs.append(np.clip(mine, 0, 255) if name != &quot;edge (Laplacian)&quot; else np.abs(mine))
+montage(&quot;kernels.png&quot;, [img] + outs, [&quot;original&quot;] + list(K))
+
+# ----- Output (real run) -----
+# box blur          max difference NumPy vs OpenCV: 0.0000
+# sharpen           max difference NumPy vs OpenCV: 0.0000
+# edge (Laplacian)  max difference NumPy vs OpenCV: 0.0000
+# emboss            max difference NumPy vs OpenCV: 0.0000
+# [saved picture kernels.png: 886x208]</code></pre></details><div class="diagram-wrap"><img src="img/cv/kernels.jpg" alt="The camera photo filtered with four 3×3 kernels" loading="lazy" style="max-width:100%;height:auto;border-radius:6px"><div class="diagram-caption">Fig S7 — The camera photo filtered with four 3×3 kernels (real output of the program above)</div></div><table><tr><th>Kernel</th><th>Weights</th><th>Effect</th></tr><tr><td>Box blur</td><td>all 1/9</td><td>averages neighbours: smoother, less noise, less detail</td></tr><tr><td>Sharpen</td><td>centre 5, sides −1</td><td>boosts differences from neighbours</td></tr><tr><td>Laplacian</td><td>centre −4, sides +1</td><td>responds where brightness changes: edges</td></tr><tr><td>Emboss</td><td>diagonal −/+</td><td>3-D 'carved' look</td></tr></table><h3>Good to know</h3><ul><li>OpenCV's <code>filter2D</code> actually computes <em>correlation</em> (kernel not flipped); true convolution flips it. For symmetric kernels there is no difference; our program flipped explicitly and matched to 0.0000.</li><li>CNNs are stacks of convolutions whose kernels are <em>learned</em> instead of hand-written (Part D).</li></ul>
+    </section>
+
+    <!-- 11 -->
+    <section class="block" id="denoising">
+      <h2><span class="num">11</span> Noise and Smoothing Filters (Measured)</h2>
+<div class="callout life"><strong>Picture:</strong> Cleaning a dusty photo. For fine grainy dust, gently averaging neighbours works; for scattered black and white specks (salt and pepper), taking the <em>middle</em> value of the neighbours removes them without smearing.</div><details class="deepdive" open><summary>Mean, Gaussian, median and bilateral filters, scored with PSNR (run for real)</summary><pre><code># Noise and filters: mean vs Gaussian vs median vs bilateral, measured with PSNR (higher = closer to the clean image)
+import cv2, numpy as np
+from skimage import data
+from cvshared import montage
+rng = np.random.default_rng(0)
+clean = data.camera()
+def psnr(a, b): return 10 * np.log10(255 ** 2 / np.mean((a.astype(float) - b.astype(float)) ** 2))
+gauss = np.clip(clean + rng.normal(0, 20, clean.shape), 0, 255).astype(np.uint8)
+sp = clean.copy(); m = rng.random(clean.shape); sp[m &lt; 0.03] = 0; sp[m &gt; 0.97] = 255
+print(f&quot;{&#x27;filter&#x27;:12} {&#x27;Gaussian noise&#x27;:&gt;15} {&#x27;salt &amp; pepper&#x27;:&gt;15}   (PSNR in dB)&quot;)
+print(f&quot;{&#x27;(noisy)&#x27;:12} {psnr(clean, gauss):15.1f} {psnr(clean, sp):15.1f}&quot;)
+best = {}
+for name, f in [(&quot;mean 5x5&quot;, lambda a: cv2.blur(a, (5, 5))), (&quot;Gaussian 5x5&quot;, lambda a: cv2.GaussianBlur(a, (5, 5), 0)),
+                (&quot;median 5x5&quot;, lambda a: cv2.medianBlur(a, 5)), (&quot;bilateral&quot;, lambda a: cv2.bilateralFilter(a, 9, 50, 9))]:
+    g, s = f(gauss), f(sp); best[name] = s
+    print(f&quot;{name:12} {psnr(clean, g):15.1f} {psnr(clean, s):15.1f}&quot;)
+montage(&quot;denoise.png&quot;, [sp, best[&quot;mean 5x5&quot;], best[&quot;median 5x5&quot;]], [&quot;salt &amp; pepper noise&quot;, &quot;mean filter&quot;, &quot;median filter&quot;])
+
+# ----- Output (real run) -----
+# filter        Gaussian noise   salt &amp; pepper   (PSNR in dB)
+# (noisy)                 22.4            17.0
+# mean 5x5                26.2            24.8
+# Gaussian 5x5            27.9            25.2
+# median 5x5              26.8            27.8
+# bilateral               28.9            17.7
+# [saved picture denoise.png: 534x208]</code></pre></details><div class="diagram-wrap"><img src="img/cv/denoise.jpg" alt="Salt-and-pepper noise: the median filter removes specks, the mean filter only smears them" loading="lazy" style="max-width:100%;height:auto;border-radius:6px"><div class="diagram-caption">Fig S8 — Salt-and-pepper noise: the median filter removes specks, the mean filter only smears them (real output of the program above)</div></div><div class="diagram-wrap"><svg viewBox="0 0 640 300" style="width:100%;max-width:640px" xmlns="http://www.w3.org/2000/svg"><line x1="60" y1="230" x2="620" y2="230" stroke="var(--card-border)"/><text x="54" y="234" text-anchor="end" font-size="11">0</text><line x1="60" y1="178" x2="620" y2="178" stroke="var(--card-border)"/><text x="54" y="182" text-anchor="end" font-size="11">12.5</text><line x1="60" y1="125" x2="620" y2="125" stroke="var(--card-border)"/><text x="54" y="129" text-anchor="end" font-size="11">25</text><line x1="60" y1="72" x2="620" y2="72" stroke="var(--card-border)"/><text x="54" y="76" text-anchor="end" font-size="11">37.5</text><line x1="60" y1="20" x2="620" y2="20" stroke="var(--card-border)"/><text x="54" y="24" text-anchor="end" font-size="11">50</text><rect x="82" y="159" width="67" height="71" rx="3" fill="var(--accent)" opacity="0.85"/><text x="116" y="154" text-anchor="middle" font-size="11">17.0</text><text x="116" y="246" text-anchor="middle" font-size="10.5">(noisy)</text><rect x="194" y="126" width="67" height="104" rx="3" fill="var(--accent)" opacity="0.85"/><text x="228" y="121" text-anchor="middle" font-size="11">24.8</text><text x="228" y="246" text-anchor="middle" font-size="10.5">mean 5x5</text><rect x="306" y="124" width="67" height="106" rx="3" fill="var(--accent)" opacity="0.85"/><text x="340" y="119" text-anchor="middle" font-size="11">25.2</text><text x="340" y="246" text-anchor="middle" font-size="10.5">Gaussian 5x5</text><rect x="418" y="113" width="67" height="117" rx="3" fill="var(--accent)" opacity="0.85"/><text x="452" y="108" text-anchor="middle" font-size="11">27.8</text><text x="452" y="246" text-anchor="middle" font-size="10.5">median 5x5</text><rect x="530" y="156" width="67" height="74" rx="3" fill="var(--accent)" opacity="0.85"/><text x="564" y="151" text-anchor="middle" font-size="11">17.7</text><text x="564" y="246" text-anchor="middle" font-size="10.5">bilateral</text><text transform="rotate(-90)" x="-125" y="16" text-anchor="middle" font-size="12" class="edge-label">PSNR dB</text></svg><div class="diagram-caption">Fig S9 — PSNR (dB, higher = closer to the clean photo) after each filter on salt-and-pepper noise (real run)</div></div><h3>Good to know</h3><ul><li>Median won on salt-and-pepper (27.8 dB); bilateral won on Gaussian grain (28.9 dB) but was useless on specks (17.7 dB, almost no change). <strong>No filter is best for every noise.</strong></li><li>Bilateral filtering smooths flat areas but keeps edges sharp: common in beauty filters.</li><li>Deep denoisers learn this from data (and phone cameras use them), but these classic filters are fast and need no training.</li></ul>
+    </section>
+
+    <!-- 12 -->
+    <section class="block" id="edges">
+      <h2><span class="num">12</span> Edges: Sobel and Canny</h2>
+<div class="callout life"><strong>Picture:</strong> Tracing the outline of a drawing with a pencil wherever the colour suddenly changes.</div><details class="deepdive" open><summary>Sobel gradients and Canny with three threshold pairs (run for real)</summary><pre><code># Edges: Sobel gradients and the Canny edge detector
+import cv2, numpy as np
+from skimage import data
+from cvshared import montage
+img = data.camera()
+gx = cv2.Sobel(img, cv2.CV_64F, 1, 0, ksize=3); gy = cv2.Sobel(img, cv2.CV_64F, 0, 1, ksize=3)
+mag = np.hypot(gx, gy)
+print(&quot;gradient magnitude max:&quot;, round(float(mag.max()), 1), &quot;| mean:&quot;, round(float(mag.mean()), 1))
+for lo, hi in [(30, 90), (100, 200), (200, 300)]:
+    e = cv2.Canny(img, lo, hi)
+    print(f&quot;Canny thresholds ({lo:3},{hi:3}): {np.count_nonzero(e):6d} edge pixels ({100 * np.count_nonzero(e) / e.size:.1f}%)&quot;)
+montage(&quot;edges.png&quot;, [img, np.abs(gx), np.abs(gy), mag, cv2.Canny(img, 100, 200)], [&quot;original&quot;, &quot;Sobel x&quot;, &quot;Sobel y&quot;, &quot;magnitude&quot;, &quot;Canny 100/200&quot;])
+
+# ----- Output (real run) -----
+# gradient magnitude max: 930.1 | mean: 49.3
+# Canny thresholds ( 30, 90):  40237 edge pixels (15.3%)
+# Canny thresholds (100,200):  19686 edge pixels (7.5%)
+# Canny thresholds (200,300):   7863 edge pixels (3.0%)
+# [saved picture edges.png: 886x208]</code></pre></details><div class="diagram-wrap"><img src="img/cv/edges.jpg" alt="Sobel x, Sobel y, gradient magnitude and Canny edges" loading="lazy" style="max-width:100%;height:auto;border-radius:6px"><div class="diagram-caption">Fig S10 — Sobel x, Sobel y, gradient magnitude and Canny edges (real output of the program above)</div></div><h3>Good to know</h3><ul><li>Sobel measures how fast brightness changes left-right (x) and up-down (y); the magnitude combines both.</li><li>Canny = smooth → gradient → keep only the thin peak of each edge → two thresholds with 'hysteresis' (weak edges are kept only if connected to strong ones).</li><li>Thresholds matter a lot: 15.3% of pixels were edges at (30, 90) but only 3.0% at (200, 300). Tune them for your images.</li></ul>
+    </section>
+
+    <!-- 13 -->
+    <section class="block" id="morphology">
+      <h2><span class="num">13</span> Morphology: Erode, Dilate, Open, Close</h2>
+<div class="callout life"><strong>Picture:</strong> Shaping play-dough letters: eroding shaves a thin layer off every edge, dilating adds one. 'Opening' (erode then dilate) removes tiny crumbs; 'closing' (dilate then erode) fills small holes.</div><details class="deepdive" open><summary>Cleaning a noisy binary drawing (run for real)</summary><pre><code># Morphology on a binary image: erosion, dilation, opening (removes specks), closing (fills holes)
+import cv2, numpy as np
+from cvshared import montage
+rng = np.random.default_rng(1)
+img = np.zeros((120, 200), np.uint8)
+cv2.putText(img, &quot;CV&quot;, (25, 95), cv2.FONT_HERSHEY_SIMPLEX, 3, 255, 12)
+noisy = img.copy(); noisy[rng.random(img.shape) &lt; 0.02] = 255                   # white specks
+holes = noisy.copy(); holes[(rng.random(img.shape) &lt; 0.05) &amp; (img &gt; 0)] = 0     # black holes inside letters
+k = np.ones((3, 3), np.uint8)
+ops = {&quot;erode&quot;: cv2.erode(holes, k), &quot;dilate&quot;: cv2.dilate(holes, k),
+       &quot;open&quot;: cv2.morphologyEx(holes, cv2.MORPH_OPEN, k), &quot;close&quot;: cv2.morphologyEx(holes, cv2.MORPH_CLOSE, k)}
+ops[&quot;open then close&quot;] = cv2.morphologyEx(ops[&quot;open&quot;], cv2.MORPH_CLOSE, k)
+for name, o in ops.items():
+    err = np.count_nonzero(o != img)
+    print(f&quot;{name:16} pixels different from the clean drawing: {err:5d}&quot;)
+print(f&quot;{&#x27;(noisy input)&#x27;:16} pixels different from the clean drawing: {np.count_nonzero(holes != img):5d}&quot;)
+montage(&quot;morphology.png&quot;, [img, holes, ops[&quot;erode&quot;], ops[&quot;dilate&quot;], ops[&quot;open then close&quot;]], [&quot;clean&quot;, &quot;noisy&quot;, &quot;erode&quot;, &quot;dilate&quot;, &quot;open+close&quot;])
+
+# ----- Output (real run) -----
+# erode            pixels different from the clean drawing:  2182
+# dilate           pixels different from the clean drawing:  4325
+# open             pixels different from the clean drawing:   647
+# close            pixels different from the clean drawing:   639
+# open then close  pixels different from the clean drawing:   495
+# (noisy input)    pixels different from the clean drawing:   581
+# [saved picture morphology.png: 1451x208]</code></pre></details><div class="diagram-wrap"><img src="img/cv/morphology.jpg" alt="Clean drawing, noisy version, erosion, dilation, opening then closing" loading="lazy" style="max-width:100%;height:auto;border-radius:6px"><div class="diagram-caption">Fig S11 — Clean drawing, noisy version, erosion, dilation, opening then closing (real output of the program above)</div></div><h3>Good to know</h3><ul><li>Honest result: opening alone (647 wrong pixels) and closing alone (639) were each <em>worse</em> than the noisy input (581); only opening then closing (495) improved it. Each operation also damages the letter shapes a little.</li><li>Choose the kernel size from the size of the noise you want to remove; bigger kernels remove more noise and more detail.</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part C — Geometry, Cameras and Features</h2></div>
+
+    <!-- 14 -->
+    <section class="block" id="geometry">
+      <h2><span class="num">14</span> Geometric Transforms and Homography</h2>
+<div class="callout life"><strong>Picture:</strong> Photographing a page lying on a table: it looks like a trapezium. If you mark its 4 corners, you can 'iron it flat' back into a rectangle. That ironing is a perspective transform (homography).</div><details class="deepdive" open><summary>Rotate/scale, tilt a page, straighten it again (run for real)</summary><pre><code># Geometry: rotate/scale (affine) and straighten a tilted &#x27;document&#x27; with a perspective transform (homography)
+import cv2, numpy as np
+from skimage import data
+from cvshared import montage
+page = cv2.cvtColor(data.page(), cv2.COLOR_GRAY2RGB)                      # a scanned page (191 x 384)
+h, w = page.shape[:2]
+canvas = np.full((400, 560, 3), 90, np.uint8)
+src = np.float32([[0, 0], [w, 0], [w, h], [0, h]])
+tilted_corners = np.float32([[90, 60], [470, 100], [440, 330], [60, 290]])      # where the page lies in the &#x27;photo&#x27;
+H = cv2.getPerspectiveTransform(src, tilted_corners)
+photo = cv2.warpPerspective(page, H, (560, 400), dst=canvas, borderMode=cv2.BORDER_TRANSPARENT)
+print(&quot;homography matrix H (3x3):\n&quot;, H.round(3))
+H_back = cv2.getPerspectiveTransform(tilted_corners, src)                       # user clicked the 4 corners
+flat = cv2.warpPerspective(photo, H_back, (w, h))
+err = np.abs(flat.astype(int) - page.astype(int)).mean()
+print(f&quot;straightened page vs original: mean absolute difference {err:.1f} (0 = perfect; &gt;0 from resampling)&quot;)
+M = cv2.getRotationMatrix2D((w / 2, h / 2), 30, 0.7)
+print(&quot;affine rotation+scale matrix (2x3):\n&quot;, M.round(3))
+rot = cv2.warpAffine(page, M, (w, h))
+montage(&quot;geometry.png&quot;, [page, rot, photo, flat], [&quot;original&quot;, &quot;rotate 30°, scale 0.7&quot;, &quot;tilted &#x27;photo&#x27;&quot;, &quot;straightened&quot;])
+
+# ----- Output (real run) -----
+# homography matrix H (3x3):
+#  [[ 0.99  -0.157 90.   ]
+#  [ 0.104  1.204 60.   ]
+#  [ 0.     0.     1.   ]]
+# straightened page vs original: mean absolute difference 5.2 (0 = perfect; &gt;0 from resampling)
+# affine rotation+scale matrix (2x3):
+#  [[  0.606   0.35   42.181]
+#  [ -0.35    0.606 104.806]]
+# [saved picture geometry.png: 1291x208]</code></pre></details><div class="diagram-wrap"><img src="img/cv/geometry.jpg" alt="Original page, rotated and scaled copy, tilted 'photo', straightened page" loading="lazy" style="max-width:100%;height:auto;border-radius:6px"><div class="diagram-caption">Fig S12 — Original page, rotated and scaled copy, tilted 'photo', straightened page (real output of the program above)</div></div><table><tr><th>Transform</th><th>Matrix</th><th>Keeps</th><th>Needs</th></tr><tr><td>Translation, rotation, scale</td><td>2×3 (similarity)</td><td>angles, shape</td><td>2 point pairs</td></tr><tr><td>Affine</td><td>2×3</td><td>parallel lines</td><td>3 point pairs</td></tr><tr><td>Perspective (homography)</td><td>3×3</td><td>straight lines</td><td>4 point pairs</td></tr></table><h3>Good to know</h3><ul><li>Document scanner apps do exactly this: find the 4 page corners (edges + contour finding), compute H, warp.</li><li>The straightened page differed from the original by 5.2 gray levels on average: resampling pixels twice always loses a little sharpness.</li></ul>
+    </section>
+
+    <!-- 15 -->
+    <section class="block" id="features">
+      <h2><span class="num">15</span> Keypoints and Matching (ORB + RANSAC)</h2>
+<div class="callout life"><strong>Picture:</strong> Recognising a friend in a crowd by a few special details (a mole, a scar, the shape of glasses) rather than by every pixel. Keypoints are those special details; descriptors are their short descriptions.</div><details class="deepdive" open><summary>Corners, ORB keypoints, matching and a RANSAC homography (run for real)</summary><pre><code># Keypoints and matching: ORB features + RANSAC homography find the same object after rotation and scaling
+import cv2, numpy as np
+from skimage import data
+from cvshared import montage
+a = cv2.cvtColor(data.astronaut(), cv2.COLOR_RGB2GRAY)
+h, w = a.shape
+M = cv2.getRotationMatrix2D((w / 2, h / 2), 25, 0.8)
+b = cv2.warpAffine(a, M, (w, h))
+corners = cv2.goodFeaturesToTrack(a, maxCorners=200, qualityLevel=0.01, minDistance=8)
+print(&quot;Shi-Tomasi corners found:&quot;, len(corners))
+orb = cv2.ORB_create(1000)
+ka, da = orb.detectAndCompute(a, None); kb, db = orb.detectAndCompute(b, None)
+matches = sorted(cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True).match(da, db), key=lambda m: m.distance)
+print(&quot;ORB keypoints:&quot;, len(ka), &quot;and&quot;, len(kb), &quot;| cross-checked matches:&quot;, len(matches))
+pa = np.float32([ka[m.queryIdx].pt for m in matches]); pb = np.float32([kb[m.trainIdx].pt for m in matches])
+H, inl = cv2.findHomography(pa, pb, cv2.RANSAC, 4.0)
+print(f&quot;RANSAC inliers: {int(inl.sum())} of {len(matches)} matches ({100 * inl.mean():.0f}%)&quot;)
+true = np.vstack([M, [0, 0, 1]])
+print(&quot;recovered transform (should be close to the true rotation+scale):\n&quot;, (H / H[2, 2]).round(3))
+print(&quot;true transform:\n&quot;, true.round(3))
+vis = cv2.drawMatches(a, ka, b, kb, [m for m, ok in zip(matches, inl.ravel()) if ok][:40], None, flags=2)
+montage(&quot;matches.png&quot;, [vis], [&quot;40 inlier matches: original (left) and rotated + scaled copy (right)&quot;], height=260)
+
+# ----- Output (real run) -----
+# Shi-Tomasi corners found: 200
+# ORB keypoints: 1000 and 1000 | cross-checked matches: 544
+# RANSAC inliers: 515 of 544 matches (95%)
+# recovered transform (should be close to the true rotation+scale):
+#  [[  0.726   0.338 -15.912]
+#  [ -0.338   0.726 156.695]
+#  [  0.      0.      1.   ]]
+# true transform:
+#  [[  0.725   0.338 -16.164]
+#  [ -0.338   0.725 156.94 ]
+#  [  0.      0.      1.   ]]
+# [saved picture matches.png: 532x298]</code></pre></details><div class="diagram-wrap"><img src="img/cv/matches.jpg" alt="ORB matches between the astronaut photo and a rotated, scaled copy" loading="lazy" style="max-width:100%;height:auto;border-radius:6px"><div class="diagram-caption">Fig S13 — ORB matches between the astronaut photo and a rotated, scaled copy (real output of the program above)</div></div><h3>Good to know</h3><ul><li>ORB found 1,000 keypoints in each image; 544 matched; RANSAC kept 515 (95%) as consistent and recovered the rotation+scale almost exactly (0.726 vs the true 0.725).</li><li><strong>RANSAC</strong> = try many random small sets of matches, keep the transform that most matches agree with; wrong matches (outliers) get voted out.</li><li>Used for panoramas, AR, visual localisation, SLAM. Classic descriptors: SIFT (patent expired in 2020), SURF, ORB (free and fast); learned ones (SuperPoint-style) are common now.</li></ul>
+    </section>
+
+    <!-- 16 -->
+    <section class="block" id="template-matching">
+      <h2><span class="num">16</span> Template Matching (and Where It Breaks)</h2>
+<div class="callout life"><strong>Picture:</strong> Sliding a small cut-out photo over a big photo until it fits perfectly, like finding where a jigsaw piece goes.</div><details class="deepdive" open><summary>Normalized cross-correlation on the coffee photo (run for real)</summary><pre><code># Finding an object by template matching (normalized cross-correlation), and where it breaks
+import cv2, numpy as np
+from skimage import data
+from cvshared import montage
+scene = cv2.cvtColor(data.coffee(), cv2.COLOR_RGB2GRAY)
+y0, x0 = 150, 260
+tmpl = scene[y0:y0 + 60, x0:x0 + 80].copy()                                     # the object we look for
+res = cv2.matchTemplate(scene, tmpl, cv2.TM_CCOEFF_NORMED)
+_, best, _, loc = cv2.minMaxLoc(res)
+print(f&quot;exact copy: best score {best:.3f} at (x={loc[0]}, y={loc[1]}) | true position (x={x0}, y={y0})&quot;)
+for name, t in [(&quot;brighter +40&quot;, np.clip(tmpl.astype(int) + 40, 0, 255).astype(np.uint8)),
+                (&quot;rotated 20°&quot;, cv2.warpAffine(tmpl, cv2.getRotationMatrix2D((40, 30), 20, 1.0), (80, 60))),
+                (&quot;scaled 1.5x&quot;, cv2.resize(tmpl, None, fx=1.5, fy=1.5))]:
+    r = cv2.matchTemplate(scene, t, cv2.TM_CCOEFF_NORMED); _, s, _, l = cv2.minMaxLoc(r)
+    print(f&quot;{name:13}: best score {s:.3f} at (x={l[0]}, y={l[1]}) -&gt; {&#x27;found&#x27; if abs(l[0] - x0) &lt; 10 and abs(l[1] - y0) &lt; 10 else &#x27;WRONG place&#x27;}&quot;)
+vis = cv2.cvtColor(scene, cv2.COLOR_GRAY2RGB); cv2.rectangle(vis, loc, (loc[0] + 80, loc[1] + 60), (255, 0, 0), 3)
+montage(&quot;template.png&quot;, [tmpl, vis, res], [&quot;template&quot;, &quot;best match&quot;, &quot;score map&quot;])
+
+# ----- Output (real run) -----
+# exact copy: best score 1.000 at (x=260, y=150) | true position (x=260, y=150)
+# brighter +40 : best score 0.982 at (x=260, y=150) -&gt; found
+# rotated 20°  : best score 0.697 at (x=290, y=145) -&gt; WRONG place
+# scaled 1.5x  : best score 0.854 at (x=238, y=121) -&gt; WRONG place
+# [saved picture template.png: 764x208]</code></pre></details><div class="diagram-wrap"><img src="img/cv/template.jpg" alt="Template, best match, and the score map (bright = good fit)" loading="lazy" style="max-width:100%;height:auto;border-radius:6px"><div class="diagram-caption">Fig S14 — Template, best match, and the score map (bright = good fit) (real output of the program above)</div></div><h3>Good to know</h3><ul><li>Brightness change: still found (score 0.982), because normalized correlation ignores overall brightness.</li><li>Rotation by 20° or scaling by 1.5×: found the <strong>wrong place</strong>. Template matching only works when the object looks almost exactly the same; that is why keypoints and learned detectors exist.</li></ul>
+    </section>
+
+    <!-- 17 -->
+    <section class="block" id="hog-classic">
+      <h2><span class="num">17</span> Classic Machine Learning on Images: HOG + SVM</h2>
+<div class="callout life"><strong>Picture:</strong> Describing a handwritten digit not by its exact pixels but by 'which way the strokes point in each small area'. Moving the digit slightly changes pixels a lot but stroke directions only a little.</div><details class="deepdive" open><summary>Raw pixels vs HOG features with a linear SVM on 8×8 digits (run for real)</summary><pre><code># Classic ML on images: raw pixels vs HOG features, with a linear SVM (sklearn digits, 8x8 images)
+import numpy as np, time
+from sklearn.datasets import load_digits
+from sklearn.svm import LinearSVC
+from sklearn.model_selection import train_test_split
+from skimage.feature import hog
+from skimage.transform import resize
+X, y = load_digits(return_X_y=True)
+imgs = X.reshape(-1, 8, 8) / 16.0
+up = np.array([resize(i, (16, 16), order=1) for i in imgs])
+H = np.array([hog(i, orientations=9, pixels_per_cell=(4, 4), cells_per_block=(2, 2)) for i in up])
+print(&quot;images:&quot;, len(X), &quot;| raw features:&quot;, X.shape[1], &quot;| HOG features:&quot;, H.shape[1])
+for name, F in [(&quot;raw pixels&quot;, X / 16.0), (&quot;HOG&quot;, H)]:
+    Xtr, Xte, ytr, yte = train_test_split(F, y, test_size=0.3, random_state=0, stratify=y)
+    t = time.perf_counter(); clf = LinearSVC(C=1.0, max_iter=20000).fit(Xtr, ytr)
+    print(f&quot;{name:10} test accuracy {clf.score(Xte, yte):.3f}  (train {time.perf_counter() - t:.2f} s)&quot;)
+rng = np.random.default_rng(0)
+shift = np.roll(imgs, 1, axis=2)                                               # move every digit 1 pixel right
+Hs = np.array([hog(resize(i, (16, 16), order=1), orientations=9, pixels_per_cell=(4, 4), cells_per_block=(2, 2)) for i in shift])
+_, Xte_r, _, yte_r = train_test_split(shift.reshape(-1, 64), y, test_size=0.3, random_state=0, stratify=y)
+_, Xte_h, _, _ = train_test_split(Hs, y, test_size=0.3, random_state=0, stratify=y)
+raw_clf = LinearSVC(max_iter=20000).fit(*train_test_split(X / 16.0, y, test_size=0.3, random_state=0, stratify=y)[::2])
+hog_clf = LinearSVC(max_iter=20000).fit(*train_test_split(H, y, test_size=0.3, random_state=0, stratify=y)[::2])
+print(f&quot;digits shifted 1 px right: raw {raw_clf.score(Xte_r, yte_r):.3f} | HOG {hog_clf.score(Xte_h, yte_r):.3f}&quot;)
+
+# ----- Output (real run) -----
+# images: 1797 | raw features: 64 | HOG features: 324
+# raw pixels test accuracy 0.970  (train 0.02 s)
+# HOG        test accuracy 0.974  (train 0.08 s)
+# digits shifted 1 px right: raw 0.433 | HOG 0.780</code></pre></details><h3>Good to know</h3><ul><li>On normal test digits both were similar (0.970 vs 0.974). On digits shifted by just 1 pixel, raw pixels collapsed to 0.433 while HOG kept 0.780: hand-designed features can buy robustness.</li><li>HOG + SVM powered pedestrian detection before deep learning (Dalal and Triggs, 2005).</li><li>CNNs learn such features automatically, and with augmentation become robust to shifts too (<a href="#augmentation">see below</a>).</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part D — Deep Learning for Vision</h2></div>
+
+    <!-- 18 -->
+    <section class="block" id="conv-layers">
+      <h2><span class="num">18</span> CNN Building Blocks: Convolution, Stride, Padding, Pooling</h2>
+<div class="callout life"><strong>Picture:</strong> A team of tiny inspectors, each carrying one small stencil. Each inspector slides their stencil over the picture and writes down how strongly it matches everywhere. The next team inspects those notes, so later teams see bigger and more abstract patterns.</div><details class="deepdive" open><summary>A Conv2d with a hand-set Sobel kernel equals NumPy; output sizes (run for real)</summary><pre><code># A conv layer is just many small kernels: PyTorch Conv2d with a hand-set kernel = our NumPy convolution
+import numpy as np, torch, torch.nn as nn
+from skimage import data
+img = data.camera().astype(np.float32) / 255
+k = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]], np.float32)              # Sobel-x
+conv = nn.Conv2d(1, 1, 3, padding=1, bias=False)
+with torch.no_grad(): conv.weight[:] = torch.tensor(k)[None, None]
+out_t = conv(torch.tensor(img)[None, None])[0, 0].detach().numpy()
+p = np.pad(img, 1); out_np = sum(k[i, j] * p[i:i + 512, j:j + 512] for i in range(3) for j in range(3))   # cross-correlation
+print(&quot;max difference PyTorch vs NumPy:&quot;, float(np.abs(out_t - out_np).max()))
+layer = nn.Conv2d(3, 64, 3)
+print(&quot;a Conv2d(3-&gt;64, 3x3) layer has&quot;, sum(p.numel() for p in layer.parameters()), &quot;parameters (64 kernels of 3x3x3 + 64 biases)&quot;)
+x = torch.zeros(1, 3, 224, 224)
+for name, l in [(&quot;conv 3x3, stride 1, pad 1&quot;, nn.Conv2d(3, 8, 3, 1, 1)), (&quot;conv 3x3, stride 2, pad 1&quot;, nn.Conv2d(3, 8, 3, 2, 1)), (&quot;max-pool 2x2&quot;, nn.MaxPool2d(2))]:
+    print(f&quot;{name:26} 224x224 -&gt; {tuple(l(x).shape[2:])}&quot;)
+
+# ----- Output (real run) -----
+# max difference PyTorch vs NumPy: 0.0
+# a Conv2d(3-&gt;64, 3x3) layer has 1792 parameters (64 kernels of 3x3x3 + 64 biases)
+# conv 3x3, stride 1, pad 1  224x224 -&gt; (224, 224)
+# conv 3x3, stride 2, pad 1  224x224 -&gt; (112, 112)
+# max-pool 2x2               224x224 -&gt; (112, 112)</code></pre></details><table><tr><th>Piece</th><th>What it does</th><th>Output size rule</th></tr><tr><td>Convolution (k×k kernels)</td><td>detects local patterns; same kernel everywhere (weight sharing)</td><td>out = (in + 2·pad − k) / stride + 1</td></tr><tr><td>Stride 2</td><td>jumps 2 pixels: halves width and height</td><td>224 → 112</td></tr><tr><td>Padding</td><td>adds a border so size is kept</td><td>pad 1 with 3×3 keeps 224 → 224</td></tr><tr><td>Pooling (max/avg)</td><td>keeps the strongest/average value in each window</td><td>2×2 halves the size</td></tr><tr><td>ReLU</td><td>keeps positive values, zeros negatives</td><td>same size</td></tr><tr><td>Batch norm</td><td>keeps activations in a stable range</td><td>same size</td></tr></table><h3>Good to know</h3><ul><li>A Conv2d(3→64, 3×3) has only 1,792 weights, yet works on any image size: weight sharing is why CNNs need far fewer weights than fully connected nets on images.</li></ul>
+    </section>
+
+    <!-- 19 -->
+    <section class="block" id="cnn-digits">
+      <h2><span class="num">19</span> Your First CNN: Logistic Regression vs MLP vs CNN</h2>
+<div class="callout life"><strong>Picture:</strong> Three students learning to read handwritten digits: one compares raw dot patterns (logistic regression), one finds combinations of dots (MLP), one looks for strokes and shapes in small windows (CNN).</div><details class="deepdive" open><summary>Same split of the 1,797 sklearn digits, CPU (run for real)</summary><pre><code># Logistic regression vs MLP vs a small CNN on the 8x8 digits (1,797 images), same split, CPU
+import numpy as np, torch, torch.nn as nn, time
+from sklearn.datasets import load_digits
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import confusion_matrix
+torch.manual_seed(0)
+X, y = load_digits(return_X_y=True); X = X / 16.0
+Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.3, random_state=0, stratify=y)
+lr = LogisticRegression(max_iter=2000).fit(Xtr, ytr); print(f&quot;logistic regression : {lr.score(Xte, yte):.3f}&quot;)
+def train(model, epochs=40, img=False):
+    xt = torch.tensor(Xtr, dtype=torch.float32); xv = torch.tensor(Xte, dtype=torch.float32)
+    if img: xt, xv = xt.view(-1, 1, 8, 8), xv.view(-1, 1, 8, 8)
+    yt = torch.tensor(ytr); opt = torch.optim.Adam(model.parameters(), 1e-2 if not img else 3e-3); t = time.perf_counter()
+    for e in range(epochs):
+        perm = torch.randperm(len(xt))
+        for i in range(0, len(xt), 64):
+            b = perm[i:i + 64]; opt.zero_grad(); nn.functional.cross_entropy(model(xt[b]), yt[b]).backward(); opt.step()
+    model.eval(); pred = model(xv).argmax(1).numpy()
+    return (pred == yte).mean(), time.perf_counter() - t, pred
+mlp = nn.Sequential(nn.Linear(64, 128), nn.ReLU(), nn.Linear(128, 10))
+a, t, _ = train(mlp); print(f&quot;MLP (1 hidden layer) : {a:.3f}  params {sum(p.numel() for p in mlp.parameters())}  time {t:.1f}s&quot;)
+cnn = nn.Sequential(nn.Conv2d(1, 16, 3, padding=1), nn.ReLU(), nn.Conv2d(16, 32, 3, padding=1), nn.ReLU(), nn.MaxPool2d(2),
+                    nn.Flatten(), nn.Linear(32 * 4 * 4, 64), nn.ReLU(), nn.Linear(64, 10))
+a, t, pred = train(cnn, img=True); print(f&quot;small CNN            : {a:.3f}  params {sum(p.numel() for p in cnn.parameters())}  time {t:.1f}s&quot;)
+cm = confusion_matrix(yte, pred); off = [(i, j, int(cm[i, j])) for i in range(10) for j in range(10) if i != j and cm[i, j]]
+print(&quot;CNN mistakes (true -&gt; predicted, count):&quot;, sorted(off, key=lambda x: -x[2])[:6])
+torch.save(cnn.state_dict(), &quot;cnn_digits.pt&quot;)
+
+# ----- Output (real run) -----
+# logistic regression : 0.970
+# MLP (1 hidden layer) : 0.976  params 9610  time 0.6s
+# small CNN            : 0.978  params 38282  time 2.3s
+# CNN mistakes (true -&gt; predicted, count): [(8, 1, 2), (2, 1, 1), (2, 3, 1), (3, 5, 1), (3, 7, 1), (3, 9, 1)]</code></pre></details><h3>Good to know</h3><ul><li>Logistic regression 0.970, MLP 0.976, CNN 0.978: on tiny 8×8 centred digits the gap is small. CNNs shine on bigger, messier images (real photos, shifted objects).</li><li>The CNN confused 8 → 1 twice: look at the mistakes, not only the score.</li><li>Training took a few seconds on a laptop CPU; real image models train for hours or days on GPUs.</li></ul>
+    </section>
+
+    <!-- 20 -->
+    <section class="block" id="cnn-learns">
+      <h2><span class="num">20</span> What Does a CNN Learn? Kernels and Feature Maps</h2>
+<div class="callout life"><strong>Picture:</strong> Opening the inspectors' notebooks: each first-layer inspector learned its own stencil, some look for left-edges, some for curves, some for dark spots.</div><details class="deepdive" open><summary>First-layer kernels and feature maps of a 1-conv-layer net (run for real)</summary><pre><code># What did the CNN learn? Look at first-layer kernels and the feature maps for one digit
+import numpy as np, torch, torch.nn as nn
+from sklearn.datasets import load_digits
+from sklearn.model_selection import train_test_split
+from cvshared import montage
+torch.manual_seed(0)
+X, y = load_digits(return_X_y=True); X = torch.tensor(X / 16.0, dtype=torch.float32).view(-1, 1, 8, 8); y = torch.tensor(y)
+Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.3, random_state=0, stratify=y)
+conv1 = nn.Conv2d(1, 8, 3, padding=1)
+m = nn.Sequential(conv1, nn.ReLU(), nn.MaxPool2d(2), nn.Flatten(), nn.Linear(8 * 16, 10))
+opt = torch.optim.Adam(m.parameters(), 1e-2)
+for e in range(200):
+    opt.zero_grad(); nn.functional.cross_entropy(m(Xtr), ytr).backward(); opt.step()
+print(&quot;test accuracy of this 1-conv-layer net:&quot;, round((m(Xte).argmax(1) == yte).float().mean().item(), 3))
+W = conv1.weight.detach()[:, 0].numpy()
+digit = Xte[0:1]; maps = torch.relu(conv1(digit))[0].detach().numpy()
+print(&quot;kernel 0 (3x3):\n&quot;, W[0].round(2))
+print(&quot;digit label:&quot;, int(yte[0]), &quot;| strongest feature map:&quot;, int(maps.reshape(8, -1).sum(1).argmax()))
+montage(&quot;filters.png&quot;, [digit[0, 0].numpy()] + [W[i] for i in range(8)], [&quot;digit&quot;] + [f&quot;kernel {i}&quot; for i in range(8)], height=90)
+montage(&quot;featuremaps.png&quot;, [digit[0, 0].numpy()] + [maps[i] for i in range(8)], [&quot;digit&quot;] + [f&quot;map {i}&quot; for i in range(8)], height=90)
+
+# ----- Output (real run) -----
+# test accuracy of this 1-conv-layer net: 0.978
+# kernel 0 (3x3):
+#  [[-0.71  0.55 -0.72]
+#  [-0.87 -0.31  0.85]
+#  [-0.57  0.77  0.33]]
+# digit label: 1 | strongest feature map: 2
+# [saved picture filters.png: 870x128]
+# [saved picture featuremaps.png: 870x128]</code></pre></details><div class="diagram-wrap"><img src="img/cv/filters.jpg" alt="The 8 learned 3×3 kernels (bright = positive weight)" loading="lazy" style="max-width:100%;height:auto;border-radius:6px"><div class="diagram-caption">Fig S15 — The 8 learned 3×3 kernels (bright = positive weight) (real output of the program above)</div></div><div class="diagram-wrap"><img src="img/cv/featuremaps.jpg" alt="The same digit as seen through each of the 8 kernels" loading="lazy" style="max-width:100%;height:auto;border-radius:6px"><div class="diagram-caption">Fig S16 — The same digit as seen through each of the 8 kernels (real output of the program above)</div></div><h3>Good to know</h3><ul><li>Even this tiny net (0.978 accuracy) learned edge-like kernels without being told about edges.</li><li>Deeper layers combine edges into parts (loops, corners), then objects. Tools like Grad-CAM show which pixels drove a decision: useful for debugging and trust.</li></ul>
+    </section>
+
+    <!-- 21 -->
+    <section class="block" id="augmentation">
+      <h2><span class="num">21</span> Data Augmentation: More Data for Free</h2>
+<div class="callout life"><strong>Picture:</strong> Showing a child the same cat photo slightly rotated, zoomed and moved, so they learn 'cat' and not 'cat exactly in the middle of the frame'.</div><details class="deepdive" open><summary>150 training digits, with and without random affine augmentation, 3 seeds each (run for real)</summary><pre><code># Data augmentation when data is scarce: train a CNN on only 150 digits, with and without random shifts/rotations
+import numpy as np, torch, torch.nn as nn
+from sklearn.datasets import load_digits
+from sklearn.model_selection import train_test_split
+import torchvision.transforms.v2 as T
+X, y = load_digits(return_X_y=True); X = torch.tensor(X / 16.0, dtype=torch.float32).view(-1, 1, 8, 8); y = torch.tensor(y)
+Xtr, Xte, ytr, yte = train_test_split(X, y, train_size=150, random_state=0, stratify=y)
+aug = T.RandomAffine(degrees=12, translate=(0.12, 0.12), scale=(0.9, 1.1))
+def run(use_aug, seed):
+    torch.manual_seed(seed)
+    m = nn.Sequential(nn.Conv2d(1, 16, 3, padding=1), nn.ReLU(), nn.MaxPool2d(2), nn.Conv2d(16, 32, 3, padding=1), nn.ReLU(),
+                      nn.Flatten(), nn.Linear(32 * 16, 10))
+    opt = torch.optim.Adam(m.parameters(), 3e-3)
+    for e in range(150):
+        xb = torch.stack([aug(x) for x in Xtr]) if use_aug else Xtr
+        opt.zero_grad(); nn.functional.cross_entropy(m(xb), ytr).backward(); opt.step()
+    with torch.no_grad():
+        shifted = torch.roll(Xte, 1, dims=3)
+        return (m(Xte).argmax(1) == yte).float().mean().item(), (m(shifted).argmax(1) == yte).float().mean().item()
+for use in [False, True]:
+    r = np.array([run(use, s) for s in range(3)])
+    print(f&quot;augmentation {&#x27;ON &#x27; if use else &#x27;OFF&#x27;}: test acc {r[:, 0].mean():.3f} (seeds {r[:, 0].round(3).tolist()}) | on test digits shifted 1 px: {r[:, 1].mean():.3f}&quot;)
+
+# ----- Output (real run) -----
+# augmentation OFF: test acc 0.903 (seeds [0.898, 0.909, 0.903]) | on test digits shifted 1 px: 0.511
+# augmentation ON : test acc 0.946 (seeds [0.947, 0.945, 0.946]) | on test digits shifted 1 px: 0.898</code></pre></details><div class="diagram-wrap"><svg viewBox="0 0 640 300" style="width:100%;max-width:640px" xmlns="http://www.w3.org/2000/svg"><line x1="60" y1="230" x2="620" y2="230" stroke="var(--card-border)"/><text x="54" y="234" text-anchor="end" font-size="11">0</text><line x1="60" y1="178" x2="620" y2="178" stroke="var(--card-border)"/><text x="54" y="182" text-anchor="end" font-size="11">0.25</text><line x1="60" y1="125" x2="620" y2="125" stroke="var(--card-border)"/><text x="54" y="129" text-anchor="end" font-size="11">0.5</text><line x1="60" y1="72" x2="620" y2="72" stroke="var(--card-border)"/><text x="54" y="76" text-anchor="end" font-size="11">0.75</text><line x1="60" y1="20" x2="620" y2="20" stroke="var(--card-border)"/><text x="54" y="24" text-anchor="end" font-size="11">1</text><rect x="88" y="40" width="84" height="190" rx="3" fill="var(--accent)" opacity="0.85"/><text x="130" y="35" text-anchor="middle" font-size="11">0.90</text><text x="130" y="246" text-anchor="middle" font-size="10.5">no aug: normal test</text><rect x="228" y="123" width="84" height="107" rx="3" fill="var(--accent)" opacity="0.85"/><text x="270" y="118" text-anchor="middle" font-size="11">0.51</text><text x="270" y="246" text-anchor="middle" font-size="10.5">no aug: shifted test</text><rect x="368" y="31" width="84" height="199" rx="3" fill="var(--accent)" opacity="0.85"/><text x="410" y="26" text-anchor="middle" font-size="11">0.95</text><text x="410" y="246" text-anchor="middle" font-size="10.5">aug: normal test</text><rect x="508" y="41" width="84" height="189" rx="3" fill="var(--accent)" opacity="0.85"/><text x="550" y="36" text-anchor="middle" font-size="11">0.90</text><text x="550" y="246" text-anchor="middle" font-size="10.5">aug: shifted test</text><text transform="rotate(-90)" x="-125" y="16" text-anchor="middle" font-size="12" class="edge-label">accuracy</text></svg><div class="diagram-caption">Fig S17 — Accuracy with only 150 training images (real runs, mean of 3 seeds)</div></div><h3>Good to know</h3><ul><li>With little data, augmentation helped: 0.903 → 0.946 on normal test digits, and 0.511 → 0.898 on digits shifted by one pixel.</li><li>Pick augmentations that keep the label true: flipping a '6' upside down makes a '9'; flipping a cat photo is fine.</li><li>Note from the <a href="tensorflow-pytorch.html">TensorFlow &amp; PyTorch guide</a>: there, an augmentation experiment <em>hurt</em> accuracy. Augmentation is a tool to test, not a guaranteed win.</li></ul>
+    </section>
+
+    <!-- 22 -->
+    <section class="block" id="transfer-learning">
+      <h2><span class="num">22</span> Transfer Learning with Pre-trained Networks</h2>
+<div class="callout life"><strong>Picture:</strong> A trained chef learning a new cuisine: knife skills and taste are already there, only the new recipes must be learned.</div><details class="deepdive" open><summary>Fine-tuning a pre-trained ResNet-18 with torchvision (template, not run)</summary><pre><code># Transfer learning with a pretrained ResNet in torchvision (downloads ImageNet weights: not run here)
+import torch, torch.nn as nn
+from torchvision import models, datasets, transforms
+weights = models.ResNet18_Weights.DEFAULT
+model = models.resnet18(weights=weights)
+for p in model.parameters():
+    p.requires_grad = False                         # freeze the backbone ...
+model.fc = nn.Linear(model.fc.in_features, 5)        # ... and train a new head for 5 classes
+tfm = weights.transforms()                            # the exact resize/crop/normalise the weights expect
+train = datasets.ImageFolder(&quot;data/train&quot;, transform=tfm)   # data/train/&lt;class_name&gt;/*.jpg
+loader = torch.utils.data.DataLoader(train, batch_size=32, shuffle=True)
+opt = torch.optim.AdamW(model.fc.parameters(), lr=1e-3)
+for epoch in range(5):
+    for x, y in loader:
+        opt.zero_grad(); nn.functional.cross_entropy(model(x), y).backward(); opt.step()
+# Then unfreeze the last block with a 10x smaller learning rate (&#x27;fine-tuning&#x27;).</code></pre></details><table><tr><th>Data you have</th><th>What to do</th></tr><tr><td>Very little (tens to hundreds per class)</td><td>freeze the backbone, train only a new head</td></tr><tr><td>Medium</td><td>fine-tune the last blocks with a small learning rate</td></tr><tr><td>A lot (and different from ImageNet, e.g. X-rays)</td><td>fine-tune everything, or pre-train on your own domain</td></tr></table><h3>Good to know</h3><ul><li>Always use the exact pre-processing the weights expect (size, normalisation): torchvision's <code>weights.transforms()</code> gives it.</li><li>Not run here because it downloads ImageNet weights. The TensorFlow &amp; PyTorch guide has an honest negative result: frozen-feature transfer to tiny 8×8 digits did <em>not</em> win, because those images look nothing like ImageNet photos.</li></ul>
+    </section>
+
+    <!-- 23 -->
+    <section class="block" id="architectures">
+      <h2><span class="num">23</span> Famous Architectures in One Table</h2>
+<div class="callout life"><strong>Picture:</strong> A family tree of vision models: each generation fixed a problem of the one before.</div><table><tr><th>Model (year)</th><th>Key idea</th><th>Why it mattered</th></tr><tr><td>LeNet-5 (1998)</td><td>small CNN for digits</td><td>showed CNNs work for reading cheques</td></tr><tr><td>AlexNet (2012)</td><td>deep CNN + ReLU + GPUs + dropout</td><td>won ImageNet by a big margin; started the deep-learning wave</td></tr><tr><td>VGG (2014)</td><td>only 3×3 convolutions, deeper</td><td>simple, popular feature extractor</td></tr><tr><td>GoogLeNet / Inception (2014)</td><td>parallel kernel sizes</td><td>efficient</td></tr><tr><td>ResNet (2015)</td><td>skip (residual) connections</td><td>made 100+ layer networks trainable</td></tr><tr><td>MobileNet / EfficientNet (2017-2019)</td><td>cheap depthwise convolutions, scaling rules</td><td>phones and edge devices</td></tr><tr><td>U-Net (2015)</td><td>encoder-decoder with skips</td><td>segmentation, later diffusion models</td></tr><tr><td>ViT (2020)</td><td>image patches as tokens + Transformer</td><td>Transformers for vision</td></tr><tr><td>ConvNeXt (2022)</td><td>modernised CNN</td><td>showed CNNs still compete with ViTs</td></tr></table>
+    </section>
+
+    <!-- 24 -->
+    <section class="block" id="vit">
+      <h2><span class="num">24</span> Vision Transformers: Patches Are Words</h2>
+<div class="callout life"><strong>Picture:</strong> Cutting a photo into stamp-sized squares and reading them like words in a sentence; each stamp can 'pay attention' to every other stamp.</div><details class="deepdive" open><summary>Token counts, and a tiny ViT vs a small CNN on 8×8 digits (run for real)</summary><pre><code># A tiny Vision Transformer vs a small CNN on the same 8x8 digits: patches as words
+import numpy as np, torch, torch.nn as nn
+from sklearn.datasets import load_digits
+from sklearn.model_selection import train_test_split
+X, y = load_digits(return_X_y=True); X = torch.tensor(X / 16.0, dtype=torch.float32).view(-1, 1, 8, 8); y = torch.tensor(y)
+Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.3, random_state=0, stratify=y)
+for size, patch in [(224, 16), (224, 14), (384, 16)]:
+    n = (size // patch) ** 2; print(f&quot;a {size}x{size} image with {patch}x{patch} patches -&gt; {n} tokens; attention compares {n * n:,} pairs&quot;)
+class TinyViT(nn.Module):
+    def __init__(self, d=48, patch=2):
+        super().__init__(); n = (8 // patch) ** 2
+        self.embed = nn.Conv2d(1, d, patch, stride=patch)                          # cut into patches + project
+        self.cls = nn.Parameter(torch.zeros(1, 1, d)); self.pos = nn.Parameter(torch.randn(1, n + 1, d) * 0.02)
+        self.enc = nn.TransformerEncoder(nn.TransformerEncoderLayer(d, 4, 4 * d, batch_first=True, norm_first=True), 2)
+        self.head = nn.Linear(d, 10)
+    def forward(self, x):
+        t = self.embed(x).flatten(2).transpose(1, 2)
+        t = torch.cat([self.cls.expand(len(x), -1, -1), t], 1) + self.pos
+        return self.head(self.enc(t)[:, 0])
+def fit(m, epochs=60):
+    torch.manual_seed(0); opt = torch.optim.AdamW(m.parameters(), 2e-3)
+    for e in range(epochs):
+        perm = torch.randperm(len(Xtr))
+        for i in range(0, len(Xtr), 64):
+            b = perm[i:i + 64]; opt.zero_grad(); nn.functional.cross_entropy(m(Xtr[b]), ytr[b]).backward(); opt.step()
+    m.eval()
+    with torch.no_grad(): return (m(Xte).argmax(1) == yte).float().mean().item()
+torch.manual_seed(0); vit = TinyViT()
+torch.manual_seed(0); cnn = nn.Sequential(nn.Conv2d(1, 16, 3, padding=1), nn.ReLU(), nn.Conv2d(16, 32, 3, padding=1), nn.ReLU(), nn.MaxPool2d(2), nn.Flatten(), nn.Linear(512, 10))
+print(f&quot;tiny ViT : accuracy {fit(vit):.3f}, params {sum(p.numel() for p in vit.parameters())}&quot;)
+print(f&quot;small CNN: accuracy {fit(cnn):.3f}, params {sum(p.numel() for p in cnn.parameters())}&quot;)
+
+# ----- Output (real run) -----
+# a 224x224 image with 16x16 patches -&gt; 196 tokens; attention compares 38,416 pairs
+# a 224x224 image with 14x14 patches -&gt; 256 tokens; attention compares 65,536 pairs
+# a 384x384 image with 16x16 patches -&gt; 576 tokens; attention compares 331,776 pairs
+# tiny ViT : accuracy 0.954, params 58138
+# small CNN: accuracy 0.981, params 9930</code></pre></details><h3>Good to know</h3><ul><li>Honest result: on 1,257 tiny training images the tiny ViT scored 0.954 vs 0.981 for a CNN with 6× fewer weights. CNNs have built-in assumptions about images (nearby pixels matter, patterns repeat); ViTs must learn them from data, so they need much more data or pre-training.</li><li>Attention cost grows with the square of the number of patches: 196 tokens for 224×224 with 16×16 patches, but 576 tokens (331,776 pairs) at 384×384.</li><li>Today most large vision and vision-language models use Transformer backbones, pre-trained on huge image collections.</li></ul>
+    </section>
+
+    <!-- 25 -->
+    <section class="block" id="clip-foundation">
+      <h2><span class="num">25</span> Self-Supervised, CLIP and Foundation Models</h2>
+<div class="callout life"><strong>Picture:</strong> Learning by matching photos with their captions on millions of web pages. Afterwards you can show the model a new photo and a few sentences, and it picks the sentence that fits, even for classes it was never trained on.</div><details class="deepdive" open><summary>CLIP zero-shot classification and SAM promptable segmentation (template, not run)</summary><pre><code># Foundation models: CLIP zero-shot classification and SAM-style promptable segmentation (downloads weights: not run here)
+import torch
+from PIL import Image
+from transformers import CLIPModel, CLIPProcessor
+model = CLIPModel.from_pretrained(&quot;openai/clip-vit-base-patch32&quot;)
+proc = CLIPProcessor.from_pretrained(&quot;openai/clip-vit-base-patch32&quot;)
+image = Image.open(&quot;photo.jpg&quot;)
+labels = [&quot;a photo of a cat&quot;, &quot;a photo of a dog&quot;, &quot;a photo of a car&quot;]
+inputs = proc(text=labels, images=image, return_tensors=&quot;pt&quot;, padding=True)
+probs = model(**inputs).logits_per_image.softmax(-1)[0]
+print(dict(zip(labels, probs.tolist())))
+
+# Segment Anything (SAM family): give a point or a box as the &#x27;prompt&#x27;, get a mask back
+from transformers import SamModel, SamProcessor
+sam = SamModel.from_pretrained(&quot;facebook/sam-vit-base&quot;); sp = SamProcessor.from_pretrained(&quot;facebook/sam-vit-base&quot;)
+inp = sp(image, input_points=[[[450, 600]]], return_tensors=&quot;pt&quot;)
+with torch.no_grad():
+    out = sam(**inp)
+masks = sp.image_processor.post_process_masks(out.pred_masks, inp[&quot;original_sizes&quot;], inp[&quot;reshaped_input_sizes&quot;])</code></pre></details><table><tr><th>Idea</th><th>Example</th><th>Use</th></tr><tr><td>Contrastive image-text pre-training</td><td>CLIP (2021)</td><td>zero-shot classification, image search by text</td></tr><tr><td>Self-supervised image features</td><td>DINO-style models</td><td>strong features without labels</td></tr><tr><td>Promptable segmentation</td><td>Segment Anything (2023)</td><td>click a point, get the object mask</td></tr><tr><td>Vision-language models</td><td>chat about images (several vendors)</td><td>describe, read, reason about images</td></tr></table><h3>Good to know</h3><ul><li>Not run here: they download large weights. The same 'embed and compare' idea is run for text on the <a href="nlp.html#zero-shot">NLP page</a>.</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part E — Detection and Segmentation</h2></div>
+
+    <!-- 26 -->
+    <section class="block" id="detection-basics">
+      <h2><span class="num">26</span> Object Detection: Boxes, Scores and Classes</h2>
+<div class="callout life"><strong>Picture:</strong> Playing 'I spy' with a marker: draw a box around every object you recognise and write its name and how sure you are.</div><div class="diagram-wrap"><svg viewBox="0 0 800 150" style="width:100%;max-width:800px" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrSc18_arrow" markerWidth="10" markerHeight="10" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8" fill="none" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc18_tri" markerWidth="12" markerHeight="12" refX="11" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc18_dia" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--accent)" stroke="var(--accent)"/></marker><marker id="arrSc18_diah" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker></defs><line x1="100" y1="88" x2="130" y2="88" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc18_arrow)"/><line x1="270" y1="88" x2="300" y2="88" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc18_arrow)"/><line x1="440" y1="88" x2="470" y2="88" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc18_arrow)"/><line x1="610" y1="88" x2="640" y2="88" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc18_arrow)"/><text class="edge-label" x="625" y="83" text-anchor="middle">many raw boxes</text><rect class="box" x="10" y="60" width="90" height="56" rx="9"/><text x="55" y="92" text-anchor="middle" font-size="12">Image</text><rect class="box-hl" x="130" y="50" width="140" height="76" rx="9"/><text x="200" y="78" text-anchor="middle" font-size="12">Backbone</text><text x="200" y="92" text-anchor="middle" font-size="10" class="edge-label">CNN / Transformer</text><text x="200" y="106" text-anchor="middle" font-size="10" class="edge-label">features</text><rect class="box-hl" x="300" y="50" width="140" height="76" rx="9"/><text x="370" y="78" text-anchor="middle" font-size="12">Neck</text><text x="370" y="92" text-anchor="middle" font-size="10" class="edge-label">mix features at</text><text x="370" y="106" text-anchor="middle" font-size="10" class="edge-label">several scales</text><rect class="box-final" x="470" y="50" width="140" height="76" rx="9"/><text x="540" y="78" text-anchor="middle" font-size="12">Head</text><text x="540" y="92" text-anchor="middle" font-size="10" class="edge-label">per location: box,</text><text x="540" y="106" text-anchor="middle" font-size="10" class="edge-label">class scores</text><rect class="box" x="640" y="50" width="150" height="76" rx="9"/><text x="715" y="85" text-anchor="middle" font-size="12">Post-process</text><text x="715" y="99" text-anchor="middle" font-size="10" class="edge-label">score threshold + NMS</text></svg><div class="diagram-caption">Fig S18 — A modern one-stage detector (YOLO-style), simplified.</div></div><table><tr><th>Family</th><th>How</th><th>Examples</th></tr><tr><td>Two-stage</td><td>first propose regions, then classify each</td><td>R-CNN, Fast/Faster R-CNN, Mask R-CNN</td></tr><tr><td>One-stage</td><td>predict boxes and classes in one pass over a grid</td><td>YOLO family, SSD, RetinaNet</td></tr><tr><td>Transformer set prediction</td><td>predict a fixed set of objects, no NMS needed</td><td>DETR family</td></tr></table><h3>Good to know</h3><ul><li>Box formats differ: (x1, y1, x2, y2) corners, (cx, cy, w, h) centre+size, and normalised 0-1 values. Mixing formats is the classic detection bug.</li></ul>
+    </section>
+
+    <!-- 27 -->
+    <section class="block" id="iou-nms">
+      <h2><span class="num">27</span> IoU and Non-Maximum Suppression</h2>
+<div class="callout life"><strong>Picture:</strong> Six people point at the same two cars, each drawing a slightly different box. NMS keeps the most confident box for each car and throws away the copies that overlap it a lot.</div><details class="deepdive" open><summary>IoU and NMS from scratch, checked against torchvision (run for real)</summary><pre><code># Detection basics: IoU and non-maximum suppression (NMS), from scratch and with torchvision
+import numpy as np, torch, torchvision, cv2
+from cvshared import montage
+def iou(a, b):
+    x1, y1, x2, y2 = max(a[0], b[0]), max(a[1], b[1]), min(a[2], b[2]), min(a[3], b[3])
+    inter = max(0, x2 - x1) * max(0, y2 - y1)
+    return inter / ((a[2] - a[0]) * (a[3] - a[1]) + (b[2] - b[0]) * (b[3] - b[1]) - inter)
+print(&quot;IoU same box:&quot;, iou([0, 0, 10, 10], [0, 0, 10, 10]), &quot;| half overlap:&quot;, round(iou([0, 0, 10, 10], [5, 0, 15, 10]), 3), &quot;| no overlap:&quot;, iou([0, 0, 10, 10], [20, 20, 30, 30]))
+boxes = np.array([[50, 50, 150, 150], [55, 60, 155, 160], [48, 45, 140, 150], [200, 80, 290, 170], [205, 85, 300, 175], [60, 200, 120, 260]], float)
+scores = np.array([0.95, 0.90, 0.80, 0.85, 0.60, 0.40])
+def nms(b, s, thr=0.5):
+    order, keep = list(np.argsort(-s)), []
+    while order:
+        i = order.pop(0); keep.append(i)
+        order = [j for j in order if iou(b[i], b[j]) &lt; thr]
+    return keep
+mine = [int(i) for i in nms(boxes, scores)]; tv = torchvision.ops.nms(torch.tensor(boxes), torch.tensor(scores), 0.5).tolist()
+print(&quot;kept by our NMS   :&quot;, mine)
+print(&quot;kept by torchvision:&quot;, tv, &quot;| same:&quot;, mine == tv)
+canvas = np.full((300, 340, 3), 245, np.uint8); after = canvas.copy()
+for i, b in enumerate(boxes.astype(int)):
+    cv2.rectangle(canvas, tuple(b[:2]), tuple(b[2:]), (200, 40, 40), 2)
+    if i in mine: cv2.rectangle(after, tuple(b[:2]), tuple(b[2:]), (30, 140, 40), 3)
+montage(&quot;nms.png&quot;, [canvas, after], [&quot;6 raw detections&quot;, f&quot;after NMS: {len(mine)} kept&quot;])
+
+# ----- Output (real run) -----
+# IoU same box: 1.0 | half overlap: 0.333 | no overlap: 0.0
+# kept by our NMS   : [0, 3, 5]
+# kept by torchvision: [0, 3, 5] | same: True
+# [saved picture nms.png: 402x208]</code></pre></details><div class="diagram-wrap"><img src="img/cv/nms.jpg" alt="Six raw detections (left) and the three kept after NMS (right)" loading="lazy" style="max-width:100%;height:auto;border-radius:6px"><div class="diagram-caption">Fig S19 — Six raw detections (left) and the three kept after NMS (right) (real output of the program above)</div></div><h3>Good to know</h3><ul><li><strong>IoU</strong> (intersection over union) = overlap area / combined area. 1 = identical, 0 = no overlap. Two boxes shifted by half their width have IoU 0.33, not 0.5.</li><li>Our NMS kept boxes [0, 3, 5], exactly like <code>torchvision.ops.nms</code>.</li><li>The NMS threshold is a trade-off: too low removes real objects standing close together (a crowd); too high leaves duplicates.</li></ul>
+    </section>
+
+    <!-- 28 -->
+    <section class="block" id="map-metric">
+      <h2><span class="num">28</span> Measuring Detectors: Precision-Recall and mAP</h2>
+<div class="callout life"><strong>Picture:</strong> Marking a treasure hunt: a find counts only if it is close enough to a real treasure (IoU ≥ 0.5), and finding the same treasure twice counts as a mistake.</div><details class="deepdive" open><summary>Step-by-step AP@0.5 for 8 detections and 5 true objects (run for real)</summary><pre><code># Detection metric: precision-recall and average precision (AP@0.5) for one class, step by step
+import numpy as np
+gt = {&quot;img1&quot;: [[10, 10, 50, 50], [60, 60, 100, 100]], &quot;img2&quot;: [[20, 20, 70, 70]], &quot;img3&quot;: [[5, 5, 40, 40], [50, 10, 90, 45]]}
+dets = [(&quot;img1&quot;, 0.96, [12, 12, 50, 52]), (&quot;img1&quot;, 0.90, [62, 58, 101, 99]), (&quot;img2&quot;, 0.85, [22, 18, 72, 70]),
+        (&quot;img3&quot;, 0.80, [6, 6, 41, 38]), (&quot;img1&quot;, 0.70, [12, 10, 48, 50]), (&quot;img3&quot;, 0.55, [100, 100, 140, 140]),
+        (&quot;img2&quot;, 0.40, [60, 60, 90, 90]), (&quot;img3&quot;, 0.30, [52, 12, 88, 46])]
+def iou(a, b):
+    ix = max(0, min(a[2], b[2]) - max(a[0], b[0])); iy = max(0, min(a[3], b[3]) - max(a[1], b[1])); inter = ix * iy
+    return inter / ((a[2] - a[0]) * (a[3] - a[1]) + (b[2] - b[0]) * (b[3] - b[1]) - inter)
+used = {k: [False] * len(v) for k, v in gt.items()}; n_gt = sum(len(v) for v in gt.values())
+tp = fp = 0; P, R = [], []
+for img, s, box in sorted(dets, key=lambda d: -d[1]):
+    ious = [iou(box, g) for g in gt[img]]; j = int(np.argmax(ious))
+    if ious[j] &gt;= 0.5 and not used[img][j]: used[img][j] = True; tp += 1; kind = &quot;TP&quot;
+    else: fp += 1; kind = &quot;FP (duplicate)&quot; if ious[j] &gt;= 0.5 else &quot;FP&quot;
+    P.append(tp / (tp + fp)); R.append(tp / n_gt)
+    print(f&quot;score {s:.2f} {img}: best IoU {ious[j]:.2f} -&gt; {kind:15} precision {P[-1]:.2f} recall {R[-1]:.2f}&quot;)
+ap = 0; prev_r = 0
+for k in range(len(P)):
+    ap += (R[k] - prev_r) * max(P[k:]); prev_r = R[k]
+print(f&quot;AP@0.5 = {ap:.3f} (area under the precision-recall curve, using the &#x27;max precision to the right&#x27; rule)&quot;)
+
+# ----- Output (real run) -----
+# score 0.96 img1: best IoU 0.86 -&gt; TP              precision 1.00 recall 0.20
+# score 0.90 img1: best IoU 0.86 -&gt; TP              precision 1.00 recall 0.40
+# score 0.85 img2: best IoU 0.89 -&gt; TP              precision 1.00 recall 0.60
+# score 0.80 img3: best IoU 0.87 -&gt; TP              precision 1.00 recall 0.80
+# score 0.70 img1: best IoU 0.90 -&gt; FP (duplicate)  precision 0.80 recall 0.80
+# score 0.55 img3: best IoU 0.00 -&gt; FP              precision 0.67 recall 0.80
+# score 0.40 img2: best IoU 0.03 -&gt; FP              precision 0.57 recall 0.80
+# score 0.30 img3: best IoU 0.83 -&gt; TP              precision 0.62 recall 1.00
+# AP@0.5 = 0.925 (area under the precision-recall curve, using the &#x27;max precision to the right&#x27; rule)</code></pre></details><h3>Good to know</h3><ul><li>Detections are sorted by score; each is TP or FP; precision and recall are updated after each one. AP is the area under that precision-recall curve.</li><li>The second box on the same object (score 0.70) was a <strong>duplicate</strong> = false positive, even with IoU 0.90.</li><li><strong>mAP</strong> = mean of AP over all classes. 'mAP50' uses IoU 0.5; COCO's 'mAP50-95' averages IoU thresholds 0.50 to 0.95, which rewards tight boxes.</li></ul>
+    </section>
+
+    <!-- 29 -->
+    <section class="block" id="yolo">
+      <h2><span class="num">29</span> Using a Real Detector (YOLO)</h2>
+<div class="callout life"><strong>Picture:</strong> Hiring an expert spotter who already knows 80 everyday objects (people, cars, dogs, cups ...) and can learn your own objects from a few hundred labelled photos.</div><details class="deepdive" open><summary>Inference, training and export with the Ultralytics package (template, not run)</summary><pre><code># Object detection with a YOLO model (Ultralytics package; downloads weights: not run here)
+# pip install ultralytics
+from ultralytics import YOLO
+model = YOLO(&quot;yolo11n.pt&quot;)                            # small pretrained COCO detector (model names change: check the docs)
+results = model(&quot;street.jpg&quot;, conf=0.25, iou=0.5)    # conf = score threshold, iou = NMS threshold
+for r in results:
+    for box in r.boxes:
+        print(model.names[int(box.cls)], float(box.conf), box.xyxy.tolist())
+# Train on your own data (YOLO txt labels + data.yaml):
+model.train(data=&quot;data.yaml&quot;, epochs=50, imgsz=640)
+metrics = model.val()                                 # mAP50, mAP50-95
+model.export(format=&quot;onnx&quot;)                           # for deployment</code></pre></details><table><tr><th>Step</th><th>Tip</th></tr><tr><td>Collect images</td><td>real conditions: lighting, angles, backgrounds where it will be used</td></tr><tr><td>Label boxes</td><td>consistent rules (whole object? partly hidden?); tools like CVAT or Label Studio</td></tr><tr><td>Train</td><td>start from pre-trained weights; watch validation mAP</td></tr><tr><td>Evaluate</td><td>per-class AP, look at false positives and misses per image</td></tr><tr><td>Deploy</td><td>export (ONNX / TensorRT / mobile), measure speed on the real device</td></tr></table><h3>Good to know</h3><ul><li>Not run here (downloads weights). Check the licence of the detector package and weights before commercial use.</li></ul>
+    </section>
+
+    <!-- 30 -->
+    <section class="block" id="segmentation">
+      <h2><span class="num">30</span> Segmentation: Semantic, Instance and Panoptic (k-means Example)</h2>
+<div class="callout life"><strong>Picture:</strong> Colouring a colouring-book page: semantic segmentation colours all sheep the same; instance segmentation gives each sheep its own colour; panoptic does both for everything, including grass and sky.</div><details class="deepdive" open><summary>Colour clustering with k-means, scored with IoU and Dice (run for real)</summary><pre><code># Colour segmentation with k-means, scored against a reference mask with IoU and Dice
+import cv2, numpy as np
+from sklearn.datasets import load_sample_image
+from sklearn.cluster import KMeans
+from cvshared import montage
+rgb = load_sample_image(&quot;flower.jpg&quot;)
+small = cv2.resize(rgb, (320, 214))
+lab = cv2.cvtColor(small, cv2.COLOR_RGB2LAB).reshape(-1, 3).astype(float)
+for k in [2, 3, 4, 6]:
+    km = KMeans(k, n_init=4, random_state=0).fit(lab)
+    print(f&quot;k={k}: cluster sizes {np.bincount(km.labels_).tolist()}&quot;)
+km = KMeans(4, n_init=4, random_state=0).fit(lab)
+seg = km.cluster_centers_[km.labels_].reshape(small.shape).astype(np.uint8)
+seg_rgb = cv2.cvtColor(seg, cv2.COLOR_LAB2RGB)
+hsv = cv2.cvtColor(small, cv2.COLOR_RGB2HSV)
+ref = (cv2.inRange(hsv, (0, 80, 60), (8, 255, 255)) | cv2.inRange(hsv, (170, 80, 60), (179, 255, 255))) &gt; 0   # &#x27;petals&#x27; reference (HSV rule)
+best = max(range(4), key=lambda c: ((km.labels_.reshape(ref.shape) == c) &amp; ref).sum())
+pred = km.labels_.reshape(ref.shape) == best
+iou = (pred &amp; ref).sum() / (pred | ref).sum(); dice = 2 * (pred &amp; ref).sum() / (pred.sum() + ref.sum())
+print(f&quot;cluster {best} vs HSV petal mask: IoU {iou:.2f}, Dice {dice:.2f}&quot;)
+montage(&quot;kmeans.png&quot;, [small, seg_rgb, ref, pred], [&quot;original&quot;, &quot;k-means k=4&quot;, &quot;reference (HSV rule)&quot;, f&quot;best cluster (IoU {iou:.2f})&quot;])
+
+# ----- Output (real run) -----
+# k=2: cluster sizes [16379, 52101]
+# k=3: cluster sizes [25960, 16248, 26272]
+# k=4: cluster sizes [5336, 25025, 26739, 11380]
+# k=6: cluster sizes [7787, 23561, 12088, 5952, 16159, 2933]
+# cluster 0 vs HSV petal mask: IoU 0.36, Dice 0.53
+# [saved picture kmeans.png: 1046x208]</code></pre></details><div class="diagram-wrap"><img src="img/cv/kmeans.jpg" alt="Flower photo, k-means colours, reference petal mask, best-matching cluster" loading="lazy" style="max-width:100%;height:auto;border-radius:6px"><div class="diagram-caption">Fig S20 — Flower photo, k-means colours, reference petal mask, best-matching cluster (real output of the program above)</div></div><table><tr><th>Type</th><th>Output</th><th>Example models</th></tr><tr><td>Semantic</td><td>a class for every pixel</td><td>FCN, U-Net, DeepLab</td></tr><tr><td>Instance</td><td>a mask per object</td><td>Mask R-CNN</td></tr><tr><td>Panoptic</td><td>both</td><td>Panoptic FPN, Mask2Former-style</td></tr><tr><td>Promptable</td><td>a mask for the point/box you give</td><td>Segment Anything family</td></tr></table><h3>Good to know</h3><ul><li>Honest result: the best k-means cluster matched the petal reference with IoU 0.36 (Dice 0.53): colour alone cannot separate petals from similar-coloured parts. That gap is why learned segmentation exists.</li><li><strong>Dice</strong> = 2·overlap / (size A + size B); <strong>IoU</strong> = overlap / union. Dice is always ≥ IoU for the same masks.</li></ul>
+    </section>
+
+    <!-- 31 -->
+    <section class="block" id="unet">
+      <h2><span class="num">31</span> Train a Tiny U-Net for Segmentation</h2>
+<div class="callout life"><strong>Picture:</strong> An artist who first shrinks a picture to understand the big shapes, then enlarges it back while peeking at the original details (skip connections) to colour exactly the right pixels.</div><details class="deepdive" open><summary>A tiny U-Net learns to mark circles in noisy images (with square distractors) (run for real)</summary><pre><code># Semantic segmentation: a tiny encoder-decoder (U-Net style) learns to mark circles on noisy synthetic images
+import numpy as np, torch, torch.nn as nn, time
+from cvshared import montage
+torch.manual_seed(0); rng = np.random.default_rng(0)
+def sample(n, size=48):
+    X, Y = np.zeros((n, 1, size, size), np.float32), np.zeros((n, 1, size, size), np.float32)
+    yy, xx = np.mgrid[:size, :size]
+    for i in range(n):
+        for _ in range(rng.integers(1, 4)):
+            cy, cx, r = rng.integers(8, size - 8, 2).tolist() + [int(rng.integers(4, 9))]
+            Y[i, 0][(yy - cy) ** 2 + (xx - cx) ** 2 &lt;= r * r] = 1
+        sq = rng.integers(4, size - 12, 2); X[i, 0, sq[0]:sq[0] + 8, sq[1]:sq[1] + 8] = 0.8      # distractor squares
+        X[i, 0] += Y[i, 0] * 0.8 + rng.normal(0, 0.25, (size, size))
+    return torch.tensor(X), torch.tensor(Y)
+class TinyUNet(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.e1 = nn.Sequential(nn.Conv2d(1, 16, 3, padding=1), nn.ReLU()); self.e2 = nn.Sequential(nn.MaxPool2d(2), nn.Conv2d(16, 32, 3, padding=1), nn.ReLU())
+        self.up = nn.ConvTranspose2d(32, 16, 2, stride=2); self.d = nn.Sequential(nn.Conv2d(32, 16, 3, padding=1), nn.ReLU(), nn.Conv2d(16, 1, 1))
+    def forward(self, x):
+        a = self.e1(x); b = self.e2(a); return self.d(torch.cat([self.up(b), a], 1))     # skip connection
+Xtr, Ytr = sample(400); Xte, Yte = sample(50)
+m = TinyUNet(); opt = torch.optim.Adam(m.parameters(), 3e-3); t = time.perf_counter()
+for e in range(25):
+    perm = torch.randperm(400)
+    for i in range(0, 400, 32):
+        b = perm[i:i + 32]; opt.zero_grad(); nn.functional.binary_cross_entropy_with_logits(m(Xtr[b]), Ytr[b]).backward(); opt.step()
+with torch.no_grad(): P = (torch.sigmoid(m(Xte)) &gt; 0.5).float()
+inter = (P * Yte).sum(); dice = (2 * inter / (P.sum() + Yte.sum())).item(); iou = (inter / ((P + Yte) &gt; 0).sum()).item()
+thr = ((Xte &gt; 0.5).float()); dice_thr = (2 * (thr * Yte).sum() / (thr.sum() + Yte.sum())).item()
+print(f&quot;tiny U-Net: Dice {dice:.3f}, IoU {iou:.3f} on 50 test images | plain threshold baseline Dice {dice_thr:.3f}&quot;)
+print(f&quot;parameters {sum(p.numel() for p in m.parameters())}, training {time.perf_counter() - t:.0f} s on CPU&quot;)
+montage(&quot;unet.png&quot;, [Xte[0, 0].numpy(), Yte[0, 0].numpy(), thr[0, 0].numpy(), P[0, 0].numpy()], [&quot;noisy input&quot;, &quot;true mask&quot;, &quot;threshold &gt;0.5&quot;, &quot;tiny U-Net&quot;])
+
+# ----- Output (real run) -----
+# tiny U-Net: Dice 0.943, IoU 0.892 on 50 test images | plain threshold baseline Dice 0.768
+# parameters 11505, training 9 s on CPU
+# [saved picture unet.png: 710x208]</code></pre></details><div class="diagram-wrap"><img src="img/cv/unet.jpg" alt="Noisy input, true mask, simple threshold, tiny U-Net prediction" loading="lazy" style="max-width:100%;height:auto;border-radius:6px"><div class="diagram-caption">Fig S21 — Noisy input, true mask, simple threshold, tiny U-Net prediction (real output of the program above)</div></div><h3>Good to know</h3><ul><li>The tiny U-Net (11,505 weights, about 8 s of CPU training) reached Dice 0.943 on new images; a plain brightness threshold only 0.768, because it also marks the bright squares and the noise.</li><li>The skip connection (<code>torch.cat([self.up(b), a])</code>) gives the decoder sharp details from the encoder; without it masks come out blurry.</li><li>Real U-Nets are used for medical images, satellite maps and inside diffusion image generators.</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part F — Video, 3-D, Generation, OCR and Vision-Language</h2></div>
+
+    <!-- 32 -->
+    <section class="block" id="optical-flow">
+      <h2><span class="num">32</span> Motion: Optical Flow and Background Subtraction</h2>
+<div class="callout life"><strong>Picture:</strong> Watching two photos taken a moment apart and drawing a tiny arrow on every pixel showing where it moved.</div><details class="deepdive" open><summary>Farneback flow and MOG2 background subtraction on synthetic frames (run for real)</summary><pre><code># Motion in video: dense optical flow (Farneback) and background subtraction on synthetic frames
+import cv2, numpy as np
+from cvshared import montage
+rng = np.random.default_rng(0)
+bg = cv2.GaussianBlur((rng.random((120, 160)) * 255).astype(np.uint8), (0, 0), 3)
+def frame(t):
+    f = bg.copy(); cv2.rectangle(f, (20 + 4 * t, 40 + 2 * t), (50 + 4 * t, 70 + 2 * t), 255, -1); return f
+f0, f1 = frame(5), frame(6)
+flow = cv2.calcOpticalFlowFarneback(f0, f1, None, 0.5, 3, 15, 3, 5, 1.2, 0)
+box = flow[50:70, 45:65]
+print(f&quot;average motion inside the moving square: dx={box[..., 0].mean():.2f} px, dy={box[..., 1].mean():.2f} px (true: dx=4, dy=2)&quot;)
+print(f&quot;average motion in the still background : {np.abs(flow[:30, 100:]).mean():.3f} px&quot;)
+sub = cv2.createBackgroundSubtractorMOG2(history=20, varThreshold=25, detectShadows=False)
+for t in range(15): mask = sub.apply(frame(t))
+n = cv2.connectedComponentsWithStats((mask &gt; 0).astype(np.uint8))[0] - 1
+print(f&quot;background subtraction after 15 frames: {np.count_nonzero(mask)} moving pixels in {n} blob(s)&quot;)
+mag = np.hypot(flow[..., 0], flow[..., 1])
+montage(&quot;flow.png&quot;, [f0, f1, mag, mask], [&quot;frame t&quot;, &quot;frame t+1&quot;, &quot;flow magnitude&quot;, &quot;moving pixels&quot;])
+
+# ----- Output (real run) -----
+# average motion inside the moving square: dx=1.78 px, dy=1.05 px (true: dx=4, dy=2)
+# average motion in the still background : 0.001 px
+# background subtraction after 15 frames: 340 moving pixels in 1 blob(s)
+# [saved picture flow.png: 934x208]</code></pre></details><div class="diagram-wrap"><img src="img/cv/flow.jpg" alt="Two frames, flow magnitude (bright = moving), and the moving pixels found by background subtraction" loading="lazy" style="max-width:100%;height:auto;border-radius:6px"><div class="diagram-caption">Fig S22 — Two frames, flow magnitude (bright = moving), and the moving pixels found by background subtraction (real output of the program above)</div></div><h3>Good to know</h3><ul><li>Honest result: inside the moving square the measured motion was about (1.8, 1.0) px instead of the true (4, 2). The square is one flat colour, so its middle has no texture to follow (the <strong>aperture problem</strong>); motion is visible mainly at its edges.</li><li>The still background showed almost zero flow (0.001 px), and background subtraction found exactly one moving blob.</li><li>Learned flow networks (RAFT-style) handle such cases much better; classic flow is still used for speed.</li></ul>
+    </section>
+
+    <!-- 33 -->
+    <section class="block" id="tracking">
+      <h2><span class="num">33</span> Multi-Object Tracking</h2>
+<div class="callout life"><strong>Picture:</strong> A sports commentator who must keep calling each player by the same name for the whole match, even when they cross paths or hide behind someone for a moment.</div><details class="deepdive" open><summary>Hungarian matching of detections to tracks over 10 frames, with a 2-frame occlusion (run for real)</summary><pre><code># Multi-object tracking: give each detection an ID over time (Hungarian matching on distance, like SORT without Kalman)
+import numpy as np
+from scipy.optimize import linear_sum_assignment
+rng = np.random.default_rng(2)
+true = {&quot;A&quot;: np.array([10.0, 10.0]), &quot;B&quot;: np.array([80.0, 20.0]), &quot;C&quot;: np.array([40.0, 90.0])}
+vel = {&quot;A&quot;: np.array([3.0, 1.0]), &quot;B&quot;: np.array([-2.0, 2.0]), &quot;C&quot;: np.array([1.0, -3.0])}
+tracks, next_id, history = {}, 1, []
+for t in range(10):
+    dets = []
+    for k in true:
+        true[k] = true[k] + vel[k]
+        if not (k == &quot;B&quot; and t in (4, 5)):                      # object B is hidden for two frames (occlusion)
+            dets.append(true[k] + rng.normal(0, 0.8, 2))
+    rng.shuffle(dets)
+    ids = list(tracks)
+    if ids and dets:
+        cost = np.array([[np.linalg.norm(tracks[i] - d) for d in dets] for i in ids])
+        r, c = linear_sum_assignment(cost); matched = set()
+        for i, j in zip(r, c):
+            if cost[i, j] &lt; 15: tracks[ids[i]] = dets[j]; matched.add(j)
+        new = [d for j, d in enumerate(dets) if j not in matched]
+    else:
+        new = dets
+    for d in new: tracks[next_id] = d; next_id += 1
+    history.append({i: tuple(np.round(p).astype(int)) for i, p in tracks.items()})
+    print(f&quot;frame {t}: {len(dets)} detections -&gt; tracks &quot; + &quot;, &quot;.join(f&quot;#{i}@{tuple(np.round(p).astype(int).tolist())}&quot; for i, p in tracks.items()))
+print(&quot;IDs created:&quot;, next_id - 1, &quot;(3 objects; B kept its ID through the 2-frame occlusion because the track was not deleted)&quot;)
+
+# ----- Output (real run) -----
+# frame 0: 3 detections -&gt; tracks #1@(42, 88), #2@(13, 11), #3@(78, 20)
+# frame 1: 3 detections -&gt; tracks #1@(42, 84), #2@(17, 12), #3@(76, 25)
+# frame 2: 3 detections -&gt; tracks #1@(43, 80), #2@(19, 13), #3@(74, 26)
+# frame 3: 3 detections -&gt; tracks #1@(45, 80), #2@(22, 14), #3@(72, 27)
+# frame 4: 2 detections -&gt; tracks #1@(46, 75), #2@(24, 14), #3@(72, 27)
+# frame 5: 2 detections -&gt; tracks #1@(46, 72), #2@(29, 16), #3@(72, 27)
+# frame 6: 3 detections -&gt; tracks #1@(48, 68), #2@(32, 16), #3@(66, 34)
+# frame 7: 3 detections -&gt; tracks #1@(47, 67), #2@(34, 19), #3@(64, 37)
+# frame 8: 3 detections -&gt; tracks #1@(50, 65), #2@(36, 19), #3@(63, 38)
+# frame 9: 3 detections -&gt; tracks #1@(50, 60), #2@(40, 19), #3@(61, 40)
+# IDs created: 3 (3 objects; B kept its ID through the 2-frame occlusion because the track was not deleted)</code></pre></details><h3>Good to know</h3><ul><li>Each frame: compute the distance between every existing track and every new detection, solve the best one-to-one assignment (Hungarian algorithm), start new tracks for unmatched detections.</li><li>Object B disappeared for 2 frames and came back with the same ID (#3) because its track was kept. Real trackers (SORT, DeepSORT, ByteTrack) add a Kalman filter to predict motion and appearance features to re-identify objects.</li><li>Metrics: MOTA, IDF1, HOTA (how often IDs switch is as important as finding objects).</li></ul>
+    </section>
+
+    <!-- 34 -->
+    <section class="block" id="camera-3d">
+      <h2><span class="num">34</span> Cameras, 3-D and Depth</h2>
+<div class="callout life"><strong>Picture:</strong> Closing one eye and then the other: near objects jump a lot, far ones barely move. Two cameras use this jump (disparity) to measure distance, just like our two eyes.</div><details class="deepdive" open><summary>Pinhole projection of a cube, and depth error vs distance for a stereo pair (run for real)</summary><pre><code># The pinhole camera: project 3-D points to pixels, and depth from stereo disparity
+import numpy as np
+fx = fy = 800.0; cx, cy = 320.0, 240.0                          # focal length (pixels) and image centre
+K = np.array([[fx, 0, cx], [0, fy, cy], [0, 0, 1]])
+cube = np.array([[x, y, z] for x in (-0.5, 0.5) for y in (-0.5, 0.5) for z in (4.0, 5.0)])     # metres, in front of the camera
+uvw = (K @ cube.T).T; uv = uvw[:, :2] / uvw[:, 2:]
+for p, q in zip(cube, uv): print(f&quot;3-D point {p} -&gt; pixel ({q[0]:6.1f}, {q[1]:6.1f})&quot;)
+print(&quot;far corners are closer to the centre: that is perspective&quot;)
+B = 0.12                                                        # stereo baseline: 12 cm between two cameras
+for Z in [1, 2, 5, 10, 20]:
+    d = fx * B / Z
+    print(f&quot;object at {Z:2d} m -&gt; disparity {d:6.2f} px; a 1-px error changes the depth estimate by {Z - fx * B / (d + 1):.2f} m&quot;)
+
+# ----- Output (real run) -----
+# 3-D point [-0.5 -0.5  4. ] -&gt; pixel ( 220.0,  140.0)
+# 3-D point [-0.5 -0.5  5. ] -&gt; pixel ( 240.0,  160.0)
+# 3-D point [-0.5  0.5  4. ] -&gt; pixel ( 220.0,  340.0)
+# 3-D point [-0.5  0.5  5. ] -&gt; pixel ( 240.0,  320.0)
+# 3-D point [ 0.5 -0.5  4. ] -&gt; pixel ( 420.0,  140.0)
+# 3-D point [ 0.5 -0.5  5. ] -&gt; pixel ( 400.0,  160.0)
+# 3-D point [0.5 0.5 4. ] -&gt; pixel ( 420.0,  340.0)
+# 3-D point [0.5 0.5 5. ] -&gt; pixel ( 400.0,  320.0)
+# far corners are closer to the centre: that is perspective
+# object at  1 m -&gt; disparity  96.00 px; a 1-px error changes the depth estimate by 0.01 m
+# object at  2 m -&gt; disparity  48.00 px; a 1-px error changes the depth estimate by 0.04 m
+# object at  5 m -&gt; disparity  19.20 px; a 1-px error changes the depth estimate by 0.25 m
+# object at 10 m -&gt; disparity   9.60 px; a 1-px error changes the depth estimate by 0.94 m
+# object at 20 m -&gt; disparity   4.80 px; a 1-px error changes the depth estimate by 3.45 m</code></pre></details><table><tr><th>Way to get depth</th><th>How</th><th>Limits</th></tr><tr><td>Stereo cameras</td><td>Z = f · B / disparity</td><td>accuracy falls quickly with distance</td></tr><tr><td>Structured light / time-of-flight</td><td>project a pattern or time the light</td><td>short range, sunlight problems</td></tr><tr><td>LiDAR</td><td>laser pulses</td><td>expensive, sparse points</td></tr><tr><td>Monocular depth networks</td><td>one image + a learned model</td><td>relative depth; scale must be known</td></tr><tr><td>Structure from motion / SLAM</td><td>track keypoints while moving</td><td>needs motion and texture</td></tr></table><h3>Good to know</h3><ul><li>The real run shows why stereo struggles far away: a 1-pixel disparity error moves the estimate by 0.01 m at 1 m but by 3.45 m at 20 m (focal length 800 px, baseline 12 cm).</li><li>Camera calibration (OpenCV's chessboard method) finds the focal length, centre and lens distortion before any measuring.</li></ul>
+    </section>
+
+    <!-- 35 -->
+    <section class="block" id="generative-vision">
+      <h2><span class="num">35</span> Generating Images: GANs and Diffusion</h2>
+<div class="callout life"><strong>Picture:</strong> An artist who starts from TV static and, step by step, removes a little noise while following your description, until a picture appears. That is a diffusion model.</div><details class="deepdive" open><summary>Text-to-image with the diffusers library (template, not run)</summary><pre><code># Generating images with a diffusion model (diffusers; large download, GPU recommended: not run here)
+import torch
+from diffusers import AutoPipelineForText2Image
+pipe = AutoPipelineForText2Image.from_pretrained(&quot;stabilityai/sdxl-turbo&quot;, torch_dtype=torch.float16).to(&quot;cuda&quot;)
+image = pipe(&quot;a watercolour painting of a lighthouse at sunrise&quot;, num_inference_steps=1, guidance_scale=0.0).images[0]
+image.save(&quot;lighthouse.png&quot;)
+# Check the model licence before commercial use; label generated images as AI-generated.</code></pre></details><table><tr><th>Family</th><th>Idea</th><th>Notes</th></tr><tr><td>VAE</td><td>compress to a code and decode back</td><td>blurry alone; used inside latent diffusion</td></tr><tr><td>GAN (2014)</td><td>a generator and a critic play a game</td><td>sharp but hard to train; StyleGAN faces</td></tr><tr><td>Diffusion (2020+)</td><td>learn to remove noise step by step</td><td>current standard for images and video (as widely reported)</td></tr></table><h3>Good to know</h3><ul><li>Responsible use: label generated images, respect licences and people's likeness, and expect misuse (deepfakes); detection and provenance tools (content credentials/watermarks) exist but are imperfect. More in <a href="genai.html">Generative AI</a>.</li></ul>
+    </section>
+
+    <!-- 36 -->
+    <section class="block" id="ocr">
+      <h2><span class="num">36</span> OCR: Reading Text in Images</h2>
+<div class="callout life"><strong>Picture:</strong> A child reading a shop sign: first find where the letters are, then read them, then fix obvious mistakes using known words.</div><details class="deepdive" open><summary>Tesseract and EasyOCR (template, not run)</summary><pre><code># OCR: reading text from images (needs the Tesseract program or EasyOCR model downloads: not run here)
+import cv2, pytesseract
+img = cv2.imread(&quot;receipt.jpg&quot;)
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+gray = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 31, 10)   # clean up first
+print(pytesseract.image_to_string(gray, lang=&quot;eng&quot;))
+# EasyOCR (deep learning, many scripts incl. Hindi):
+import easyocr
+reader = easyocr.Reader([&quot;en&quot;, &quot;hi&quot;])
+for box, text, conf in reader.readtext(&quot;signboard.jpg&quot;):
+    print(text, round(conf, 2))</code></pre></details><h3>Good to know</h3><ul><li>Pipeline: detect text regions → recognise characters → post-process (dictionary, regex for dates/amounts).</li><li>Pre-processing from Part B (thresholding, deskewing with a homography, denoising) often matters more than the OCR engine.</li><li>For documents with layout (invoices, forms), document-AI and vision-language models read fields directly; validate amounts and dates with rules.</li></ul>
+    </section>
+
+    <!-- 37 -->
+    <section class="block" id="vision-language">
+      <h2><span class="num">37</span> Vision-Language Models: Asking Questions About Images</h2>
+<div class="callout life"><strong>Picture:</strong> Showing a photo to a well-read friend and asking 'which shelves are empty?' in plain words.</div><details class="deepdive" open><summary>Image + question with the Anthropic SDK (claude-opus-5-5) (template, not run)</summary><pre><code># Asking a vision-capable LLM about an image with the Anthropic SDK (needs an API key: not run here)
+import base64, anthropic
+client = anthropic.Anthropic()
+with open(&quot;shelf.jpg&quot;, &quot;rb&quot;) as f:
+    data = base64.standard_b64encode(f.read()).decode(&quot;utf-8&quot;)
+resp = client.messages.create(
+    model=&quot;claude-opus-5-5&quot;,
+    max_tokens=1024,
+    messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: [
+        {&quot;type&quot;: &quot;image&quot;, &quot;source&quot;: {&quot;type&quot;: &quot;base64&quot;, &quot;media_type&quot;: &quot;image/jpeg&quot;, &quot;data&quot;: data}},
+        {&quot;type&quot;: &quot;text&quot;, &quot;text&quot;: &quot;List the products visible on this shelf and say which shelf rows look empty.&quot;},
+    ]}],
+)
+print(&quot;&quot;.join(b.text for b in resp.content if b.type == &quot;text&quot;))
+# Good for flexible questions about images; for counting/measuring at scale, a trained detector is cheaper and more exact.</code></pre></details><h3>Good to know</h3><ul><li>Great for flexible questions, captions, reading charts and screenshots, and checking documents.</li><li>For high-volume, exact tasks (counting parts on a production line), a trained detector is cheaper, faster and more predictable.</li><li>Images can contain hidden instructions (prompt injection in pictures): treat model output as untrusted (<a href="ai-security.html">AI Security</a>).</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part G — Robustness, Deployment and Responsibility</h2></div>
+
+    <!-- 38 -->
+    <section class="block" id="adversarial">
+      <h2><span class="num">38</span> Robustness: Adversarial Examples (Defence Lesson)</h2>
+<div class="callout life"><strong>Picture:</strong> Optical illusions for computers: changing pixels so slightly that a person sees no difference, yet the model's answer flips.</div><details class="deepdive" open><summary>FGSM attack strength vs accuracy, with and without adversarial training (simulation for defence) (run for real)</summary><pre><code># Robustness (defence lesson): tiny pixel changes chosen by the gradient (FGSM) fool a digits CNN; adversarial training helps
+import torch, torch.nn as nn
+from sklearn.datasets import load_digits
+from sklearn.model_selection import train_test_split
+X, y = load_digits(return_X_y=True); X = torch.tensor(X / 16.0, dtype=torch.float32).view(-1, 1, 8, 8); y = torch.tensor(y)
+Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.3, random_state=0, stratify=y)
+def make():
+    torch.manual_seed(0)
+    return nn.Sequential(nn.Conv2d(1, 16, 3, padding=1), nn.ReLU(), nn.MaxPool2d(2), nn.Flatten(), nn.Linear(256, 10))
+def fgsm(m, x, t, eps):
+    x = x.clone().requires_grad_(True); nn.functional.cross_entropy(m(x), t).backward()
+    return (x + eps * x.grad.sign()).clamp(0, 1).detach()
+def train(adv):
+    m = make(); opt = torch.optim.Adam(m.parameters(), 3e-3)
+    for e in range(60):
+        xb = Xtr
+        if adv and e &gt;= 10: xb = torch.cat([Xtr, fgsm(m, Xtr, ytr, 0.1)]); yb = torch.cat([ytr, ytr])
+        else: yb = ytr
+        opt.zero_grad(); nn.functional.cross_entropy(m(xb), yb).backward(); opt.step()
+    return m
+for name, adv in [(&quot;normal training     &quot;, False), (&quot;adversarial training&quot;, True)]:
+    m = train(adv); accs = []
+    for eps in [0.0, 0.05, 0.1, 0.2]:
+        xa = Xte if eps == 0 else fgsm(m, Xte, yte, eps)
+        with torch.no_grad(): accs.append((m(xa).argmax(1) == yte).float().mean().item())
+    print(name + &quot;: accuracy at eps 0 / 0.05 / 0.1 / 0.2 = &quot; + &quot; / &quot;.join(f&quot;{a:.2f}&quot; for a in accs))
+
+# ----- Output (real run) -----
+# normal training     : accuracy at eps 0 / 0.05 / 0.1 / 0.2 = 0.94 / 0.81 / 0.58 / 0.10
+# adversarial training: accuracy at eps 0 / 0.05 / 0.1 / 0.2 = 0.95 / 0.84 / 0.69 / 0.18</code></pre></details><h3>Good to know</h3><ul><li>Normal model: 0.94 accuracy on clean digits, 0.58 at ε = 0.1 and 0.10 at ε = 0.2. Adversarial training improved robustness a little (0.69 at ε = 0.1) without hurting clean accuracy, but did not fix the problem at ε = 0.2.</li><li>This is shown so you can test and defend models: robustness tests, input checks, ensembles, and not relying on one model for safety-critical decisions. See <a href="ai-security.html">AI Security</a>.</li><li>Real-world robustness is also about blur, rain, night, new camera models and new backgrounds: test on those.</li></ul>
+    </section>
+
+    <!-- 39 -->
+    <section class="block" id="deploy-quantize">
+      <h2><span class="num">39</span> Deployment: Smaller and Faster Models</h2>
+<div class="callout life"><strong>Picture:</strong> Packing for a trip: the same clothes rolled tightly take a quarter of the suitcase. Quantization stores weights with 8 bits instead of 32.</div><details class="deepdive" open><summary>Dynamic int8 quantization of a small network: size, accuracy, speed (run for real)</summary><pre><code># Making a model smaller for deployment: dynamic int8 quantization of the Linear layers (size, speed, accuracy)
+import io, time, torch, torch.nn as nn
+from sklearn.datasets import load_digits
+from sklearn.model_selection import train_test_split
+torch.manual_seed(0)
+X, y = load_digits(return_X_y=True); X = torch.tensor(X / 16.0, dtype=torch.float32); y = torch.tensor(y)
+Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.3, random_state=0, stratify=y)
+m = nn.Sequential(nn.Linear(64, 512), nn.ReLU(), nn.Linear(512, 512), nn.ReLU(), nn.Linear(512, 10))
+opt = torch.optim.Adam(m.parameters(), 1e-3)
+for e in range(30):
+    opt.zero_grad(); nn.functional.cross_entropy(m(Xtr), ytr).backward(); opt.step()
+m.eval()
+q = torch.ao.quantization.quantize_dynamic(m, {nn.Linear}, dtype=torch.qint8)
+def size(model): b = io.BytesIO(); torch.save(model.state_dict(), b); return len(b.getvalue()) / 1024
+def speed(model, reps=300):
+    with torch.no_grad():
+        t = time.perf_counter()
+        for _ in range(reps): model(Xte)
+    return (time.perf_counter() - t) / reps * 1000
+with torch.no_grad(): a32, a8 = (m(Xte).argmax(1) == yte).float().mean().item(), (q(Xte).argmax(1) == yte).float().mean().item()
+print(f&quot;float32: {size(m):7.1f} KB, accuracy {a32:.3f}, {speed(m):.3f} ms per batch of {len(Xte)}&quot;)
+print(f&quot;int8   : {size(q):7.1f} KB, accuracy {a8:.3f}, {speed(q):.3f} ms per batch of {len(Xte)}&quot;)
+
+# ----- Output (real run) -----
+# float32:  1178.6 KB, accuracy 0.950, 1.091 ms per batch of 540
+# int8   :   301.6 KB, accuracy 0.950, 0.707 ms per batch of 540</code></pre></details><details class="deepdive" open><summary>ONNX export and onnxruntime inference (template, not run)</summary><pre><code># Export a PyTorch vision model to ONNX and serve it with onnxruntime (not run here)
+import torch, onnxruntime as ort, numpy as np
+model.eval()
+dummy = torch.randn(1, 3, 224, 224)
+torch.onnx.export(model, dummy, &quot;model.onnx&quot;, input_names=[&quot;image&quot;], output_names=[&quot;logits&quot;],
+                  dynamic_axes={&quot;image&quot;: {0: &quot;batch&quot;}}, opset_version=18)
+sess = ort.InferenceSession(&quot;model.onnx&quot;, providers=[&quot;CPUExecutionProvider&quot;])
+logits = sess.run(None, {&quot;image&quot;: dummy.numpy()})[0]
+print(np.argmax(logits, 1))
+# Edge devices: TensorRT (NVIDIA), OpenVINO (Intel), Core ML (Apple), LiteRT/TFLite (Android) - see TensorFlow &amp; PyTorch guide.</code></pre></details><h3>Good to know</h3><ul><li>The model shrank from about 1,179 KB to 302 KB, kept the same accuracy (0.950) and ran about 1.5× faster on this CPU (single measurement, not a benchmark).</li><li>Other tricks: pruning, distillation into a smaller student, lower input resolution, batching, and hardware-specific runtimes (TensorRT, OpenVINO, Core ML, LiteRT).</li><li>Always re-measure accuracy after compression; some models lose more than this one.</li></ul>
+    </section>
+
+    <!-- 40 -->
+    <section class="block" id="image-search">
+      <h2><span class="num">40</span> Near-Duplicate Images: Perceptual Hashing</h2>
+<div class="callout life"><strong>Picture:</strong> Recognising a song from its rhythm even if it is played louder or on a different radio: a perceptual hash is a 64-bit summary of how a picture looks.</div><details class="deepdive" open><summary>aHash and dHash distances for edited copies and different photos (run for real)</summary><pre><code># Near-duplicate image search with perceptual hashes (aHash, dHash): robust to resizing and mild edits
+import cv2, numpy as np
+from skimage import data
+def ahash(img, n=8): s = cv2.resize(img, (n, n), interpolation=cv2.INTER_AREA); return (s &gt; s.mean()).ravel()
+def dhash(img, n=8): s = cv2.resize(img, (n + 1, n), interpolation=cv2.INTER_AREA); return (s[:, 1:] &gt; s[:, :-1]).ravel()
+base = cv2.cvtColor(data.chelsea(), cv2.COLOR_RGB2GRAY)
+variants = {&quot;resized 50%&quot;: cv2.resize(base, None, fx=0.5, fy=0.5), &quot;blurred&quot;: cv2.GaussianBlur(base, (7, 7), 0),
+            &quot;brighter&quot;: cv2.convertScaleAbs(base, alpha=1.0, beta=40), &quot;jpeg q=20&quot;: cv2.imdecode(cv2.imencode(&quot;.jpg&quot;, base, [cv2.IMWRITE_JPEG_QUALITY, 20])[1], 0),
+            &quot;cropped 10%&quot;: base[30:-30, 45:-45], &quot;mirrored&quot;: cv2.flip(base, 1),
+            &quot;different photo&quot;: cv2.cvtColor(data.coffee(), cv2.COLOR_RGB2GRAY), &quot;another photo&quot;: data.camera()}
+hb_a, hb_d = ahash(base), dhash(base)
+print(f&quot;{&#x27;variant&#x27;:16} {&#x27;aHash dist&#x27;:&gt;10} {&#x27;dHash dist&#x27;:&gt;10}   (out of 64 bits; small = same picture)&quot;)
+for name, v in variants.items():
+    print(f&quot;{name:16} {int((ahash(v) != hb_a).sum()):10d} {int((dhash(v) != hb_d).sum()):10d}&quot;)
+
+# ----- Output (real run) -----
+# variant          aHash dist dHash dist   (out of 64 bits; small = same picture)
+# resized 50%               0          0
+# blurred                   0          0
+# brighter                  0          0
+# jpeg q=20                 0          0
+# cropped 10%              19         22
+# mirrored                 30         32
+# different photo          38         30
+# another photo            29         31</code></pre></details><h3>Good to know</h3><ul><li>Resize, blur, brightness change and heavy JPEG compression: distance 0. Cropping 10% (19-22 bits) and mirroring (30-32 bits) look as different as an unrelated photo (29-38 bits): simple hashes are not robust to geometry changes.</li><li>Used for de-duplicating datasets, finding re-uploads, and copyright/abuse matching. For 'similar meaning' search, use CNN or CLIP embeddings instead.</li></ul>
+    </section>
+
+    <!-- 41 -->
+    <section class="block" id="ethics">
+      <h2><span class="num">41</span> Privacy, Fairness and Responsible Vision</h2>
+<div class="callout life"><strong>Picture:</strong> A camera in a shop is like a stranger who remembers every face: useful for safety, scary if misused. Rules and consent decide what is acceptable.</div><details class="deepdive" open><summary>Live webcam processing with OpenCV (face boxes) (template, not run)</summary><pre><code># Live video from a webcam with OpenCV: read frames, process, show (needs a camera + a desktop window: not run here)
+import cv2
+cap = cv2.VideoCapture(0)                              # 0 = first camera; or a file path / RTSP URL
+face = cv2.CascadeClassifier(cv2.data.haarcascades + &quot;haarcascade_frontalface_default.xml&quot;)
+while True:
+    ok, frame = cap.read()
+    if not ok:
+        break
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    for (x, y, w, h) in face.detectMultiScale(gray, 1.1, 5):
+        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+    cv2.imshow(&quot;camera&quot;, frame)
+    if cv2.waitKey(1) &amp; 0xFF == ord(&quot;q&quot;):
+        break
+cap.release(); cv2.destroyAllWindows()
+# Note: OpenCV loads images as BGR, not RGB. Face detection on people needs consent and a lawful purpose.</code></pre></details><table><tr><th>Risk</th><th>Example</th><th>Practice</th></tr><tr><td>Privacy</td><td>faces, number plates, homes in images</td><td>blur or avoid personal data, consent, retention limits; laws such as India's DPDP Act 2023 and the EU AI Act (remote biometric identification is heavily restricted there)</td></tr><tr><td>Bias</td><td>a face model works worse on darker skin</td><td>measure accuracy per group; diverse data</td></tr><tr><td>Surveillance creep</td><td>a counting camera later used to identify people</td><td>purpose limitation, audits</td></tr><tr><td>Safety-critical errors</td><td>a missed pedestrian</td><td>redundant sensors, human oversight, testing in hard conditions</td></tr><tr><td>Synthetic media</td><td>deepfakes</td><td>labels, provenance, detection tools</td></tr></table><h3>Good to know</h3><ul><li>Face detection (is there a face?) and face recognition (whose face?) are different risk levels; recognition of people needs a lawful basis and often explicit consent.</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part H — Projects, Interview Prep and Reference</h2></div>
+
+    <!-- 42 -->
+    <section class="block" id="projects">
+      <h2><span class="num">42</span> Projects to Build (Beginner to Advanced)</h2>
+<div class="callout life"><strong>Picture:</strong> Learning by making: from a coin counter to a road-scene detector.</div><table><tr><th>Level</th><th>Project</th><th>You practise</th></tr><tr><td>Beginner</td><td>Coin / pill counter from a phone photo</td><td>thresholding, morphology, connected components</td></tr><tr><td>Beginner</td><td>Document scanner (find corners, straighten, clean)</td><td>edges, contours, homography, adaptive threshold</td></tr><tr><td>Intermediate</td><td>Plant-leaf disease classifier with transfer learning</td><td>datasets, augmentation, fine-tuning, confusion matrix</td></tr><tr><td>Intermediate</td><td>Duplicate-photo finder for a phone gallery</td><td>perceptual hashes, embeddings, thresholds</td></tr><tr><td>Intermediate</td><td>Helmet / no-helmet detector on traffic videos</td><td>labelling, YOLO-style training, mAP, ethics</td></tr><tr><td>Advanced</td><td>Segmentation of road / crack / tumour images with a U-Net</td><td>masks, Dice/IoU, class imbalance</td></tr><tr><td>Advanced</td><td>People counter with tracking for a shop entrance</td><td>detection + tracking + privacy design</td></tr><tr><td>Advanced</td><td>Visual search: find products by photo (CLIP-style embeddings + vector index)</td><td>embeddings, retrieval metrics, serving</td></tr></table><h3>Good to know</h3><ul><li>Write down your evaluation set first, and include hard cases (night, blur, unusual angles).</li></ul>
+    </section>
+
+    <!-- 43 -->
+    <section class="block" id="interview">
+      <h2><span class="num">43</span> Interview Questions and Answers (Easy → Hard)</h2>
+<div class="callout life"><strong>Picture:</strong> A mock interview, from definitions to design.</div><h3>Basics</h3><table><tr><th>Question</th><th>Short answer</th></tr><tr><td>What is an image to a computer?</td><td>A height × width × channels array of numbers (uint8 0-255 or floats).</td></tr><tr><td>Why HSV for colour picking?</td><td>Hue separates colour from brightness, so thresholds survive some lighting change.</td></tr><tr><td>Median vs Gaussian blur?</td><td>Median removes salt-and-pepper specks and keeps edges; Gaussian is better for fine grain.</td></tr><tr><td>What does Canny's hysteresis do?</td><td>Keeps weak edge pixels only if they connect to strong ones.</td></tr></table><h3>Deep learning</h3><table><tr><th>Question</th><th>Short answer</th></tr><tr><td>Why do CNNs need fewer weights than MLPs on images?</td><td>Small kernels shared across all positions (weight sharing) and local connections.</td></tr><tr><td>Output size of a conv layer?</td><td>(in + 2·pad − kernel) / stride + 1.</td></tr><tr><td>Why ResNet skip connections?</td><td>Gradients flow through the shortcut, so very deep nets train.</td></tr><tr><td>CNN vs ViT on small data?</td><td>CNNs usually win (built-in image assumptions); ViTs need more data or pre-training.</td></tr><tr><td>How to fight overfitting with few images?</td><td>Pre-trained backbone, augmentation, regularisation, early stopping, more labels.</td></tr></table><h3>Detection, segmentation, systems</h3><table><tr><th>Question</th><th>Short answer</th></tr><tr><td>What are IoU and NMS?</td><td>Overlap / union of two boxes; removing lower-score boxes that overlap a kept box above a threshold.</td></tr><tr><td>mAP50 vs mAP50-95?</td><td>AP at IoU 0.5 vs averaged over IoU 0.50-0.95 (rewards tight boxes).</td></tr><tr><td>Dice vs IoU?</td><td>Both measure mask overlap; Dice = 2|A∩B| / (|A|+|B|), always ≥ IoU.</td></tr><tr><td>Design a people counter for a shop.</td><td>Detector + tracker + counting line, measured on real footage, run on the edge, no identity storage, privacy notice.</td></tr><tr><td>Your detector works in the lab but not in the store. Why?</td><td>Domain shift: lighting, camera angle, backgrounds, new products; collect and label store images, re-evaluate.</td></tr></table>
+    </section>
+
+    <!-- 44 -->
+    <section class="block" id="pitfalls">
+      <h2><span class="num">44</span> Common Pitfalls and a Checklist</h2>
+<div class="callout life"><strong>Picture:</strong> A pre-flight checklist for vision projects.</div><table><tr><th>Pitfall</th><th>Fix</th></tr><tr><td>BGR vs RGB mix-up (OpenCV)</td><td>convert explicitly; check a known-colour pixel</td></tr><tr><td>uint8 overflow in arithmetic</td><td>convert to float, then clip</td></tr><tr><td>Wrong box format (xyxy vs xywh, pixels vs 0-1)</td><td>one helper for conversions, unit tests</td></tr><tr><td>Train/test images of the same scene or patient</td><td>split by scene/patient/camera, not by image</td></tr><tr><td>Pre-processing differs between training and serving</td><td>one shared pre-processing function</td></tr><tr><td>Accuracy only, on an easy test set</td><td>hard cases, per-class metrics, look at failures</td></tr><tr><td>Augmentation that changes the label</td><td>think: does a flip/rotation keep the meaning?</td></tr><tr><td>Ignoring speed on the real device</td><td>measure on target hardware early</td></tr></table><h3>Before you ship</h3><ul><li>Evaluation set with hard and rare cases, split correctly</li><li>Per-class metrics and a gallery of mistakes reviewed</li><li>Latency/memory measured on the target device</li><li>Privacy and consent reviewed</li><li>Monitoring for drift (new cameras, seasons)</li></ul>
+    </section>
+
+    <!-- 45 -->
+    <section class="block" id="glossary">
+      <h2><span class="num">45</span> Mini Glossary</h2>
+<div class="callout life"><strong>Picture:</strong> A pocket dictionary for vision words.</div><dl class="glossary"><dt>Pixel</dt><dd>one tiny square of an image with its colour values</dd><dt>Channel</dt><dd>one colour layer (R, G or B), or one feature map in a CNN</dd><dt>Kernel / filter</dt><dd>small weight grid slid over an image (convolution)</dd><dt>Feature map</dt><dd>the output of one kernel over the whole image</dd><dt>Stride / padding</dt><dd>step size of the kernel / border added around the image</dd><dt>Homography</dt><dd>3×3 matrix mapping one plane view to another</dd><dt>Keypoint / descriptor</dt><dd>a distinctive point / a short vector describing it</dd><dt>RANSAC</dt><dd>robust fitting that ignores outliers by voting</dd><dt>IoU</dt><dd>intersection over union of two boxes or masks</dd><dt>NMS</dt><dd>non-maximum suppression: removes duplicate boxes</dd><dt>mAP</dt><dd>mean average precision over classes (detection metric)</dd><dt>Dice</dt><dd>mask overlap score 2|A∩B| / (|A|+|B|)</dd><dt>Optical flow</dt><dd>per-pixel motion between frames</dd><dt>Disparity</dt><dd>shift of a point between left and right images (gives depth)</dd><dt>ViT</dt><dd>Vision Transformer: image patches as tokens</dd><dt>Quantization</dt><dd>storing weights with fewer bits (e.g. int8)</dd></dl>
+    </section>
+
+    <!-- 46 -->
+    <section class="block" id="faq">
+      <h2><span class="num">46</span> FAQ</h2>
+<div class="callout life"><strong>Picture:</strong> Questions beginners ask.</div><table><tr><th>Question</th><th>Answer</th></tr><tr><td>OpenCV or deep learning first?</td><td>Both: OpenCV basics (Parts A-C) take days and help forever; then CNNs with PyTorch.</td></tr><tr><td>Do I need a GPU?</td><td>Not to learn: everything here ran on a CPU. Training real detectors/segmenters needs a GPU (cloud is fine).</td></tr><tr><td>How many images do I need?</td><td>With a pre-trained model, often a few hundred labelled images per class to start; more for detection and rare cases.</td></tr><tr><td>Which detector should I use?</td><td>A maintained, well-documented one with a licence that fits your use; compare on your own images.</td></tr><tr><td>Is classic CV still useful?</td><td>Yes: pre-processing, measurement, geometry, fast checks on edge devices, and when data is scarce.</td></tr></table>
+    </section>
+
+    <!-- 47 -->
+    <section class="block" id="quiz">
+      <h2><span class="num">47</span> Quick Quiz</h2>
+<div class="callout life"><strong>Picture:</strong> Guess first, then open the answer.</div><details class="quiz-item"><summary>1. What shape does a 640×427 colour photo have in NumPy?</summary><p>(427, 640, 3): height, width, channels.</p></details><details class="quiz-item"><summary>2. Which filter removes salt-and-pepper noise best here?</summary><p>Median (27.8 dB PSNR).</p></details><details class="quiz-item"><summary>3. How many point pairs does a homography need?</summary><p>4.</p></details><details class="quiz-item"><summary>4. Why did template matching fail on the rotated object?</summary><p>It compares pixels directly; rotation changes them.</p></details><details class="quiz-item"><summary>5. Output size of a 3×3 conv, stride 2, padding 1 on 224×224?</summary><p>112×112.</p></details><details class="quiz-item"><summary>6. Why did the tiny ViT lose to the CNN?</summary><p>Too little data; CNNs have built-in image assumptions.</p></details><details class="quiz-item"><summary>7. Is a second box on an already-found object a TP?</summary><p>No, a false positive (duplicate).</p></details><details class="quiz-item"><summary>8. What do U-Net skip connections give?</summary><p>Fine spatial detail to the decoder, so masks are sharp.</p></details><details class="quiz-item"><summary>9. Why is stereo depth poor far away?</summary><p>Disparity becomes tiny, so a 1-pixel error is a big depth error.</p></details><details class="quiz-item"><summary>10. What did int8 quantization do to the small model?</summary><p>About 4× smaller, same accuracy, somewhat faster on this CPU.</p></details>
+    </section>
+
+    <!-- 48 -->
+    <section class="block" id="learning-path">
+      <h2><span class="num">48</span> Learning Path</h2>
+<div class="callout life"><strong>Picture:</strong> A staircase: one step every week or two.</div><table><tr><th>Step</th><th>Learn</th><th>Practise</th></tr><tr><td>1</td><td>NumPy arrays, images as arrays, colour spaces</td><td>load, crop, convert, threshold your own photos</td></tr><tr><td>2</td><td>Filters, edges, morphology, histograms</td><td>coin counter; document cleaner</td></tr><tr><td>3</td><td>Geometry, keypoints, homography, camera model</td><td>document scanner; panorama stitcher</td></tr><tr><td>4</td><td>CNNs in PyTorch, training loops, augmentation</td><td>digit/clothing classifier</td></tr><tr><td>5</td><td>Transfer learning, architectures, ViT basics</td><td>fine-tune on your own photo classes</td></tr><tr><td>6</td><td>Detection and segmentation, metrics</td><td>train a small detector; a U-Net on a public dataset</td></tr><tr><td>7</td><td>Video, tracking, 3-D, OCR, vision-language</td><td>people counter; receipt reader</td></tr><tr><td>8</td><td>Deployment, robustness, ethics</td><td>ONNX + quantization on a phone or Raspberry Pi</td></tr></table>
+    </section>
+
+    <!-- 49 -->
+    <section class="block" id="resources">
+      <h2><span class="num">49</span> Resources</h2>
+<div class="callout life"><strong>Picture:</strong> Good next steps.</div><ul class="resources"><li><span class="tag docs">docs</span> <a href="https://github.com/opencv/opencv">OpenCV (source, samples and links to the docs)</a></li><li><span class="tag docs">docs</span> <a href="https://scikit-image.org/docs/stable/">scikit-image documentation</a></li><li><span class="tag docs">docs</span> <a href="https://docs.pytorch.org/vision/stable/index.html">torchvision documentation</a></li><li><span class="tag docs">docs</span> <a href="https://docs.ultralytics.com/">Ultralytics YOLO documentation</a></li><li><span class="tag article">article</span> <a href="https://cs231n.github.io/">Stanford CS231n notes: CNNs for visual recognition</a></li><li><span class="tag paper">paper</span> <a href="https://arxiv.org/abs/1512.03385">ResNet (He et al., 2015)</a></li><li><span class="tag paper">paper</span> <a href="https://arxiv.org/abs/1505.04597">U-Net (Ronneberger et al., 2015)</a></li><li><span class="tag paper">paper</span> <a href="https://arxiv.org/abs/1506.02640">YOLO (Redmon et al., 2015)</a></li><li><span class="tag paper">paper</span> <a href="https://arxiv.org/abs/2010.11929">Vision Transformer (Dosovitskiy et al., 2020)</a></li><li><span class="tag paper">paper</span> <a href="https://arxiv.org/abs/2103.00020">CLIP (Radford et al., 2021)</a></li><li><span class="tag paper">paper</span> <a href="https://arxiv.org/abs/2304.02643">Segment Anything (Kirillov et al., 2023)</a></li><li><span class="tag paper">paper</span> <a href="https://arxiv.org/abs/1412.6572">Adversarial examples / FGSM (Goodfellow et al., 2014)</a></li><li><span class="tag video">video</span> <a href="https://www.youtube.com/results?search_query=computer+vision+full+course">YouTube search: computer vision full course</a></li><li><span class="tag video">video</span> <a href="https://www.youtube.com/results?search_query=convolutional+neural+network+explained">YouTube search: CNN explained</a></li></ul><h3>Good to know</h3><ul><li>Related guides: <a href="nlp.html">NLP</a>, <a href="deep-learning.html">Deep Learning</a>, <a href="tensorflow-pytorch.html">TensorFlow &amp; PyTorch</a>, <a href="genai.html">Generative AI</a>, <a href="mlops-llmops.html">MLOps &amp; LLMOps</a>, <a href="ai-security.html">AI Security</a>.</li></ul>
+    </section>
+  </main>
+</div>
+
+<div class="page-nav">
+  <a href="index.html">⬅ Back to Roadmap Home</a>
+  <a href="deep-learning.html">Related: Deep Learning ➜</a>
+</div>
+
+</body>
+</html>

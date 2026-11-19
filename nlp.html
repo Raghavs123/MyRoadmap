@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Natural Language Processing (NLP) — The Complete A-Z Guide</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💬</text></svg>">
+</head>
+<body>
+
+<header class="hero">
+  <div class="breadcrumb"><a href="index.html">🏠 Roadmap Home</a> / NLP</div>
+  <h1>💬 Natural Language Processing — Teaching Computers to Read and Write</h1>
+  <p class="subtitle">
+    The complete A-to-Z guide in very easy words: what language is to a computer, text cleaning, tokenization (words, WordPiece, BPE, SentencePiece), bag-of-words and TF-IDF, n-gram language models, classic classifiers, word embeddings, sequence models (RNN, LSTM), attention and the Transformer, BERT- and GPT-style models, sentence embeddings and semantic search, NER, POS tagging, sentiment, summarization, translation, question answering, evaluation metrics (precision/recall/F1, BLEU, ROUGE, perplexity), multilingual and Indian-language NLP, LLM-era NLP, bias and safety, deployment, projects and interview prep. Every program was really run (Python 3.14, PyTorch 2.15 CPU, scikit-learn 1.9, transformers 5.23 and sentence-transformers 6.3 with small models already cached on this machine, offline).
+    Every picture has a daily-life story; outputs shown are from programs that were really run; anything not run is labelled.
+    <strong>Last reviewed: 19 November 2026</strong> (dated facts are marked and hedged).
+  </p>
+  <div class="badge-row">
+    <span class="badge beginner">Beginner friendly</span>
+    <span class="badge intermediate">Intermediate concepts</span>
+    <span class="badge advanced">Advanced / Interview</span>
+  </div>
+</header>
+
+<div class="layout">
+
+  <nav class="toc">
+    <h3>On this page (47 sections)</h3>
+    <ol>
+      <li class="toc-part">Part A — What NLP Is and How Text Becomes Numbers</li>
+      <li><a href="#what-is-nlp">What Is NLP?</a></li>
+      <li><a href="#history">A Short History (Dates to Re-check)</a></li>
+      <li><a href="#nlp-tasks">The Map of NLP Tasks</a></li>
+      <li><a href="#pipeline">The NLP Pipeline</a></li>
+      <li><a href="#text-as-numbers">Text Is Just Numbers: Characters, Unicode, UTF-8</a></li>
+      <li><a href="#cleaning">Cleaning Text with Regular Expressions</a></li>
+      <li><a href="#page-data">The Small Datasets Used on This Page</a></li>
+      <li class="toc-part">Part B — Words, Sub-words and Tokens</li>
+      <li><a href="#tokenization">Tokenization, Stop Words, Stemming and Lemmatization</a></li>
+      <li><a href="#bpe">Sub-word Tokens: Byte-Pair Encoding from Scratch</a></li>
+      <li><a href="#real-tokenizers">Real Tokenizers: English, Hindi, Hinglish, Emoji and Code</a></li>
+      <li><a href="#edit-distance">Edit Distance and Spelling Correction</a></li>
+      <li class="toc-part">Part C — Classic NLP: Counting, Probabilities and Small Models</li>
+      <li><a href="#bow-tfidf">Bag of Words and TF-IDF</a></li>
+      <li><a href="#ngram-lm">n-gram Language Models and Perplexity</a></li>
+      <li><a href="#text-classification">Text Classification: Naive Bayes and Logistic Regression (with an Honest Failure)</a></li>
+      <li><a href="#metrics">Measuring Classifiers: Precision, Recall, F1</a></li>
+      <li><a href="#pos-tagging">Part-of-Speech Tagging with an HMM and Viterbi</a></li>
+      <li><a href="#ner">Named Entity Recognition (NER)</a></li>
+      <li><a href="#syntax">Grammar Structure: Dependency and Constituency Parsing</a></li>
+      <li><a href="#word-vectors">Word Vectors: Meaning from Neighbours</a></li>
+      <li class="toc-part">Part D — Neural NLP: From RNNs to Transformers</li>
+      <li><a href="#neural-basics">Neural Networks Meet Text</a></li>
+      <li><a href="#rnn-lstm">RNNs and LSTMs (and Why Small Data Beats Them)</a></li>
+      <li><a href="#seq2seq">Sequence to Sequence and the Idea of Attention</a></li>
+      <li><a href="#attention-math">Attention, Step by Step (Scaled Dot-Product)</a></li>
+      <li><a href="#transformer">The Transformer Architecture and Positional Encoding</a></li>
+      <li><a href="#tiny-gpt">Build a Tiny GPT and Train It on a Laptop</a></li>
+      <li><a href="#decoding">How Text Is Generated: Greedy, Temperature, Top-k, Top-p</a></li>
+      <li><a href="#model-families">BERT, GPT and T5: Three Families</a></li>
+      <li><a href="#contextual-embeddings">Contextual Embeddings: One Word, Many Meanings</a></li>
+      <li class="toc-part">Part E — Modern NLP in Practice</li>
+      <li><a href="#semantic-search">Sentence Embeddings and Semantic Search</a></li>
+      <li><a href="#multilingual">Multilingual and Indian-Language NLP</a></li>
+      <li><a href="#zero-shot">Zero-Shot Classification with Embeddings</a></li>
+      <li><a href="#transfer-learning">Transfer Learning: Pre-trained Vectors + a Small Classifier</a></li>
+      <li><a href="#clustering">Finding Groups: Clustering and Topics</a></li>
+      <li><a href="#generation-tasks">Summarization, Translation and Question Answering (and How They Are Scored)</a></li>
+      <li><a href="#fine-tuning">Fine-Tuning a Pre-trained Model</a></li>
+      <li><a href="#llm-for-nlp">Using LLMs for Classic NLP Tasks</a></li>
+      <li class="toc-part">Part F — Responsible NLP and Production</li>
+      <li><a href="#bias">Bias in Language Models (a Small Probe)</a></li>
+      <li><a href="#privacy-safety">Privacy, Safety and Security for Text Systems</a></li>
+      <li><a href="#deployment">Deploying NLP Models</a></li>
+      <li class="toc-part">Part G — Projects, Interview Prep and Reference</li>
+      <li><a href="#projects">Projects to Build (Beginner to Advanced)</a></li>
+      <li><a href="#interview">Interview Questions and Answers (Easy → Hard)</a></li>
+      <li><a href="#pitfalls">Common Pitfalls and a Checklist</a></li>
+      <li><a href="#glossary">Mini Glossary</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#quiz">Quick Quiz</a></li>
+      <li><a href="#learning-path">Learning Path</a></li>
+      <li><a href="#resources">Resources</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <div class="part-divider"><h2>Part A — What NLP Is and How Text Becomes Numbers</h2></div>
+
+    <!-- 1 -->
+    <section class="block" id="what-is-nlp">
+      <h2><span class="num">1</span> What Is NLP?</h2>
+<div class="callout life"><strong>Picture:</strong> A very patient pen-friend who has read millions of letters. You write to them in English, Hindi or Hinglish; they understand what you mean, sort your letters into piles, answer questions, translate, and even write back. <strong>Natural Language Processing (NLP)</strong> is teaching computers to be that pen-friend.</div><table><tr><th>Part of the job</th><th>Everyday example</th></tr><tr><td>Understand (NLU)</td><td>Is this review happy or angry? Which city is mentioned?</td></tr><tr><td>Generate (NLG)</td><td>Write a summary, a reply, a translation</td></tr><tr><td>Search and match</td><td>Find the FAQ answer that means the same as my question</td></tr><tr><td>Speak and listen</td><td>Voice assistants (speech-to-text + NLP + text-to-speech)</td></tr></table><h3>Good to know</h3><ul><li>Language is hard for computers: the same word has many meanings ('bank'), the same meaning has many words ('refund', 'money back'), and people make typos, mix languages and joke.</li><li>Two big eras: <strong>classic NLP</strong> (rules, counting words, small statistical models) and <strong>neural NLP</strong> (embeddings, Transformers, large language models). Both are used today: classic methods are cheap, fast and easy to explain.</li><li>Related guides: <a href="llm.html">LLMs</a>, <a href="rag.html">RAG</a>, <a href="genai.html">Generative AI</a>, <a href="deep-learning.html">Deep Learning</a>, <a href="machine-learning.html">Machine Learning</a>, <a href="python.html">Python</a>, <a href="computer-vision.html">Computer Vision</a>.</li></ul><div class="callout tip">Honest note: every program on this page was <strong>really run</strong> on 19 Nov 2026 with Python 3.14, PyTorch 2.15 (CPU), scikit-learn 1.9, transformers 5.23 and sentence-transformers 6.3. Neural examples use small models that were already cached on this computer, run fully offline. Datasets are tiny and hand-written for teaching, so numbers show <em>ideas</em>, not production quality. Code that needs a download, a GPU or an API key is labelled <em>template (not run)</em>.</div>
+    </section>
+
+    <!-- 2 -->
+    <section class="block" id="history">
+      <h2><span class="num">2</span> A Short History (Dates to Re-check)</h2>
+<div class="callout life"><strong>Picture:</strong> How children learn to read: first strict rules ('a' says 'aa'), then counting which words go together, then reading so much that meaning just clicks. NLP grew up the same way.</div><table><tr><th>When</th><th>Idea</th><th>In one line</th></tr><tr><td>1950s-1980s</td><td>Rules and grammars</td><td>Hand-written rules; ELIZA (1966) chatted with simple patterns</td></tr><tr><td>1990s-2000s</td><td>Statistics</td><td>n-gram language models, HMM taggers, Naive Bayes spam filters, statistical translation</td></tr><tr><td>2013</td><td>word2vec</td><td>Words become dense vectors learned from text (GloVe 2014, fastText 2016)</td></tr><tr><td>2014-2016</td><td>RNN/LSTM + seq2seq + attention</td><td>Neural translation reads a sentence and writes another</td></tr><tr><td>2017</td><td>Transformer</td><td>'Attention Is All You Need': no recurrence, very parallel</td></tr><tr><td>2018-2019</td><td>BERT, GPT-2, T5</td><td>Pre-train on huge text, then fine-tune for any task</td></tr><tr><td>2020-2023</td><td>Large language models</td><td>GPT-3, instruction tuning, ChatGPT (Nov 2022): one model, many tasks by prompting</td></tr><tr><td>2024-2026</td><td>LLM-era NLP</td><td>Long context, tool use, multimodal models, small efficient models; classic NLP still used for speed, cost and checks</td></tr></table><div class="callout warn">Model names and 'best model' claims change every few months. The current model line-ups are kept on the <a href="llm.html">LLMs page</a>; dates above are well known milestones, but re-check any 'latest' claim before an interview.</div>
+    </section>
+
+    <!-- 3 -->
+    <section class="block" id="nlp-tasks">
+      <h2><span class="num">3</span> The Map of NLP Tasks</h2>
+<div class="callout life"><strong>Picture:</strong> A post office with many counters: one sorts letters (classification), one underlines names and addresses (NER), one writes short notes about long letters (summarization), one translates foreign letters, one answers questions.</div><table><tr><th>Task</th><th>Input → output</th><th>Example</th><th>On this page</th></tr><tr><td>Text classification</td><td>text → label</td><td>spam / not spam, sentiment</td><td><a href="#text-classification">classic</a>, <a href="#transfer-learning">embeddings</a></td></tr><tr><td>Token classification</td><td>each word → tag</td><td>POS tags, named entities</td><td><a href="#pos-tagging">HMM tagger</a>, <a href="#ner">NER</a></td></tr><tr><td>Language modelling</td><td>words so far → next word</td><td>autocomplete, chatbots</td><td><a href="#ngram-lm">n-grams</a>, <a href="#tiny-gpt">tiny GPT</a></td></tr><tr><td>Similarity and search</td><td>two texts → score</td><td>FAQ search, duplicates</td><td><a href="#semantic-search">semantic search</a></td></tr><tr><td>Sequence to sequence</td><td>text → new text</td><td>translation, summarization</td><td><a href="#generation-tasks">metrics + templates</a></td></tr><tr><td>Question answering</td><td>question + text → answer</td><td>help desks, <a href="rag.html">RAG</a></td><td><a href="#generation-tasks">QA template</a></td></tr><tr><td>Clustering / topics</td><td>many texts → groups</td><td>group complaints</td><td><a href="#clustering">clustering</a></td></tr><tr><td>Information extraction</td><td>text → structured data</td><td>invoice fields, JSON</td><td><a href="#llm-for-nlp">LLM extraction</a></td></tr></table>
+    </section>
+
+    <!-- 4 -->
+    <section class="block" id="pipeline">
+      <h2><span class="num">4</span> The NLP Pipeline</h2>
+<div class="callout life"><strong>Picture:</strong> Making juice: wash the fruit (cleaning), cut it (tokenize), squeeze it (turn into numbers), pour into the machine (model), taste and adjust (evaluate).</div><div class="diagram-wrap"><svg viewBox="0 0 790 240" style="width:100%;max-width:790px" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrSc1_arrow" markerWidth="10" markerHeight="10" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8" fill="none" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc1_tri" markerWidth="12" markerHeight="12" refX="11" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc1_dia" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--accent)" stroke="var(--accent)"/></marker><marker id="arrSc1_diah" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker></defs><line x1="140" y1="82" x2="170" y2="82" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc1_arrow)"/><line x1="290" y1="82" x2="320" y2="82" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc1_arrow)"/><line x1="450" y1="82" x2="480" y2="82" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc1_arrow)"/><line x1="610" y1="82" x2="640" y2="82" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc1_arrow)"/><line x1="705" y1="114" x2="705" y2="160" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc1_arrow)"/><line x1="640" y1="188" x2="610" y2="188" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc1_arrow)"/><rect class="box" x="10" y="50" width="130" height="64" rx="9"/><text x="75" y="72" text-anchor="middle" font-size="12">Raw text</text><text x="75" y="86" text-anchor="middle" font-size="10" class="edge-label">reviews, chats,</text><text x="75" y="100" text-anchor="middle" font-size="10" class="edge-label">documents</text><rect class="box-hl" x="170" y="50" width="120" height="64" rx="9"/><text x="230" y="79" text-anchor="middle" font-size="12">Clean +</text><text x="230" y="93" text-anchor="middle" font-size="10" class="edge-label">normalise</text><rect class="box-hl" x="320" y="50" width="130" height="64" rx="9"/><text x="385" y="79" text-anchor="middle" font-size="12">Tokenize</text><text x="385" y="93" text-anchor="middle" font-size="10" class="edge-label">words / sub-words</text><rect class="box-hl" x="480" y="50" width="130" height="64" rx="9"/><text x="545" y="72" text-anchor="middle" font-size="12">Numbers</text><text x="545" y="86" text-anchor="middle" font-size="10" class="edge-label">counts, TF-IDF,</text><text x="545" y="100" text-anchor="middle" font-size="10" class="edge-label">embeddings</text><rect class="box-final" x="640" y="50" width="130" height="64" rx="9"/><text x="705" y="72" text-anchor="middle" font-size="12">Model</text><text x="705" y="86" text-anchor="middle" font-size="10" class="edge-label">classifier, tagger,</text><text x="705" y="100" text-anchor="middle" font-size="10" class="edge-label">Transformer</text><rect class="box" x="640" y="160" width="130" height="56" rx="9"/><text x="705" y="185" text-anchor="middle" font-size="12">Evaluate</text><text x="705" y="199" text-anchor="middle" font-size="10" class="edge-label">F1, BLEU, humans</text><rect class="box" x="480" y="160" width="130" height="56" rx="9"/><text x="545" y="185" text-anchor="middle" font-size="12">Deploy +</text><text x="545" y="199" text-anchor="middle" font-size="10" class="edge-label">monitor</text></svg><div class="diagram-caption">Fig S1 — A typical NLP pipeline.</div></div><h3>Good to know</h3><ul><li>With modern Transformers, cleaning is lighter (the tokenizer handles most things), but you still remove junk such as HTML, duplicates and personal data.</li><li>Always keep the raw text: you cannot undo cleaning later.</li></ul>
+    </section>
+
+    <!-- 5 -->
+    <section class="block" id="text-as-numbers">
+      <h2><span class="num">5</span> Text Is Just Numbers: Characters, Unicode, UTF-8</h2>
+<div class="callout life"><strong>Picture:</strong> A secret code book: every letter, Hindi akshar and emoji has a number (its <strong>code point</strong>). UTF-8 is the way those numbers are packed into bytes for storage, like packing toys into boxes of different sizes.</div><details class="deepdive" open><summary>Characters, bytes and normalisation (run for real)</summary><pre><code># Text is just numbers: characters -&gt; Unicode code points -&gt; bytes (UTF-8)
+import unicodedata
+for s in [&quot;cat&quot;, &quot;café&quot;, &quot;नमस्ते&quot;, &quot;😀&quot;, &quot;Ｈｅｌｌｏ&quot;]:
+    print(f&quot;{s!r:12} chars={len(s):2}  utf8 bytes={len(s.encode(&#x27;utf-8&#x27;)):2}  code points={[hex(ord(c)) for c in s][:6]}&quot;)
+a, b = &quot;café&quot;, &quot;café&quot;                       # same look, different code points
+print(&quot;looks same, equal?&quot;, a == b, &quot;| after NFC normalisation:&quot;, unicodedata.normalize(&quot;NFC&quot;, a) == unicodedata.normalize(&quot;NFC&quot;, b))
+print(&quot;NFKC turns full-width &#x27;Ｈｅｌｌｏ&#x27; into&quot;, unicodedata.normalize(&quot;NFKC&quot;, &quot;Ｈｅｌｌｏ&quot;))
+print(&quot;casefold:&quot;, &quot;Straße&quot;.lower(), &quot;vs&quot;, &quot;Straße&quot;.casefold())
+
+# ----- Output (real run) -----
+# &#x27;cat&#x27;        chars= 3  utf8 bytes= 3  code points=[&#x27;0x63&#x27;, &#x27;0x61&#x27;, &#x27;0x74&#x27;]
+# &#x27;café&#x27;       chars= 4  utf8 bytes= 5  code points=[&#x27;0x63&#x27;, &#x27;0x61&#x27;, &#x27;0x66&#x27;, &#x27;0xe9&#x27;]
+# &#x27;नमस्ते&#x27;     chars= 6  utf8 bytes=18  code points=[&#x27;0x928&#x27;, &#x27;0x92e&#x27;, &#x27;0x938&#x27;, &#x27;0x94d&#x27;, &#x27;0x924&#x27;, &#x27;0x947&#x27;]
+# &#x27;😀&#x27;          chars= 1  utf8 bytes= 4  code points=[&#x27;0x1f600&#x27;]
+# &#x27;Ｈｅｌｌｏ&#x27;      chars= 5  utf8 bytes=15  code points=[&#x27;0xff28&#x27;, &#x27;0xff45&#x27;, &#x27;0xff4c&#x27;, &#x27;0xff4c&#x27;, &#x27;0xff4f&#x27;]
+# looks same, equal? False | after NFC normalisation: True
+# NFKC turns full-width &#x27;Ｈｅｌｌｏ&#x27; into Hello
+# casefold: straße vs strasse</code></pre></details><h3>Good to know</h3><ul><li>One Hindi word 'नमस्ते' is 6 code points but 18 bytes. One emoji is 1 code point and 4 bytes. Limits written in 'characters' and limits in 'bytes' are different things.</li><li><strong>Normalisation</strong> (NFC/NFKC) makes text that <em>looks</em> the same also <em>be</em> the same: 'café' typed two ways, or full-width letters from some keyboards.</li><li>Use <code>casefold()</code> rather than <code>lower()</code> for case-insensitive matching in many languages.</li></ul>
+    </section>
+
+    <!-- 6 -->
+    <section class="block" id="cleaning">
+      <h2><span class="num">6</span> Cleaning Text with Regular Expressions</h2>
+<div class="callout life"><strong>Picture:</strong> Sweeping a room before guests come: remove dust (extra spaces), hide valuables (phone numbers, e-mails), and put labels on boxes (<code>&lt;URL&gt;</code>).</div><details class="deepdive" open><summary>Cleaning and sentence splitting (run for real)</summary><pre><code># Cleaning text with regular expressions (keep a copy of the raw text: cleaning loses information!)
+import re
+raw = &quot;Call me at +91-98765-43210 or mail ASHA.K@example.com!!! Visit https://shop.example.com/sale?id=7 :) Price: Rs. 1,299&quot;
+t = raw
+t = re.sub(r&quot;https?://\S+&quot;, &quot; &lt;URL&gt; &quot;, t)
+t = re.sub(r&quot;\S+@\S+\.\w+&quot;, &quot; &lt;EMAIL&gt; &quot;, t)
+t = re.sub(r&quot;\+?\d[\d-]{8,}\d&quot;, &quot; &lt;PHONE&gt; &quot;, t)
+t = re.sub(r&quot;\d[\d,]*&quot;, &quot; &lt;NUM&gt; &quot;, t)
+t = re.sub(r&quot;([!?.])\1+&quot;, r&quot;\1&quot;, t)              # &#x27;!!!&#x27; -&gt; &#x27;!&#x27;
+t = re.sub(r&quot;\s+&quot;, &quot; &quot;, t).strip().lower()
+print(&quot;raw  :&quot;, raw)
+print(&quot;clean:&quot;, t)
+text = &quot;Dr. Rao met Mr. Iyer at 5 p.m. in Pune. They talked. It rained!&quot;
+naive = [s for s in re.split(r&quot;(?&lt;=[.!?])\s+&quot;, text)]
+print(&quot;naive sentence split  :&quot;, naive)
+safe = re.split(r&quot;(?&lt;!\bDr\.)(?&lt;!\bMr\.)(?&lt;!p\.m\.)(?&lt;=[.!?])\s+(?=[A-Z])&quot;, text)   # do not split after known abbreviations
+print(&quot;with abbreviation list:&quot;, safe)
+
+# ----- Output (real run) -----
+# raw  : Call me at +91-98765-43210 or mail ASHA.K@example.com!!! Visit https://shop.example.com/sale?id=7 :) Price: Rs. 1,299
+# clean: call me at &lt;phone&gt; or mail &lt;email&gt; ! visit &lt;url&gt; :) price: rs. &lt;num&gt;
+# naive sentence split  : [&#x27;Dr.&#x27;, &#x27;Rao met Mr.&#x27;, &#x27;Iyer at 5 p.m.&#x27;, &#x27;in Pune.&#x27;, &#x27;They talked.&#x27;, &#x27;It rained!&#x27;]
+# with abbreviation list: [&#x27;Dr. Rao met Mr. Iyer at 5 p.m. in Pune.&#x27;, &#x27;They talked.&#x27;, &#x27;It rained!&#x27;]</code></pre></details><h3>Good to know</h3><ul><li>Replacing personal data with placeholders (<code>&lt;PHONE&gt;</code>, <code>&lt;EMAIL&gt;</code>) protects privacy and stops the model from memorising them.</li><li>Sentence splitting is harder than splitting on full stops: 'Dr.', 'p.m.' and decimals break naive rules (the naive split made 6 'sentences' out of 3). The improved rule works here only because it lists these exact abbreviations; real text has thousands, so libraries such as spaCy use trained models.</li><li>Do not over-clean for modern models: punctuation, case and emojis carry meaning (':)' is a sentiment signal).</li></ul>
+    </section>
+
+    <!-- 7 -->
+    <section class="block" id="page-data">
+      <h2><span class="num">7</span> The Small Datasets Used on This Page</h2>
+<div class="callout life"><strong>Picture:</strong> A teacher's practice worksheet: short, clear, written for the lesson. Real projects use thousands or millions of examples.</div><details class="deepdive" open><summary>shared/nlpdata.py: all sentences written for this page (template, not run)</summary><pre><code>&quot;&quot;&quot;Tiny, hand-written datasets used by the programs on the NLP page (all sentences written for this page).&quot;&quot;&quot;
+
+# 60 short product/movie reviews: 1 = positive, 0 = negative
+REVIEWS = [
+    (&quot;I loved this phone, the battery lasts all day&quot;, 1), (&quot;Great movie with a touching story&quot;, 1),
+    (&quot;The food was delicious and the staff were kind&quot;, 1), (&quot;Excellent sound quality for the price&quot;, 1),
+    (&quot;This book made me smile from start to end&quot;, 1), (&quot;Fast delivery and the shoes fit perfectly&quot;, 1),
+    (&quot;A wonderful film, the actors were brilliant&quot;, 1), (&quot;The camera takes beautiful photos at night&quot;, 1),
+    (&quot;Very comfortable chair, my back feels better&quot;, 1), (&quot;The app is simple and works smoothly&quot;, 1),
+    (&quot;Amazing experience, I will come back again&quot;, 1), (&quot;Superb acting and a clever ending&quot;, 1),
+    (&quot;The laptop is light and very fast&quot;, 1), (&quot;Friendly service and a cosy place&quot;, 1),
+    (&quot;The headphones are comfortable and the bass is rich&quot;, 1), (&quot;I enjoyed every minute of this show&quot;, 1),
+    (&quot;Good value, strong build and nice colour&quot;, 1), (&quot;The hotel room was clean and quiet&quot;, 1),
+    (&quot;Loved the music, the songs are catchy&quot;, 1), (&quot;The update made the app much better&quot;, 1),
+    (&quot;Brilliant story and lovely characters&quot;, 1), (&quot;The pizza was hot, cheesy and tasty&quot;, 1),
+    (&quot;Works great, setup took two minutes&quot;, 1), (&quot;The teacher explains everything clearly&quot;, 1),
+    (&quot;Happy with the purchase, highly recommended&quot;, 1), (&quot;Not bad at all, actually quite good&quot;, 1),
+    (&quot;The trip was fun and well organised&quot;, 1), (&quot;Beautiful design and a bright screen&quot;, 1),
+    (&quot;The course was useful and easy to follow&quot;, 1), (&quot;Perfect gift, my sister loved it&quot;, 1),
+    (&quot;The battery died after one hour, terrible&quot;, 0), (&quot;Boring movie, I fell asleep&quot;, 0),
+    (&quot;The food was cold and the waiter was rude&quot;, 0), (&quot;Poor sound and the cable broke in a week&quot;, 0),
+    (&quot;The plot made no sense, a waste of time&quot;, 0), (&quot;Delivery was late and the box was damaged&quot;, 0),
+    (&quot;Awful acting and a stupid ending&quot;, 0), (&quot;The camera is blurry in low light&quot;, 0),
+    (&quot;Uncomfortable seat, my back hurts&quot;, 0), (&quot;The app crashes every time I open it&quot;, 0),
+    (&quot;Worst service ever, never coming back&quot;, 0), (&quot;The laptop is heavy and very slow&quot;, 0),
+    (&quot;Dirty room and a noisy street outside&quot;, 0), (&quot;The headphones hurt my ears&quot;, 0),
+    (&quot;I regret buying this, it stopped working&quot;, 0), (&quot;Overpriced and the colour faded quickly&quot;, 0),
+    (&quot;The songs are dull and repetitive&quot;, 0), (&quot;The update made everything slower&quot;, 0),
+    (&quot;Weak story and flat characters&quot;, 0), (&quot;The pizza was soggy and salty&quot;, 0),
+    (&quot;Setup was confusing and support never replied&quot;, 0), (&quot;The teacher rushes and explains nothing&quot;, 0),
+    (&quot;Not good, the quality is poor&quot;, 0), (&quot;The trip was badly planned and tiring&quot;, 0),
+    (&quot;The screen cracked on the first day&quot;, 0), (&quot;The course was boring and too long&quot;, 0),
+    (&quot;Cheap material, it tore after one wash&quot;, 0), (&quot;I do not like this product at all&quot;, 0),
+    (&quot;Disappointing film with a slow start&quot;, 0), (&quot;The charger gets very hot, unsafe&quot;, 0),
+]
+
+# FAQ documents for search demos
+FAQ = [
+    &quot;How do I reset my password? Open Settings, choose Account and tap Reset password.&quot;,
+    &quot;Delivery usually takes three to five working days inside the country.&quot;,
+    &quot;You can return an item within 30 days if it is unused and in the original box.&quot;,
+    &quot;We accept credit cards, debit cards, UPI and net banking.&quot;,
+    &quot;To cancel an order, open My Orders and press Cancel before it is shipped.&quot;,
+    &quot;Refunds reach your bank account in five to seven working days.&quot;,
+    &quot;Our support team is available every day from 9 am to 9 pm.&quot;,
+    &quot;Shipping is free for orders above 499 rupees.&quot;,
+    &quot;You can track your parcel with the tracking link sent by SMS.&quot;,
+    &quot;Gift cards cannot be exchanged for cash.&quot;,
+    &quot;To change your delivery address, edit it in My Orders before shipping.&quot;,
+    &quot;Warranty claims need the invoice and the serial number of the product.&quot;,
+]
+
+# A short story for the tiny character-level language model
+STORY = (
+    &quot;the cat sat on the mat. the dog sat on the log. the cat saw the dog. &quot;
+    &quot;the dog saw the cat. the cat ran to the mat. the dog ran to the log. &quot;
+    &quot;a bird sat on the tree. the bird saw the cat and the dog. &quot;
+    &quot;the cat and the dog sat in the sun. the sun was warm. the bird sang a song. &quot;
+    &quot;the dog ate the food. the cat ate the fish. the bird ate the seed. &quot;
+    &quot;the cat slept on the mat. the dog slept on the log. the bird slept in the tree. &quot;
+) * 6
+
+# Part-of-speech tagged sentences (simplified tags: DET NOUN VERB ADJ PRON ADP ADV)
+POS = [
+    &quot;the/DET cat/NOUN sat/VERB on/ADP the/DET mat/NOUN&quot;,
+    &quot;a/DET dog/NOUN runs/VERB fast/ADV&quot;,
+    &quot;she/PRON reads/VERB a/DET good/ADJ book/NOUN&quot;,
+    &quot;the/DET big/ADJ dog/NOUN sleeps/VERB&quot;,
+    &quot;he/PRON eats/VERB the/DET red/ADJ apple/NOUN&quot;,
+    &quot;they/PRON walk/VERB to/ADP the/DET park/NOUN&quot;,
+    &quot;the/DET small/ADJ bird/NOUN sings/VERB loudly/ADV&quot;,
+    &quot;we/PRON play/VERB in/ADP the/DET garden/NOUN&quot;,
+    &quot;the/DET teacher/NOUN writes/VERB on/ADP the/DET board/NOUN&quot;,
+    &quot;a/DET happy/ADJ child/NOUN laughs/VERB&quot;,
+    &quot;the/DET old/ADJ man/NOUN walks/VERB slowly/ADV&quot;,
+    &quot;i/PRON like/VERB the/DET blue/ADJ car/NOUN&quot;,
+    &quot;the/DET girl/NOUN reads/VERB in/ADP the/DET library/NOUN&quot;,
+    &quot;you/PRON see/VERB a/DET tall/ADJ tree/NOUN&quot;,
+    &quot;the/DET cat/NOUN eats/VERB fish/NOUN&quot;,
+    &quot;a/DET boy/NOUN plays/VERB with/ADP the/DET ball/NOUN&quot;,
+]
+POS_TEST = [
+    &quot;the/DET happy/ADJ dog/NOUN plays/VERB in/ADP the/DET park/NOUN&quot;,
+    &quot;she/PRON sees/VERB the/DET small/ADJ cat/NOUN&quot;,
+    &quot;a/DET girl/NOUN sings/VERB loudly/ADV&quot;,
+    &quot;the/DET man/NOUN reads/VERB a/DET red/ADJ book/NOUN&quot;,
+]</code></pre></details><h3>Good to know</h3><ul><li>60 short reviews (30 positive, 30 negative), 12 FAQ answers, a repeated children's story for the tiny language model, and 20 part-of-speech tagged sentences.</li><li>Important design detail that shows up later: almost every positive review has a negative 'twin' on the same topic (good camera / blurry camera). That makes topic words useless for sentiment and is a good stress test.</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part B — Words, Sub-words and Tokens</h2></div>
+
+    <!-- 8 -->
+    <section class="block" id="tokenization">
+      <h2><span class="num">8</span> Tokenization, Stop Words, Stemming and Lemmatization</h2>
+<div class="callout life"><strong>Picture:</strong> Cutting a sentence into Lego bricks. Big bricks (whole words) are easy to read but you need millions of different ones; tiny bricks (letters) fit everything but say little. The cut you choose changes everything after it.</div><details class="deepdive" open><summary>Word tokens, stop words, a crude stemmer (run for real)</summary><pre><code># Word tokenization, stop words, and a crude stemmer (to see why lemmatization exists)
+import re
+text = &quot;The children aren&#x27;t playing; they&#x27;re studying NLP&#x27;s basics in 2026!&quot;
+print(&quot;split on spaces :&quot;, text.split())
+print(&quot;regex word+punct:&quot;, re.findall(r&quot;\w+(?:&#x27;\w+)?|[^\w\s]&quot;, text))
+STOP = {&quot;the&quot;, &quot;a&quot;, &quot;an&quot;, &quot;in&quot;, &quot;on&quot;, &quot;they&#x27;re&quot;, &quot;are&quot;, &quot;is&quot;, &quot;of&quot;, &quot;to&quot;, &quot;and&quot;}
+words = [w.lower() for w in re.findall(r&quot;\w+(?:&#x27;\w+)?&quot;, text)]
+print(&quot;without stop words:&quot;, [w for w in words if w not in STOP])
+def stem(w):                                      # tiny suffix stripper (NOT the real Porter stemmer)
+    for suf in (&quot;ing&quot;, &quot;ies&quot;, &quot;es&quot;, &quot;ed&quot;, &quot;s&quot;):
+        if w.endswith(suf) and len(w) - len(suf) &gt;= 3:
+            return w[: -len(suf)] + (&quot;y&quot; if suf == &quot;ies&quot; else &quot;&quot;)
+    return w
+for w in [&quot;playing&quot;, &quot;studies&quot;, &quot;studied&quot;, &quot;boxes&quot;, &quot;news&quot;, &quot;running&quot;, &quot;better&quot;, &quot;children&quot;]:
+    print(f&quot;  stem({w!r}) = {stem(w)!r}&quot;)
+LEMMA = {&quot;children&quot;: &quot;child&quot;, &quot;better&quot;: &quot;good&quot;, &quot;ran&quot;: &quot;run&quot;, &quot;running&quot;: &quot;run&quot;, &quot;studies&quot;: &quot;study&quot;, &quot;mice&quot;: &quot;mouse&quot;}
+print(&quot;lemma (dictionary) -&gt;&quot;, {w: LEMMA.get(w, w) for w in [&quot;children&quot;, &quot;better&quot;, &quot;running&quot;, &quot;mice&quot;]})
+
+# ----- Output (real run) -----
+# split on spaces : [&#x27;The&#x27;, &#x27;children&#x27;, &quot;aren&#x27;t&quot;, &#x27;playing;&#x27;, &quot;they&#x27;re&quot;, &#x27;studying&#x27;, &quot;NLP&#x27;s&quot;, &#x27;basics&#x27;, &#x27;in&#x27;, &#x27;2026!&#x27;]
+# regex word+punct: [&#x27;The&#x27;, &#x27;children&#x27;, &quot;aren&#x27;t&quot;, &#x27;playing&#x27;, &#x27;;&#x27;, &quot;they&#x27;re&quot;, &#x27;studying&#x27;, &quot;NLP&#x27;s&quot;, &#x27;basics&#x27;, &#x27;in&#x27;, &#x27;2026&#x27;, &#x27;!&#x27;]
+# without stop words: [&#x27;children&#x27;, &quot;aren&#x27;t&quot;, &#x27;playing&#x27;, &#x27;studying&#x27;, &quot;nlp&#x27;s&quot;, &#x27;basics&#x27;, &#x27;2026&#x27;]
+#   stem(&#x27;playing&#x27;) = &#x27;play&#x27;
+#   stem(&#x27;studies&#x27;) = &#x27;study&#x27;
+#   stem(&#x27;studied&#x27;) = &#x27;studi&#x27;
+#   stem(&#x27;boxes&#x27;) = &#x27;box&#x27;
+#   stem(&#x27;news&#x27;) = &#x27;new&#x27;
+#   stem(&#x27;running&#x27;) = &#x27;runn&#x27;
+#   stem(&#x27;better&#x27;) = &#x27;better&#x27;
+#   stem(&#x27;children&#x27;) = &#x27;children&#x27;
+# lemma (dictionary) -&gt; {&#x27;children&#x27;: &#x27;child&#x27;, &#x27;better&#x27;: &#x27;good&#x27;, &#x27;running&#x27;: &#x27;run&#x27;, &#x27;mice&#x27;: &#x27;mouse&#x27;}</code></pre></details><table><tr><th>Step</th><th>What it does</th><th>Watch out</th></tr><tr><td>Tokenize</td><td>split text into units</td><td>contractions (aren't), punctuation, numbers, URLs</td></tr><tr><td>Stop-word removal</td><td>drop very common words</td><td>'not' is a stop word in some lists: deleting it flips sentiment!</td></tr><tr><td>Stemming</td><td>chop suffixes by rules</td><td>'studied' → 'studi', 'news' → 'new': fast but crude</td></tr><tr><td>Lemmatization</td><td>dictionary form using a vocabulary</td><td>'better' → 'good', 'mice' → 'mouse': needs language resources</td></tr></table><h3>Good to know</h3><ul><li>Modern Transformer models skip stemming and stop words: their sub-word tokenizer and the model learn these things themselves.</li></ul>
+    </section>
+
+    <!-- 9 -->
+    <section class="block" id="bpe">
+      <h2><span class="num">9</span> Sub-word Tokens: Byte-Pair Encoding from Scratch</h2>
+<div class="callout life"><strong>Picture:</strong> Making words from syllable stickers. If 'est' appears again and again, you print a single 'est' sticker. After many such merges, common words become one sticker and rare words are built from a few.</div><details class="deepdive" open><summary>BPE merges on a 4-word corpus (run for real)</summary><pre><code># Byte-Pair Encoding (BPE) from scratch: how GPT-style tokenizers learn sub-words
+from collections import Counter
+corpus = {&quot;low&quot;: 5, &quot;lower&quot;: 2, &quot;newest&quot;: 6, &quot;widest&quot;: 3}     # word -&gt; frequency
+vocab = {&quot; &quot;.join(w) + &quot; &lt;/w&gt;&quot;: f for w, f in corpus.items()}
+def pair_counts(v):
+    c = Counter()
+    for word, f in v.items():
+        s = word.split()
+        for a, b in zip(s, s[1:]):
+            c[a, b] += f
+    return c
+merges = []
+for step in range(8):
+    pc = pair_counts(vocab)
+    best = max(pc, key=pc.get)
+    merges.append(best)
+    vocab = {w.replace(&quot; &quot;.join(best), &quot;&quot;.join(best)): f for w, f in vocab.items()}
+    print(f&quot;merge {step + 1}: {best[0]!r} + {best[1]!r} (seen {pc[best]}x)&quot;)
+print(&quot;final vocabulary:&quot;, list(vocab))
+def encode(word):
+    s = list(word) + [&quot;&lt;/w&gt;&quot;]
+    for a, b in merges:
+        i = 0
+        while i &lt; len(s) - 1:
+            if s[i] == a and s[i + 1] == b:
+                s[i:i + 2] = [a + b]
+            else:
+                i += 1
+    return s
+for w in [&quot;lowest&quot;, &quot;newer&quot;, &quot;wider&quot;, &quot;slow&quot;]:
+    print(f&quot;encode({w!r}) -&gt; {encode(w)}&quot;)
+
+# ----- Output (real run) -----
+# merge 1: &#x27;e&#x27; + &#x27;s&#x27; (seen 9x)
+# merge 2: &#x27;es&#x27; + &#x27;t&#x27; (seen 9x)
+# merge 3: &#x27;est&#x27; + &#x27;&lt;/w&gt;&#x27; (seen 9x)
+# merge 4: &#x27;l&#x27; + &#x27;o&#x27; (seen 7x)
+# merge 5: &#x27;lo&#x27; + &#x27;w&#x27; (seen 7x)
+# merge 6: &#x27;n&#x27; + &#x27;e&#x27; (seen 6x)
+# merge 7: &#x27;ne&#x27; + &#x27;w&#x27; (seen 6x)
+# merge 8: &#x27;new&#x27; + &#x27;est&lt;/w&gt;&#x27; (seen 6x)
+# final vocabulary: [&#x27;low &lt;/w&gt;&#x27;, &#x27;low e r &lt;/w&gt;&#x27;, &#x27;newest&lt;/w&gt;&#x27;, &#x27;w i d est&lt;/w&gt;&#x27;]
+# encode(&#x27;lowest&#x27;) -&gt; [&#x27;low&#x27;, &#x27;est&lt;/w&gt;&#x27;]
+# encode(&#x27;newer&#x27;) -&gt; [&#x27;new&#x27;, &#x27;e&#x27;, &#x27;r&#x27;, &#x27;&lt;/w&gt;&#x27;]
+# encode(&#x27;wider&#x27;) -&gt; [&#x27;w&#x27;, &#x27;i&#x27;, &#x27;d&#x27;, &#x27;e&#x27;, &#x27;r&#x27;, &#x27;&lt;/w&gt;&#x27;]
+# encode(&#x27;slow&#x27;) -&gt; [&#x27;s&#x27;, &#x27;low&#x27;, &#x27;&lt;/w&gt;&#x27;]</code></pre></details><h3>Good to know</h3><ul><li>The unseen word 'lowest' was still encoded as <code>low + est</code>: sub-words mean <strong>no unknown words</strong>.</li><li>GPT-style models use byte-level BPE; BERT uses WordPiece; T5 and many multilingual models use SentencePiece (unigram or BPE). All share the idea: frequent pieces get their own token.</li><li>Vocabulary size is a trade-off: bigger vocabulary = shorter sequences but a bigger embedding table.</li></ul>
+    </section>
+
+    <!-- 10 -->
+    <section class="block" id="real-tokenizers">
+      <h2><span class="num">10</span> Real Tokenizers: English, Hindi, Hinglish, Emoji and Code</h2>
+<div class="callout life"><strong>Picture:</strong> Two shopkeepers with different scales: one weighs in kilos (fewer, bigger pieces), one in grams (many small pieces). The same sentence 'costs' a different number of tokens in different tokenizers, and with LLMs you pay per token.</div><details class="deepdive" open><summary>WordPiece vs SentencePiece on five inputs (run for real)</summary><pre><code># Real tokenizers of two cached models: WordPiece (English BERT-style) vs SentencePiece (multilingual XLM-R style)
+from transformers import AutoTokenizer
+wp = AutoTokenizer.from_pretrained(&quot;sentence-transformers/all-MiniLM-L6-v2&quot;)      # WordPiece, lower-cased English
+sp = AutoTokenizer.from_pretrained(&quot;intfloat/multilingual-e5-small&quot;)             # SentencePiece (XLM-R vocabulary)
+print(&quot;vocabulary sizes:&quot;, wp.vocab_size, &quot;(WordPiece) |&quot;, sp.vocab_size, &quot;(SentencePiece)&quot;)
+for text in [&quot;Tokenization is unbelievably useful!&quot;, &quot;मुझे यह फ़ोन बहुत पसंद है&quot;, &quot;mujhe yeh phone bahut pasand hai&quot;, &quot;I ❤️ NLP 😀&quot;, &quot;def add(a, b): return a+b&quot;]:
+    a, b = wp.tokenize(text), sp.tokenize(text)
+    print(f&quot;\n{text}&quot;)
+    print(f&quot;  WordPiece     ({len(a):2} tokens): {a}&quot;)
+    print(f&quot;  SentencePiece ({len(b):2} tokens): {b}&quot;)
+ids = wp(&quot;Hello world&quot;)[&quot;input_ids&quot;]
+print(&quot;\nids for &#x27;Hello world&#x27;:&quot;, ids, &quot;-&gt;&quot;, wp.convert_ids_to_tokens(ids))
+
+# ----- Output (real run) -----
+# vocabulary sizes: 30522 (WordPiece) | 250002 (SentencePiece)
+#
+# Tokenization is unbelievably useful!
+#   WordPiece     (10 tokens): [&#x27;token&#x27;, &#x27;##ization&#x27;, &#x27;is&#x27;, &#x27;un&#x27;, &#x27;##bel&#x27;, &#x27;##ie&#x27;, &#x27;##va&#x27;, &#x27;##bly&#x27;, &#x27;useful&#x27;, &#x27;!&#x27;]
+#   SentencePiece (10 tokens): [&#x27;▁To&#x27;, &#x27;ken&#x27;, &#x27;ization&#x27;, &#x27;▁is&#x27;, &#x27;▁un&#x27;, &#x27;beli&#x27;, &#x27;eva&#x27;, &#x27;bly&#x27;, &#x27;▁useful&#x27;, &#x27;!&#x27;]
+#
+# मुझे यह फ़ोन बहुत पसंद है
+#   WordPiece     (11 tokens): [&#x27;[UNK]&#x27;, &#x27;य&#x27;, &#x27;##ह&#x27;, &#x27;[UNK]&#x27;, &#x27;ब&#x27;, &#x27;##ह&#x27;, &#x27;##त&#x27;, &#x27;प&#x27;, &#x27;##स&#x27;, &#x27;##द&#x27;, &#x27;ह&#x27;]
+#   SentencePiece ( 6 tokens): [&#x27;▁मुझे&#x27;, &#x27;▁यह&#x27;, &#x27;▁फ़ोन&#x27;, &#x27;▁बहुत&#x27;, &#x27;▁पसंद&#x27;, &#x27;▁है&#x27;]
+#
+# mujhe yeh phone bahut pasand hai
+#   WordPiece     (12 tokens): [&#x27;mu&#x27;, &#x27;##j&#x27;, &#x27;##he&#x27;, &#x27;ye&#x27;, &#x27;##h&#x27;, &#x27;phone&#x27;, &#x27;ba&#x27;, &#x27;##hu&#x27;, &#x27;##t&#x27;, &#x27;pas&#x27;, &#x27;##and&#x27;, &#x27;hai&#x27;]
+#   SentencePiece ( 7 tokens): [&#x27;▁mujhe&#x27;, &#x27;▁yeh&#x27;, &#x27;▁phone&#x27;, &#x27;▁bahut&#x27;, &#x27;▁pas&#x27;, &#x27;and&#x27;, &#x27;▁hai&#x27;]
+#
+# I ❤️ NLP 😀
+#   WordPiece     ( 5 tokens): [&#x27;i&#x27;, &#x27;[UNK]&#x27;, &#x27;nl&#x27;, &#x27;##p&#x27;, &#x27;[UNK]&#x27;]
+#   SentencePiece ( 6 tokens): [&#x27;▁I&#x27;, &#x27;▁❤&#x27;, &#x27;️&#x27;, &#x27;▁N&#x27;, &#x27;LP&#x27;, &#x27;▁😀&#x27;]
+#
+# def add(a, b): return a+b
+#   WordPiece     (12 tokens): [&#x27;def&#x27;, &#x27;add&#x27;, &#x27;(&#x27;, &#x27;a&#x27;, &#x27;,&#x27;, &#x27;b&#x27;, &#x27;)&#x27;, &#x27;:&#x27;, &#x27;return&#x27;, &#x27;a&#x27;, &#x27;+&#x27;, &#x27;b&#x27;]
+#   SentencePiece (12 tokens): [&#x27;▁de&#x27;, &#x27;f&#x27;, &#x27;▁add&#x27;, &#x27;(&#x27;, &#x27;a&#x27;, &#x27;,&#x27;, &#x27;▁b&#x27;, &#x27;):&#x27;, &#x27;▁return&#x27;, &#x27;▁a&#x27;, &#x27;+&#x27;, &#x27;b&#x27;]
+#
+# ids for &#x27;Hello world&#x27;: [101, 7592, 2088, 102] -&gt; [&#x27;[CLS]&#x27;, &#x27;hello&#x27;, &#x27;world&#x27;, &#x27;[SEP]&#x27;]</code></pre></details><h3>Good to know</h3><ul><li>The English WordPiece tokenizer (30,522 tokens) turns Hindi into <code>[UNK]</code> (unknown) pieces: the model simply cannot see that text. The multilingual SentencePiece tokenizer (250,002 tokens) keeps every Hindi word whole.</li><li>Romanised Hinglish ('mujhe yeh phone...') is split into odd pieces by both: mixed-language text is a real weak spot.</li><li>The <code>##</code> mark means 'glued to the previous piece'; <code>▁</code> means 'a space came before this'. <code>[CLS]</code> and <code>[SEP]</code> are special tokens the model expects.</li><li>Practical rule: count tokens with the <em>same</em> tokenizer the model uses before estimating cost or checking context limits.</li></ul>
+    </section>
+
+    <!-- 11 -->
+    <section class="block" id="edit-distance">
+      <h2><span class="num">11</span> Edit Distance and Spelling Correction</h2>
+<div class="callout life"><strong>Picture:</strong> Counting the fewest moves to turn one word into another, like a word-ladder game: change a letter, add one, or remove one.</div><details class="deepdive" open><summary>Levenshtein distance + a tiny spell checker (run for real)</summary><pre><code># Levenshtein edit distance (dynamic programming) and a tiny spelling corrector
+def lev(a, b):
+    d = list(range(len(b) + 1))
+    for i, ca in enumerate(a, 1):
+        prev, d[0] = d[0], i
+        for j, cb in enumerate(b, 1):
+            prev, d[j] = d[j], min(d[j] + 1, d[j - 1] + 1, prev + (ca != cb))
+    return d[-1]
+for a, b in [(&quot;kitten&quot;, &quot;sitting&quot;), (&quot;flaw&quot;, &quot;lawn&quot;), (&quot;intention&quot;, &quot;execution&quot;)]:
+    print(f&quot;lev({a!r}, {b!r}) = {lev(a, b)}&quot;)
+VOCAB = {&quot;delivery&quot;: 50, &quot;refund&quot;: 40, &quot;return&quot;: 35, &quot;password&quot;: 30, &quot;order&quot;: 60, &quot;warranty&quot;: 10, &quot;invoice&quot;: 15}
+def correct(w):
+    return min(VOCAB, key=lambda v: (lev(w, v), -VOCAB[v]))
+for typo in [&quot;delivry&quot;, &quot;refnd&quot;, &quot;pasword&quot;, &quot;ordr&quot;, &quot;invoise&quot;, &quot;retrun&quot;]:
+    print(f&quot;{typo:8} -&gt; {correct(typo)}&quot;)
+
+# ----- Output (real run) -----
+# lev(&#x27;kitten&#x27;, &#x27;sitting&#x27;) = 3
+# lev(&#x27;flaw&#x27;, &#x27;lawn&#x27;) = 2
+# lev(&#x27;intention&#x27;, &#x27;execution&#x27;) = 5
+# delivry  -&gt; delivery
+# refnd    -&gt; refund
+# pasword  -&gt; password
+# ordr     -&gt; order
+# invoise  -&gt; invoice
+# retrun   -&gt; return</code></pre></details><h3>Good to know</h3><ul><li>Dynamic programming fills a table of 'cost to turn the first i letters into the first j letters'.</li><li>Real spell checkers add word frequency and keyboard closeness ('m' next to 'n') and the context of nearby words.</li><li>Used for fuzzy search, de-duplicating names ('Asha Rao' vs 'Asha Raao') and OCR clean-up.</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part C — Classic NLP: Counting, Probabilities and Small Models</h2></div>
+
+    <!-- 12 -->
+    <section class="block" id="bow-tfidf">
+      <h2><span class="num">12</span> Bag of Words and TF-IDF</h2>
+<div class="callout life"><strong>Picture:</strong> Describing a recipe only by the list of ingredients and how many of each, ignoring the order. 'TF-IDF' gives less weight to ingredients every recipe has (salt, water) and more to special ones (saffron).</div><details class="deepdive" open><summary>CountVectorizer, TfidfVectorizer, cosine similarity (run for real)</summary><pre><code># Bag of words and TF-IDF with scikit-learn, plus cosine similarity
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+docs = [&quot;the cat sat on the mat&quot;, &quot;the dog sat on the log&quot;, &quot;cats and dogs are pets&quot;, &quot;the stock market fell today&quot;]
+cv = CountVectorizer()
+X = cv.fit_transform(docs)
+print(&quot;vocabulary:&quot;, list(cv.get_feature_names_out()))
+print(&quot;bag of words for doc 0:&quot;, X.toarray()[0].tolist())
+tf = TfidfVectorizer()
+T = tf.fit_transform(docs)
+row = dict(zip(tf.get_feature_names_out(), (float(v) for v in T.toarray()[0].round(2))))
+print(&quot;TF-IDF doc 0 (non-zero):&quot;, {k: v for k, v in row.items() if v &gt; 0})
+sim = cosine_similarity(T).round(2)
+for i, d in enumerate(docs):
+    print(f&quot;{d:30} similarity to others: {sim[i].tolist()}&quot;)
+print(&quot;&#x27;cat&#x27; and &#x27;cats&#x27; are different columns: BoW does not know they are related&quot;)
+
+# ----- Output (real run) -----
+# vocabulary: [&#x27;and&#x27;, &#x27;are&#x27;, &#x27;cat&#x27;, &#x27;cats&#x27;, &#x27;dog&#x27;, &#x27;dogs&#x27;, &#x27;fell&#x27;, &#x27;log&#x27;, &#x27;market&#x27;, &#x27;mat&#x27;, &#x27;on&#x27;, &#x27;pets&#x27;, &#x27;sat&#x27;, &#x27;stock&#x27;, &#x27;the&#x27;, &#x27;today&#x27;]
+# bag of words for doc 0: [0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 2, 0]
+# TF-IDF doc 0 (non-zero): {&#x27;cat&#x27;: 0.45, &#x27;mat&#x27;: 0.45, &#x27;on&#x27;: 0.36, &#x27;sat&#x27;: 0.36, &#x27;the&#x27;: 0.58}
+# the cat sat on the mat         similarity to others: [1.0, 0.59, 0.0, 0.18]
+# the dog sat on the log         similarity to others: [0.59, 1.0, 0.0, 0.18]
+# cats and dogs are pets         similarity to others: [0.0, 0.0, 1.0, 0.0]
+# the stock market fell today    similarity to others: [0.18, 0.18, 0.0, 1.0]
+# &#x27;cat&#x27; and &#x27;cats&#x27; are different columns: BoW does not know they are related</code></pre></details><h3>Good to know</h3><ul><li><strong>TF</strong> = how often a word appears in this document; <strong>IDF</strong> = log of how rare the word is across documents. TF-IDF = TF × IDF.</li><li>Cosine similarity compares the direction of two vectors: 1 = same mix of words, 0 = no words shared.</li><li>Limits: word order is lost ('dog bites man' = 'man bites dog'), and 'cat' / 'cats' / 'kitten' are unrelated columns.</li></ul>
+    </section>
+
+    <!-- 13 -->
+    <section class="block" id="ngram-lm">
+      <h2><span class="num">13</span> n-gram Language Models and Perplexity</h2>
+<div class="callout life"><strong>Picture:</strong> Guessing the next word in a nursery rhyme from the last word you heard. After 'the', you have heard 'cat' and 'dog' most often, so you guess one of them.</div><details class="deepdive" open><summary>A bigram model with add-k smoothing (run for real)</summary><pre><code># A bigram language model with add-k smoothing, perplexity, and sampling
+import math, random
+from collections import Counter, defaultdict
+from nlpdata import STORY
+sents = [s.strip().split() for s in STORY.split(&quot;.&quot;) if s.strip()]
+train = sents[: int(len(sents) * 0.8)]
+uni, bi = Counter(), defaultdict(Counter)
+for s in train:
+    toks = [&quot;&lt;s&gt;&quot;] + s + [&quot;&lt;/s&gt;&quot;]
+    uni.update(toks)
+    for a, b in zip(toks, toks[1:]):
+        bi[a][b] += 1
+V = len(uni)
+def p(b, a, k=0.1):
+    return (bi[a][b] + k) / (sum(bi[a].values()) + k * V)
+def perplexity(words):
+    toks = [&quot;&lt;s&gt;&quot;] + words + [&quot;&lt;/s&gt;&quot;]
+    lp = sum(math.log(p(b, a)) for a, b in zip(toks, toks[1:]))
+    return math.exp(-lp / (len(toks) - 1))
+for s in [&quot;the cat sat on the mat&quot;, &quot;the dog ate the fish&quot;, &quot;mat the on sat cat the&quot;, &quot;the bird sang a song&quot;]:
+    print(f&quot;perplexity({s!r:28}) = {perplexity(s.split()):6.2f}&quot;)
+random.seed(3)
+for _ in range(3):
+    w, out = &quot;&lt;s&gt;&quot;, []
+    while len(out) &lt; 12:
+        nxt = random.choices(list(bi[w]), weights=list(bi[w].values()))[0]
+        if nxt == &quot;&lt;/s&gt;&quot;: break
+        out.append(nxt); w = nxt
+    print(&quot;sampled:&quot;, &quot; &quot;.join(out))
+print(&quot;next-word table after &#x27;the&#x27;:&quot;, bi[&quot;the&quot;].most_common(5))
+
+# ----- Output (real run) -----
+# perplexity(&#x27;the cat sat on the mat&#x27;    ) =   2.61
+# perplexity(&#x27;the dog ate the fish&#x27;      ) =   3.57
+# perplexity(&#x27;mat the on sat cat the&#x27;    ) = 507.52
+# perplexity(&#x27;the bird sang a song&#x27;      ) =   2.55
+# sampled: the dog
+# sampled: the log
+# sampled: the bird saw the seed
+# next-word table after &#x27;the&#x27;: [(&#x27;cat&#x27;, 39), (&#x27;dog&#x27;, 39), (&#x27;bird&#x27;, 18), (&#x27;mat&#x27;, 14), (&#x27;log&#x27;, 14)]</code></pre></details><h3>Good to know</h3><ul><li><strong>Perplexity</strong> = how surprised the model is, on average (lower = better). The shuffled sentence scored about 508 against about 2.6 for a normal one.</li><li><strong>Smoothing</strong> (add-k, Kneser-Ney) gives a small probability to word pairs never seen in training; without it, one unseen pair makes the whole sentence impossible.</li><li>This is the same goal as GPT (predict the next token), with a memory of only one word instead of thousands of tokens.</li></ul>
+    </section>
+
+    <!-- 14 -->
+    <section class="block" id="text-classification">
+      <h2><span class="num">14</span> Text Classification: Naive Bayes and Logistic Regression (with an Honest Failure)</h2>
+<div class="callout life"><strong>Picture:</strong> Sorting letters into 'happy' and 'complaint' piles by looking at which words they contain, like a postman who learned that 'refund' usually means complaint.</div><details class="deepdive" open><summary>TF-IDF + Naive Bayes / Logistic Regression, 5-fold cross-validation (run for real)</summary><pre><code># Sentiment classification: TF-IDF + Naive Bayes / Logistic Regression, 5-fold cross-validation
+import numpy as np
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.linear_model import LogisticRegression
+from sklearn.pipeline import make_pipeline
+from sklearn.model_selection import cross_val_score, StratifiedKFold
+from nlpdata import REVIEWS
+X = [t for t, _ in REVIEWS]; y = np.array([l for _, l in REVIEWS])
+cv = StratifiedKFold(5, shuffle=True, random_state=0)
+for name, model in [(&quot;Naive Bayes, words&quot;, make_pipeline(TfidfVectorizer(), MultinomialNB())),
+                    (&quot;LogReg, words&quot;, make_pipeline(TfidfVectorizer(), LogisticRegression(max_iter=1000))),
+                    (&quot;LogReg, words+bigrams&quot;, make_pipeline(TfidfVectorizer(ngram_range=(1, 2)), LogisticRegression(max_iter=1000)))]:
+    s = cross_val_score(model, X, y, cv=cv)
+    print(f&quot;{name:24} accuracy {s.mean():.3f} (+/- {s.std():.3f}) over 5 folds&quot;)
+# Why so low? Every positive review has a negative twin on the same topic, and most sentiment words appear only once,
+# so in each test fold the sentiment words are UNSEEN and the model leans on topic words. Fix: give it sentiment knowledge.
+LEX = [(w, 1) for w in &quot;good great loved love excellent amazing wonderful beautiful brilliant superb happy perfect tasty fun useful clean fast kind comfortable recommended enjoyed delicious smile lovely catchy&quot;.split()] + \
+      [(w, 0) for w in &quot;bad terrible boring awful poor worst rude cold slow broke damaged blurry crashes dirty noisy regret faded dull weak soggy confusing cracked cheap disappointing unsafe hurts&quot;.split()]
+accs = []
+for tr, te in cv.split(X, y):
+    Xtr = [X[i] for i in tr] + [w for w, _ in LEX]; ytr = list(y[tr]) + [l for _, l in LEX]
+    mm = make_pipeline(TfidfVectorizer(), LogisticRegression(max_iter=1000)).fit(Xtr, ytr)
+    accs.append(mm.score([X[i] for i in te], y[te]))
+print(f&quot;{&#x27;LogReg + 52-word lexicon&#x27;:24} accuracy {np.mean(accs):.3f} (+/- {np.std(accs):.3f})  &lt;- same test reviews, more knowledge&quot;)
+m = make_pipeline(TfidfVectorizer(), LogisticRegression(max_iter=1000)).fit(X, y)
+vec, clf = m.named_steps[&quot;tfidfvectorizer&quot;], m.named_steps[&quot;logisticregression&quot;]
+coef = clf.coef_[0]; names = vec.get_feature_names_out()
+print(&quot;most positive words:&quot;, [names[i] for i in np.argsort(coef)[-8:][::-1]])
+print(&quot;most negative words:&quot;, [names[i] for i in np.argsort(coef)[:8]])
+for s in [&quot;the camera is good&quot;, &quot;the camera is not good&quot;, &quot;not bad, I like it&quot;, &quot;it was not boring at all&quot;]:
+    print(f&quot;predict {s!r:30} -&gt; {&#x27;positive&#x27; if m.predict([s])[0] else &#x27;negative&#x27;} (p_pos={m.predict_proba([s])[0][1]:.2f})&quot;)
+
+# ----- Output (real run) -----
+# Naive Bayes, words       accuracy 0.200 (+/- 0.113) over 5 folds
+# LogReg, words            accuracy 0.300 (+/- 0.135) over 5 folds
+# LogReg, words+bigrams    accuracy 0.167 (+/- 0.091) over 5 folds
+# LogReg + 52-word lexicon accuracy 0.733 (+/- 0.097)  &lt;- same test reviews, more knowledge
+# most positive words: [&#x27;loved&#x27;, &#x27;fast&#x27;, &#x27;brilliant&#x27;, &#x27;beautiful&#x27;, &#x27;better&#x27;, &#x27;great&#x27;, &#x27;were&#x27;, &#x27;works&#x27;]
+# most negative words: [&#x27;slow&#x27;, &#x27;boring&#x27;, &#x27;poor&#x27;, &#x27;never&#x27;, &#x27;in&#x27;, &#x27;time&#x27;, &#x27;one&#x27;, &#x27;after&#x27;]
+# predict &#x27;the camera is good&#x27;           -&gt; positive (p_pos=0.51)
+# predict &#x27;the camera is not good&#x27;       -&gt; negative (p_pos=0.48)
+# predict &#x27;not bad, I like it&#x27;           -&gt; negative (p_pos=0.45)
+# predict &#x27;it was not boring at all&#x27;     -&gt; negative (p_pos=0.42)</code></pre></details><div class="diagram-wrap"><svg viewBox="0 0 640 300" style="width:100%;max-width:640px" xmlns="http://www.w3.org/2000/svg"><line x1="60" y1="230" x2="620" y2="230" stroke="var(--card-border)"/><text x="54" y="234" text-anchor="end" font-size="11">0</text><line x1="60" y1="178" x2="620" y2="178" stroke="var(--card-border)"/><text x="54" y="182" text-anchor="end" font-size="11">0.25</text><line x1="60" y1="125" x2="620" y2="125" stroke="var(--card-border)"/><text x="54" y="129" text-anchor="end" font-size="11">0.5</text><line x1="60" y1="72" x2="620" y2="72" stroke="var(--card-border)"/><text x="54" y="76" text-anchor="end" font-size="11">0.75</text><line x1="60" y1="20" x2="620" y2="20" stroke="var(--card-border)"/><text x="54" y="24" text-anchor="end" font-size="11">1</text><rect x="82" y="188" width="67" height="42" rx="3" fill="var(--accent)" opacity="0.85"/><text x="116" y="183" text-anchor="middle" font-size="11">0.20</text><text x="116" y="246" text-anchor="middle" font-size="10.5">Naive Bayes</text><rect x="194" y="167" width="67" height="63" rx="3" fill="var(--accent)" opacity="0.85"/><text x="228" y="162" text-anchor="middle" font-size="11">0.30</text><text x="228" y="246" text-anchor="middle" font-size="10.5">LogReg</text><rect x="306" y="195" width="67" height="35" rx="3" fill="var(--accent)" opacity="0.85"/><text x="340" y="190" text-anchor="middle" font-size="11">0.17</text><text x="340" y="246" text-anchor="middle" font-size="10.5">+ bigrams</text><rect x="418" y="76" width="67" height="154" rx="3" fill="var(--accent)" opacity="0.85"/><text x="452" y="71" text-anchor="middle" font-size="11">0.73</text><text x="452" y="246" text-anchor="middle" font-size="10.5">+ lexicon</text><rect x="530" y="48" width="67" height="182" rx="3" fill="var(--accent)" opacity="0.85"/><text x="564" y="43" text-anchor="middle" font-size="11">0.87</text><text x="564" y="246" text-anchor="middle" font-size="10.5">embeddings</text><text transform="rotate(-90)" x="-125" y="16" text-anchor="middle" font-size="12" class="edge-label">accuracy</text></svg><div class="diagram-caption">Fig S2 — Sentiment accuracy on the same 60 reviews, 5-fold cross-validation (real runs; 0.5 = coin toss)</div></div><h3>Good to know</h3><ul><li><strong>Honest result:</strong> the classic models scored 0.17-0.30, worse than tossing a coin. Why? In each test fold the sentiment words ('delicious', 'rude') had never been seen in training, and the topic words ('camera', 'pizza') belonged to the opposite twin review. The model learned <em>topics</em>, not feelings.</li><li>Giving the same model 52 sentiment words as extra training examples lifted it to 0.73 on the same test reviews: <strong>knowledge/data matters more than the algorithm</strong>. Pre-trained sentence embeddings reached 0.87 (see <a href="#transfer-learning">transfer learning</a>).</li><li>Negation is hard for bag-of-words: 'not good' and 'not bad' are judged mostly by 'good'/'bad'.</li><li>With thousands of real reviews, TF-IDF + logistic regression is a strong, fast, explainable baseline. Always try it first.</li></ul>
+    </section>
+
+    <!-- 15 -->
+    <section class="block" id="metrics">
+      <h2><span class="num">15</span> Measuring Classifiers: Precision, Recall, F1</h2>
+<div class="callout life"><strong>Picture:</strong> A fishing net. <strong>Precision</strong>: of everything in the net, how much is really fish (not boots)? <strong>Recall</strong>: of all the fish in the lake, how many did we catch? F1 balances the two.</div><details class="deepdive" open><summary>Confusion matrix, precision, recall, F1, and the accuracy trap (run for real)</summary><pre><code># Precision, recall, F1 by hand and with scikit-learn; the accuracy trap on imbalanced data
+from sklearn.metrics import classification_report, confusion_matrix
+y_true = [1, 1, 1, 1, 0, 0, 0, 0, 0, 0]          # 1 = spam
+y_pred = [1, 1, 0, 0, 1, 0, 0, 0, 0, 0]
+tp = sum(t == p == 1 for t, p in zip(y_true, y_pred)); fp = sum(t == 0 and p == 1 for t, p in zip(y_true, y_pred))
+fn = sum(t == 1 and p == 0 for t, p in zip(y_true, y_pred))
+prec, rec = tp / (tp + fp), tp / (tp + fn); f1 = 2 * prec * rec / (prec + rec)
+print(f&quot;TP={tp} FP={fp} FN={fn}  precision={prec:.2f} recall={rec:.2f} F1={f1:.2f}&quot;)
+print(&quot;confusion matrix [[TN FP] [FN TP]]:&quot;, confusion_matrix(y_true, y_pred).tolist())
+print(classification_report(y_true, y_pred, target_names=[&quot;ham&quot;, &quot;spam&quot;], digits=2))
+y_true2 = [1] * 5 + [0] * 95; y_lazy = [0] * 100     # 5% spam, model always says &#x27;ham&#x27;
+acc = sum(a == b for a, b in zip(y_true2, y_lazy)) / 100
+print(f&quot;lazy model on 5% spam: accuracy={acc:.2f} but recall for spam = 0.00  &lt;- accuracy hides the failure&quot;)
+
+# ----- Output (real run) -----
+# TP=2 FP=1 FN=2  precision=0.67 recall=0.50 F1=0.57
+# confusion matrix [[TN FP] [FN TP]]: [[5, 1], [2, 2]]
+#               precision    recall  f1-score   support
+#
+#          ham       0.71      0.83      0.77         6
+#         spam       0.67      0.50      0.57         4
+#
+#     accuracy                           0.70        10
+#    macro avg       0.69      0.67      0.67        10
+# weighted avg       0.70      0.70      0.69        10
+#
+# lazy model on 5% spam: accuracy=0.95 but recall for spam = 0.00  &lt;- accuracy hides the failure</code></pre></details><table><tr><th>Metric</th><th>Formula</th><th>Use when</th></tr><tr><td>Accuracy</td><td>correct / all</td><td>classes are balanced</td></tr><tr><td>Precision</td><td>TP / (TP + FP)</td><td>false alarms are costly (blocking a real e-mail)</td></tr><tr><td>Recall</td><td>TP / (TP + FN)</td><td>misses are costly (missing fraud, missing a disease)</td></tr><tr><td>F1</td><td>2PR / (P + R)</td><td>you need one number balancing both</td></tr><tr><td>Macro vs weighted average</td><td>average over classes equally / by size</td><td>macro shows how rare classes do</td></tr></table><div class="callout warn">On 5% spam, a model that never says 'spam' is 95% accurate and completely useless. Always look at per-class recall and the confusion matrix.</div>
+    </section>
+
+    <!-- 16 -->
+    <section class="block" id="pos-tagging">
+      <h2><span class="num">16</span> Part-of-Speech Tagging with an HMM and Viterbi</h2>
+<div class="callout life"><strong>Picture:</strong> Guessing each word's job in a sentence (noun, verb ...) using two hints: what this word usually is, and what usually comes after the previous job. After 'the' comes a noun or adjective much more often than a verb.</div><details class="deepdive" open><summary>Hidden Markov Model tagger trained on 16 sentences (run for real)</summary><pre><code># Part-of-speech tagging with a Hidden Markov Model and the Viterbi algorithm (from scratch)
+import math
+from collections import Counter, defaultdict
+from nlpdata import POS, POS_TEST
+def parse(lines): return [[tuple(tok.rsplit(&quot;/&quot;, 1)) for tok in l.split()] for l in lines]
+train, test = parse(POS), parse(POS_TEST)
+trans, emit, tagc = defaultdict(Counter), defaultdict(Counter), Counter()
+for s in train:
+    prev = &quot;&lt;s&gt;&quot;
+    for w, t in s:
+        trans[prev][t] += 1; emit[t][w] += 1; tagc[t] += 1; prev = t
+TAGS = list(tagc)
+def lp_trans(a, b): return math.log((trans[a][b] + 0.1) / (sum(trans[a].values()) + 0.1 * len(TAGS)))
+def lp_emit(t, w): return math.log((emit[t][w] + 0.01) / (tagc[t] + 0.01 * 1000))
+def viterbi(words):
+    V = [{t: (lp_trans(&quot;&lt;s&gt;&quot;, t) + lp_emit(t, words[0]), None) for t in TAGS}]
+    for w in words[1:]:
+        V.append({t: max((V[-1][p][0] + lp_trans(p, t) + lp_emit(t, w), p) for p in TAGS) for t in TAGS})
+    t = max(V[-1], key=lambda k: V[-1][k][0]); path = [t]
+    for col in reversed(V[1:]):
+        t = col[t][1]; path.append(t)
+    return path[::-1]
+ok = n = 0
+for s in test:
+    words, gold = [w for w, _ in s], [t for _, t in s]
+    pred = viterbi(words)
+    ok += sum(a == b for a, b in zip(pred, gold)); n += len(gold)
+    print(&quot; &quot;.join(f&quot;{w}/{p}&quot; + (&quot;&quot; if p == g else f&quot;(gold {g})&quot;) for w, p, g in zip(words, pred, gold)))
+print(f&quot;tag accuracy on {len(test)} unseen sentences: {ok}/{n} = {ok / n:.2f}&quot;)
+print(&quot;unknown word test:&quot;, viterbi(&quot;the purple cat jumps&quot;.split()), &quot;&lt;- &#x27;purple&#x27;/&#x27;jumps&#x27; never seen; context decides&quot;)
+
+# ----- Output (real run) -----
+# the/DET happy/ADJ dog/NOUN plays/VERB in/ADP the/DET park/NOUN
+# she/PRON sees/VERB the/DET small/ADJ cat/NOUN
+# a/DET girl/NOUN sings/VERB loudly/ADV
+# the/DET man/NOUN reads/VERB a/DET red/ADJ book/NOUN
+# tag accuracy on 4 unseen sentences: 22/22 = 1.00
+# unknown word test: [&#x27;DET&#x27;, &#x27;ADJ&#x27;, &#x27;NOUN&#x27;, &#x27;VERB&#x27;] &lt;- &#x27;purple&#x27;/&#x27;jumps&#x27; never seen; context decides</code></pre></details><h3>Good to know</h3><ul><li>Two tables are learned by counting: <strong>transition</strong> P(tag | previous tag) and <strong>emission</strong> P(word | tag). Viterbi finds the best tag sequence with dynamic programming.</li><li>It got 22/22 on 4 test sentences, but they are very similar to the training sentences: real accuracy on news text for modern taggers is around 97% (as widely reported for English).</li><li>Even unseen words ('purple', 'jumps') got sensible tags because the context (transitions) decides. Modern taggers use neural networks (spaCy, Stanza).</li></ul>
+    </section>
+
+    <!-- 17 -->
+    <section class="block" id="ner">
+      <h2><span class="num">17</span> Named Entity Recognition (NER)</h2>
+<div class="callout life"><strong>Picture:</strong> Using highlighter pens on a newspaper: pink for people, green for companies, yellow for places, blue for dates and money.</div><details class="deepdive" open><summary>Gazetteer + regex NER, BIO tags, entity F1 (run for real)</summary><pre><code># Named Entity Recognition with a gazetteer + rules, BIO tags, and entity-level F1
+import re
+GAZ = {&quot;PERSON&quot;: [&quot;Asha Rao&quot;, &quot;Ravi Kumar&quot;, &quot;Meera&quot;], &quot;ORG&quot;: [&quot;Infosys&quot;, &quot;Tata Motors&quot;, &quot;ISRO&quot;], &quot;LOC&quot;: [&quot;Pune&quot;, &quot;New Delhi&quot;, &quot;Bengaluru&quot;]}
+def ner(text):
+    ents = []
+    for label, names in GAZ.items():
+        for n in names:
+            for m in re.finditer(r&quot;\b&quot; + re.escape(n) + r&quot;\b&quot;, text):
+                ents.append((m.start(), m.end(), label))
+    for m in re.finditer(r&quot;\b\d{1,2} (January|February|March|April|May|June|July|August|September|October|November|December) \d{4}\b&quot;, text):
+        ents.append((m.start(), m.end(), &quot;DATE&quot;))
+    for m in re.finditer(r&quot;(?:Rs\.?|₹)\s?[\d,]+&quot;, text):
+        ents.append((m.start(), m.end(), &quot;MONEY&quot;))
+    return sorted(ents)
+def bio(text, ents):
+    tags = []
+    for m in re.finditer(r&quot;\S+&quot;, text):
+        lab = &quot;O&quot;
+        for s, e, l in ents:
+            if s &lt;= m.start() &lt; e: lab = (&quot;B-&quot; if m.start() == s else &quot;I-&quot;) + l
+        tags.append(f&quot;{m.group()}/{lab}&quot;)
+    return &quot; &quot;.join(tags)
+text = &quot;Asha Rao joined Tata Motors in Pune on 3 March 2026 with a salary of Rs. 12,00,000&quot;
+ents = ner(text)
+print([(text[s:e], l) for s, e, l in ents])
+print(bio(text, ents))
+gold = [(&quot;Asha Rao&quot;, &quot;PERSON&quot;), (&quot;Ravi&quot;, &quot;PERSON&quot;), (&quot;ISRO&quot;, &quot;ORG&quot;), (&quot;Bengaluru&quot;, &quot;LOC&quot;), (&quot;Pune&quot;, &quot;LOC&quot;)]
+t2 = &quot;Asha Rao and Ravi visited ISRO in Bengaluru, then flew back to Pune.&quot;
+pred = [(t2[s:e], l) for s, e, l in ner(t2)]
+tp = len(set(pred) &amp; set(gold)); p, r = tp / len(pred), tp / len(gold)
+print(&quot;predicted:&quot;, pred)
+print(f&quot;entity precision {p:.2f} recall {r:.2f} F1 {2 * p * r / (p + r):.2f}  &lt;- &#x27;Ravi&#x27; alone is not in the list: rules miss it&quot;)
+
+# ----- Output (real run) -----
+# [(&#x27;Asha Rao&#x27;, &#x27;PERSON&#x27;), (&#x27;Tata Motors&#x27;, &#x27;ORG&#x27;), (&#x27;Pune&#x27;, &#x27;LOC&#x27;), (&#x27;3 March 2026&#x27;, &#x27;DATE&#x27;), (&#x27;Rs. 12,00,000&#x27;, &#x27;MONEY&#x27;)]
+# Asha/B-PERSON Rao/I-PERSON joined/O Tata/B-ORG Motors/I-ORG in/O Pune/B-LOC on/O 3/B-DATE March/I-DATE 2026/I-DATE with/O a/O salary/O of/O Rs./B-MONEY 12,00,000/I-MONEY
+# predicted: [(&#x27;Asha Rao&#x27;, &#x27;PERSON&#x27;), (&#x27;ISRO&#x27;, &#x27;ORG&#x27;), (&#x27;Bengaluru&#x27;, &#x27;LOC&#x27;), (&#x27;Pune&#x27;, &#x27;LOC&#x27;)]
+# entity precision 1.00 recall 0.80 F1 0.89  &lt;- &#x27;Ravi&#x27; alone is not in the list: rules miss it</code></pre></details><details class="deepdive" open><summary>spaCy: tokens, lemmas, POS, dependencies, entities (template, not run)</summary><pre><code># pip install spacy &amp;&amp; python -m spacy download en_core_web_sm      (downloads a model: not run here)
+import spacy
+nlp = spacy.load(&quot;en_core_web_sm&quot;)
+doc = nlp(&quot;Asha Rao joined Tata Motors in Pune on 3 March 2026.&quot;)
+for t in doc:
+    print(t.text, t.lemma_, t.pos_, t.dep_, t.head.text)         # token, lemma, part of speech, dependency, head
+for ent in doc.ents:
+    print(ent.text, ent.label_)                                   # PERSON, ORG, GPE, DATE ...
+print([s.text for s in doc.sents])                                # sentence splitting</code></pre></details><h3>Good to know</h3><ul><li><strong>BIO tags</strong>: B = beginning of an entity, I = inside, O = outside. 'Tata/B-ORG Motors/I-ORG'. This turns NER into tagging each token.</li><li>Rules are precise but miss anything not on the list ('Ravi' alone was missed: recall 0.80). Statistical/neural NER models generalise from context ('Ravi visited ...' looks like a person).</li><li>Entity-level F1 counts an entity as correct only if both the span and the type match.</li></ul>
+    </section>
+
+    <!-- 18 -->
+    <section class="block" id="syntax">
+      <h2><span class="num">18</span> Grammar Structure: Dependency and Constituency Parsing</h2>
+<div class="callout life"><strong>Picture:</strong> Drawing a family tree for a sentence: who is doing what to whom. In 'The girl reads a red book', 'reads' is the head; 'girl' is its subject and 'book' its object; 'red' describes 'book'.</div><div class="diagram-wrap"><svg viewBox="0 0 690 270" style="width:100%;max-width:690px" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrSc3_arrow" markerWidth="10" markerHeight="10" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8" fill="none" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc3_tri" markerWidth="12" markerHeight="12" refX="11" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc3_dia" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--accent)" stroke="var(--accent)"/></marker><marker id="arrSc3_diah" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker></defs><line x1="314" y1="70" x2="226" y2="110" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc3_arrow)"/><text class="edge-label" x="270" y="85" text-anchor="middle">nsubj</text><line x1="420" y1="70" x2="500" y2="110" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc3_arrow)"/><text class="edge-label" x="460" y="85" text-anchor="middle">obj</text><line x1="142" y1="160" x2="96" y2="200" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc3_arrow)"/><text class="edge-label" x="119" y="175" text-anchor="middle">det</text><line x1="527" y1="160" x2="491" y2="200" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc3_arrow)"/><text class="edge-label" x="509" y="175" text-anchor="middle">det</text><line x1="567" y1="160" x2="594" y2="200" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc3_arrow)"/><text class="edge-label" x="581" y="175" text-anchor="middle">amod</text><rect class="box-final" x="300" y="20" width="140" height="50" rx="9"/><text x="370" y="42" text-anchor="middle" font-size="12">reads</text><text x="370" y="56" text-anchor="middle" font-size="10" class="edge-label">VERB (root)</text><rect class="box-hl" x="110" y="110" width="120" height="50" rx="9"/><text x="170" y="132" text-anchor="middle" font-size="12">girl</text><text x="170" y="146" text-anchor="middle" font-size="10" class="edge-label">NOUN</text><rect class="box-hl" x="490" y="110" width="120" height="50" rx="9"/><text x="550" y="132" text-anchor="middle" font-size="12">book</text><text x="550" y="146" text-anchor="middle" font-size="10" class="edge-label">NOUN</text><rect class="box" x="20" y="200" width="100" height="46" rx="9"/><text x="70" y="220" text-anchor="middle" font-size="12">The</text><text x="70" y="234" text-anchor="middle" font-size="10" class="edge-label">DET</text><rect class="box" x="420" y="200" width="100" height="46" rx="9"/><text x="470" y="220" text-anchor="middle" font-size="12">a</text><text x="470" y="234" text-anchor="middle" font-size="10" class="edge-label">DET</text><rect class="box" x="560" y="200" width="100" height="46" rx="9"/><text x="610" y="220" text-anchor="middle" font-size="12">red</text><text x="610" y="234" text-anchor="middle" font-size="10" class="edge-label">ADJ</text></svg><div class="diagram-caption">Fig S3 — Dependency tree for 'The girl reads a red book' (arrows go from head to dependent).</div></div><h3>Good to know</h3><ul><li>Dependency parsing (Universal Dependencies labels: nsubj, obj, amod ...) is used for information extraction: 'who bought what'.</li><li>Constituency parsing groups words into phrases (noun phrase 'a red book', verb phrase 'reads a red book').</li><li>Run it with spaCy (<code>token.dep_</code>, <code>token.head</code>, see the template above). Large language models now do much of this implicitly.</li></ul>
+    </section>
+
+    <!-- 19 -->
+    <section class="block" id="word-vectors">
+      <h2><span class="num">19</span> Word Vectors: Meaning from Neighbours</h2>
+<div class="callout life"><strong>Picture:</strong> 'Tell me who your friends are, and I will tell you who you are.' Words that appear near the same words (cat/dog both near 'sat', 'ate', 'the') get similar number-lists (vectors).</div><details class="deepdive" open><summary>Co-occurrence → PPMI → SVD vectors on a tiny corpus (run for real)</summary><pre><code># Word vectors from counting: co-occurrence -&gt; PPMI -&gt; SVD (the idea behind word2vec/GloVe, at toy scale)
+import numpy as np
+from collections import Counter
+from nlpdata import STORY, REVIEWS
+text = (STORY + &quot; &quot; + &quot; &quot;.join(t for t, _ in REVIEWS)).lower().replace(&quot;.&quot;, &quot; &quot;).replace(&quot;,&quot;, &quot; &quot;)
+words = text.split()
+vocab = [w for w, c in Counter(words).items() if c &gt;= 3]
+idx = {w: i for i, w in enumerate(vocab)}
+C = np.zeros((len(vocab), len(vocab)))
+for i, w in enumerate(words):
+    if w not in idx: continue
+    for j in range(max(0, i - 2), min(len(words), i + 3)):
+        if j != i and words[j] in idx:
+            C[idx[w], idx[words[j]]] += 1
+total = C.sum(); pw = C.sum(1, keepdims=True) / total; pc = C.sum(0, keepdims=True) / total
+with np.errstate(divide=&quot;ignore&quot;, invalid=&quot;ignore&quot;):
+    ppmi = np.maximum(np.log((C / total) / (pw * pc)), 0)
+ppmi = np.nan_to_num(ppmi)
+U, S_, _ = np.linalg.svd(ppmi)
+E = U[:, :20] * S_[:20]
+E /= np.linalg.norm(E, axis=1, keepdims=True) + 1e-9
+print(&quot;vocabulary size:&quot;, len(vocab), &quot;| vector size: 20&quot;)
+for w in [&quot;cat&quot;, &quot;dog&quot;, &quot;sat&quot;, &quot;mat&quot;, &quot;the&quot;]:
+    sims = E @ E[idx[w]]
+    near = [vocab[k] for k in np.argsort(-sims)[1:6]]
+    print(f&quot;nearest to {w!r:6}: {near}&quot;)
+print(&quot;note: tiny corpus -&gt; neighbours mix meaning and grammar; real embeddings need millions of words&quot;)
+
+# ----- Output (real run) -----
+# vocabulary size: 42 | vector size: 20
+# nearest to &#x27;cat&#x27; : [&#x27;ate&#x27;, &#x27;story&#x27;, &#x27;dog&#x27;, &#x27;the&#x27;, &#x27;are&#x27;]
+# nearest to &#x27;dog&#x27; : [&#x27;to&#x27;, &#x27;ran&#x27;, &#x27;mat&#x27;, &#x27;on&#x27;, &#x27;cat&#x27;]
+# nearest to &#x27;sat&#x27; : [&#x27;log&#x27;, &#x27;slept&#x27;, &#x27;mat&#x27;, &#x27;with&#x27;, &#x27;ran&#x27;]
+# nearest to &#x27;mat&#x27; : [&#x27;ran&#x27;, &#x27;log&#x27;, &#x27;sat&#x27;, &#x27;slept&#x27;, &#x27;saw&#x27;]
+# nearest to &#x27;the&#x27; : [&#x27;cat&#x27;, &#x27;on&#x27;, &#x27;to&#x27;, &#x27;in&#x27;, &#x27;app&#x27;]
+# note: tiny corpus -&gt; neighbours mix meaning and grammar; real embeddings need millions of words</code></pre></details><table><tr><th>Method</th><th>Year</th><th>Idea</th></tr><tr><td>LSA (SVD of counts)</td><td>1990</td><td>compress a word-document or word-word count table</td></tr><tr><td>word2vec (skip-gram, CBOW)</td><td>2013</td><td>train a tiny network to predict neighbours; famous 'king − man + woman ≈ queen'</td></tr><tr><td>GloVe</td><td>2014</td><td>factorise global co-occurrence statistics</td></tr><tr><td>fastText</td><td>2016</td><td>vectors for character n-grams too, so typos and new words get vectors</td></tr><tr><td>Contextual (ELMo, BERT ...)</td><td>2018+</td><td>a different vector for each use of a word (<a href="#contextual-embeddings">see below</a>)</td></tr></table><h3>Good to know</h3><ul><li>Honest result: with only 42 words, the neighbours mix meaning and grammar ('cat' near 'ate', 'story'). Real word vectors are trained on billions of words.</li><li>Static vectors give 'bank' one vector for both river and money. That limitation led to contextual embeddings.</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part D — Neural NLP: From RNNs to Transformers</h2></div>
+
+    <!-- 20 -->
+    <section class="block" id="neural-basics">
+      <h2><span class="num">20</span> Neural Networks Meet Text</h2>
+<div class="callout life"><strong>Picture:</strong> Teaching a child with flash cards instead of a rule book: show many examples, correct the mistakes a little each time, and the child slowly builds their own rules.</div><table><tr><th>Building block</th><th>What it does for text</th></tr><tr><td>Embedding layer</td><td>a lookup table: token id → vector (learned during training)</td></tr><tr><td>Recurrent layer (RNN/LSTM/GRU)</td><td>reads tokens one by one, carrying a memory</td></tr><tr><td>Convolution over text (1-D CNN)</td><td>detects short phrases like 'not good' anywhere in the sentence</td></tr><tr><td>Attention</td><td>lets each token look at every other token and pick what matters</td></tr><tr><td>Softmax output</td><td>turns scores into probabilities over labels or next tokens</td></tr></table><h3>Good to know</h3><ul><li>Training = show examples, measure the error with a loss (cross-entropy), adjust weights with gradient descent. The details are in <a href="deep-learning.html">Deep Learning</a> and <a href="tensorflow-pytorch.html">TensorFlow &amp; PyTorch</a>.</li><li>Neural models need much more data than counting methods, unless they start from a model that was <strong>pre-trained</strong> on lots of text.</li></ul>
+    </section>
+
+    <!-- 21 -->
+    <section class="block" id="rnn-lstm">
+      <h2><span class="num">21</span> RNNs and LSTMs (and Why Small Data Beats Them)</h2>
+<div class="callout life"><strong>Picture:</strong> Reading a story one word at a time while keeping a small notebook of what happened so far. An LSTM has a smarter notebook with 'forget', 'write' and 'read' gates, so important facts survive longer.</div><details class="deepdive" open><summary>An LSTM vs logistic regression on the same 60 reviews (run for real)</summary><pre><code># An LSTM classifier in PyTorch vs logistic regression on the same 60 reviews (5-fold, same splits)
+import numpy as np, torch, torch.nn as nn, re
+from sklearn.model_selection import StratifiedKFold
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from nlpdata import REVIEWS
+torch.manual_seed(0); np.random.seed(0)
+texts = [t.lower() for t, _ in REVIEWS]; y = np.array([l for _, l in REVIEWS])
+tok = lambda s: re.findall(r&quot;[a-z&#x27;]+&quot;, s)
+class LSTMClf(nn.Module):
+    def __init__(self, V, d=32):
+        super().__init__(); self.emb = nn.Embedding(V, d, padding_idx=0); self.lstm = nn.LSTM(d, d, batch_first=True); self.out = nn.Linear(d, 2)
+    def forward(self, x):
+        h, _ = self.lstm(self.emb(x)); lengths = (x != 0).sum(1) - 1
+        return self.out(h[torch.arange(len(x)), lengths])            # last real token
+def encode(seqs, vocab, L=14):
+    X = np.zeros((len(seqs), L), dtype=np.int64)
+    for i, s in enumerate(seqs):
+        ids = [vocab.get(w, 1) for w in tok(s)][:L]; X[i, :len(ids)] = ids
+    return torch.tensor(X)
+acc_lstm, acc_lr = [], []
+for tr, te in StratifiedKFold(5, shuffle=True, random_state=0).split(texts, y):
+    vocab = {&quot;&lt;pad&gt;&quot;: 0, &quot;&lt;unk&gt;&quot;: 1}
+    for i in tr:
+        for w in tok(texts[i]): vocab.setdefault(w, len(vocab))
+    Xtr, Xte = encode([texts[i] for i in tr], vocab), encode([texts[i] for i in te], vocab)
+    m = LSTMClf(len(vocab)); opt = torch.optim.Adam(m.parameters(), lr=0.01)
+    for epoch in range(60):
+        opt.zero_grad(); loss = nn.functional.cross_entropy(m(Xtr), torch.tensor(y[tr])); loss.backward(); opt.step()
+    acc_lstm.append(float((m(Xte).argmax(1).numpy() == y[te]).mean()))
+    vec = TfidfVectorizer().fit([texts[i] for i in tr])
+    lr = LogisticRegression(max_iter=1000).fit(vec.transform([texts[i] for i in tr]), y[tr])
+    acc_lr.append(float((lr.predict(vec.transform([texts[i] for i in te])) == y[te]).mean()))
+print(&quot;fold accuracies LSTM  :&quot;, [round(a, 2) for a in acc_lstm], &quot;mean&quot;, round(float(np.mean(acc_lstm)), 3))
+print(&quot;fold accuracies LogReg:&quot;, [round(a, 2) for a in acc_lr], &quot;mean&quot;, round(float(np.mean(acc_lr)), 3))
+print(&quot;LSTM parameters:&quot;, sum(p.numel() for p in m.parameters()))
+
+# ----- Output (real run) -----
+# fold accuracies LSTM  : [0.33, 0.17, 0.33, 0.42, 0.42] mean 0.333
+# fold accuracies LogReg: [0.25, 0.17, 0.17, 0.42, 0.5] mean 0.3
+# LSTM parameters: 14530</code></pre></details><h3>Good to know</h3><ul><li>Honest result: the LSTM (14,530 weights) scored 0.33 and logistic regression 0.30 on these 60 reviews. Both fail for the same reason as before (unseen sentiment words); the bigger model does not fix missing knowledge.</li><li>RNNs process tokens one after another, so they are slow to train on long text and forget far-away words: the two problems the Transformer solved.</li><li>Bidirectional LSTMs (reading left-to-right and right-to-left) were the state of the art for tagging and NER before Transformers.</li></ul>
+    </section>
+
+    <!-- 22 -->
+    <section class="block" id="seq2seq">
+      <h2><span class="num">22</span> Sequence to Sequence and the Idea of Attention</h2>
+<div class="callout life"><strong>Picture:</strong> A translator who first reads the whole Hindi sentence, then writes English word by word. Without attention, they must squeeze the whole sentence into one memory. With attention, while writing each English word they can glance back at the Hindi words that matter most.</div><div class="diagram-wrap"><svg viewBox="0 0 790 224" style="width:100%;max-width:790px" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrSc4_arrow" markerWidth="10" markerHeight="10" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8" fill="none" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc4_tri" markerWidth="12" markerHeight="12" refX="11" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc4_dia" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--accent)" stroke="var(--accent)"/></marker><marker id="arrSc4_diah" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker></defs><line x1="90" y1="160" x2="145" y2="116" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc4_arrow)"/><line x1="176" y1="160" x2="178" y2="116" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc4_arrow)"/><line x1="262" y1="160" x2="212" y2="116" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc4_arrow)"/><line x1="280" y1="88" x2="360" y2="88" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc4_arrow)"/><text class="edge-label" x="320" y="83" text-anchor="middle">all states</text><line x1="530" y1="88" x2="570" y2="88" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc4_arrow)"/><text class="edge-label" x="550" y="83" text-anchor="middle">context</text><rect class="box" x="20" y="160" width="90" height="40" rx="9"/><text x="65" y="184" text-anchor="middle" font-size="12">मेरा</text><rect class="box" x="130" y="160" width="90" height="40" rx="9"/><text x="175" y="184" text-anchor="middle" font-size="12">ऑर्डर</text><rect class="box" x="240" y="160" width="90" height="40" rx="9"/><text x="285" y="184" text-anchor="middle" font-size="12">कहाँ है</text><rect class="box-hl" x="80" y="60" width="200" height="56" rx="9"/><text x="180" y="85" text-anchor="middle" font-size="12">Encoder</text><text x="180" y="99" text-anchor="middle" font-size="10" class="edge-label">reads the whole input</text><rect class="box-final" x="360" y="60" width="170" height="56" rx="9"/><text x="445" y="85" text-anchor="middle" font-size="12">Attention</text><text x="445" y="99" text-anchor="middle" font-size="10" class="edge-label">weights over input</text><rect class="box-hl" x="570" y="60" width="200" height="56" rx="9"/><text x="670" y="85" text-anchor="middle" font-size="12">Decoder</text><text x="670" y="99" text-anchor="middle" font-size="10" class="edge-label">writes: Where is my order</text></svg><div class="diagram-caption">Fig S4 — Encoder-decoder with attention: the decoder looks back at all encoder states.</div></div><h3>Good to know</h3><ul><li>Attention was first added to RNN translators (2014-2015). The Transformer (2017) kept attention and threw the recurrence away.</li></ul>
+    </section>
+
+    <!-- 23 -->
+    <section class="block" id="attention-math">
+      <h2><span class="num">23</span> Attention, Step by Step (Scaled Dot-Product)</h2>
+<div class="callout life"><strong>Picture:</strong> A classroom where every student (token) asks a question (<strong>query</strong>), every student wears a name badge (<strong>key</strong>), and holds a note (<strong>value</strong>). Each student listens most to classmates whose badge matches their question, and mixes their notes.</div><details class="deepdive" open><summary>Attention weights from scratch in NumPy (run for real)</summary><pre><code># Scaled dot-product attention from scratch (NumPy), with a causal mask
+import numpy as np
+np.set_printoptions(precision=2, suppress=True)
+words = [&quot;the&quot;, &quot;cat&quot;, &quot;sat&quot;, &quot;down&quot;]
+rng = np.random.default_rng(0)
+X = rng.normal(size=(4, 8))                               # 4 tokens, 8-dim embeddings
+Wq, Wk, Wv = (rng.normal(size=(8, 8)) / np.sqrt(8) for _ in range(3))
+Q, K, V = X @ Wq, X @ Wk, X @ Wv
+def softmax(z): z = z - z.max(-1, keepdims=True); e = np.exp(z); return e / e.sum(-1, keepdims=True)
+scores = Q @ K.T / np.sqrt(K.shape[1])
+A = softmax(scores)
+print(&quot;attention weights (row = word looking, column = word looked at):&quot;)
+print(&quot;        &quot; + &quot;  &quot;.join(f&quot;{w:&gt;5}&quot; for w in words))
+for w, row in zip(words, A): print(f&quot;{w:&gt;6}  &quot; + &quot;  &quot;.join(f&quot;{v:5.2f}&quot; for v in row))
+mask = np.triu(np.ones((4, 4)), 1) * -1e9                 # GPT-style: no peeking at future words
+Ac = softmax(scores + mask)
+print(&quot;with causal mask:&quot;); print(Ac)
+out = A @ V
+print(&quot;output shape:&quot;, out.shape, &quot;| each row sums to 1:&quot;, np.allclose(A.sum(1), 1))
+
+# ----- Output (real run) -----
+# attention weights (row = word looking, column = word looked at):
+#           the    cat    sat   down
+#    the   0.34   0.13   0.33   0.20
+#    cat   0.78   0.00   0.05   0.17
+#    sat   0.25   0.28   0.29   0.18
+#   down   0.22   0.28   0.21   0.29
+# with causal mask:
+# [[1.   0.   0.   0.  ]
+#  [1.   0.   0.   0.  ]
+#  [0.31 0.34 0.35 0.  ]
+#  [0.22 0.28 0.21 0.29]]
+# output shape: (4, 8) | each row sums to 1: True</code></pre></details><table><tr><th>Symbol</th><th>Meaning</th></tr><tr><td>Q = X·Wq, K = X·Wk, V = X·Wv</td><td>three learned views of the same token vectors</td></tr><tr><td>scores = Q·Kᵀ / √d</td><td>how well each query matches each key (divide by √d so softmax does not saturate)</td></tr><tr><td>softmax(scores)</td><td>each row becomes weights that sum to 1</td></tr><tr><td>output = weights · V</td><td>a weighted mix of values for every token</td></tr><tr><td>causal mask</td><td>GPT-style models block future tokens (−∞ before softmax)</td></tr><tr><td>multi-head</td><td>several attention 'heads' in parallel, each can learn a different relation</td></tr></table><h3>Good to know</h3><ul><li>Cost grows with the square of the sequence length (every token looks at every token): the reason long context is expensive and why tricks like FlashAttention, sliding windows and KV caches exist.</li></ul>
+    </section>
+
+    <!-- 24 -->
+    <section class="block" id="transformer">
+      <h2><span class="num">24</span> The Transformer Architecture and Positional Encoding</h2>
+<div class="callout life"><strong>Picture:</strong> A factory line repeated many times: in each station, tokens first talk to each other (attention), then each thinks alone (feed-forward), with a shortcut belt (residual connection) so nothing important is lost.</div><div class="diagram-wrap"><svg viewBox="0 0 780 244" style="width:100%;max-width:780px" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrSc5_arrow" markerWidth="10" markerHeight="10" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8" fill="none" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc5_tri" markerWidth="12" markerHeight="12" refX="11" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker><marker id="arrSc5_dia" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--accent)" stroke="var(--accent)"/></marker><marker id="arrSc5_diah" markerWidth="16" markerHeight="12" refX="15" refY="5" orient="auto-start-reverse"><path d="M1,5 L8,0 L15,5 L8,10 Z" fill="var(--bg-soft)" stroke="var(--accent)" stroke-width="1.5"/></marker></defs><line x1="180" y1="98" x2="210" y2="98" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc5_arrow)"/><line x1="310" y1="98" x2="340" y2="98" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc5_arrow)"/><line x1="470" y1="98" x2="500" y2="98" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc5_arrow)"/><text class="edge-label" x="485" y="93" text-anchor="middle">+ x</text><line x1="600" y1="98" x2="630" y2="98" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrSc5_arrow)"/><line x1="630" y1="122" x2="512" y2="170" stroke="var(--accent)" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#arrSc5_arrow)"/><text class="edge-label" x="571" y="141" text-anchor="middle">+ x</text><rect class="box" x="20" y="70" width="160" height="56" rx="9"/><text x="100" y="95" text-anchor="middle" font-size="12">Token embeddings</text><text x="100" y="109" text-anchor="middle" font-size="10" class="edge-label">+ positions</text><rect class="box-hl" x="210" y="70" width="100" height="56" rx="9"/><text x="260" y="102" text-anchor="middle" font-size="12">LayerNorm</text><rect class="box-final" x="340" y="70" width="130" height="56" rx="9"/><text x="405" y="95" text-anchor="middle" font-size="12">Multi-head</text><text x="405" y="109" text-anchor="middle" font-size="10" class="edge-label">self-attention</text><rect class="box-hl" x="500" y="70" width="100" height="56" rx="9"/><text x="550" y="102" text-anchor="middle" font-size="12">LayerNorm</text><rect class="box-final" x="630" y="70" width="120" height="56" rx="9"/><text x="690" y="95" text-anchor="middle" font-size="12">Feed-forward</text><text x="690" y="109" text-anchor="middle" font-size="10" class="edge-label">(MLP)</text><rect class="box" x="300" y="170" width="300" height="50" rx="9"/><text x="450" y="192" text-anchor="middle" font-size="12">residual connections add each</text><text x="450" y="206" text-anchor="middle" font-size="10" class="edge-label">block's input to its output</text></svg><div class="diagram-caption">Fig S5 — One Transformer block (repeated N times).</div></div><details class="deepdive" open><summary>Sinusoidal positional encodings (run for real)</summary><pre><code># Sinusoidal positional encodings (from &#x27;Attention Is All You Need&#x27;): nearby positions look alike
+import numpy as np
+def pe(n, d):
+    P = np.zeros((n, d)); pos = np.arange(n)[:, None]; i = np.arange(0, d, 2)
+    P[:, 0::2] = np.sin(pos / 10000 ** (i / d)); P[:, 1::2] = np.cos(pos / 10000 ** (i / d)); return P
+P = pe(50, 64)
+print(&quot;first 6 numbers of position 0:&quot;, P[0, :6].round(2))
+print(&quot;first 6 numbers of position 1:&quot;, P[1, :6].round(2))
+for gap in [1, 2, 5, 10, 25]:
+    sims = [np.dot(P[k], P[k + gap]) / 32 for k in range(0, 50 - gap)]
+    print(f&quot;average similarity of positions {gap:2} apart: {np.mean(sims):.3f}&quot;)
+
+# ----- Output (real run) -----
+# first 6 numbers of position 0: [0. 1. 0. 1. 0. 1.]
+# first 6 numbers of position 1: [0.84 0.54 0.68 0.73 0.53 0.85]
+# average similarity of positions  1 apart: 0.966
+# average similarity of positions  2 apart: 0.884
+# average similarity of positions  5 apart: 0.734
+# average similarity of positions 10 apart: 0.658
+# average similarity of positions 25 apart: 0.629</code></pre></details><h3>Good to know</h3><ul><li>Attention alone does not know word order ('dog bites man' = 'man bites dog'), so position information is added: fixed sinusoids (original paper), learned positions (BERT, GPT-2) or rotary positions (RoPE) in most recent LLMs.</li><li>The output above shows nearby positions have similar codes (0.97 for 1 apart, 0.63 for 25 apart), so the model can learn 'nearby' easily.</li><li>Encoder-only (BERT) = understanding; decoder-only (GPT) = generation; encoder-decoder (T5, original Transformer) = translation/summarization.</li></ul>
+    </section>
+
+    <!-- 25 -->
+    <section class="block" id="tiny-gpt">
+      <h2><span class="num">25</span> Build a Tiny GPT and Train It on a Laptop</h2>
+<div class="callout life"><strong>Picture:</strong> Teaching a parrot a nursery rhyme by letting it guess the next letter again and again and correcting it. After enough practice it can 'sing' new lines that sound like the rhyme.</div><details class="deepdive" open><summary>A 2-layer character-level Transformer, 105,877 parameters (run for real)</summary><pre><code># A tiny GPT (character-level Transformer decoder) trained from scratch on a 1,500-character story (CPU)
+import torch, torch.nn as nn, time
+from nlpdata import STORY
+torch.manual_seed(0)
+chars = sorted(set(STORY)); stoi = {c: i for i, c in enumerate(chars)}
+data = torch.tensor([stoi[c] for c in STORY])
+split = int(0.9 * len(data)); train, val = data[:split], data[split:]
+B, T, D, H, L = 32, 48, 64, 4, 2
+def batch(src):
+    ix = torch.randint(len(src) - T - 1, (B,))
+    return torch.stack([src[i:i + T] for i in ix]), torch.stack([src[i + 1:i + T + 1] for i in ix])
+class Block(nn.Module):
+    def __init__(self):
+        super().__init__(); self.ln1, self.ln2 = nn.LayerNorm(D), nn.LayerNorm(D)
+        self.att = nn.MultiheadAttention(D, H, batch_first=True); self.ff = nn.Sequential(nn.Linear(D, 4 * D), nn.GELU(), nn.Linear(4 * D, D))
+    def forward(self, x):
+        n = x.size(1); mask = torch.triu(torch.ones(n, n, dtype=torch.bool), 1)
+        h = self.ln1(x); x = x + self.att(h, h, h, attn_mask=mask, need_weights=False)[0]
+        return x + self.ff(self.ln2(x))
+class TinyGPT(nn.Module):
+    def __init__(self):
+        super().__init__(); self.tok = nn.Embedding(len(chars), D); self.pos = nn.Embedding(T, D)
+        self.blocks = nn.Sequential(*[Block() for _ in range(L)]); self.ln = nn.LayerNorm(D); self.head = nn.Linear(D, len(chars))
+    def forward(self, idx):
+        x = self.tok(idx) + self.pos(torch.arange(idx.size(1))); return self.head(self.ln(self.blocks(x)))
+m = TinyGPT(); opt = torch.optim.AdamW(m.parameters(), lr=3e-3)
+print(&quot;characters in vocabulary:&quot;, len(chars), &quot;| parameters:&quot;, sum(p.numel() for p in m.parameters()))
+t0 = time.time()
+for step in range(1201):
+    xb, yb = batch(train); loss = nn.functional.cross_entropy(m(xb).view(-1, len(chars)), yb.view(-1))
+    opt.zero_grad(); loss.backward(); opt.step()
+    if step % 300 == 0:
+        with torch.no_grad():
+            xv, yv = batch(val); vl = nn.functional.cross_entropy(m(xv).view(-1, len(chars)), yv.view(-1))
+        print(f&quot;step {step:4d}  train loss {loss.item():.3f}  val loss {vl.item():.3f}&quot;)
+print(f&quot;training time: {time.time() - t0:.0f} s (one laptop CPU)&quot;)
+@torch.no_grad()
+def generate(prompt, n=80, temp=1.0):
+    idx = torch.tensor([[stoi[c] for c in prompt]])
+    for _ in range(n):
+        logits = m(idx[:, -T:])[:, -1] / temp
+        idx = torch.cat([idx, torch.multinomial(torch.softmax(logits, -1), 1)], 1)
+    return &quot;&quot;.join(chars[i] for i in idx[0])
+for temp in [0.5, 1.0, 1.5]:
+    torch.manual_seed(1); print(f&quot;temperature {temp}: {generate(&#x27;the cat&#x27;, temp=temp)!r}&quot;)
+
+# ----- Output (real run) -----
+# characters in vocabulary: 21 | parameters: 105877
+# step    0  train loss 3.264  val loss 2.889
+# step  300  train loss 0.114  val loss 0.116
+# step  600  train loss 0.091  val loss 0.085
+# step  900  train loss 0.079  val loss 0.087
+# step 1200  train loss 0.101  val loss 0.102
+# training time: 16 s (one laptop CPU)
+# temperature 0.5: &#x27;the cat slept on the mat. the dog slept on the log. the cat slept on the mat. the dog s&#x27;
+# temperature 1.0: &#x27;the cat sat on the mat. the dog sat on the log. the cat saw the dog. the dog saw the ca&#x27;
+# temperature 1.5: &#x27;the cat sat on the mat. the doge the slept. t on the cat saw mhe dog. the dog slept on &#x27;</code></pre></details><div class="diagram-wrap"><svg viewBox="0 0 640 300" style="width:100%;max-width:640px" xmlns="http://www.w3.org/2000/svg"><line x1="60" y1="240" x2="620" y2="240" stroke="var(--card-border)"/><text x="54" y="244" text-anchor="end" font-size="11">0</text><line x1="60" y1="185" x2="620" y2="185" stroke="var(--card-border)"/><text x="54" y="189" text-anchor="end" font-size="11">1.25</text><line x1="60" y1="130" x2="620" y2="130" stroke="var(--card-border)"/><text x="54" y="134" text-anchor="end" font-size="11">2.5</text><line x1="60" y1="75" x2="620" y2="75" stroke="var(--card-border)"/><text x="54" y="79" text-anchor="end" font-size="11">3.75</text><line x1="60" y1="20" x2="620" y2="20" stroke="var(--card-border)"/><text x="54" y="24" text-anchor="end" font-size="11">5</text><text x="60" y="258" text-anchor="middle" font-size="11">0</text><text x="200" y="258" text-anchor="middle" font-size="11">300</text><text x="340" y="258" text-anchor="middle" font-size="11">600</text><text x="480" y="258" text-anchor="middle" font-size="11">900</text><text x="620" y="258" text-anchor="middle" font-size="11">1200</text><text x="340" y="288" text-anchor="middle" font-size="12" class="edge-label">training step</text><text transform="rotate(-90)" x="-130" y="16" text-anchor="middle" font-size="12" class="edge-label">cross-entropy</text><polyline points="60.0,96.4 200.0,235.0 340.0,236.0 480.0,236.5 620.0,235.6" fill="none" stroke="var(--accent)" stroke-width="2.5"/><circle cx="60.0" cy="96.4" r="3.5" fill="var(--accent)"/><circle cx="200.0" cy="235.0" r="3.5" fill="var(--accent)"/><circle cx="340.0" cy="236.0" r="3.5" fill="var(--accent)"/><circle cx="480.0" cy="236.5" r="3.5" fill="var(--accent)"/><circle cx="620.0" cy="235.6" r="3.5" fill="var(--accent)"/><text x="70" y="32" font-size="12" fill="var(--accent)" style="fill:var(--accent)">● train loss</text><polyline points="60.0,112.9 200.0,234.9 340.0,236.3 480.0,236.2 620.0,235.5" fill="none" stroke="var(--accent-2)" stroke-width="2.5"/><circle cx="60.0" cy="112.9" r="3.5" fill="var(--accent-2)"/><circle cx="200.0" cy="234.9" r="3.5" fill="var(--accent-2)"/><circle cx="340.0" cy="236.3" r="3.5" fill="var(--accent-2)"/><circle cx="480.0" cy="236.2" r="3.5" fill="var(--accent-2)"/><circle cx="620.0" cy="235.5" r="3.5" fill="var(--accent-2)"/><text x="256" y="32" font-size="12" fill="var(--accent-2)" style="fill:var(--accent-2)">● validation loss</text></svg><div class="diagram-caption">Fig S6 — Tiny GPT training: loss per character (real run; lower = better)</div></div><h3>Good to know</h3><ul><li>Temperature 0.5 repeats safe patterns; 1.0 reproduces the story; 1.5 starts inventing broken words ('doge', 'mhe'): randomness is a dial.</li><li>Honest caveat: the story is the same 6 short paragraphs repeated, so the 'validation' text is not really new. The model memorised a tiny world. Real GPTs train on trillions of tokens with the same next-token objective.</li><li>Every part of a real LLM is here in small form: tokens, embeddings, positions, masked self-attention, feed-forward layers, cross-entropy loss, sampling.</li></ul>
+    </section>
+
+    <!-- 26 -->
+    <section class="block" id="decoding">
+      <h2><span class="num">26</span> How Text Is Generated: Greedy, Temperature, Top-k, Top-p</h2>
+<div class="callout life"><strong>Picture:</strong> Choosing a drink when the waiter lists probabilities: always the most popular (greedy), sometimes a surprise (sampling), only from the top 3 (top-k), or from the smallest group that covers 90% of likely choices (top-p).</div><details class="deepdive" open><summary>Decoding strategies on one probability table (run for real)</summary><pre><code># Decoding strategies on one next-word probability table: greedy, temperature, top-k, top-p (nucleus)
+import numpy as np
+rng = np.random.default_rng(0)
+words = np.array([&quot;tea&quot;, &quot;coffee&quot;, &quot;water&quot;, &quot;juice&quot;, &quot;milk&quot;, &quot;soda&quot;, &quot;lassi&quot;, &quot;rocket&quot;])
+logits = np.array([3.0, 2.6, 2.0, 1.2, 1.0, 0.3, 0.2, -2.0])        # model&#x27;s scores after &#x27;I would like a cup of&#x27;
+def probs(l, t=1.0): z = np.exp((l - l.max()) / t); return z / z.sum()
+print(&quot;greedy:&quot;, words[np.argmax(logits)])
+for t in [0.5, 1.0, 2.0]:
+    p = probs(logits, t); print(f&quot;temperature {t}: &quot; + &quot;, &quot;.join(f&quot;{w}={v:.2f}&quot; for w, v in zip(words, p)))
+def sample(p, n=1000): c = rng.choice(len(p), n, p=p); return {str(words[i]): int((c == i).sum()) for i in np.argsort(-p)}
+p = probs(logits)
+k = 3; pk = np.where(np.argsort(np.argsort(-p)) &lt; k, p, 0); pk /= pk.sum()
+order = np.argsort(-p); cum = np.cumsum(p[order]); keep = order[: np.searchsorted(cum, 0.9) + 1]
+pp = np.zeros_like(p); pp[keep] = p[keep]; pp /= pp.sum()
+print(&quot;1000 samples, plain     :&quot;, sample(p))
+print(&quot;1000 samples, top-k=3   :&quot;, sample(pk))
+print(&quot;1000 samples, top-p=0.9 :&quot;, sample(pp), &quot;| kept words:&quot;, [str(w) for w in words[keep]])
+
+# ----- Output (real run) -----
+# greedy: tea
+# temperature 0.5: tea=0.61, coffee=0.27, water=0.08, juice=0.02, milk=0.01, soda=0.00, lassi=0.00, rocket=0.00
+# temperature 1.0: tea=0.40, coffee=0.27, water=0.15, juice=0.07, milk=0.05, soda=0.03, lassi=0.02, rocket=0.00
+# temperature 2.0: tea=0.26, coffee=0.22, water=0.16, juice=0.11, milk=0.10, soda=0.07, lassi=0.07, rocket=0.02
+# 1000 samples, plain     : {&#x27;tea&#x27;: 376, &#x27;coffee&#x27;: 279, &#x27;water&#x27;: 166, &#x27;juice&#x27;: 74, &#x27;milk&#x27;: 56, &#x27;soda&#x27;: 20, &#x27;lassi&#x27;: 28, &#x27;rocket&#x27;: 1}
+# 1000 samples, top-k=3   : {&#x27;tea&#x27;: 521, &#x27;coffee&#x27;: 298, &#x27;water&#x27;: 181, &#x27;juice&#x27;: 0, &#x27;milk&#x27;: 0, &#x27;soda&#x27;: 0, &#x27;lassi&#x27;: 0, &#x27;rocket&#x27;: 0}
+# 1000 samples, top-p=0.9 : {&#x27;tea&#x27;: 436, &#x27;coffee&#x27;: 290, &#x27;water&#x27;: 150, &#x27;juice&#x27;: 75, &#x27;milk&#x27;: 49, &#x27;soda&#x27;: 0, &#x27;lassi&#x27;: 0, &#x27;rocket&#x27;: 0} | kept words: [&#x27;tea&#x27;, &#x27;coffee&#x27;, &#x27;water&#x27;, &#x27;juice&#x27;, &#x27;milk&#x27;]</code></pre></details><h3>Good to know</h3><ul><li>Greedy and low temperature are good for factual answers and code; higher temperature for creative writing.</li><li>Top-k / top-p cut off the long tail ('rocket' never appears), which removes silly words while keeping variety.</li><li>Note for Claude models: Anthropic's newest Messages API version rejects temperature/top_p/top_k (as stated in Anthropic's API notes, Nov 2026), so this site's Claude samples steer output with the prompt and the effort setting instead. Many other model APIs and local models still expose these knobs.</li></ul>
+    </section>
+
+    <!-- 27 -->
+    <section class="block" id="model-families">
+      <h2><span class="num">27</span> BERT, GPT and T5: Three Families</h2>
+<div class="callout life"><strong>Picture:</strong> Three kinds of students: one who fills in blanks in a sentence (BERT), one who continues a story (GPT), and one who rewrites any text into other text (T5).</div><table><tr><th>Family</th><th>Architecture</th><th>Pre-training game</th><th>Best at</th><th>Examples</th></tr><tr><td>BERT-style</td><td>encoder only</td><td>masked language modelling: guess hidden words</td><td>classification, NER, search embeddings</td><td>BERT, RoBERTa, DeBERTa, MiniLM, multilingual e5</td></tr><tr><td>GPT-style</td><td>decoder only</td><td>next-token prediction</td><td>generation, chat, reasoning, most tasks via prompting</td><td>GPT series, Claude, Llama, Mistral, Gemma (as publicly described)</td></tr><tr><td>T5-style</td><td>encoder-decoder</td><td>span corruption: rebuild missing pieces</td><td>translation, summarization</td><td>T5, mT5, BART, NLLB</td></tr></table><h3>Good to know</h3><ul><li>After pre-training, models are adapted: <strong>fine-tuning</strong> (update weights on labelled data), <strong>instruction tuning</strong> (learn to follow requests), and preference training (RLHF and similar) for helpful, safe answers. See <a href="llm.html">LLMs</a>.</li></ul>
+    </section>
+
+    <!-- 28 -->
+    <section class="block" id="contextual-embeddings">
+      <h2><span class="num">28</span> Contextual Embeddings: One Word, Many Meanings</h2>
+<div class="callout life"><strong>Picture:</strong> The word 'bank' wearing different clothes at a river picnic and at an office. A contextual model gives it a different vector in each sentence.</div><details class="deepdive" open><summary>'bank' in four sentences, all-MiniLM-L6-v2 (6 layers, 384 dims) (run for real)</summary><pre><code># Contextual embeddings: the same word &#x27;bank&#x27; gets different vectors in different sentences (BERT-style encoder)
+import torch
+from transformers import AutoTokenizer, AutoModel
+name = &quot;sentence-transformers/all-MiniLM-L6-v2&quot;
+tok, model = AutoTokenizer.from_pretrained(name), AutoModel.from_pretrained(name).eval()
+def word_vec(sentence, word):
+    enc = tok(sentence, return_tensors=&quot;pt&quot;)
+    with torch.no_grad(): out = model(**enc).last_hidden_state[0]
+    toks = tok.convert_ids_to_tokens(enc[&quot;input_ids&quot;][0]); return out[toks.index(word)]
+s = {&quot;river1&quot;: &quot;we sat on the bank of the river&quot;, &quot;river2&quot;: &quot;the boat reached the muddy bank&quot;,
+     &quot;money1&quot;: &quot;i deposited cash at the bank&quot;, &quot;money2&quot;: &quot;the bank gave me a loan&quot;}
+v = {k: word_vec(t, &quot;bank&quot;) for k, t in s.items()}
+cos = torch.nn.functional.cosine_similarity
+for a, b in [(&quot;river1&quot;, &quot;river2&quot;), (&quot;money1&quot;, &quot;money2&quot;), (&quot;river1&quot;, &quot;money1&quot;), (&quot;river2&quot;, &quot;money2&quot;)]:
+    print(f&quot;bank in {a} vs {b}: cosine = {cos(v[a], v[b], dim=0):.3f}&quot;)
+print(&quot;model:&quot;, name, &quot;| hidden size:&quot;, model.config.hidden_size, &quot;| layers:&quot;, model.config.num_hidden_layers)
+
+# ----- Output (real run) -----
+# bank in river1 vs river2: cosine = 0.824
+# bank in money1 vs money2: cosine = 0.824
+# bank in river1 vs money1: cosine = 0.771
+# bank in river2 vs money2: cosine = 0.675
+# model: sentence-transformers/all-MiniLM-L6-v2 | hidden size: 384 | layers: 6</code></pre></details><h3>Good to know</h3><ul><li>Honest reading: same-sense pairs scored 0.82, cross-sense pairs 0.68-0.77. The vectors do differ by meaning, but the gap is modest in this small model and these short sentences.</li><li>This small model is tuned for sentence similarity, not word senses; larger encoders separate senses more clearly (as widely reported).</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part E — Modern NLP in Practice</h2></div>
+
+    <!-- 29 -->
+    <section class="block" id="semantic-search">
+      <h2><span class="num">29</span> Sentence Embeddings and Semantic Search</h2>
+<div class="callout life"><strong>Picture:</strong> A librarian who understands what you <em>mean</em>. You ask 'I forgot my login secret' and she hands you the page titled 'How do I reset my password?', even though no word matches.</div><details class="deepdive" open><summary>Embedding search vs TF-IDF keyword search (run for real)</summary><pre><code># Semantic search with sentence embeddings vs TF-IDF keyword search on the same FAQ
+from sentence_transformers import SentenceTransformer, util
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+from nlpdata import FAQ
+model = SentenceTransformer(&quot;sentence-transformers/all-MiniLM-L6-v2&quot;)
+E = model.encode(FAQ, normalize_embeddings=True)
+tf = TfidfVectorizer().fit(FAQ); T = tf.transform(FAQ)
+queries = [&quot;I forgot my login secret&quot;, &quot;when will my money come back&quot;, &quot;is postage free&quot;, &quot;how long until my package arrives&quot;]
+for q in queries:
+    s_emb = util.cos_sim(model.encode(q, normalize_embeddings=True), E)[0]
+    s_tf = cosine_similarity(tf.transform([q]), T)[0]
+    be, bt = int(s_emb.argmax()), int(s_tf.argmax())
+    print(f&quot;\nQ: {q}&quot;)
+    print(f&quot;  embeddings -&gt; ({float(s_emb[be]):.2f}) {FAQ[be]}&quot;)
+    print(f&quot;  TF-IDF     -&gt; ({s_tf[bt]:.2f}) {FAQ[bt] if s_tf[bt] &gt; 0 else &#x27;(no shared words: nothing found)&#x27;}&quot;)
+
+# ----- Output (real run) -----
+#
+# Q: I forgot my login secret
+#   embeddings -&gt; (0.49) How do I reset my password? Open Settings, choose Account and tap Reset password.
+#   TF-IDF     -&gt; (0.26) To change your delivery address, edit it in My Orders before shipping.
+#
+# Q: when will my money come back
+#   embeddings -&gt; (0.51) Refunds reach your bank account in five to seven working days.
+#   TF-IDF     -&gt; (0.26) To change your delivery address, edit it in My Orders before shipping.
+#
+# Q: is postage free
+#   embeddings -&gt; (0.49) Shipping is free for orders above 499 rupees.
+#   TF-IDF     -&gt; (0.47) Shipping is free for orders above 499 rupees.
+#
+# Q: how long until my package arrives
+#   embeddings -&gt; (0.60) Delivery usually takes three to five working days inside the country.
+#   TF-IDF     -&gt; (0.32) How do I reset my password? Open Settings, choose Account and tap Reset password.</code></pre></details><h3>Good to know</h3><ul><li>Embeddings found the right FAQ for all 4 paraphrased questions. TF-IDF found 1 of 4 (only 'free' matched), and for the others returned an unrelated answer with a non-zero score: keyword search fails silently on paraphrases.</li><li>Production search often combines both (hybrid search) and stores vectors in a vector index (FAISS, pgvector ...). This is the 'R' in <a href="rag.html">RAG</a>.</li><li>Scores are model-specific: a 0.5 from one model is not comparable to 0.5 from another; pick thresholds on your own labelled data.</li></ul>
+    </section>
+
+    <!-- 30 -->
+    <section class="block" id="multilingual">
+      <h2><span class="num">30</span> Multilingual and Indian-Language NLP</h2>
+<div class="callout life"><strong>Picture:</strong> A translator who keeps one shared map of meanings for all languages: 'Where is my order?' and 'मेरा ऑर्डर कहाँ है?' land on the same spot of the map.</div><details class="deepdive" open><summary>English, Hindi and Hinglish in one vector space (run for real)</summary><pre><code># Cross-lingual similarity: English, Hindi and Hinglish sentences in one vector space
+from sentence_transformers import SentenceTransformer, util
+model = SentenceTransformer(&quot;sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2&quot;)
+sents = [&quot;Where is my order?&quot;, &quot;मेरा ऑर्डर कहाँ है?&quot;, &quot;mera order kahan hai?&quot;, &quot;The weather is nice today&quot;, &quot;आज मौसम अच्छा है&quot;]
+E = model.encode(sents, normalize_embeddings=True)
+S_ = util.cos_sim(E, E)
+print(&quot;            &quot; + &quot; &quot;.join(f&quot;{i:&gt;6}&quot; for i in range(len(sents))))
+for i, s in enumerate(sents):
+    print(f&quot;{i} {s[:24]:24} &quot; + &quot; &quot;.join(f&quot;{float(S_[i, j]):6.2f}&quot; for j in range(len(sents))))
+print(&quot;romanised Hinglish (2) is usually matched less well than Devanagari Hindi (1)&quot;)
+
+# ----- Output (real run) -----
+#                  0      1      2      3      4
+# 0 Where is my order?         1.00   0.95   0.51   0.10   0.09
+# 1 मेरा ऑर्डर कहाँ है?        0.95   1.00   0.53   0.10   0.09
+# 2 mera order kahan hai?      0.51   0.53   1.00   0.08   0.11
+# 3 The weather is nice toda   0.10   0.10   0.08   1.00   0.95
+# 4 आज मौसम अच्छा है           0.09   0.09   0.11   0.95   1.00
+# romanised Hinglish (2) is usually matched less well than Devanagari Hindi (1)</code></pre></details><h3>Good to know</h3><ul><li>English ↔ Devanagari Hindi scored 0.95 (same meaning); unrelated sentences about 0.1. Romanised Hinglish scored only about 0.5: code-mixed, Latin-script Indian text is a known weak spot because training data has less of it.</li><li>Practical tips for Indian languages: normalise scripts (NFC), consider transliteration, use multilingual tokenizers (SentencePiece), and test on real user text, which is often Hinglish.</li><li>Open Indian-language resources exist (for example AI4Bharat's models and datasets); check licences before use.</li></ul>
+    </section>
+
+    <!-- 31 -->
+    <section class="block" id="zero-shot">
+      <h2><span class="num">31</span> Zero-Shot Classification with Embeddings</h2>
+<div class="callout life"><strong>Picture:</strong> Sorting post into boxes labelled with a short description, without ever being trained on examples: you read the letter and the box labels and pick the closest.</div><details class="deepdive" open><summary>Topic classification without training data (run for real)</summary><pre><code># Zero-shot topic classification with embeddings (no training): compare a text with label descriptions
+from sentence_transformers import SentenceTransformer, util
+model = SentenceTransformer(&quot;sentence-transformers/all-MiniLM-L6-v2&quot;)
+labels = {&quot;sports&quot;: &quot;a text about sports, games, players and matches&quot;, &quot;politics&quot;: &quot;a text about government, elections and politicians&quot;,
+          &quot;technology&quot;: &quot;a text about computers, phones, software and gadgets&quot;, &quot;food&quot;: &quot;a text about cooking, restaurants and recipes&quot;}
+tests = [(&quot;The striker scored twice in the final&quot;, &quot;sports&quot;), (&quot;Parliament passed the new tax bill&quot;, &quot;politics&quot;),
+         (&quot;The new phone has a faster chip&quot;, &quot;technology&quot;), (&quot;Add salt and stir the curry for five minutes&quot;, &quot;food&quot;),
+         (&quot;The minister resigned after the vote&quot;, &quot;politics&quot;), (&quot;Our team won the cricket series&quot;, &quot;sports&quot;),
+         (&quot;Update your laptop to fix the bug&quot;, &quot;technology&quot;), (&quot;This cafe serves the best dosa&quot;, &quot;food&quot;),
+         (&quot;The coach praised the young goalkeeper&quot;, &quot;sports&quot;), (&quot;Voters queued outside the booths&quot;, &quot;politics&quot;),
+         (&quot;The chef baked bread with garlic&quot;, &quot;food&quot;), (&quot;The app now supports dark mode&quot;, &quot;technology&quot;)]
+L = model.encode(list(labels.values()), normalize_embeddings=True); names = list(labels)
+ok = 0
+for text, gold in tests:
+    s = util.cos_sim(model.encode(text, normalize_embeddings=True), L)[0]; pred = names[int(s.argmax())]
+    ok += pred == gold
+    if pred != gold: print(f&quot;MISS: {text!r} -&gt; {pred} (gold {gold})&quot;)
+print(f&quot;zero-shot accuracy: {ok}/{len(tests)}&quot;)
+
+# ----- Output (real run) -----
+# MISS: &#x27;The coach praised the young goalkeeper&#x27; -&gt; food (gold sports)
+# zero-shot accuracy: 11/12</code></pre></details><h3>Good to know</h3><ul><li>11 of 12 correct with no training at all. The miss ('coach praised the young goalkeeper' → food) shows that short, specialised sentences can fool similarity.</li><li>Improve by writing better label descriptions, adding a few examples per label (few-shot), or asking an LLM to classify (see <a href="#llm-for-nlp">LLMs for NLP</a>).</li></ul>
+    </section>
+
+    <!-- 32 -->
+    <section class="block" id="transfer-learning">
+      <h2><span class="num">32</span> Transfer Learning: Pre-trained Vectors + a Small Classifier</h2>
+<div class="callout life"><strong>Picture:</strong> Hiring someone who already speaks the language and only teaching them your shop's rules, instead of teaching a baby to speak first.</div><details class="deepdive" open><summary>Frozen MiniLM embeddings + logistic regression vs TF-IDF (run for real)</summary><pre><code># Transfer learning: frozen sentence embeddings + logistic regression vs TF-IDF (same 5 folds, 60 reviews)
+import numpy as np
+from sentence_transformers import SentenceTransformer
+from sklearn.linear_model import LogisticRegression
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.pipeline import make_pipeline
+from sklearn.model_selection import cross_val_score, StratifiedKFold
+from nlpdata import REVIEWS
+X = [t for t, _ in REVIEWS]; y = np.array([l for _, l in REVIEWS])
+cv = StratifiedKFold(5, shuffle=True, random_state=0)
+E = SentenceTransformer(&quot;sentence-transformers/all-MiniLM-L6-v2&quot;).encode(X, normalize_embeddings=True)
+a_tfidf = cross_val_score(make_pipeline(TfidfVectorizer(), LogisticRegression(max_iter=1000)), X, y, cv=cv)
+a_emb = cross_val_score(LogisticRegression(max_iter=1000), E, y, cv=cv)
+print(f&quot;TF-IDF + LogReg      : {a_tfidf.mean():.3f} {a_tfidf.round(2).tolist()}&quot;)
+print(f&quot;MiniLM vectors + LogR: {a_emb.mean():.3f} {a_emb.round(2).tolist()}&quot;)
+clf = LogisticRegression(max_iter=1000).fit(E, y)
+m = SentenceTransformer(&quot;sentence-transformers/all-MiniLM-L6-v2&quot;)
+for s in [&quot;the camera is not good&quot;, &quot;not bad, I like it&quot;, &quot;it was not boring at all&quot;, &quot;the parcel never arrived&quot;]:
+    print(f&quot;embeddings model: {s!r:28} -&gt; p_pos={clf.predict_proba(m.encode([s], normalize_embeddings=True))[0][1]:.2f}&quot;)
+
+# ----- Output (real run) -----
+# TF-IDF + LogReg      : 0.300 [0.25, 0.17, 0.17, 0.42, 0.5]
+# MiniLM vectors + LogR: 0.867 [0.83, 0.67, 1.0, 0.92, 0.92]
+# embeddings model: &#x27;the camera is not good&#x27;     -&gt; p_pos=0.32
+# embeddings model: &#x27;not bad, I like it&#x27;         -&gt; p_pos=0.68
+# embeddings model: &#x27;it was not boring at all&#x27;   -&gt; p_pos=0.35
+# embeddings model: &#x27;the parcel never arrived&#x27;   -&gt; p_pos=0.34</code></pre></details><h3>Good to know</h3><ul><li>Same 60 reviews, same folds: TF-IDF 0.30, pre-trained embeddings 0.87. The embedding model already knows that 'delicious' and 'tasty' are positive, so unseen words are no longer unknown.</li><li>Negation is still not solved: 'it was not boring at all' got p_pos = 0.35 (wrong). Fine-tuning a whole model, or an LLM, handles such cases better.</li><li>This 'frozen encoder + small head' recipe is cheap, fast and a strong default for small labelled datasets.</li></ul>
+    </section>
+
+    <!-- 33 -->
+    <section class="block" id="clustering">
+      <h2><span class="num">33</span> Finding Groups: Clustering and Topics</h2>
+<div class="callout life"><strong>Picture:</strong> Pouring a box of mixed buttons on the table and letting similar ones slide together, without anyone telling you the colours in advance.</div><details class="deepdive" open><summary>KMeans on sentence embeddings (run for real)</summary><pre><code># Grouping sentences by meaning: KMeans on sentence embeddings
+from sentence_transformers import SentenceTransformer
+from sklearn.cluster import KMeans
+sents = [&quot;my parcel is late&quot;, &quot;delivery has not come yet&quot;, &quot;where is my package&quot;,
+         &quot;I want my money back&quot;, &quot;please refund my payment&quot;, &quot;how do I get a refund&quot;,
+         &quot;the app keeps crashing&quot;, &quot;the app is very slow&quot;, &quot;login button does not work&quot;]
+E = SentenceTransformer(&quot;sentence-transformers/all-MiniLM-L6-v2&quot;).encode(sents, normalize_embeddings=True)
+lab = KMeans(3, n_init=10, random_state=0).fit_predict(E)
+for c in sorted(set(lab)):
+    print(f&quot;cluster {c}: {[s for s, l in zip(sents, lab) if l == c]}&quot;)
+
+# ----- Output (real run) -----
+# cluster 0: [&#x27;I want my money back&#x27;, &#x27;please refund my payment&#x27;, &#x27;how do I get a refund&#x27;]
+# cluster 1: [&#x27;the app keeps crashing&#x27;, &#x27;the app is very slow&#x27;, &#x27;login button does not work&#x27;]
+# cluster 2: [&#x27;my parcel is late&#x27;, &#x27;delivery has not come yet&#x27;, &#x27;where is my package&#x27;]</code></pre></details><h3>Good to know</h3><ul><li>All 9 support messages landed in the right group (delivery / refund / app problems) without any labels.</li><li>For topic discovery on large collections, people use LDA (classic word-count topics) or BERTopic-style pipelines (embeddings → clustering → keywords per cluster).</li></ul>
+    </section>
+
+    <!-- 34 -->
+    <section class="block" id="generation-tasks">
+      <h2><span class="num">34</span> Summarization, Translation and Question Answering (and How They Are Scored)</h2>
+<div class="callout life"><strong>Picture:</strong> Marking an essay by checking how many words match the teacher's model answer: fast and fair-looking, but it punishes a student who says the same thing in different words.</div><details class="deepdive" open><summary>BLEU and ROUGE from scratch (run for real)</summary><pre><code># BLEU and ROUGE from scratch: how machine translation and summaries are scored
+import math
+from collections import Counter
+def ngrams(t, n): return Counter(tuple(t[i:i + n]) for i in range(len(t) - n + 1))
+def bleu(cand, ref, N=4):
+    c, r = cand.split(), ref.split()
+    ps = []
+    for n in range(1, N + 1):
+        cn, rn = ngrams(c, n), ngrams(r, n)
+        overlap = sum(min(v, rn[k]) for k, v in cn.items())
+        ps.append((overlap + 1) / (max(sum(cn.values()), 0) + 1))      # +1 smoothing
+    bp = 1 if len(c) &gt; len(r) else math.exp(1 - len(r) / max(len(c), 1))
+    return bp * math.exp(sum(math.log(p) for p in ps) / N)
+def rouge_n(cand, ref, n):
+    cn, rn = ngrams(cand.split(), n), ngrams(ref.split(), n)
+    ov = sum(min(v, rn[k]) for k, v in cn.items())
+    rec, prec = ov / max(sum(rn.values()), 1), ov / max(sum(cn.values()), 1)
+    return 0 if ov == 0 else 2 * prec * rec / (prec + rec)
+def lcs(a, b):
+    d = [[0] * (len(b) + 1) for _ in range(len(a) + 1)]
+    for i in range(len(a)):
+        for j in range(len(b)):
+            d[i + 1][j + 1] = d[i][j] + 1 if a[i] == b[j] else max(d[i][j + 1], d[i + 1][j])
+    return d[-1][-1]
+ref = &quot;the cat is sitting on the mat&quot;
+for cand in [&quot;the cat is sitting on the mat&quot;, &quot;the cat sits on the mat&quot;, &quot;a feline rests on the rug&quot;, &quot;mat the on sitting is cat the&quot;]:
+    l = lcs(cand.split(), ref.split())
+    print(f&quot;{cand!r:36} BLEU={bleu(cand, ref):.2f} ROUGE-1={rouge_n(cand, ref, 1):.2f} ROUGE-2={rouge_n(cand, ref, 2):.2f} ROUGE-L(recall)={l / len(ref.split()):.2f}&quot;)
+print(&quot;the paraphrase &#x27;a feline rests on the rug&#x27; is a fine answer but scores low: word-overlap metrics miss meaning&quot;)
+
+# ----- Output (real run) -----
+# &#x27;the cat is sitting on the mat&#x27;      BLEU=1.00 ROUGE-1=1.00 ROUGE-2=1.00 ROUGE-L(recall)=1.00
+# &#x27;the cat sits on the mat&#x27;            BLEU=0.41 ROUGE-1=0.77 ROUGE-2=0.55 ROUGE-L(recall)=0.71
+# &#x27;a feline rests on the rug&#x27;          BLEU=0.25 ROUGE-1=0.31 ROUGE-2=0.18 ROUGE-L(recall)=0.29
+# &#x27;mat the on sitting is cat the&#x27;      BLEU=0.26 ROUGE-1=1.00 ROUGE-2=0.00 ROUGE-L(recall)=0.43
+# the paraphrase &#x27;a feline rests on the rug&#x27; is a fine answer but scores low: word-overlap metrics miss meaning</code></pre></details><details class="deepdive" open><summary>Hugging Face pipelines for sentiment, NER, QA, summarization, translation (template, not run)</summary><pre><code># Hugging Face pipelines: one line per task (each downloads a model the first time: not run here)
+from transformers import pipeline
+sentiment = pipeline(&quot;sentiment-analysis&quot;)                        # pick a model id explicitly in real projects
+print(sentiment(&quot;The battery lasts all day, I love it!&quot;))
+ner = pipeline(&quot;token-classification&quot;, aggregation_strategy=&quot;simple&quot;)
+print(ner(&quot;Asha Rao works at ISRO in Bengaluru.&quot;))
+qa = pipeline(&quot;question-answering&quot;)
+print(qa(question=&quot;How long does delivery take?&quot;, context=&quot;Delivery usually takes three to five working days.&quot;))
+summarizer = pipeline(&quot;summarization&quot;)
+print(summarizer(long_text, max_length=60, min_length=20))
+translator = pipeline(&quot;translation&quot;, model=&quot;Helsinki-NLP/opus-mt-en-hi&quot;)   # English -&gt; Hindi
+print(translator(&quot;Where is my order?&quot;))</code></pre></details><table><tr><th>Task</th><th>Typical metric</th><th>Weakness</th></tr><tr><td>Translation</td><td>BLEU, chrF, COMET (learned)</td><td>BLEU misses meaning and paraphrases</td></tr><tr><td>Summarization</td><td>ROUGE-1/2/L, faithfulness checks</td><td>a fluent summary can still invent facts</td></tr><tr><td>Extractive QA</td><td>exact match, token F1</td><td>a correct answer phrased differently scores 0</td></tr><tr><td>Open-ended chat</td><td>human ratings, LLM-as-judge (with checks)</td><td>judges have their own biases</td></tr></table><h3>Good to know</h3><ul><li>The real run shows the trap: the shuffled nonsense sentence got ROUGE-1 = 1.00 and a slightly higher BLEU than the good paraphrase 'a feline rests on the rug'.</li><li>Use several metrics, read samples yourself, and for LLM outputs check faithfulness to the source (see <a href="mlops-llmops.html">MLOps &amp; LLMOps</a> evaluation).</li></ul>
+    </section>
+
+    <!-- 35 -->
+    <section class="block" id="fine-tuning">
+      <h2><span class="num">35</span> Fine-Tuning a Pre-trained Model</h2>
+<div class="callout life"><strong>Picture:</strong> A trained singer learning one new song: they already know how to sing, so a few rehearsals are enough.</div><details class="deepdive" open><summary>Fine-tuning DistilBERT on IMDB with the Trainer API (template, not run)</summary><pre><code># Fine-tuning a small encoder for classification with the Trainer API (needs datasets + a GPU for real sizes)
+from datasets import load_dataset
+from transformers import AutoTokenizer, AutoModelForSequenceClassification, TrainingArguments, Trainer
+import numpy as np, evaluate
+
+name = &quot;distilbert-base-uncased&quot;
+ds = load_dataset(&quot;imdb&quot;)                                         # 25k train / 25k test movie reviews
+tok = AutoTokenizer.from_pretrained(name)
+ds = ds.map(lambda b: tok(b[&quot;text&quot;], truncation=True, max_length=256), batched=True)
+model = AutoModelForSequenceClassification.from_pretrained(name, num_labels=2)
+acc = evaluate.load(&quot;accuracy&quot;)
+def metrics(p): return acc.compute(predictions=np.argmax(p.predictions, -1), references=p.label_ids)
+args = TrainingArguments(&quot;out&quot;, learning_rate=2e-5, per_device_train_batch_size=16, num_train_epochs=2,
+                         eval_strategy=&quot;epoch&quot;, save_strategy=&quot;epoch&quot;, load_best_model_at_end=True, fp16=True)
+Trainer(model=model, args=args, train_dataset=ds[&quot;train&quot;], eval_dataset=ds[&quot;test&quot;],
+        processing_class=tok, compute_metrics=metrics).train()
+# Smaller budget? Use LoRA (peft) to train ~1% of the weights, see the MLOps &amp; LLMOps guide.</code></pre></details><table><tr><th>Approach</th><th>What changes</th><th>When</th></tr><tr><td>Feature extraction (frozen)</td><td>only a small head</td><td>tiny data, CPU only (as in the transfer-learning run)</td></tr><tr><td>Full fine-tuning</td><td>all weights</td><td>thousands of labelled examples and a GPU</td></tr><tr><td>Parameter-efficient (LoRA, adapters)</td><td>small added matrices</td><td>large models, limited memory</td></tr><tr><td>Prompting / few-shot with an LLM</td><td>nothing; examples go in the prompt</td><td>very little data, fast start, higher per-call cost</td></tr></table><h3>Good to know</h3><ul><li>Keep a validation set, watch for overfitting, and compare against the TF-IDF baseline: a fine-tuned model must beat it to be worth the cost.</li></ul>
+    </section>
+
+    <!-- 36 -->
+    <section class="block" id="llm-for-nlp">
+      <h2><span class="num">36</span> Using LLMs for Classic NLP Tasks</h2>
+<div class="callout life"><strong>Picture:</strong> Asking a very well-read assistant to do the job in plain words ('pull out the product name and the complaint as JSON') instead of training a special machine for each job.</div><details class="deepdive" open><summary>Extraction + summary with the Anthropic SDK (claude-opus-5-5) (template, not run)</summary><pre><code># Using an LLM for NLP tasks (extraction + summary) with the Anthropic SDK (needs an API key: not run here)
+import json, anthropic
+client = anthropic.Anthropic()                       # reads ANTHROPIC_API_KEY or an `ant auth login` profile
+review = &quot;Ordered the blue headphones on 3 March. Bass is great but the left ear stopped working after a week. Want a replacement.&quot;
+resp = client.messages.create(
+    model=&quot;claude-opus-5-5&quot;,
+    max_tokens=1024,
+    output_config={&quot;effort&quot;: &quot;low&quot;},                 # a simple extraction task does not need deep thinking
+    system=&quot;You extract structured data from customer reviews. Answer with JSON only.&quot;,
+    messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;:
+               &quot;Return JSON with keys product, sentiment (positive/negative/mixed), problems (list), wants (string), &quot;
+               f&quot;summary (max 15 words).\n\nReview: {review}&quot;}],
+)
+text = &quot;&quot;.join(b.text for b in resp.content if b.type == &quot;text&quot;)   # read text blocks by type
+data = json.loads(text)
+print(data)
+# For guaranteed JSON use structured outputs (output_config={&quot;format&quot;: {...json schema...}}) - see the LLMs guide.</code></pre></details><table><tr><th></th><th>Classic / small model</th><th>LLM via API</th></tr><tr><td>Setup</td><td>collect labels, train</td><td>write a prompt, maybe a few examples</td></tr><tr><td>Cost per item</td><td>almost zero</td><td>pay per token</td></tr><tr><td>Speed</td><td>milliseconds</td><td>hundreds of milliseconds to seconds</td></tr><tr><td>Flexibility</td><td>one fixed task</td><td>many tasks, new ones in minutes</td></tr><tr><td>Control</td><td>predictable</td><td>needs output checks (schemas, validation)</td></tr></table><h3>Good to know</h3><ul><li>A common pattern: use an LLM to label data or handle hard cases, and a small fast model for the bulk.</li><li>Ask for structured output (JSON with a schema) and validate it; never trust free text for automation.</li><li>Retrieval for grounding: <a href="rag.html">RAG</a>; agents and tools: <a href="ai-agents.html">AI Agents</a>; prompt-injection defence: <a href="ai-security.html">AI Security</a>.</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part F — Responsible NLP and Production</h2></div>
+
+    <!-- 37 -->
+    <section class="block" id="bias">
+      <h2><span class="num">37</span> Bias in Language Models (a Small Probe)</h2>
+<div class="callout life"><strong>Picture:</strong> A child who has only read old storybooks may think every nurse is a woman and every engineer a man. Models learn the same associations from their training text.</div><details class="deepdive" open><summary>He/she associations of job titles in an embedding model (run for real)</summary><pre><code># A small bias probe: which gendered word sits closer to each job title in embedding space?
+from sentence_transformers import SentenceTransformer, util
+m = SentenceTransformer(&quot;sentence-transformers/all-MiniLM-L6-v2&quot;)
+jobs = [&quot;nurse&quot;, &quot;engineer&quot;, &quot;teacher&quot;, &quot;pilot&quot;, &quot;receptionist&quot;, &quot;surgeon&quot;, &quot;homemaker&quot;, &quot;programmer&quot;]
+he, she = m.encode([&quot;he&quot;, &quot;man&quot;, &quot;him&quot;], normalize_embeddings=True).mean(0), m.encode([&quot;she&quot;, &quot;woman&quot;, &quot;her&quot;], normalize_embeddings=True).mean(0)
+J = m.encode(jobs, normalize_embeddings=True)
+raw = {j: float(util.cos_sim(v, he)) - float(util.cos_sim(v, she)) for j, v in zip(jobs, J)}
+mean = sum(raw.values()) / len(raw)
+print(f&quot;raw he-minus-she scores are ALL negative (mean {mean:+.3f}): the anchor words themselves differ, so compare jobs RELATIVE to the mean&quot;)
+for j in sorted(raw, key=raw.get):
+    r = raw[j] - mean
+    print(f&quot;{j:13} raw {raw[j]:+.3f}   relative {r:+.3f}  {&#x27;(more she-like than average)&#x27; if r &lt; -0.02 else &#x27;(more he-like than average)&#x27; if r &gt; 0.02 else &#x27;(near average)&#x27;}&quot;)
+print(&quot;a tiny probe, not a full audit: it only shows that embeddings can carry social associations from their training text&quot;)
+
+# ----- Output (real run) -----
+# raw he-minus-she scores are ALL negative (mean -0.093): the anchor words themselves differ, so compare jobs RELATIVE to the mean
+# nurse         raw -0.232   relative -0.139  (more she-like than average)
+# receptionist  raw -0.198   relative -0.105  (more she-like than average)
+# teacher       raw -0.109   relative -0.016  (near average)
+# pilot         raw -0.086   relative +0.007  (near average)
+# engineer      raw -0.043   relative +0.050  (more he-like than average)
+# homemaker     raw -0.037   relative +0.056  (more he-like than average)
+# surgeon       raw -0.027   relative +0.065  (more he-like than average)
+# programmer    raw -0.009   relative +0.083  (more he-like than average)
+# a tiny probe, not a full audit: it only shows that embeddings can carry social associations from their training text</code></pre></details><h3>Good to know</h3><ul><li>Raw scores were all 'she-leaning' because the anchor words themselves differ; after centring, 'nurse' and 'receptionist' leaned most toward she-words and 'programmer', 'surgeon' toward he-words. One surprise: 'homemaker' came out he-leaning. A probe this small is noisy: it is a warning sign, not a measurement.</li><li>Real audits use many templates and established benchmarks, and test the <em>decisions</em> a system makes (who gets shortlisted), not just vectors.</li><li>Mitigation: balanced data, counterfactual tests ('he' ↔ 'she' should not change a loan decision), human review of high-stakes uses.</li></ul>
+    </section>
+
+    <!-- 38 -->
+    <section class="block" id="privacy-safety">
+      <h2><span class="num">38</span> Privacy, Safety and Security for Text Systems</h2>
+<div class="callout life"><strong>Picture:</strong> A post office that opens letters to sort them must not read them aloud, keep copies, or obey a letter that says 'give me everyone's addresses'.</div><table><tr><th>Risk</th><th>Example</th><th>Defence</th></tr><tr><td>Personal data in training/logs</td><td>phone numbers, Aadhaar-like IDs in chats</td><td>redact (see <a href="#cleaning">cleaning</a>), minimise, retention limits</td></tr><tr><td>Prompt injection</td><td>a document says 'ignore your instructions'</td><td>separate instructions from data, least privilege, output checks (<a href="ai-security.html">AI Security</a>)</td></tr><tr><td>Toxic or unsafe output</td><td>insults, self-harm content</td><td>moderation classifiers, refusal handling, human escalation</td></tr><tr><td>Hallucination</td><td>invented facts in summaries</td><td>grounding with sources, faithfulness checks</td></tr><tr><td>Model and data licences</td><td>using a model or dataset against its terms</td><td>check licences before commercial use</td></tr></table><h3>Good to know</h3><ul><li>Laws and rules apply to text data too (for example India's DPDP Act 2023 and the EU AI Act; dates and duties in the respective guides): collect only what you need and tell users.</li></ul>
+    </section>
+
+    <!-- 39 -->
+    <section class="block" id="deployment">
+      <h2><span class="num">39</span> Deploying NLP Models</h2>
+<div class="callout life"><strong>Picture:</strong> Moving a recipe from your kitchen to a restaurant: it must be fast, cheap, the same every time, and someone must taste the food every day.</div><details class="deepdive" open><summary>A FastAPI sentiment endpoint (template, not run)</summary><pre><code># Serving a sentiment model as an HTTP API with FastAPI (see the FastAPI guide; not run here)
+from fastapi import FastAPI
+from pydantic import BaseModel
+import joblib
+
+app = FastAPI(title=&quot;Sentiment API&quot;)
+model = joblib.load(&quot;sentiment.joblib&quot;)              # a scikit-learn pipeline: TfidfVectorizer + LogisticRegression
+
+class In(BaseModel):
+    text: str
+
+@app.post(&quot;/predict&quot;)
+def predict(item: In):
+    p = float(model.predict_proba([item.text])[0][1])
+    return {&quot;label&quot;: &quot;positive&quot; if p &gt;= 0.5 else &quot;negative&quot;, &quot;p_positive&quot;: round(p, 3)}
+# run: uvicorn app:app --reload   then POST {&quot;text&quot;: &quot;great phone&quot;} to /predict</code></pre></details><details class="deepdive" open><summary>ONNX export for faster CPU inference (template, not run)</summary><pre><code># Export a transformer to ONNX for faster CPU inference (needs optimum + onnxruntime: not run here)
+# pip install &quot;optimum[onnxruntime]&quot;
+from optimum.onnxruntime import ORTModelForSequenceClassification
+from transformers import AutoTokenizer
+model = ORTModelForSequenceClassification.from_pretrained(&quot;distilbert-base-uncased-finetuned-sst-2-english&quot;, export=True)
+tok = AutoTokenizer.from_pretrained(&quot;distilbert-base-uncased-finetuned-sst-2-english&quot;)
+model.save_pretrained(&quot;onnx-sentiment&quot;); tok.save_pretrained(&quot;onnx-sentiment&quot;)
+# Then quantize to int8 for a smaller, faster model (accuracy usually drops a little: measure it).</code></pre></details><table><tr><th>Concern</th><th>Typical tools</th></tr><tr><td>Serving</td><td>FastAPI (<a href="fastapi.html">guide</a>), BentoML, TorchServe, Triton, vLLM for LLMs</td></tr><tr><td>Speed/size</td><td>ONNX Runtime, quantization (int8), distillation into smaller models, batching</td></tr><tr><td>Monitoring</td><td>input drift (new slang, new products), accuracy on fresh labelled samples, latency, cost</td></tr><tr><td>Versioning</td><td>model registry, data versions (<a href="mlops-llmops.html">MLOps &amp; LLMOps</a>)</td></tr></table><h3>Good to know</h3><ul><li>Measured here for scale: the tiny GPT trained in about 16 s and the embedding models answered the demos in well under a second each on a laptop CPU (single runs, not benchmarks).</li></ul>
+    </section>
+
+    <div class="part-divider"><h2>Part G — Projects, Interview Prep and Reference</h2></div>
+
+    <!-- 40 -->
+    <section class="block" id="projects">
+      <h2><span class="num">40</span> Projects to Build (Beginner to Advanced)</h2>
+<div class="callout life"><strong>Picture:</strong> Learning to cook by making real dishes, from toast to a full dinner.</div><table><tr><th>Level</th><th>Project</th><th>You practise</th></tr><tr><td>Beginner</td><td>Spam/ham classifier with TF-IDF + logistic regression, with a confusion matrix</td><td>cleaning, vectorizing, metrics</td></tr><tr><td>Beginner</td><td>Spelling corrector for product names</td><td>edit distance, frequency</td></tr><tr><td>Intermediate</td><td>FAQ semantic search for a college or shop</td><td>sentence embeddings, thresholds, evaluation</td></tr><tr><td>Intermediate</td><td>Hinglish sentiment dataset + model comparison</td><td>multilingual tokenizers, data labelling, honest evaluation</td></tr><tr><td>Intermediate</td><td>Resume / invoice information extraction</td><td>NER, regex, LLM extraction with JSON validation</td></tr><tr><td>Advanced</td><td>Train a tiny GPT on a public-domain book, then fine-tune a small pre-trained model and compare</td><td>Transformers, training loops, perplexity</td></tr><tr><td>Advanced</td><td>Customer-support triage: cluster tickets, route them, summarise them</td><td>clustering, classification, summarization metrics</td></tr><tr><td>Advanced</td><td>RAG assistant over your notes with citations (<a href="rag.html">RAG guide</a>)</td><td>retrieval, grounding, evaluation</td></tr></table><h3>Good to know</h3><ul><li>A ready, fully worked build guide for one such project (a semantic cache for an FAQ bot) is on the home page under Projects.</li></ul>
+    </section>
+
+    <!-- 41 -->
+    <section class="block" id="interview">
+      <h2><span class="num">41</span> Interview Questions and Answers (Easy → Hard)</h2>
+<div class="callout life"><strong>Picture:</strong> A mock interview: names of things first, then 'why', then design questions.</div><h3>Basics</h3><table><tr><th>Question</th><th>Short answer</th></tr><tr><td>Stemming vs lemmatization?</td><td>Stemming chops suffixes by rules ('studi'); lemmatization uses a dictionary and grammar ('study').</td></tr><tr><td>What does TF-IDF do?</td><td>Weights words by frequency in the document and rarity across documents.</td></tr><tr><td>Precision vs recall?</td><td>Of predicted positives, how many are right / of real positives, how many were found.</td></tr><tr><td>Why sub-word tokenization?</td><td>No unknown words, smaller vocabulary than whole words, handles rare words and typos.</td></tr></table><h3>Models</h3><table><tr><th>Question</th><th>Short answer</th></tr><tr><td>Why did Transformers replace RNNs?</td><td>Parallel training over all tokens and direct access to far-away tokens through attention.</td></tr><tr><td>Why divide by √d in attention?</td><td>Keeps dot products from growing with dimension, so softmax does not saturate and gradients stay healthy.</td></tr><tr><td>BERT vs GPT?</td><td>Encoder with masked-word pre-training (understanding) vs decoder with next-token pre-training (generation).</td></tr><tr><td>What is perplexity?</td><td>exp of average negative log-likelihood per token: how surprised the language model is.</td></tr><tr><td>Static vs contextual embeddings?</td><td>One vector per word type vs one vector per word occurrence, depending on context.</td></tr></table><h3>Practice and design</h3><table><tr><th>Question</th><th>Short answer</th></tr><tr><td>Your classifier has 95% accuracy. Good?</td><td>Check class balance, per-class recall and the confusion matrix first.</td></tr><tr><td>Small labelled dataset: what do you try?</td><td>TF-IDF + LR baseline, then frozen pre-trained embeddings + LR, then few-shot LLM; compare on the same folds.</td></tr><tr><td>Why might BLEU be misleading?</td><td>It counts word overlap; paraphrases score low and shuffled words can score high.</td></tr><tr><td>How would you build FAQ search for Hinglish users?</td><td>Multilingual embeddings, normalisation/transliteration, threshold tuned on real labelled queries, fallback to a human or LLM.</td></tr><tr><td>How do you stop an LLM extractor from breaking your pipeline?</td><td>Structured output with a schema, validation and retries, tests on edge cases, logging.</td></tr></table>
+    </section>
+
+    <!-- 42 -->
+    <section class="block" id="pitfalls">
+      <h2><span class="num">42</span> Common Pitfalls and a Checklist</h2>
+<div class="callout life"><strong>Picture:</strong> A pilot's checklist: short, boring, and it prevents most crashes.</div><table><tr><th>Pitfall</th><th>Fix</th></tr><tr><td>Removing 'not' as a stop word</td><td>keep negations; check your stop list</td></tr><tr><td>Test data leaking into training (duplicates, same user)</td><td>de-duplicate, split by user/time</td></tr><tr><td>Only reporting accuracy on imbalanced data</td><td>per-class precision/recall, confusion matrix</td></tr><tr><td>Tokenizer mismatch (counting tokens with the wrong tokenizer)</td><td>always use the model's own tokenizer</td></tr><tr><td>English-only model on Hindi/Hinglish</td><td>multilingual model; test on real user text</td></tr><tr><td>Trusting BLEU/ROUGE alone</td><td>add human review and faithfulness checks</td></tr><tr><td>Free-text LLM output fed into code</td><td>structured output + validation</td></tr><tr><td>Personal data kept in logs</td><td>redact and set retention limits</td></tr></table><h3>Before you ship</h3><ul><li>Baseline (TF-IDF + LR) measured on the same split</li><li>Per-class metrics and error examples reviewed by a person</li><li>Tested on messy real input: typos, emojis, mixed language, very long text</li><li>Latency and cost measured</li><li>Monitoring for drift and a way to collect new labels</li><li>Privacy review done</li></ul>
+    </section>
+
+    <!-- 43 -->
+    <section class="block" id="glossary">
+      <h2><span class="num">43</span> Mini Glossary</h2>
+<div class="callout life"><strong>Picture:</strong> A pocket dictionary for NLP words.</div><dl class="glossary"><dt>Token</dt><dd>a unit the model reads: word, sub-word or character</dd><dt>Vocabulary</dt><dd>the set of tokens a tokenizer knows</dd><dt>Embedding</dt><dd>a vector of numbers representing a token or text</dd><dt>TF-IDF</dt><dd>word weight = frequency in document × rarity across documents</dd><dt>n-gram</dt><dd>a sequence of n tokens ('not good' is a bigram)</dd><dt>Perplexity</dt><dd>how surprised a language model is (lower is better)</dd><dt>Attention</dt><dd>mechanism letting each token weigh all other tokens</dd><dt>Transformer</dt><dd>architecture built from attention + feed-forward blocks</dd><dt>Pre-training</dt><dd>learning general language from huge unlabelled text</dd><dt>Fine-tuning</dt><dd>adapting a pre-trained model to a task with labelled data</dd><dt>NER</dt><dd>named entity recognition: finding people, places, organisations ...</dd><dt>POS tag</dt><dd>part of speech: noun, verb, adjective ...</dd><dt>BLEU / ROUGE</dt><dd>word-overlap metrics for translation / summarization</dd><dt>Zero-shot</dt><dd>doing a task without task-specific training examples</dd><dt>Hallucination</dt><dd>fluent but unsupported or false generated text</dd></dl>
+    </section>
+
+    <!-- 44 -->
+    <section class="block" id="faq">
+      <h2><span class="num">44</span> FAQ</h2>
+<div class="callout life"><strong>Picture:</strong> Questions beginners ask in the first month.</div><table><tr><th>Question</th><th>Answer</th></tr><tr><td>Is classic NLP dead because of LLMs?</td><td>No. It is cheaper, faster and easier to explain, and it is used for baselines, filters, search and checks around LLMs.</td></tr><tr><td>Do I need a GPU?</td><td>Not to learn: everything on this page ran on a laptop CPU. Fine-tuning larger models needs a GPU (cloud or Colab-style notebooks).</td></tr><tr><td>Which library first?</td><td>scikit-learn for classic NLP, then Hugging Face transformers / sentence-transformers; spaCy for pipelines.</td></tr><tr><td>How much data do I need?</td><td>With pre-trained models, a few hundred good labelled examples often go far; without them, thousands or more.</td></tr><tr><td>Hindi or Hinglish projects?</td><td>Use multilingual models, collect real user text, and report results separately per language/script.</td></tr></table>
+    </section>
+
+    <!-- 45 -->
+    <section class="block" id="quiz">
+      <h2><span class="num">45</span> Quick Quiz</h2>
+<div class="callout life"><strong>Picture:</strong> Guess first, then open the answer.</div><details class="quiz-item"><summary>1. Why can an English WordPiece tokenizer not read Hindi?</summary><p>Its vocabulary has almost no Devanagari pieces, so Hindi becomes [UNK] tokens.</p></details><details class="quiz-item"><summary>2. What does IDF reward?</summary><p>Words that are rare across documents.</p></details><details class="quiz-item"><summary>3. A shuffled sentence has very high perplexity. Why?</summary><p>The language model finds those word orders very unlikely.</p></details><details class="quiz-item"><summary>4. Why did the classic classifier on this page score below 0.5?</summary><p>Sentiment words in the test folds were unseen and topic words pointed the wrong way.</p></details><details class="quiz-item"><summary>5. What does the causal mask do?</summary><p>Stops a token from attending to future tokens during generation.</p></details><details class="quiz-item"><summary>6. What happens at higher temperature?</summary><p>The probability distribution flattens: more surprising (and more wrong) words.</p></details><details class="quiz-item"><summary>7. Which model family is best for sentence embeddings and classification?</summary><p>Encoder (BERT-style) models.</p></details><details class="quiz-item"><summary>8. Why is BLEU not enough?</summary><p>It rewards word overlap, not meaning.</p></details><details class="quiz-item"><summary>9. What is a cheap strong baseline for text classification?</summary><p>TF-IDF + logistic regression.</p></details><details class="quiz-item"><summary>10. How do you make LLM extraction safe for automation?</summary><p>Structured output with a schema and validation.</p></details>
+    </section>
+
+    <!-- 46 -->
+    <section class="block" id="learning-path">
+      <h2><span class="num">46</span> Learning Path</h2>
+<div class="callout life"><strong>Picture:</strong> A staircase, one step every week or two.</div><table><tr><th>Step</th><th>Learn</th><th>Practise</th></tr><tr><td>1</td><td>Python strings, regex, Unicode</td><td>clean a messy CSV of reviews</td></tr><tr><td>2</td><td>Tokenization, BoW, TF-IDF, metrics</td><td>spam classifier with a confusion matrix</td></tr><tr><td>3</td><td>n-grams, HMM tagging, NER basics</td><td>bigram autocomplete; rule-based NER</td></tr><tr><td>4</td><td>Word vectors, neural nets, PyTorch basics</td><td>train word vectors; an LSTM classifier</td></tr><tr><td>5</td><td>Attention, Transformers</td><td>the tiny GPT on this page, then a bigger dataset</td></tr><tr><td>6</td><td>Hugging Face: tokenizers, embeddings, fine-tuning</td><td>fine-tune a small encoder; semantic search</td></tr><tr><td>7</td><td>LLMs, prompting, RAG, evaluation</td><td>LLM extraction with validation; a RAG assistant</td></tr><tr><td>8</td><td>Production: serving, monitoring, safety</td><td>deploy one model behind FastAPI with logging</td></tr></table>
+    </section>
+
+    <!-- 47 -->
+    <section class="block" id="resources">
+      <h2><span class="num">47</span> Resources</h2>
+<div class="callout life"><strong>Picture:</strong> The best next books, courses and papers.</div><ul class="resources"><li><span class="tag docs">docs</span> <a href="https://huggingface.co/learn/llm-course">Hugging Face course (Transformers, tokenizers, fine-tuning)</a></li><li><span class="tag docs">docs</span> <a href="https://huggingface.co/docs/transformers/index">Hugging Face Transformers documentation</a></li><li><span class="tag docs">docs</span> <a href="https://www.sbert.net/">Sentence Transformers documentation</a></li><li><span class="tag docs">docs</span> <a href="https://spacy.io/usage">spaCy usage guides</a></li><li><span class="tag docs">docs</span> <a href="https://www.nltk.org/">NLTK</a></li><li><span class="tag docs">docs</span> <a href="https://scikit-learn.org/stable/modules/feature_extraction.html">scikit-learn text feature extraction</a></li><li><span class="tag paper">paper</span> <a href="https://arxiv.org/abs/1301.3781">word2vec (Mikolov et al., 2013)</a></li><li><span class="tag paper">paper</span> <a href="https://arxiv.org/abs/1706.03762">Attention Is All You Need (Vaswani et al., 2017)</a></li><li><span class="tag paper">paper</span> <a href="https://arxiv.org/abs/1810.04805">BERT (Devlin et al., 2018)</a></li><li><span class="tag article">article</span> <a href="https://jalammar.github.io/illustrated-transformer/">The Illustrated Transformer (Jay Alammar)</a></li><li><span class="tag article">article</span> <a href="https://ai4bharat.iitm.ac.in/">AI4Bharat: Indian-language AI resources</a></li><li><span class="tag video">video</span> <a href="https://www.youtube.com/results?search_query=natural+language+processing+full+course">YouTube search: NLP full course</a></li><li><span class="tag video">video</span> <a href="https://www.youtube.com/results?search_query=transformer+neural+network+explained">YouTube search: Transformer explained</a></li></ul><h3>Good to know</h3><ul><li>Related guides: <a href="llm.html">LLMs</a>, <a href="rag.html">RAG</a>, <a href="ai-agents.html">AI Agents</a>, <a href="langchain.html">LangChain</a>, <a href="computer-vision.html">Computer Vision</a>, <a href="mlops-llmops.html">MLOps &amp; LLMOps</a>.</li></ul>
+    </section>
+  </main>
+</div>
+
+<div class="page-nav">
+  <a href="index.html">⬅ Back to Roadmap Home</a>
+  <a href="deep-learning.html">Related: Deep Learning ➜</a>
+</div>
+
+</body>
+</html>

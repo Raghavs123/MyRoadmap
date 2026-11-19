@@ -20,19 +20,20 @@
 <p style="text-align:center;margin:18px 0 0;color:var(--text-dim)">⚡ One-page cheat sheets: <a href="rag-cheatsheet.html">RAG</a> <span style="opacity:.6">(more subjects coming)</span></p>
 
 <nav class="home-nav" aria-label="Sections">
-  <a href="#programming">💻 Programming Languages <span class="count">3</span></a>
+  <a href="#programming">💻 Programming Languages <span class="count">4</span></a>
   <a href="#cs-core">🎓 Computer Science Subjects <span class="count">4</span></a>
   <a href="#dsa">🧩 DSA & Problem Solving <span class="count">2</span></a>
   <a href="#system-design">🏗️ System Design <span class="count">2</span></a>
-  <a href="#ai-ml">🧠 AI, Machine Learning & Deep Learning <span class="count">4</span></a>
+  <a href="#ai-ml">🧠 AI, Machine Learning & Deep Learning <span class="count">6</span></a>
   <a href="#genai">✨ Generative AI, LLMs & Agents <span class="count">9</span></a>
   <a href="#web">🌐 Web & Backend Development <span class="count">1</span></a>
   <a href="#devops">♾️ DevOps, Cloud & MLOps <span class="count">7</span></a>
+  <a href="#projects">🛠️ Projects (Build From Scratch) <span class="count">1</span></a>
 </nav>
 
 <div class="home-sections">
 <section class="home-section" id="programming">
-  <h2>💻 Programming Languages <span class="count">3 guides</span></h2>
+  <h2>💻 Programming Languages <span class="count">4 guides</span></h2>
   <p class="section-desc">Learn to code: the languages used throughout the other guides.</p>
 <div class="subject-grid">
 
@@ -54,6 +55,13 @@
     <div class="icon">☕</div>
     <h3>Java (OOP, Collections &amp; Enterprise)</h3>
     <p>Java from the JVM to Java 25; detailed OOP; the Collections Framework side by side with its C++ STL twins; JDBC, Servlets, JSP, Jakarta EE (J2EE), JPA, Spring and Spring Boot; 105 sections, all code compiled and run (embedded Tomcat, H2, a tested Spring Boot REST app).</p>
+    <span class="status-pill ready">✅ Ready</span>
+  </a>
+
+  <a class="subject-card" href="sap-abap.html">
+    <div class="icon">🏢</div>
+    <h3>SAP ABAP</h3>
+    <p>SAP's business language from first REPORT to ABAP Cloud: landscape and tools, data types, internal tables, ABAP Objects, DDIC, ABAP SQL, CDS, AMDP, LUW, locks, authorizations, ALV, BAPIs, RFC, IDocs, RAP with Fiori elements, clean core, ABAP Unit, ATC; plus a complete step-by-step project: a Sales Order Monitoring System with an ALV report (with a start-to-end summary); 87 sections. ABAP code shown as templates (no SAP system); ABAP behaviour shown with 18 real Python simulations.</p>
     <span class="status-pill ready">✅ Ready</span>
   </a>
 
@@ -141,7 +149,7 @@
 </section>
 
 <section class="home-section" id="ai-ml">
-  <h2>🧠 AI, Machine Learning & Deep Learning <span class="count">4 guides</span></h2>
+  <h2>🧠 AI, Machine Learning & Deep Learning <span class="count">6 guides</span></h2>
   <p class="section-desc">From the ideas of AI to training real models with Python frameworks.</p>
 <div class="subject-grid">
 
@@ -170,6 +178,20 @@
     <div class="icon">🔥</div>
     <h3>TensorFlow &amp; PyTorch</h3>
     <p>Both deep-learning frameworks side by side: tensors, autograd vs GradientTape, eager vs graph, nn.Module and Keras, training loops, DataLoader and tf.data, CNN/LSTM/attention, saving, ONNX/TFLite, Keras 3 backends, an API Rosetta table, identical models and real CPU benchmarks. 81 sections, every example run for real.</p>
+    <span class="status-pill ready">✅ Ready</span>
+  </a>
+
+  <a class="subject-card" href="nlp.html">
+    <div class="icon">💬</div>
+    <h3>Natural Language Processing (NLP)</h3>
+    <p>Teaching computers to read: Unicode and cleaning, tokenizers (BPE from scratch, WordPiece vs SentencePiece on Hindi/Hinglish), TF-IDF, n-gram models, classifiers and metrics, HMM tagging, NER, word vectors, LSTMs, attention, a tiny GPT trained on a laptop, BERT/GPT/T5, semantic search, multilingual, zero-shot, bias, deployment. 47 sections, 26 programs run for real (honest failures kept).</p>
+    <span class="status-pill ready">✅ Ready</span>
+  </a>
+
+  <a class="subject-card" href="computer-vision.html">
+    <div class="icon">👁️</div>
+    <h3>Computer Vision (CV)</h3>
+    <p>Teaching computers to see: pixels and colour spaces, histograms, thresholding, convolution, filters, edges, morphology, homography, keypoints, HOG, CNNs, augmentation, ViT, detection (IoU, NMS, mAP), a tiny U-Net, optical flow, tracking, stereo depth, adversarial robustness, quantization. 49 sections, 27 programs run for real with their result pictures.</p>
     <span class="status-pill ready">✅ Ready</span>
   </a>
 
@@ -313,6 +335,21 @@
     <div class="icon">🏭</div>
     <h3>MLOps &amp; LLMOps</h3>
     <p>Running AI in the real world: data versioning and validation, leakage, feature stores, experiment tracking, pipelines, registries, testing, serving, rollouts and A/B tests, drift and retraining; then LLMOps: prompts as code, eval sets and LLM-as-judge, RAG ops, LoRA, vLLM and batching, token cost, caching, routing, guardrails, tracing; 76 sections, real scikit-learn/PyTorch runs (LLMs in demos are labelled stand-ins).</p>
+    <span class="status-pill ready">✅ Ready</span>
+  </a>
+
+</div>
+</section>
+
+<section class="home-section" id="projects">
+  <h2>🛠️ Projects (Build From Scratch) <span class="count">1 project</span></h2>
+  <p class="section-desc">Résumé projects you build yourself from an empty folder: every file, every command, every checkpoint.</p>
+<div class="subject-grid">
+
+  <a class="subject-card" href="projects/semantic-faq-cache.html">
+    <div class="icon">🛠️</div>
+    <h3>Semantic Cache for an FAQ Bot</h3>
+    <p>A 3-day GenAI résumé project, step by step: embeddings, FAISS/NumPy vector search, a semantic cache with negation and personal-data guards and TTL, any LLM on a miss (offline stand-in by default), FastAPI, pytest, CI and Docker; honest evaluation with a dev/test split (20/100 hits, 0 false hits). Every file shown in full with a copy button; every checkpoint really run.</p>
     <span class="status-pill ready">✅ Ready</span>
   </a>
 
