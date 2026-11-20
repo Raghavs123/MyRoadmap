@@ -28,7 +28,7 @@
   <a href="#genai">✨ Generative AI, LLMs & Agents <span class="count">9</span></a>
   <a href="#web">🌐 Web & Backend Development <span class="count">1</span></a>
   <a href="#devops">♾️ DevOps, Cloud & MLOps <span class="count">7</span></a>
-  <a href="#projects">🛠️ Projects (Build From Scratch) <span class="count">1</span></a>
+  <a href="#projects">🛠️ Projects (Build From Scratch) <span class="count">2</span></a>
 </nav>
 
 <div class="home-sections">
@@ -342,7 +342,7 @@
 </section>
 
 <section class="home-section" id="projects">
-  <h2>🛠️ Projects (Build From Scratch) <span class="count">1 project</span></h2>
+  <h2>🛠️ Projects (Build From Scratch) <span class="count">2 projects</span></h2>
   <p class="section-desc">Résumé projects you build yourself from an empty folder: every file, every command, every checkpoint.</p>
 <div class="subject-grid">
 
@@ -350,6 +350,13 @@
     <div class="icon">🛠️</div>
     <h3>Semantic Cache for an FAQ Bot</h3>
     <p>A 3-day GenAI résumé project, step by step: embeddings, FAISS/NumPy vector search, a semantic cache with negation and personal-data guards and TTL, any LLM on a miss (offline stand-in by default), FastAPI, pytest, CI and Docker; honest evaluation with a dev/test split (20/100 hits, 0 false hits). Every file shown in full with a copy button; every checkpoint really run.</p>
+    <span class="status-pill ready">✅ Ready</span>
+  </a>
+
+  <a class="subject-card" href="projects/llm-router.html">
+    <div class="icon">🔀</div>
+    <h3>LLM Router (Small vs Big Model)</h3>
+    <p>A 3-day GenAI résumé project, step by step: a small model labels each question EASY or HARD, easy ones stay on the small model, hard ones go to the big one, and the whole thing is measured. Two real open models (Qwen2.5 0.5B and 3B) on a laptop CPU, an LLM judge checked by hand on all 80 answers, a stricter judge v2, two improved routers tested on a hold-out set, resumable result caches, FastAPI, pytest and CI. Honest result: on a CPU, routing overhead ate most of the savings. Every file shown in full; every checkpoint really run.</p>
     <span class="status-pill ready">✅ Ready</span>
   </a>
 
