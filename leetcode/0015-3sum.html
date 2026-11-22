@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LeetCode 15. 3Sum - C++, Java, Python solutions</title>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="lc.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧩</text></svg>">
+</head>
+<body>
+
+<header class="hero">
+  <div class="breadcrumb"><a href="../index.html">🏠 Roadmap Home</a> / <a href="index.html">LeetCode</a> / 15. 3Sum</div>
+  <h1>🧩 15. 3Sum</h1>
+  <p class="subtitle">Find all different triples of numbers that add up to zero. Full solutions in <strong>C++, Java and Python</strong>, from brute force to the most optimized approach, with step-by-step dry runs. <strong>Last reviewed: 19 November 2026</strong> (code tested on 22 November 2026).</p>
+  <div class="badge-row"><span class="diff Medium">Medium</span><span class="badge intermediate">Array</span><span class="badge intermediate">Two Pointers</span><span class="badge intermediate">Sorting</span></div>
+  <p><a class="lc-button" href="https://leetcode.com/problems/3sum/" target="_blank" rel="noopener">Open on LeetCode ↗</a></p>
+</header>
+<div class="layout">
+  <nav class="toc"><h3>On this page (12 sections)</h3><ol><li><a href="#statement">📝 Problem Statement</a></li><li><a href="#examples">💡 Examples and Constraints</a></li><li><a href="#think">🧠 How to Think About It (in Easy Words)</a></li><li><a href="#approach-1">🚀 Approach 1: Brute Force: Three Loops and a Set to Remove Repeats</a></li><li><a href="#approach-2">🚀 Approach 2: Sort, Then Two Pointers (Most Optimized)</a></li><li><a href="#approach-3">🚀 Approach 3: Sort, Then a Hash Set Instead of Two Pointers</a></li><li><a href="#compare">⚖️ Comparing the Approaches</a></li><li><a href="#insights">🔑 Key Insights</a></li><li><a href="#tests">🧪 Test Report (Run for Real)</a></li><li><a href="#mistakes">⚠️ Common Mistakes</a></li><li><a href="#related">🔭 Further Exploration: Related Problems</a></li><li><a href="#references">🔗 References and Tags</a></li></ol></nav>
+  <main>
+<section class="block" id="statement"><h2><span class="num">1</span> 📝 Problem Statement</h2><div class="callout tip"><strong>Wording note:</strong> LeetCode's own problem text is their copyright, so this page re-states the problem <em>in my own words</em> with the same task, the same examples and the same constraints (as I know them). For LeetCode's exact wording, open the official problem: <a href="https://leetcode.com/problems/3sum/">LeetCode 15. 3Sum</a> (the site blocks automated link checks, so this link was not verified by a script).</div><p><a class="lc-button" href="https://leetcode.com/problems/3sum/" target="_blank" rel="noopener">Open on LeetCode ↗</a></p><div class="statement"><p><span class="diff Medium">Medium</span> &nbsp; Topics: Array, Two Pointers, Sorting</p><p>Given an integer array <code>nums</code>, return <strong>all</strong> triplets <code>[nums[i], nums[j], nums[k]]</code> such that <code>i</code>, <code>j</code> and <code>k</code> are three different positions and <code>nums[i] + nums[j] + nums[k] == 0</code>.</p>
+<p>The answer must not contain the <strong>same triplet twice</strong> (two triplets are the same if they have the same numbers, whatever the order). You may return the triplets in any order.</p></div></section><section class="block" id="examples"><h2><span class="num">2</span> 💡 Examples and Constraints</h2><div class="example"><div class="label">Example 1</div><p><strong>Input:</strong> <code>nums = [-1,0,1,2,-1,-4]</code><br><strong>Output:</strong> <code>[[-1,-1,2],[-1,0,1]]</code><br><strong>Explanation:</strong> Two different triplets add up to 0: (-1) + 0 + 1 and (-1) + (-1) + 2. Although there are two -1 values, the triplet [-1,0,1] is listed only once.</p></div><div class="example"><div class="label">Example 2</div><p><strong>Input:</strong> <code>nums = [0,1,1]</code><br><strong>Output:</strong> <code>[]</code><br><strong>Explanation:</strong> The only possible triplet is 0 + 1 + 1 = 2, which is not 0.</p></div><div class="example"><div class="label">Example 3</div><p><strong>Input:</strong> <code>nums = [0,0,0]</code><br><strong>Output:</strong> <code>[[0,0,0]]</code><br><strong>Explanation:</strong> 0 + 0 + 0 = 0.</p></div><details class="deepdive" open><summary>📖 Example breakdown (Example 1), step by step</summary><ul><li>Sort the numbers: <code>[-4,-1,-1,0,1,2]</code>.</li><li>First number -4: the rest would have to add up to 4, but the biggest pair is 1 + 2 = 3. No triple.</li><li>First number -1 (the first copy): left finger on -1, right finger on 2: -1 + -1 + 2 = 0. Save <code>[-1,-1,2]</code>. Move both fingers. Now 0 and 1: -1 + 0 + 1 = 0. Save <code>[-1,0,1]</code>.</li><li>First number -1 again (the second copy): it equals the previous first number, so skip it; otherwise we would find the same triples again.</li><li>First number 0: only 1 and 2 are left to its right and 0 + 1 + 2 = 3, not 0, so there are no more triples. The answer is the two saved triples.</li><li><strong>Result:</strong> <code>[[-1,-1,2],[-1,0,1]]</code> ✅ (the expected output of Example 1)</li></ul></details><h3>⚠️ Constraints</h3><ul><li><code>3 &lt;= nums.length &lt;= 3000</code></li><li><code>-10<sup>5</sup> &lt;= nums[i] &lt;= 10<sup>5</sup></code></li></ul></section><section class="block" id="think"><h2><span class="num">3</span> 🧠 How to Think About It (in Easy Words)</h2><div class="callout life">The hard part is not finding triples that add to zero but <strong>not repeating</strong> them. Sorting the numbers solves both problems. Fix the smallest number <code>a</code> of the triple; then you only need two other numbers that add up to <code>-a</code>, and in a sorted list you can find such a pair by walking two fingers inwards (too small: move the left finger right, too big: move the right finger left). Equal neighbours are skipped so the same triple is never produced twice.</div><p>Below you will find <strong>3 approaches</strong>, from the simplest (brute force) to the best. Each one has the idea in plain words, its speed and memory cost, the code in <strong>C++, Java and Python</strong> (click the tabs; your choice is remembered), and a <strong>step-by-step dry run</strong> on a small input.</p></section><section class="block" id="approach-1"><h2><span class="num">4</span> 🚀 Approach 1: Brute Force: Three Loops and a Set to Remove Repeats</h2><p class="meta"><span class="level">Brute force</span></p><h3>💡 Intuition</h3><p>Sort the array, try every triple of positions <code>i &lt; j &lt; k</code>, and put every triple that sums to 0 into a set. Because the array is sorted, equal triples look exactly the same and the set throws the repeats away.</p><div class="callout life">Try every possible trio of friends and write the lucky ones in a notebook that refuses duplicate lines.</div><h3>🪜 Algorithm, Step by Step</h3><ol><li>Sort the array (so equal triples look identical).</li><li>Try every triple of positions <code>i &lt; j &lt; k</code>.</li><li>If the three numbers add up to 0, insert the triple into a set.</li><li>Return the contents of the set.</li></ol><h3>⏱️ Complexity</h3><table class=""><tr><th></th><th>Cost</th><th>Why</th></tr><tr><td>Time</td><td>O(n<sup>3</sup>)</td><td>three nested loops look at about n<sup>3</sup> / 6 triples (4,495,501,000 for n = 3000)</td></tr><tr><td>Space</td><td>O(number of answers)</td><td>the set holds the answers</td></tr></table><table class=""><tr><th>Good side</th><th>Weak side</th></tr><tr><td>Obviously correct.</td><td>For n = 3000 that is about 4.5 billion triples: much too slow.</td></tr></table><h3>💻 Code</h3><div class="code-box"><div class="lang-tabs"><button data-lang="cpp">C++</button><button data-lang="java">Java</button><button data-lang="py">Python</button><button class="copy">Copy</button></div><pre class="lang-code" data-lang="cpp"><code>class Solution {
+public:
+    vector&lt;vector&lt;int&gt;&gt; threeSum(vector&lt;int&gt;&amp; nums) {
+        sort(nums.begin(), nums.end());                        // sorted triples make equal triples look identical
+        int n = nums.size();
+        set&lt;vector&lt;int&gt;&gt; found;                                // a set keeps every triple only once
+        for (int i = 0; i &lt; n; i++)
+            for (int j = i + 1; j &lt; n; j++)
+                for (int k = j + 1; k &lt; n; k++)
+                    if (nums[i] + nums[j] + nums[k] == 0)
+                        found.insert({nums[i], nums[j], nums[k]});
+        return vector&lt;vector&lt;int&gt;&gt;(found.begin(), found.end());
+    }
+};</code></pre><pre class="lang-code" data-lang="java"><code>class Solution {
+    public List&lt;List&lt;Integer&gt;&gt; threeSum(int[] nums) {
+        Arrays.sort(nums);                                     // sorted triples make equal triples look identical
+        int n = nums.length;
+        Set&lt;List&lt;Integer&gt;&gt; found = new HashSet&lt;&gt;();            // a set keeps every triple only once
+        for (int i = 0; i &lt; n; i++)
+            for (int j = i + 1; j &lt; n; j++)
+                for (int k = j + 1; k &lt; n; k++)
+                    if (nums[i] + nums[j] + nums[k] == 0)
+                        found.add(Arrays.asList(nums[i], nums[j], nums[k]));
+        return new ArrayList&lt;&gt;(found);
+    }
+}</code></pre><pre class="lang-code" data-lang="py"><code>class Solution:
+    def threeSum(self, nums: List[int]) -&gt; List[List[int]]:
+        nums.sort()                                     # sorted triples make equal triples look identical
+        n = len(nums)
+        found = set()                                   # a set keeps every triple only once
+        for i in range(n):
+            for j in range(i + 1, n):
+                for k in range(j + 1, n):
+                    if nums[i] + nums[j] + nums[k] == 0:
+                        found.add((nums[i], nums[j], nums[k]))
+        return [list(t) for t in found]</code></pre></div><details class="deepdive" open><summary>🔍 Step-by-step dry run (computed by running the algorithm)</summary><p><strong>Sample:</strong> <code>nums = [-1, 0, 1, 2, -1, -4]</code></p><div style="overflow-x:auto"><table class="trace-table"><tr><th>positions</th><th>numbers (sorted array)</th><th>sum</th><th>result</th></tr><tr><td>(1, 2, 5)</td><td>-1 + -1 + 2</td><td>0</td><td>new triplet: add to the set</td></tr><tr><td>(1, 3, 4)</td><td>-1 + 0 + 1</td><td>0</td><td>new triplet: add to the set</td></tr><tr><td>(2, 3, 4)</td><td>-1 + 0 + 1</td><td>0</td><td>already in the set: ignored</td></tr></table></div><p><strong>Result:</strong> <code>[[-1, -1, 2], [-1, 0, 1]]</code> Sorted array: [-4, -1, -1, 0, 1, 2]. Only the triples whose sum is 0 are shown (the other 17 are checked silently).</p></details></section><section class="block" id="approach-2"><h2><span class="num">5</span> 🚀 Approach 2: Sort, Then Two Pointers (Most Optimized)</h2><p class="meta"><span class="level">Most optimized</span></p><h3>💡 Intuition</h3><p>Sort the array. For each position <code>i</code> (skipping a value equal to the previous one) look for two numbers to the right of it that add up to <code>-nums[i]</code> with two pointers <code>left</code> and <code>right</code>. When the sum is too small move <code>left</code>; when it is too big move <code>right</code>; when it is 0 save the triple and move both pointers past all equal values.</p><div class="callout life">Pick the smallest friend of the trio, then let two other friends walk towards each other from the ends of the sorted line until their total is just right.</div><h3>🪜 Algorithm, Step by Step</h3><ol><li>Sort the array.</li><li>For each position <code>i</code> (stop when <code>nums[i] &gt; 0</code>, skip a value equal to the previous one) put <code>left = i + 1</code> and <code>right = n - 1</code>.</li><li>While <code>left &lt; right</code>: if the sum is below 0 move <code>left</code>, if above 0 move <code>right</code>.</li><li>On a hit save the triple, move both pointers, and skip over equal numbers on both sides.</li></ol><h3>⏱️ Complexity</h3><table class=""><tr><th></th><th>Cost</th><th>Why</th></tr><tr><td>Time</td><td>O(n<sup>2</sup>)</td><td>sorting costs O(n log n) and the two-pointer walk for each of the n first numbers costs O(n)</td></tr><tr><td>Space</td><td>O(1) extra (O(log n) for the sort)</td><td>the output list aside, only a few variables (the sort may use O(log n) extra)</td></tr></table><table class=""><tr><th>Good side</th><th>Weak side</th></tr><tr><td>No set and no repeats by construction; only about n * n / 2 steps.</td><td>The three 'skip duplicates' rules are easy to get wrong.</td></tr></table><h3>💻 Code</h3><div class="code-box"><div class="lang-tabs"><button data-lang="cpp">C++</button><button data-lang="java">Java</button><button data-lang="py">Python</button><button class="copy">Copy</button></div><pre class="lang-code" data-lang="cpp"><code>class Solution {
+public:
+    vector&lt;vector&lt;int&gt;&gt; threeSum(vector&lt;int&gt;&amp; nums) {
+        sort(nums.begin(), nums.end());
+        int n = nums.size();
+        vector&lt;vector&lt;int&gt;&gt; out;
+        for (int i = 0; i + 2 &lt; n; i++) {
+            if (nums[i] &gt; 0) break;                            // the smallest number is positive: no more zero sums
+            if (i &gt; 0 &amp;&amp; nums[i] == nums[i - 1]) continue;     // same first number as before: would repeat triples
+            int left = i + 1, right = n - 1;
+            while (left &lt; right) {
+                int sum = nums[i] + nums[left] + nums[right];
+                if (sum &lt; 0) left++;                           // too small: need a bigger number
+                else if (sum &gt; 0) right--;                     // too big: need a smaller number
+                else {
+                    out.push_back({nums[i], nums[left], nums[right]});
+                    left++; right--;
+                    while (left &lt; right &amp;&amp; nums[left] == nums[left - 1]) left++;      // skip equal numbers
+                    while (left &lt; right &amp;&amp; nums[right] == nums[right + 1]) right--;
+                }
+            }
+        }
+        return out;
+    }
+};</code></pre><pre class="lang-code" data-lang="java"><code>class Solution {
+    public List&lt;List&lt;Integer&gt;&gt; threeSum(int[] nums) {
+        Arrays.sort(nums);
+        int n = nums.length;
+        List&lt;List&lt;Integer&gt;&gt; out = new ArrayList&lt;&gt;();
+        for (int i = 0; i + 2 &lt; n; i++) {
+            if (nums[i] &gt; 0) break;                            // the smallest number is positive: no more zero sums
+            if (i &gt; 0 &amp;&amp; nums[i] == nums[i - 1]) continue;     // same first number as before: would repeat triples
+            int left = i + 1, right = n - 1;
+            while (left &lt; right) {
+                int sum = nums[i] + nums[left] + nums[right];
+                if (sum &lt; 0) left++;                           // too small: need a bigger number
+                else if (sum &gt; 0) right--;                     // too big: need a smaller number
+                else {
+                    out.add(Arrays.asList(nums[i], nums[left], nums[right]));
+                    left++; right--;
+                    while (left &lt; right &amp;&amp; nums[left] == nums[left - 1]) left++;      // skip equal numbers
+                    while (left &lt; right &amp;&amp; nums[right] == nums[right + 1]) right--;
+                }
+            }
+        }
+        return out;
+    }
+}</code></pre><pre class="lang-code" data-lang="py"><code>class Solution:
+    def threeSum(self, nums: List[int]) -&gt; List[List[int]]:
+        nums.sort()
+        n = len(nums)
+        out = []
+        for i in range(n - 2):
+            if nums[i] &gt; 0:
+                break                                   # the smallest number is positive: no more zero sums
+            if i &gt; 0 and nums[i] == nums[i - 1]:
+                continue                                # same first number as before: would repeat triples
+            left, right = i + 1, n - 1
+            while left &lt; right:
+                total = nums[i] + nums[left] + nums[right]
+                if total &lt; 0:
+                    left += 1                           # too small: need a bigger number
+                elif total &gt; 0:
+                    right -= 1                          # too big: need a smaller number
+                else:
+                    out.append([nums[i], nums[left], nums[right]])
+                    left += 1
+                    right -= 1
+                    while left &lt; right and nums[left] == nums[left - 1]:      # skip equal numbers
+                        left += 1
+                    while left &lt; right and nums[right] == nums[right + 1]:
+                        right -= 1
+        return out</code></pre></div><details class="deepdive" open><summary>🔍 Step-by-step dry run (computed by running the algorithm)</summary><p><strong>Sample:</strong> <code>nums = [-1, 0, 1, 2, -1, -4]</code></p><div style="overflow-x:auto"><table class="trace-table"><tr><th>i</th><th>first number</th><th>left (index: value)</th><th>right (index: value)</th><th>sum</th><th>action</th></tr><tr><td>0</td><td>-4</td><td>1: -1</td><td>5: 2</td><td>-3</td><td>too small: left++</td></tr><tr><td>0</td><td>-4</td><td>2: -1</td><td>5: 2</td><td>-3</td><td>too small: left++</td></tr><tr><td>0</td><td>-4</td><td>3: 0</td><td>5: 2</td><td>-2</td><td>too small: left++</td></tr><tr><td>0</td><td>-4</td><td>4: 1</td><td>5: 2</td><td>-1</td><td>too small: left++</td></tr><tr><td>1</td><td>-1</td><td>2: -1</td><td>5: 2</td><td>0</td><td>sum is 0: save the triplet</td></tr><tr><td>1</td><td>-1</td><td>3: 0</td><td>4: 1</td><td>0</td><td>sum is 0: save the triplet</td></tr><tr><td>2</td><td>-1</td><td>-</td><td>-</td><td>-</td><td>same as the previous first number: skip</td></tr><tr><td>3</td><td>0</td><td>4: 1</td><td>5: 2</td><td>3</td><td>too big: right--</td></tr></table></div><p><strong>Result:</strong> <code>[[-1, -1, 2], [-1, 0, 1]]</code> Sorted array: [-4, -1, -1, 0, 1, 2].</p></details></section><section class="block" id="approach-3"><h2><span class="num">6</span> 🚀 Approach 3: Sort, Then a Hash Set Instead of Two Pointers</h2><p class="meta"><span class="level">Optimized (alternative)</span></p><h3>💡 Intuition</h3><p>Sort the array. For each first number <code>nums[i]</code> walk <code>j</code> to the right and keep a set of the numbers already passed. The number that completes the sum is <code>need = -nums[i] - nums[j]</code>; if it is in the set, you found a triple. After a hit, skip equal numbers at <code>j</code> so the triple is not repeated.</p><div class="callout life">Instead of two walkers meeting in the middle, keep a list of everyone you have already met and ask: is the friend I need on that list?</div><h3>🪜 Algorithm, Step by Step</h3><ol><li>Sort the array.</li><li>For each <code>i</code> (skip repeated first numbers) start with an empty set <code>seen</code>.</li><li>For each <code>j</code> to the right compute <code>need = -nums[i] - nums[j]</code>; if <code>need</code> is in <code>seen</code> save <code>[nums[i], need, nums[j]]</code> and skip equal numbers at <code>j</code>.</li><li>Add <code>nums[j]</code> to <code>seen</code> and continue.</li></ol><h3>⏱️ Complexity</h3><table class=""><tr><th></th><th>Cost</th><th>Why</th></tr><tr><td>Time</td><td>O(n<sup>2</sup>)</td><td>sorting plus, for each first number, one pass with O(1) set operations</td></tr><tr><td>Space</td><td>O(n)</td><td>the set can hold up to n numbers</td></tr></table><table class=""><tr><th>Good side</th><th>Weak side</th></tr><tr><td>A good alternative that shows the 'Two Sum with a hash set' idea inside 3Sum.</td><td>Uses extra memory for the set, and is usually a little slower than two pointers.</td></tr></table><h3>💻 Code</h3><div class="code-box"><div class="lang-tabs"><button data-lang="cpp">C++</button><button data-lang="java">Java</button><button data-lang="py">Python</button><button class="copy">Copy</button></div><pre class="lang-code" data-lang="cpp"><code>class Solution {
+public:
+    vector&lt;vector&lt;int&gt;&gt; threeSum(vector&lt;int&gt;&amp; nums) {
+        sort(nums.begin(), nums.end());
+        int n = nums.size();
+        vector&lt;vector&lt;int&gt;&gt; out;
+        for (int i = 0; i + 2 &lt; n &amp;&amp; nums[i] &lt;= 0; i++) {
+            if (i &gt; 0 &amp;&amp; nums[i] == nums[i - 1]) continue;     // same first number as before: would repeat triples
+            unordered_set&lt;int&gt; seen;                           // numbers already passed to the right of i
+            for (int j = i + 1; j &lt; n; j++) {
+                int need = -nums[i] - nums[j];
+                if (seen.count(need)) {
+                    out.push_back({nums[i], need, nums[j]});   // need &lt;= nums[j] because the array is sorted
+                    while (j + 1 &lt; n &amp;&amp; nums[j] == nums[j + 1]) j++;   // skip equal numbers
+                }
+                seen.insert(nums[j]);
+            }
+        }
+        return out;
+    }
+};</code></pre><pre class="lang-code" data-lang="java"><code>class Solution {
+    public List&lt;List&lt;Integer&gt;&gt; threeSum(int[] nums) {
+        Arrays.sort(nums);
+        int n = nums.length;
+        List&lt;List&lt;Integer&gt;&gt; out = new ArrayList&lt;&gt;();
+        for (int i = 0; i + 2 &lt; n &amp;&amp; nums[i] &lt;= 0; i++) {
+            if (i &gt; 0 &amp;&amp; nums[i] == nums[i - 1]) continue;     // same first number as before: would repeat triples
+            Set&lt;Integer&gt; seen = new HashSet&lt;&gt;();               // numbers already passed to the right of i
+            for (int j = i + 1; j &lt; n; j++) {
+                int need = -nums[i] - nums[j];
+                if (seen.contains(need)) {
+                    out.add(Arrays.asList(nums[i], need, nums[j]));   // need &lt;= nums[j] because the array is sorted
+                    while (j + 1 &lt; n &amp;&amp; nums[j] == nums[j + 1]) j++;   // skip equal numbers
+                }
+                seen.add(nums[j]);
+            }
+        }
+        return out;
+    }
+}</code></pre><pre class="lang-code" data-lang="py"><code>class Solution:
+    def threeSum(self, nums: List[int]) -&gt; List[List[int]]:
+        nums.sort()
+        n = len(nums)
+        out = []
+        for i in range(n - 2):
+            if nums[i] &gt; 0:
+                break
+            if i &gt; 0 and nums[i] == nums[i - 1]:
+                continue                                # same first number as before: would repeat triples
+            seen = set()                                # numbers already passed to the right of i
+            j = i + 1
+            while j &lt; n:
+                need = -nums[i] - nums[j]
+                if need in seen:
+                    out.append([nums[i], need, nums[j]])      # need &lt;= nums[j] because the array is sorted
+                    while j + 1 &lt; n and nums[j] == nums[j + 1]:    # skip equal numbers
+                        j += 1
+                seen.add(nums[j])
+                j += 1
+        return out</code></pre></div><details class="deepdive" open><summary>🔍 Step-by-step dry run (computed by running the algorithm)</summary><p><strong>Sample:</strong> <code>nums = [-1, 0, 1, 2, -1, -4]</code></p><div style="overflow-x:auto"><table class="trace-table"><tr><th>i</th><th>first number</th><th>j (index: value)</th><th>need = -first - nums[j]</th><th>set before this step</th><th>action</th></tr><tr><td>0</td><td>-4</td><td>1: -1</td><td>5</td><td>[]</td><td>need is not in the set</td></tr><tr><td>0</td><td>-4</td><td>2: -1</td><td>5</td><td>[-1]</td><td>need is not in the set</td></tr><tr><td>0</td><td>-4</td><td>3: 0</td><td>4</td><td>[-1]</td><td>need is not in the set</td></tr><tr><td>0</td><td>-4</td><td>4: 1</td><td>3</td><td>[-1, 0]</td><td>need is not in the set</td></tr><tr><td>0</td><td>-4</td><td>5: 2</td><td>2</td><td>[-1, 0, 1]</td><td>need is not in the set</td></tr><tr><td>1</td><td>-1</td><td>2: -1</td><td>2</td><td>[]</td><td>need is not in the set</td></tr><tr><td>1</td><td>-1</td><td>3: 0</td><td>1</td><td>[-1]</td><td>need is not in the set</td></tr><tr><td>1</td><td>-1</td><td>4: 1</td><td>0</td><td>[-1, 0]</td><td>need is in the set: save the triplet</td></tr><tr><td>1</td><td>-1</td><td>5: 2</td><td>-1</td><td>[-1, 0, 1]</td><td>need is in the set: save the triplet</td></tr><tr><td>2</td><td>-1</td><td>-</td><td>-</td><td>-</td><td>same as the previous first number: skip</td></tr><tr><td>3</td><td>0</td><td>4: 1</td><td>-1</td><td>[]</td><td>need is not in the set</td></tr><tr><td>3</td><td>0</td><td>5: 2</td><td>-2</td><td>[1]</td><td>need is not in the set</td></tr></table></div><p><strong>Result:</strong> <code>[[-1, 0, 1], [-1, -1, 2]]</code> Sorted array: [-4, -1, -1, 0, 1, 2].</p></details></section><section class="block" id="compare"><h2><span class="num">7</span> ⚖️ Comparing the Approaches</h2><table class=""><tr><th>Approach</th><th>Level</th><th>Time</th><th>Extra space</th></tr><tr><td>1. Brute Force: Three Loops and a Set to Remove Repeats</td><td>Brute force</td><td>O(n<sup>3</sup>)</td><td>O(number of answers)</td></tr><tr><td>2. Sort, Then Two Pointers (Most Optimized)</td><td>Most optimized</td><td>O(n<sup>2</sup>)</td><td>O(1) extra (O(log n) for the sort)</td></tr><tr><td>3. Sort, Then a Hash Set Instead of Two Pointers</td><td>Optimized (alternative)</td><td>O(n<sup>2</sup>)</td><td>O(n)</td></tr></table><p><strong>Which one should I write in an interview?</strong> Start by saying the brute force out loud (it proves you understand the problem), then explain the improvement and write the <em>most optimized</em> one that you can explain clearly: Sort, Then a Hash Set Instead of Two Pointers.</p></section><section class="block" id="insights"><h2><span class="num">8</span> 🔑 Key Insights</h2><ul><li><strong>Sorting does two jobs:</strong> it lets two pointers walk inwards, and it puts equal numbers next to each other so they are easy to skip.</li><li>For nums = <code>[-1,0,1,2,-1,-4]</code> the brute force finds 3 position triples that add up to 0 but only <strong>2 different</strong> triplets, because the number -1 appears twice: this is why de-duplication matters.</li><li>For n = 3000 the brute force needs 4,495,501,000 triple checks (about 4.5 billion); the two-pointer method needs about n<sup>2</sup> / 2 = 4.5 million steps.</li><li>Skipping duplicates must happen <em>after</em> using a value once, never before, or the triple <code>[-1,-1,2]</code> would be lost.</li><li>3Sum is the same as 2Sum with one more loop around it, and <a href="0018-4sum.html">4Sum</a> adds yet another loop.</li></ul></section><section class="block" id="tests"><h2><span class="num">9</span> 🧪 Test Report (Run for Real)</h2><div class="callout warn"><strong>Not submitted to LeetCode.</strong> I cannot log in to or submit to LeetCode from here, so I cannot honestly say 'Accepted'. What I <em>can</em> say is below: every approach in every language was compiled and run on the same <strong>450 correctness tests</strong>, and the results are real. To see the green 'Accepted' yourself, paste a solution into the LeetCode editor.</div><ul><li>The tests contain LeetCode's own examples, hand-made edge cases (empty or tiny inputs, repeats, maximum values) and many random inputs checked against an independent reference answer, plus inputs of the largest size allowed by the constraints.</li><li>Tools used for this problem (22 November 2026): C++17 with g++ (Rev11, Built by MSYS2 project) 15.2.0, -std=c++17 -O2 -Wall -Wextra (<code>-static</code>, no warnings); Java: javac 25.0.1, -Xlint:all (no warnings); Python 3.14.2.</li><li><strong>The tests can fail:</strong> to be sure the tests are not empty promises, I deliberately broke the &#x27;skip a repeated first number&#x27; rule of approach 2 and the tests noticed: 231 of 450 tests failed (219 passed); the correct code passes all 450.</li><li>The code shown above is the <em>same text</em> that was tested: the test program is built from it automatically.</li></ul><table class=""><tr><th>Approach</th><th>C++ (tests passed)</th><th>Java (tests passed)</th><th>Python (tests passed)</th></tr><tr><td>1. Brute Force: Three Loops and a Set to Remove Repeats</td><td><span class="pass">450/450</span><br><span class="skip">largest input n = 400: 11.6 ms total, 2/2 ok</span></td><td><span class="pass">450/450</span><br><span class="skip">largest input n = 400: 47.5 ms total, 2/2 ok</span></td><td><span class="pass">450/450</span><br><span class="skip">largest input n = 100: 8.9 ms total, 1/1 ok</span></td></tr><tr><td>2. Sort, Then Two Pointers (Most Optimized)</td><td><span class="pass">450/450</span><br><span class="skip">largest input n = 3,000: 72.5 ms total, 7/7 ok</span></td><td><span class="pass">450/450</span><br><span class="skip">largest input n = 3,000: 89.6 ms total, 7/7 ok</span></td><td><span class="pass">450/450</span><br><span class="skip">largest input n = 3,000: 713.7 ms total, 7/7 ok</span></td></tr><tr><td>3. Sort, Then a Hash Set Instead of Two Pointers</td><td><span class="pass">450/450</span><br><span class="skip">largest input n = 3,000: 429.0 ms total, 7/7 ok</span></td><td><span class="pass">450/450</span><br><span class="skip">largest input n = 3,000: 271.4 ms total, 7/7 ok</span></td><td><span class="pass">450/450</span><br><span class="skip">largest input n = 3,000: 967.7 ms total, 7/7 ok</span></td></tr></table><p>Large inputs that an approach is <em>too slow for by design</em> were not run for it: C++ approach 1 (above n = 400); Java approach 1 (above n = 400); Python approach 1 (above n = 150). That is the point of the better approaches.</p><p>Times are from one laptop, one run each: use them to compare approaches, not to predict LeetCode's runtime numbers. The times include reading each test line in that language (C++ reads numbers with <code>istringstream</code>, which is slower than Java's tokenizer), so compare approaches <em>within one language</em>, not one language with another.</p></section><section class="block" id="mistakes"><h2><span class="num">10</span> ⚠️ Common Mistakes</h2><ul><li>Returning the same triple more than once because equal numbers were not skipped (the classic wrong answer on <code>[-1,-1,0,1,1]</code> or <code>[0,0,0,0]</code>).</li><li>Skipping duplicates <em>before</em> using them: the first copy must be used, only the <em>following</em> equal numbers are skipped (so <code>[-1,-1,2]</code> is still found).</li><li>Using the same position twice: <code>i</code>, <code>left</code> and <code>right</code> must be three different positions.</li><li>Forgetting to move <em>both</em> pointers after finding a triple.</li><li>Stopping the loop for <code>i</code> too early or not at all: once <code>nums[i] &gt; 0</code> no triple can sum to 0 (this stop is only an optimization).</li></ul></section><section class="block" id="related"><h2><span class="num">11</span> 🔭 Further Exploration: Related Problems</h2><ul><li><a href="0001-two-sum.html">LeetCode 1: Two Sum</a> <span class="skip">(solved on this site)</span></li><li><a href="0016-3sum-closest.html">LeetCode 16: 3Sum Closest</a> <span class="skip">(solved on this site)</span></li><li><a href="0018-4sum.html">LeetCode 18: 4Sum</a> <span class="skip">(solved on this site)</span></li><li>LeetCode 167: Two Sum II - Input Array Is Sorted</li></ul></section><section class="block" id="references"><h2><span class="num">12</span> 🔗 References and Tags</h2><ul><li><strong>Official problem (exact wording):</strong> <a href="https://leetcode.com/problems/3sum/" target="_blank" rel="noopener">LeetCode 15. 3Sum</a> <span class="skip">(not checked by script: leetcode.com blocks automated requests)</span></li><li><a href="https://en.wikipedia.org/wiki/3SUM">3SUM problem (Wikipedia)</a></li></ul><p><strong>Tags:</strong> <span class="diff Medium">Medium</span> <span class="tg-chip">#Array</span><span class="tg-chip">#Two Pointers</span><span class="tg-chip">#Sorting</span></p><p class="skip">Company tags are not listed: LeetCode shows them only to Premium members and other lists are unverified reports, so they could not be checked here.</p></section>
+  </main>
+</div>
+<div class="page-nav"><a href="0014-longest-common-prefix.html">⬅ 14. Longest Common Prefix</a><a href="index.html">LeetCode list</a><a href="0016-3sum-closest.html">16. 3Sum Closest ➜</a></div>
+<script src="lc.js"></script>
+</body>
+</html>

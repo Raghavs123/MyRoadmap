@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LeetCode 18. 4Sum - C++, Java, Python solutions</title>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="lc.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧩</text></svg>">
+</head>
+<body>
+
+<header class="hero">
+  <div class="breadcrumb"><a href="../index.html">🏠 Roadmap Home</a> / <a href="index.html">LeetCode</a> / 18. 4Sum</div>
+  <h1>🧩 18. 4Sum</h1>
+  <p class="subtitle">Find all different groups of four numbers that add up to a target. Full solutions in <strong>C++, Java and Python</strong>, from brute force to the most optimized approach, with step-by-step dry runs. <strong>Last reviewed: 19 November 2026</strong> (code tested on 22 November 2026).</p>
+  <div class="badge-row"><span class="diff Medium">Medium</span><span class="badge intermediate">Array</span><span class="badge intermediate">Two Pointers</span><span class="badge intermediate">Sorting</span></div>
+  <p><a class="lc-button" href="https://leetcode.com/problems/4sum/" target="_blank" rel="noopener">Open on LeetCode ↗</a></p>
+</header>
+<div class="layout">
+  <nav class="toc"><h3>On this page (12 sections)</h3><ol><li><a href="#statement">📝 Problem Statement</a></li><li><a href="#examples">💡 Examples and Constraints</a></li><li><a href="#think">🧠 How to Think About It (in Easy Words)</a></li><li><a href="#approach-1">🚀 Approach 1: Brute Force: Four Loops and a Set</a></li><li><a href="#approach-2">🚀 Approach 2: Sort, Two Loops, Then Two Pointers</a></li><li><a href="#approach-3">🚀 Approach 3: General kSum: Recursion Down to Two Sum (Most Optimized)</a></li><li><a href="#compare">⚖️ Comparing the Approaches</a></li><li><a href="#insights">🔑 Key Insights</a></li><li><a href="#tests">🧪 Test Report (Run for Real)</a></li><li><a href="#mistakes">⚠️ Common Mistakes</a></li><li><a href="#related">🔭 Further Exploration: Related Problems</a></li><li><a href="#references">🔗 References and Tags</a></li></ol></nav>
+  <main>
+<section class="block" id="statement"><h2><span class="num">1</span> 📝 Problem Statement</h2><div class="callout tip"><strong>Wording note:</strong> LeetCode's own problem text is their copyright, so this page re-states the problem <em>in my own words</em> with the same task, the same examples and the same constraints (as I know them). For LeetCode's exact wording, open the official problem: <a href="https://leetcode.com/problems/4sum/">LeetCode 18. 4Sum</a> (the site blocks automated link checks, so this link was not verified by a script).</div><p><a class="lc-button" href="https://leetcode.com/problems/4sum/" target="_blank" rel="noopener">Open on LeetCode ↗</a></p><div class="statement"><p><span class="diff Medium">Medium</span> &nbsp; Topics: Array, Two Pointers, Sorting</p><p>Given an integer array <code>nums</code> of length <code>n</code> and an integer <code>target</code>, return <strong>all different quadruplets</strong> <code>[nums[a], nums[b], nums[c], nums[d]]</code> such that:</p>
+<ul><li><code>0 &lt;= a, b, c, d &lt; n</code>, and <code>a</code>, <code>b</code>, <code>c</code>, <code>d</code> are four different positions,</li>
+<li><code>nums[a] + nums[b] + nums[c] + nums[d] == target</code>.</li></ul>
+<p>Two quadruplets with the same four numbers count as the same. You may return the answer in any order.</p></div></section><section class="block" id="examples"><h2><span class="num">2</span> 💡 Examples and Constraints</h2><div class="example"><div class="label">Example 1</div><p><strong>Input:</strong> <code>nums = [1,0,-1,0,-2,2], target = 0</code><br><strong>Output:</strong> <code>[[-2,-1,1,2],[-2,0,0,2],[-1,0,0,1]]</code><br><strong>Explanation:</strong> Three different groups of four numbers add up to 0.</p></div><div class="example"><div class="label">Example 2</div><p><strong>Input:</strong> <code>nums = [2,2,2,2,2], target = 8</code><br><strong>Output:</strong> <code>[[2,2,2,2]]</code><br><strong>Explanation:</strong> Every group of four 2s adds up to 8, but they are all the same quadruplet, so it is listed once.</p></div><details class="deepdive" open><summary>📖 Example breakdown (Example 1), step by step</summary><ul><li>Sort <code>[1,0,-1,0,-2,2]</code> to <code>[-2,-1,0,0,1,2]</code>; the target is 0.</li><li>First number -2: the other three must add up to 2. With second number -1 the last two must add to 3: fingers on 1 and 2 give 1 + 2 = 3, so <code>[-2,-1,1,2]</code>. With second number 0 the last two must add to 2: 0 and 2 give 2, so <code>[-2,0,0,2]</code>.</li><li>First number -1: second number 0, the last two must add to 1: the fingers find 0 and 1, so <code>[-1,0,0,1]</code>.</li><li>First number 0 and later ones cannot give more groups. Three different groups are returned.</li><li><strong>Result:</strong> <code>[[-2,-1,1,2],[-2,0,0,2],[-1,0,0,1]]</code> ✅ (the expected output of Example 1)</li></ul></details><h3>⚠️ Constraints</h3><ul><li><code>1 &lt;= nums.length &lt;= 200</code></li><li><code>-10<sup>9</sup> &lt;= nums[i] &lt;= 10<sup>9</sup></code></li><li><code>-10<sup>9</sup> &lt;= target &lt;= 10<sup>9</sup></code></li></ul></section><section class="block" id="think"><h2><span class="num">3</span> 🧠 How to Think About It (in Easy Words)</h2><div class="callout life">4Sum is 3Sum with one more loop, and 3Sum was 2Sum with one more loop. The pattern: <strong>sort</strong> the numbers, fix the first numbers with loops (skipping equal neighbours so you never repeat a group), and let two fingers walk inwards for the last two. One more thing is new: the numbers can be as large as a billion, so the sum of four of them does not fit in a 32-bit integer. Add them in a 64-bit variable.</div><p>Below you will find <strong>3 approaches</strong>, from the simplest (brute force) to the best. Each one has the idea in plain words, its speed and memory cost, the code in <strong>C++, Java and Python</strong> (click the tabs; your choice is remembered), and a <strong>step-by-step dry run</strong> on a small input.</p></section><section class="block" id="approach-1"><h2><span class="num">4</span> 🚀 Approach 1: Brute Force: Four Loops and a Set</h2><p class="meta"><span class="level">Brute force</span></p><h3>💡 Intuition</h3><p>Sort the array, try every group of four positions, and insert each group that adds up to <code>target</code> into a set that removes repeats. Use a 64-bit sum.</p><div class="callout life">Try every possible team of four and write down the winners in a notebook that refuses repeated lines.</div><h3>🪜 Algorithm, Step by Step</h3><ol><li>Sort the array.</li><li>Try every group of four positions <code>a &lt; b &lt; c &lt; d</code> and add the numbers in a 64-bit variable.</li><li>If the sum equals the target, insert the group into a set.</li><li>Return the contents of the set.</li></ol><h3>⏱️ Complexity</h3><table class=""><tr><th></th><th>Cost</th><th>Why</th></tr><tr><td>Time</td><td>O(n<sup>4</sup>)</td><td>four nested loops look at about n<sup>4</sup> / 24 groups (64,684,950 for n = 200)</td></tr><tr><td>Space</td><td>O(number of answers)</td><td>the set holds the answers</td></tr></table><table class=""><tr><th>Good side</th><th>Weak side</th></tr><tr><td>Almost impossible to get wrong.</td><td>For n = 200 there are about 64 million groups to test (and a set insertion for each match).</td></tr></table><h3>💻 Code</h3><div class="code-box"><div class="lang-tabs"><button data-lang="cpp">C++</button><button data-lang="java">Java</button><button data-lang="py">Python</button><button class="copy">Copy</button></div><pre class="lang-code" data-lang="cpp"><code>class Solution {
+public:
+    vector&lt;vector&lt;int&gt;&gt; fourSum(vector&lt;int&gt;&amp; nums, int target) {
+        sort(nums.begin(), nums.end());                        // sorted quadruplets make equal ones look identical
+        int n = nums.size();
+        set&lt;vector&lt;int&gt;&gt; found;                                // keeps every quadruplet only once
+        for (int a = 0; a &lt; n; a++)
+            for (int b = a + 1; b &lt; n; b++)
+                for (int c = b + 1; c &lt; n; c++)
+                    for (int d = c + 1; d &lt; n; d++) {
+                        long long sum = (long long)nums[a] + nums[b] + nums[c] + nums[d];   // 64-bit: no overflow
+                        if (sum == target) found.insert({nums[a], nums[b], nums[c], nums[d]});
+                    }
+        return vector&lt;vector&lt;int&gt;&gt;(found.begin(), found.end());
+    }
+};</code></pre><pre class="lang-code" data-lang="java"><code>class Solution {
+    public List&lt;List&lt;Integer&gt;&gt; fourSum(int[] nums, int target) {
+        Arrays.sort(nums);                                     // sorted quadruplets make equal ones look identical
+        int n = nums.length;
+        Set&lt;List&lt;Integer&gt;&gt; found = new HashSet&lt;&gt;();            // keeps every quadruplet only once
+        for (int a = 0; a &lt; n; a++)
+            for (int b = a + 1; b &lt; n; b++)
+                for (int c = b + 1; c &lt; n; c++)
+                    for (int d = c + 1; d &lt; n; d++) {
+                        long sum = (long) nums[a] + nums[b] + nums[c] + nums[d];   // 64-bit: no overflow
+                        if (sum == target) found.add(Arrays.asList(nums[a], nums[b], nums[c], nums[d]));
+                    }
+        return new ArrayList&lt;&gt;(found);
+    }
+}</code></pre><pre class="lang-code" data-lang="py"><code>class Solution:
+    def fourSum(self, nums: List[int], target: int) -&gt; List[List[int]]:
+        nums.sort()                                     # sorted quadruplets make equal ones look identical
+        n = len(nums)
+        found = set()                                   # keeps every quadruplet only once
+        for a in range(n):
+            for b in range(a + 1, n):
+                for c in range(b + 1, n):
+                    for d in range(c + 1, n):
+                        if nums[a] + nums[b] + nums[c] + nums[d] == target:   # Python ints never overflow
+                            found.add((nums[a], nums[b], nums[c], nums[d]))
+        return [list(q) for q in found]</code></pre></div><details class="deepdive" open><summary>🔍 Step-by-step dry run (computed by running the algorithm)</summary><p><strong>Sample:</strong> <code>nums = [1, 0, -1, 0, -2, 2], target = 0</code></p><div style="overflow-x:auto"><table class="trace-table"><tr><th>positions</th><th>numbers (sorted array)</th><th>sum</th><th>result</th></tr><tr><td>(0, 1, 4, 5)</td><td>-2 + -1 + 1 + 2</td><td>0</td><td>new quadruplet: add to the set</td></tr><tr><td>(0, 2, 3, 5)</td><td>-2 + 0 + 0 + 2</td><td>0</td><td>new quadruplet: add to the set</td></tr><tr><td>(1, 2, 3, 4)</td><td>-1 + 0 + 0 + 1</td><td>0</td><td>new quadruplet: add to the set</td></tr></table></div><p><strong>Result:</strong> <code>[[-2, -1, 1, 2], [-2, 0, 0, 2], [-1, 0, 0, 1]]</code> Sorted array: [-2, -1, 0, 0, 1, 2]. 15 groups of four are tested; only the ones that hit the target are listed.</p></details></section><section class="block" id="approach-2"><h2><span class="num">5</span> 🚀 Approach 2: Sort, Two Loops, Then Two Pointers</h2><p class="meta"><span class="level">Optimized</span></p><h3>💡 Intuition</h3><p>Sort the array. Fix the first two numbers with two loops (skipping a number equal to the previous one at each loop). For the last two numbers, walk <code>left</code> and <code>right</code> inwards, exactly as in 3Sum, comparing a 64-bit sum with the target.</p><div class="callout life">Choose the first two team members, then let the last two walk towards each other along the sorted line until the total is right.</div><h3>🪜 Algorithm, Step by Step</h3><ol><li>Sort the array.</li><li>Loop over the first number <code>i</code> and the second number <code>j</code> to its right; skip a number equal to the one before it.</li><li>Put <code>left = j + 1</code>, <code>right = n - 1</code> and walk them inwards comparing the 64-bit sum with the target.</li><li>On a hit save the group, move both pointers and skip equal numbers.</li></ol><h3>⏱️ Complexity</h3><table class=""><tr><th></th><th>Cost</th><th>Why</th></tr><tr><td>Time</td><td>O(n<sup>3</sup>)</td><td>two loops over n numbers and an O(n) pointer walk inside: O(n<sup>3</sup>)</td></tr><tr><td>Space</td><td>O(1) extra</td><td>only a few variables besides the output</td></tr></table><table class=""><tr><th>Good side</th><th>Weak side</th></tr><tr><td>Fast enough (about 1.3 million steps for n = 200) and no set is needed.</td><td>Four places where duplicates must be skipped correctly.</td></tr></table><h3>💻 Code</h3><div class="code-box"><div class="lang-tabs"><button data-lang="cpp">C++</button><button data-lang="java">Java</button><button data-lang="py">Python</button><button class="copy">Copy</button></div><pre class="lang-code" data-lang="cpp"><code>class Solution {
+public:
+    vector&lt;vector&lt;int&gt;&gt; fourSum(vector&lt;int&gt;&amp; nums, int target) {
+        sort(nums.begin(), nums.end());
+        int n = nums.size();
+        vector&lt;vector&lt;int&gt;&gt; out;
+        for (int i = 0; i + 3 &lt; n; i++) {
+            if (i &gt; 0 &amp;&amp; nums[i] == nums[i - 1]) continue;             // same first number as before
+            for (int j = i + 1; j + 2 &lt; n; j++) {
+                if (j &gt; i + 1 &amp;&amp; nums[j] == nums[j - 1]) continue;     // same second number as before
+                int left = j + 1, right = n - 1;
+                while (left &lt; right) {
+                    long long sum = (long long)nums[i] + nums[j] + nums[left] + nums[right];
+                    if (sum &lt; target) left++;
+                    else if (sum &gt; target) right--;
+                    else {
+                        out.push_back({nums[i], nums[j], nums[left], nums[right]});
+                        left++; right--;
+                        while (left &lt; right &amp;&amp; nums[left] == nums[left - 1]) left++;      // skip equal numbers
+                        while (left &lt; right &amp;&amp; nums[right] == nums[right + 1]) right--;
+                    }
+                }
+            }
+        }
+        return out;
+    }
+};</code></pre><pre class="lang-code" data-lang="java"><code>class Solution {
+    public List&lt;List&lt;Integer&gt;&gt; fourSum(int[] nums, int target) {
+        Arrays.sort(nums);
+        int n = nums.length;
+        List&lt;List&lt;Integer&gt;&gt; out = new ArrayList&lt;&gt;();
+        for (int i = 0; i + 3 &lt; n; i++) {
+            if (i &gt; 0 &amp;&amp; nums[i] == nums[i - 1]) continue;             // same first number as before
+            for (int j = i + 1; j + 2 &lt; n; j++) {
+                if (j &gt; i + 1 &amp;&amp; nums[j] == nums[j - 1]) continue;     // same second number as before
+                int left = j + 1, right = n - 1;
+                while (left &lt; right) {
+                    long sum = (long) nums[i] + nums[j] + nums[left] + nums[right];
+                    if (sum &lt; target) left++;
+                    else if (sum &gt; target) right--;
+                    else {
+                        out.add(Arrays.asList(nums[i], nums[j], nums[left], nums[right]));
+                        left++; right--;
+                        while (left &lt; right &amp;&amp; nums[left] == nums[left - 1]) left++;      // skip equal numbers
+                        while (left &lt; right &amp;&amp; nums[right] == nums[right + 1]) right--;
+                    }
+                }
+            }
+        }
+        return out;
+    }
+}</code></pre><pre class="lang-code" data-lang="py"><code>class Solution:
+    def fourSum(self, nums: List[int], target: int) -&gt; List[List[int]]:
+        nums.sort()
+        n = len(nums)
+        out = []
+        for i in range(n - 3):
+            if i &gt; 0 and nums[i] == nums[i - 1]:
+                continue                                # same first number as before
+            for j in range(i + 1, n - 2):
+                if j &gt; i + 1 and nums[j] == nums[j - 1]:
+                    continue                            # same second number as before
+                left, right = j + 1, n - 1
+                while left &lt; right:
+                    total = nums[i] + nums[j] + nums[left] + nums[right]
+                    if total &lt; target:
+                        left += 1
+                    elif total &gt; target:
+                        right -= 1
+                    else:
+                        out.append([nums[i], nums[j], nums[left], nums[right]])
+                        left += 1
+                        right -= 1
+                        while left &lt; right and nums[left] == nums[left - 1]:      # skip equal numbers
+                            left += 1
+                        while left &lt; right and nums[right] == nums[right + 1]:
+                            right -= 1
+        return out</code></pre></div><details class="deepdive" open><summary>🔍 Step-by-step dry run (computed by running the algorithm)</summary><p><strong>Sample:</strong> <code>nums = [1, 0, -1, 0, -2, 2], target = 0</code></p><div style="overflow-x:auto"><table class="trace-table"><tr><th>i</th><th>j</th><th>left</th><th>right</th><th>numbers = sum</th><th>action</th></tr><tr><td>0</td><td>1</td><td>2</td><td>5</td><td>-2, -1, 0, 2 = -1</td><td>too small: left++</td></tr><tr><td>0</td><td>1</td><td>3</td><td>5</td><td>-2, -1, 0, 2 = -1</td><td>too small: left++</td></tr><tr><td>0</td><td>1</td><td>4</td><td>5</td><td>-2, -1, 1, 2 = 0</td><td>hit: save the quadruplet</td></tr><tr><td>0</td><td>2</td><td>3</td><td>5</td><td>-2, 0, 0, 2 = 0</td><td>hit: save the quadruplet</td></tr><tr><td>0</td><td>3</td><td>-</td><td>-</td><td>-</td><td>same second number as before: skip</td></tr><tr><td>1</td><td>2</td><td>3</td><td>5</td><td>-1, 0, 0, 2 = 1</td><td>too big: right--</td></tr><tr><td>1</td><td>2</td><td>3</td><td>4</td><td>-1, 0, 0, 1 = 0</td><td>hit: save the quadruplet</td></tr><tr><td>1</td><td>3</td><td>-</td><td>-</td><td>-</td><td>same second number as before: skip</td></tr><tr><td>2</td><td>3</td><td>4</td><td>5</td><td>0, 0, 1, 2 = 3</td><td>too big: right--</td></tr></table></div><p><strong>Result:</strong> <code>[[-2, -1, 1, 2], [-2, 0, 0, 2], [-1, 0, 0, 1]]</code> Sorted array: [-2, -1, 0, 0, 1, 2].</p></details></section><section class="block" id="approach-3"><h2><span class="num">6</span> 🚀 Approach 3: General kSum: Recursion Down to Two Sum (Most Optimized)</h2><p class="meta"><span class="level">Most optimized (generalizes to any k)</span></p><h3>💡 Intuition</h3><p>Write one function <code>kSum(start, k, target)</code> on the sorted array. For <code>k &gt; 2</code> it loops over the first number (skipping repeats) and calls itself with <code>k - 1</code> and the reduced target. For <code>k == 2</code> it runs the two-pointer walk. Two cheap checks stop early when the smallest or the largest possible sum already misses the target.</p><div class="callout life">A team captain picks one player and hands the rest of the job to a smaller team captain, until only two players are left to pick.</div><h3>🪜 Algorithm, Step by Step</h3><ol><li>Sort the array and call <code>kSum(start = 0, k = 4, target)</code>.</li><li>If <code>k == 2</code> do the two-pointer walk and save groups.</li><li>Otherwise loop over the next number (skip repeats), stop early if even the smallest or the largest possible sum misses the target, and call <code>kSum</code> with <code>k - 1</code> and the reduced target.</li><li>Return all saved groups.</li></ol><h3>⏱️ Complexity</h3><table class=""><tr><th></th><th>Cost</th><th>Why</th></tr><tr><td>Time</td><td>O(n<sup>k - 1</sup>) = O(n<sup>3</sup>) for k = 4</td><td>k - 2 = 2 levels of loops and an O(n) pointer walk: O(n<sup>k - 1</sup>) = O(n<sup>3</sup>)</td></tr><tr><td>Space</td><td>O(k) for the recursion</td><td>the recursion is only k levels deep</td></tr></table><table class=""><tr><th>Good side</th><th>Weak side</th></tr><tr><td>The same code solves 2Sum, 3Sum, 4Sum ... and the early stops make it fast in practice.</td><td>More abstract: you must keep the 64-bit target and the duplicate skipping correct at every level.</td></tr></table><h3>💻 Code</h3><div class="code-box"><div class="lang-tabs"><button data-lang="cpp">C++</button><button data-lang="java">Java</button><button data-lang="py">Python</button><button class="copy">Copy</button></div><pre class="lang-code" data-lang="cpp"><code>class Solution {
+    void kSum(vector&lt;int&gt;&amp; nums, long long target, int start, int k, vector&lt;int&gt;&amp; current, vector&lt;vector&lt;int&gt;&gt;&amp; out) {
+        int n = nums.size();
+        if (k == 2) {                                          // base case: two pointers
+            int left = start, right = n - 1;
+            while (left &lt; right) {
+                long long sum = (long long)nums[left] + nums[right];
+                if (sum &lt; target) left++;
+                else if (sum &gt; target) right--;
+                else {
+                    current.push_back(nums[left]); current.push_back(nums[right]);
+                    out.push_back(current);
+                    current.pop_back(); current.pop_back();
+                    left++; right--;
+                    while (left &lt; right &amp;&amp; nums[left] == nums[left - 1]) left++;
+                    while (left &lt; right &amp;&amp; nums[right] == nums[right + 1]) right--;
+                }
+            }
+            return;
+        }
+        for (int i = start; i + k &lt;= n; i++) {
+            if ((long long)nums[i] * k &gt; target) break;                // even the smallest choices are too big
+            if ((long long)nums[n - 1] * k &lt; target) break;            // even the biggest choices are too small
+            if (i &gt; start &amp;&amp; nums[i] == nums[i - 1]) continue;         // skip repeats at this level
+            current.push_back(nums[i]);
+            kSum(nums, target - nums[i], i + 1, k - 1, current, out);  // pick k - 1 more numbers
+            current.pop_back();
+        }
+    }
+public:
+    vector&lt;vector&lt;int&gt;&gt; fourSum(vector&lt;int&gt;&amp; nums, int target) {
+        sort(nums.begin(), nums.end());
+        vector&lt;vector&lt;int&gt;&gt; out;
+        vector&lt;int&gt; current;
+        kSum(nums, target, 0, 4, current, out);
+        return out;
+    }
+};</code></pre><pre class="lang-code" data-lang="java"><code>class Solution {
+    private void kSum(int[] nums, long target, int start, int k, List&lt;Integer&gt; current, List&lt;List&lt;Integer&gt;&gt; out) {
+        int n = nums.length;
+        if (k == 2) {                                          // base case: two pointers
+            int left = start, right = n - 1;
+            while (left &lt; right) {
+                long sum = (long) nums[left] + nums[right];
+                if (sum &lt; target) left++;
+                else if (sum &gt; target) right--;
+                else {
+                    List&lt;Integer&gt; quad = new ArrayList&lt;&gt;(current);
+                    quad.add(nums[left]); quad.add(nums[right]);
+                    out.add(quad);
+                    left++; right--;
+                    while (left &lt; right &amp;&amp; nums[left] == nums[left - 1]) left++;
+                    while (left &lt; right &amp;&amp; nums[right] == nums[right + 1]) right--;
+                }
+            }
+            return;
+        }
+        for (int i = start; i + k &lt;= n; i++) {
+            if ((long) nums[i] * k &gt; target) break;                    // even the smallest choices are too big
+            if ((long) nums[n - 1] * k &lt; target) break;                // even the biggest choices are too small
+            if (i &gt; start &amp;&amp; nums[i] == nums[i - 1]) continue;         // skip repeats at this level
+            current.add(nums[i]);
+            kSum(nums, target - nums[i], i + 1, k - 1, current, out);  // pick k - 1 more numbers
+            current.remove(current.size() - 1);
+        }
+    }
+
+    public List&lt;List&lt;Integer&gt;&gt; fourSum(int[] nums, int target) {
+        Arrays.sort(nums);
+        List&lt;List&lt;Integer&gt;&gt; out = new ArrayList&lt;&gt;();
+        kSum(nums, target, 0, 4, new ArrayList&lt;&gt;(), out);
+        return out;
+    }
+}</code></pre><pre class="lang-code" data-lang="py"><code>class Solution:
+    def fourSum(self, nums: List[int], target: int) -&gt; List[List[int]]:
+        nums.sort()
+        n = len(nums)
+        out = []
+
+        def k_sum(start, k, goal, current):
+            if k == 2:                                  # base case: two pointers
+                left, right = start, n - 1
+                while left &lt; right:
+                    total = nums[left] + nums[right]
+                    if total &lt; goal:
+                        left += 1
+                    elif total &gt; goal:
+                        right -= 1
+                    else:
+                        out.append(current + [nums[left], nums[right]])
+                        left += 1
+                        right -= 1
+                        while left &lt; right and nums[left] == nums[left - 1]:
+                            left += 1
+                        while left &lt; right and nums[right] == nums[right + 1]:
+                            right -= 1
+                return
+            for i in range(start, n - k + 1):
+                if nums[i] * k &gt; goal:
+                    break                               # even the smallest choices are too big
+                if nums[-1] * k &lt; goal:
+                    break                               # even the biggest choices are too small
+                if i &gt; start and nums[i] == nums[i - 1]:
+                    continue                            # skip repeats at this level
+                k_sum(i + 1, k - 1, goal - nums[i], current + [nums[i]])   # pick k - 1 more numbers
+
+        k_sum(0, 4, target, [])
+        return out</code></pre></div><details class="deepdive" open><summary>🔍 Step-by-step dry run (computed by running the algorithm)</summary><p><strong>Sample:</strong> <code>nums = [1, 0, -1, 0, -2, 2], target = 0</code></p><div style="overflow-x:auto"><table class="trace-table"><tr><th>call (indented = deeper)</th><th>check</th><th>action</th></tr><tr><td>k=4, goal 0</td><td>choose -2</td><td>ask for k=3 more numbers with goal 2</td></tr><tr><td>  k=3, goal 2</td><td>choose -1</td><td>ask for k=2 more numbers with goal 3</td></tr><tr><td>    k=2, goal 3</td><td>0 + 2 = 2</td><td>too small: left++</td></tr><tr><td>    k=2, goal 3</td><td>0 + 2 = 2</td><td>too small: left++</td></tr><tr><td>    k=2, goal 3</td><td>1 + 2 = 3</td><td>hit: save [-2, -1, 1, 2]</td></tr><tr><td>  k=3, goal 2</td><td>choose 0</td><td>ask for k=2 more numbers with goal 2</td></tr><tr><td>    k=2, goal 2</td><td>0 + 2 = 2</td><td>hit: save [-2, 0, 0, 2]</td></tr><tr><td>  k=3, goal 2</td><td>0 again</td><td>skip repeat</td></tr><tr><td>k=4, goal 0</td><td>choose -1</td><td>ask for k=3 more numbers with goal 1</td></tr><tr><td>  k=3, goal 1</td><td>choose 0</td><td>ask for k=2 more numbers with goal 1</td></tr><tr><td>    k=2, goal 1</td><td>0 + 2 = 2</td><td>too big: right--</td></tr><tr><td>    k=2, goal 1</td><td>0 + 1 = 1</td><td>hit: save [-1, 0, 0, 1]</td></tr><tr><td>  k=3, goal 1</td><td>0 again</td><td>skip repeat</td></tr><tr><td>k=4, goal 0</td><td>choose 0</td><td>ask for k=3 more numbers with goal 0</td></tr><tr><td>  k=3, goal 0</td><td>choose 0</td><td>ask for k=2 more numbers with goal 0</td></tr><tr><td>    k=2, goal 0</td><td>1 + 2 = 3</td><td>too big: right--</td></tr></table></div><p><strong>Result:</strong> <code>[[-2, -1, 1, 2], [-2, 0, 0, 2], [-1, 0, 0, 1]]</code> Sorted array: [-2, -1, 0, 0, 1, 2].</p></details></section><section class="block" id="compare"><h2><span class="num">7</span> ⚖️ Comparing the Approaches</h2><table class=""><tr><th>Approach</th><th>Level</th><th>Time</th><th>Extra space</th></tr><tr><td>1. Brute Force: Four Loops and a Set</td><td>Brute force</td><td>O(n<sup>4</sup>)</td><td>O(number of answers)</td></tr><tr><td>2. Sort, Two Loops, Then Two Pointers</td><td>Optimized</td><td>O(n<sup>3</sup>)</td><td>O(1) extra</td></tr><tr><td>3. General kSum: Recursion Down to Two Sum (Most Optimized)</td><td>Most optimized (generalizes to any k)</td><td>O(n<sup>k - 1</sup>) = O(n<sup>3</sup>) for k = 4</td><td>O(k) for the recursion</td></tr></table><p><strong>Which one should I write in an interview?</strong> Start by saying the brute force out loud (it proves you understand the problem), then explain the improvement and write the <em>most optimized</em> one that you can explain clearly: General kSum: Recursion Down to Two Sum (Most Optimized).</p></section><section class="block" id="insights"><h2><span class="num">8</span> 🔑 Key Insights</h2><ul><li><strong>Four numbers of size 10<sup>9</sup> add up to 4,000,000,000, which is more than the biggest 32-bit int (2,147,483,647).</strong> Always sum in a 64-bit type.</li><li>For n = 200 the brute force looks at 64,684,950 groups; the sorted pointer methods make only about 1.3 million steps.</li><li>The kSum idea solves 2Sum, 3Sum, 4Sum and any bigger k with the same code; only the base case is special.</li><li>The numbers in all three languages come out the same: the tests include groups made of the extreme values -10<sup>9</sup> and 10<sup>9</sup>.</li></ul></section><section class="block" id="tests"><h2><span class="num">9</span> 🧪 Test Report (Run for Real)</h2><div class="callout warn"><strong>Not submitted to LeetCode.</strong> I cannot log in to or submit to LeetCode from here, so I cannot honestly say 'Accepted'. What I <em>can</em> say is below: every approach in every language was compiled and run on the same <strong>450 correctness tests</strong>, and the results are real. To see the green 'Accepted' yourself, paste a solution into the LeetCode editor.</div><ul><li>The tests contain LeetCode's own examples, hand-made edge cases (empty or tiny inputs, repeats, maximum values) and many random inputs checked against an independent reference answer, plus inputs of the largest size allowed by the constraints.</li><li>Tools used for this problem (22 November 2026): C++17 with g++ (Rev11, Built by MSYS2 project) 15.2.0, -std=c++17 -O2 -Wall -Wextra (<code>-static</code>, no warnings); Java: javac 25.0.1, -Xlint:all (no warnings); Python 3.14.2.</li><li><strong>The tests can fail:</strong> to be sure the tests are not empty promises, I deliberately broke the &#x27;skip a repeated second number&#x27; rule of approach 2 and the tests noticed: 128 of 450 tests failed (322 passed); the correct code passes all 450.</li><li>The code shown above is the <em>same text</em> that was tested: the test program is built from it automatically.</li></ul><table class=""><tr><th>Approach</th><th>C++ (tests passed)</th><th>Java (tests passed)</th><th>Python (tests passed)</th></tr><tr><td>1. Brute Force: Four Loops and a Set</td><td><span class="pass">450/450</span><br><span class="skip">largest input n = 60: 21.5 ms total, 3/3 ok</span></td><td><span class="pass">450/450</span><br><span class="skip">largest input n = 60: 36.3 ms total, 3/3 ok</span></td><td><span class="pass">450/450</span><br><span class="skip">largest input n = 60: 137.3 ms total, 3/3 ok</span></td></tr><tr><td>2. Sort, Two Loops, Then Two Pointers</td><td><span class="pass">450/450</span><br><span class="skip">largest input n = 200: 12.4 ms total, 8/8 ok</span></td><td><span class="pass">450/450</span><br><span class="skip">largest input n = 200: 36.7 ms total, 8/8 ok</span></td><td><span class="pass">450/450</span><br><span class="skip">largest input n = 200: 241.3 ms total, 8/8 ok</span></td></tr><tr><td>3. General kSum: Recursion Down to Two Sum (Most Optimized)</td><td><span class="pass">450/450</span><br><span class="skip">largest input n = 200: 11.7 ms total, 8/8 ok</span></td><td><span class="pass">450/450</span><br><span class="skip">largest input n = 200: 56.0 ms total, 8/8 ok</span></td><td><span class="pass">450/450</span><br><span class="skip">largest input n = 200: 177.9 ms total, 8/8 ok</span></td></tr></table><p>Large inputs that an approach is <em>too slow for by design</em> were not run for it: C++ approach 1 (above n = 60); Java approach 1 (above n = 60); Python approach 1 (above n = 60). That is the point of the better approaches.</p><p>Times are from one laptop, one run each: use them to compare approaches, not to predict LeetCode's runtime numbers. The times include reading each test line in that language (C++ reads numbers with <code>istringstream</code>, which is slower than Java's tokenizer), so compare approaches <em>within one language</em>, not one language with another.</p></section><section class="block" id="mistakes"><h2><span class="num">10</span> ⚠️ Common Mistakes</h2><ul><li>Adding four numbers of size 10<sup>9</sup> in a 32-bit <code>int</code>: the sum overflows. Use <code>long long</code> / <code>long</code> in C++ and Java.</li><li>Skipping duplicates with the wrong condition: compare with the <em>previous</em> element, and for the second loop only when <code>j &gt; i + 1</code> (not <code>j &gt; 0</code>).</li><li>Returning the same quadruplet twice because the pointers were not moved past equal numbers after a hit.</li><li>Using an unsorted array with two pointers: the walk only works on sorted data.</li><li>In kSum, forgetting that <code>target - nums[i]</code> can also overflow a 32-bit int: keep the target in 64 bits.</li></ul></section><section class="block" id="related"><h2><span class="num">11</span> 🔭 Further Exploration: Related Problems</h2><ul><li><a href="0001-two-sum.html">LeetCode 1: Two Sum</a> <span class="skip">(solved on this site)</span></li><li><a href="0015-3sum.html">LeetCode 15: 3Sum</a> <span class="skip">(solved on this site)</span></li><li><a href="0016-3sum-closest.html">LeetCode 16: 3Sum Closest</a> <span class="skip">(solved on this site)</span></li><li>LeetCode 454: 4Sum II</li></ul></section><section class="block" id="references"><h2><span class="num">12</span> 🔗 References and Tags</h2><ul><li><strong>Official problem (exact wording):</strong> <a href="https://leetcode.com/problems/4sum/" target="_blank" rel="noopener">LeetCode 18. 4Sum</a> <span class="skip">(not checked by script: leetcode.com blocks automated requests)</span></li><li><a href="https://en.wikipedia.org/wiki/3SUM">3SUM problem (Wikipedia)</a></li><li><a href="https://en.wikipedia.org/wiki/Subset_sum_problem">Subset sum problem (Wikipedia)</a></li></ul><p><strong>Tags:</strong> <span class="diff Medium">Medium</span> <span class="tg-chip">#Array</span><span class="tg-chip">#Two Pointers</span><span class="tg-chip">#Sorting</span></p><p class="skip">Company tags are not listed: LeetCode shows them only to Premium members and other lists are unverified reports, so they could not be checked here.</p></section>
+  </main>
+</div>
+<div class="page-nav"><a href="0017-letter-combinations-of-a-phone-number.html">⬅ 17. Letter Combinations of a Phone Number</a><a href="index.html">LeetCode list</a><a href="0019-remove-nth-node-from-end-of-list.html">19. Remove Nth Node From End of List ➜</a></div>
+<script src="lc.js"></script>
+</body>
+</html>
