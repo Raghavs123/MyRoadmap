@@ -28,7 +28,7 @@
   <a href="#genai">✨ Generative AI, LLMs & Agents <span class="count">9</span></a>
   <a href="#web">🌐 Web & Backend Development <span class="count">1</span></a>
   <a href="#devops">♾️ DevOps, Cloud & MLOps <span class="count">7</span></a>
-  <a href="#projects">🛠️ Projects (Build From Scratch) <span class="count">2</span></a>
+  <a href="#projects">🛠️ Projects (Build From Scratch) <span class="count">3</span></a>
 </nav>
 
 <div class="home-sections">
@@ -342,7 +342,7 @@
 </section>
 
 <section class="home-section" id="projects">
-  <h2>🛠️ Projects (Build From Scratch) <span class="count">2 projects</span></h2>
+  <h2>🛠️ Projects (Build From Scratch) <span class="count">3 projects</span></h2>
   <p class="section-desc">Résumé projects you build yourself from an empty folder: every file, every command, every checkpoint.</p>
 <div class="subject-grid">
 
@@ -357,6 +357,13 @@
     <div class="icon">🔀</div>
     <h3>LLM Router (Small vs Big Model)</h3>
     <p>A 3-day GenAI résumé project, step by step: a small model labels each question EASY or HARD, easy ones stay on the small model, hard ones go to the big one, and the whole thing is measured. Two real open models (Qwen2.5 0.5B and 3B) on a laptop CPU, an LLM judge checked by hand on all 80 answers, a stricter judge v2, two improved routers tested on a hold-out set, resumable result caches, FastAPI, pytest and CI. Honest result: on a CPU, routing overhead ate most of the savings. Every file shown in full; every checkpoint really run.</p>
+    <span class="status-pill ready">✅ Ready</span>
+  </a>
+
+  <a class="subject-card" href="projects/mcp-agent.html">
+    <div class="icon">🧰</div>
+    <h3>MCP-Powered Agent</h3>
+    <p>A 3-day GenAI résumé project, step by step: an MCP server (FastMCP) with notes search, GitHub file reading and note writing, an agent loop that discovers the tools over MCP, and proof that one server works in any client (SDK over stdio, a hand-written JSON-RPC client, streamable HTTP; Claude Desktop config included). Measured on 15 tasks with real local Qwen models on CPU and GPU: fixing the search tool raised correct answers from 5/15 to 11/15 with the same tool choices. Gemini free tier ready to run with your key. Every file shown in full; every checkpoint really run.</p>
     <span class="status-pill ready">✅ Ready</span>
   </a>
 
